@@ -33,7 +33,9 @@ redis.decr "counter" # => 1
 redis.del "foo", "counter" # => 2
 ```
 
-### Multiple 
+### Connection Pool
+
+The `Redis::Client` maintains its own connection pool, so there is no need to run your own within your application. When you execute a command on the `Redis::Client`, it is automatically being executed against a connection. When you execute a pipeline or transaction with `multi`, all commands within that block will automatically be routed to the same connection.
 
 ## Development
 
