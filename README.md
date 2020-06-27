@@ -33,6 +33,18 @@ redis.decr "counter" # => 1
 redis.del "foo", "counter" # => 2
 ```
 
+To use a Redis server that isn't at `localhost:6379`, pass a `URI` to the client. For example, if you store it in your shell environment:
+
+```crystal
+redis = Redis::Client.new(URI.parse(ENV["REDIS_URL"]))
+```
+
+To connect via SSL, make sure you use the `rediss://` URL scheme. If your Redis server requires a password or uses a different database slot than `0`, make sure you include them in the URL:
+
+```crystal
+redis = Redis::Client.new(URI.parse("rediss://:my_password@example.com/3"))
+```
+
 ### Connection Pool
 
 The `Redis::Client` maintains its own connection pool, so there is no need to run your own within your application. When you execute a command on the `Redis::Client`, it is automatically being executed against a connection. When you execute a pipeline or transaction with `multi`, all commands within that block will automatically be routed to the same connection.
