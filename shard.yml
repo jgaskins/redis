@@ -1,0 +1,14 @@
+name: redis
+version: 0.1.0
+
+authors:
+  - Jamie Gaskins <jgaskins@hey.com>
+
+dependencies:
+  db:
+    github: jgaskins/crystal-db
+    branch: generic-pool
+
+crystal: 0.35.1
+
+license: MIT
