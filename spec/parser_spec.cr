@@ -5,8 +5,10 @@ require "../src/parser"
 module Redis
   describe Parser do
     it "reads ints" do
-      io = IO::Memory.new(":1234\r\n")
-      Parser.new(io).read.should eq 1234
+      [1, 12, 1234, 12345678, 123456789012345678_i64, -1, -12345678, 0].each do |int|
+        io = IO::Memory.new(":#{int}\r\n")
+        Parser.new(io).read.should eq int
+      end
     end
 
     it "reads simple strings" do

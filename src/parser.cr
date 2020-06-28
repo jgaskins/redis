@@ -21,13 +21,15 @@ module Redis
     def read : Value
       case byte_marker = @io.read_byte
       when ':'
-        @io.read_line.to_i64
+        parse_int.tap { @io.skip 2 }
       when '*'
-        length = @io.read_line.to_i
+        length = parse_int
+        @io.skip 2
         Array.new(length) { read }
       when '$'
-        length = @io.read_line.to_i
-        if length > 0
+        length = parse_int
+        @io.skip 2
+        if length >= 0
           bytes = Bytes.new(length)
           @io.read_fully(bytes)
           value = String.new(bytes)
@@ -41,7 +43,36 @@ module Redis
       when nil
         raise IO::Error.new("Connection closed")
       else
-        raise "Invalid byte marker: #{byte_marker.chr}"
+        raise "Invalid byte marker: #{byte_marker.chr.inspect}"
+      end
+    end
+
+    private def parse_int
+      int = 0i64
+      negative = false
+      loop do
+        if peek = @io.peek
+          case next_byte = peek[0] 
+          when nil
+            break
+          when '-'
+            negative = true
+            @io.skip 1
+          when '0'.ord..'9'.ord
+            int = (int * 10) + (next_byte - '0'.ord)
+            @io.skip 1
+          else
+            break
+          end
+        else
+          break
+        end
+      end
+
+      if negative
+        -int
+      else
+        int
       end
     end
   end

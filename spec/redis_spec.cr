@@ -52,7 +52,8 @@ describe Redis::Client do
 
       redis.incrby(key, 2).should eq 2
       redis.incrby(key, 3).should eq 5
-      redis.decrby(key, 2)
+      redis.decrby(key, 2).should eq 3
+      redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
 
     ensure
       redis.del key
