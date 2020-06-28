@@ -28,7 +28,7 @@ module Redis
     end
   end
 
-  # A Redis::Future is what pipelined commands return. They will be resolved
+  # A `Redis::Future` is what pipelined commands return. They will be resolved
   # with the value of the command that spawned them.
   class Future
     @value = uninitialized Value
@@ -51,6 +51,9 @@ module Redis
       end
     end
 
+    # A `Redis::Future::NotResolved` is raised when attempting to access the
+    # value of a `Future` that has not been resolved yet. For example, calling
+    # `pipeline.get("my-key").value`.
     class NotResolved < Exception
     end
   end
