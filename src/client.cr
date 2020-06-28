@@ -19,6 +19,10 @@ module Redis
   class Client
     @pool : DB::Pool(Connection)
 
+    def self.from_env(env_var)
+      new(URI.parse(ENV[env_var]))
+    end
+
     # The client holds a pool of connections that expands and contracts as
     # needed.
     def initialize(*args, **kwargs)
