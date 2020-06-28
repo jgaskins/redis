@@ -241,7 +241,22 @@ module Redis
     # ```
     # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
     # ```
-    def xadd(key : String, id : String, maxlen = nil, data : Hash(String, String) = Hash(String, String).new)
+    def xadd(key : String, id : String, data : Hash(String, String))
+      xadd key, id, maxlen: nil, data: data
+    end
+
+    # Append an entry with the specified data to the stream with the given `key`
+    # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
+    # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
+    # If `maxlen` is provided, Redis will trim the stream to the specified
+    # length. If `maxlen` is of the form `~ 1000`, Redis will trim it to
+    # *approximately* that length, removing entries when it can do so
+    # efficiently. This method returns the `id` that Redis stores.
+    #
+    # ```
+    # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
+    # ```
+    def xadd(key : String, id : String, maxlen, data : Hash(String, String))
       command = Array(Value).new(initial_capacity: data.size * 2 + 3)
       command << "xadd" << key
       command << "maxlen" << maxlen if maxlen
