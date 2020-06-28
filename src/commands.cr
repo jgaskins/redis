@@ -1,8 +1,14 @@
 require "./value"
 
 module Redis
+  # All Redis commands are defined in this module. Any paradigm that needs to
+  # use these commands simply overrides `run`, which takes a single `command`
+  # object, which must be an `Enumerable`.
+  #
+  # TODO: Add more Redis commands from https://redis.io/commands
   module Commands
-    # Execute the given command and return the result from the server. Commands must be an `Enumerable`.
+    # Execute the given command and return the result from the server. Commands
+    # must be an `Enumerable` and its `size` method must be re-entrant.
     #
     # ```
     # run({"set", "foo", "bar"})
