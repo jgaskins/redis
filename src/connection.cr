@@ -147,6 +147,7 @@ module Redis
       incrby: Int64,
       decrby: Int64,
       del: Int64,
+      smembers: Array,
       xgroup: Nil,
       xrange: Array,
       xreadgroup: Array,
