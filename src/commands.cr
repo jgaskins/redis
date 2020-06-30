@@ -207,6 +207,38 @@ module Redis
       run({"brpop"} + keys + {timeout})
     end
 
+    def sadd(key : String, *values : String)
+      run({"sadd", key} + values)
+    end
+
+    def sismember(key : String, value : String)
+      run({"sismember", key, value})
+    end
+
+    def smembers(key : String)
+      run({"smembers", key})
+    end
+
+    def srem(key : String, *values : String)
+      run({"srem", key} + values)
+    end
+
+    def sdiff(first : String, second : String)
+      run({"sdiff", first, second})
+    end
+
+    def sinter(first : String, *others : String)
+      run({"sinter", first} + others)
+    end
+
+    def scard(key : String)
+      run({"scard", key})
+    end
+
+    def publish(channel : String, message : String)
+      run({"publish", channel, message})
+    end
+
     # Append an entry with the specified data to the stream with the given `key`
     # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
     # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
