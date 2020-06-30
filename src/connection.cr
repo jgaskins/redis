@@ -112,6 +112,21 @@ module Redis
       end
     end
 
+    def subscribe(*channels : String, &block : Subscription, self ->)
+      subscription = Subscription.new(self)
+      encode({"subscribe"} + channels)
+      flush
+
+      yield subscription, self
+
+      subscription.call
+    end
+
+    def unsubscribe(*channels : String)
+      encode({"unsubscribe"} + channels)
+      flush
+    end
+
     # :nodoc:
     macro override_return_types(methods)
       {% for method, return_type in methods %}
@@ -191,6 +206,70 @@ module Redis
     # :nodoc:
     def encode(nothing : Nil)
       @socket << "$-1" << CRLF
+    end
+  end
+
+  private class Subscription
+    @on_message = Proc(String, String, Nil).new {}
+    @on_subscribe = Proc(String, Int64, Nil).new {}
+    @on_unsubscribe = Proc(String, Int64, Nil).new {}
+    @channels = [] of String
+
+    def initialize(@connection : Connection)
+    end
+
+    def on_message(&block : String, String ->)
+      @on_message = block
+      self
+    end
+
+    def on_subscribe(&block : String, Int64 ->)
+      @on_subscribe = block
+      self
+    end
+
+    def on_unsubscribe(&block : String, Int64 ->)
+      @on_unsubscribe = block
+      self
+    end
+
+    def message!(channel : String, message : String)
+      @on_message.call channel, message
+    end
+
+    def subscribe!(channel : String, count : Int64)
+      @channels << channel
+      @on_subscribe.call channel, count
+    end
+
+    def unsubscribe!(channel : String, count : Int64)
+      @channels.delete channel
+      @on_unsubscribe.call channel, count
+    end
+
+    def call
+      loop do
+        action, channel, argument = @connection.read.as(Array)
+        action = action.as String
+        channel = channel.as String
+
+        case action
+        when "message"
+          message! channel, argument.as(String)
+        when "subscribe"
+          subscribe! channel, argument.as(Int64)
+        when "unsubscribe"
+          unsubscribe! channel, argument.as(Int64)
+          break if argument == 0
+        else
+          raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{action}")
+        end
+      end
+
+      self
+    end
+
+    class InvalidMessage < Exception
     end
   end
 end

@@ -207,6 +207,10 @@ module Redis
       run({"brpop"} + keys + {timeout})
     end
 
+    def publish(channel : String, message : String)
+      run({"publish", channel, message})
+    end
+
     # Append an entry with the specified data to the stream with the given `key`
     # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
     # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
