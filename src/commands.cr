@@ -111,7 +111,7 @@ module Redis
     # Delete all specified keys and return the number of keys deleted.
     #
     # ```
-    # redis.set "foo"
+    # redis.set "foo", "12"
     # redis.del "foo", "bar" # => 1
     # redis.del "foo", "bar" # => 0
     # ```
