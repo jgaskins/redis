@@ -166,9 +166,14 @@ module Redis
     # `nil`.
     #
     # ```
-    # redis.lpush "foo", "hello"
-    # redis.rpop "foo" # => "hello"
-    # redis.rpop "foo" # => nil
+    # redis.lpush "foo", "first"
+    # spawn do
+    #   sleep 100.milliseconds
+    #   redis.lpush "foo", "second"
+    # end
+    # redis.brpop "foo", 1.second # => "first"
+    # redis.brpop "foo", 1.second # => "second" (after 100 milliseconds)
+    # redis.brpop "foo", 1.second # => nil (after 1 second)
     # ```
     def brpop(*keys : String, timeout : Time::Span)
       brpop(*keys, timeout: timeout.total_seconds)
@@ -182,9 +187,14 @@ module Redis
     # returns `nil`.
     #
     # ```
-    # redis.lpush "foo", "hello"
-    # redis.rpop "foo" # => "hello"
-    # redis.rpop "foo" # => nil
+    # redis.lpush "foo", "first"
+    # spawn do
+    #   sleep 100.milliseconds
+    #   redis.lpush "foo", "second"
+    # end
+    # redis.brpop "foo", 1 # => "first"
+    # redis.brpop "foo", 1 # => "second" (after 100 milliseconds)
+    # redis.brpop "foo", 1 # => nil (after 1 second)
     # ```
     def brpop(*keys : String, timeout : Int | Float)
       timeout = timeout.to_i if timeout == timeout.to_i
@@ -199,9 +209,14 @@ module Redis
     # returns `nil`.
     #
     # ```
-    # redis.lpush "foo", "hello"
-    # redis.rpop "foo" # => "hello"
-    # redis.rpop "foo" # => nil
+    # redis.lpush "foo", "first"
+    # spawn do
+    #   sleep 100.milliseconds
+    #   redis.lpush "foo", "second"
+    # end
+    # redis.brpop "foo", "1" # => "first"
+    # redis.brpop "foo", "1" # => "second" (after 100 milliseconds)
+    # redis.brpop "foo", "1" # => nil (after 1 second)
     # ```
     def brpop(*keys : String, timeout : String)
       run({"brpop"} + keys + {timeout})
