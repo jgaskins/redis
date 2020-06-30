@@ -36,18 +36,20 @@ module Redis
       @socket = socket
       @parser = Parser.new(@socket)
 
-      # Authentication
-      if password = uri.password
-        run({"auth", password})
-      end
+      pipeline do |redis|
+        # Authentication
+        if password = uri.password
+          run({"auth", password})
+        end
 
-      # DB select
-      db = if {"", "/"}.includes?(uri.path)
-        "0"
-      else
-        uri.path[1..-1]
+        # DB select
+        db = if {"", "/"}.includes?(uri.path)
+          "0"
+        else
+          uri.path[1..-1]
+        end
+        run({"select", db}) unless db == "0"
       end
-      run({"select", db}) unless db == "0"
     end
 
     # Execute a pipeline of commands. A pipeline sends all commands to the
