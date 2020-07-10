@@ -25,8 +25,11 @@ module Redis
 
     # The client holds a pool of connections that expands and contracts as
     # needed.
-    def initialize(*args, **kwargs)
-      @pool = DB::Pool.new { Connection.new(*args, **kwargs) }
+    def initialize(uri : URI)
+      max_idle_pool_size = uri.query_params.fetch("max_idle_pool_size", "25").to_i
+      @pool = DB::Pool.new(
+        max_idle_pool_size: max_idle_pool_size,
+      ) { Connection.new(uri) }
     end
 
     # All Redis commands invoked on the client check out a connection from the
