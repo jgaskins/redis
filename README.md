@@ -71,6 +71,10 @@ To use a Redis server that isn't at `localhost:6379`, pass a `URI` to the client
 
 ```crystal
 redis = Redis::Client.new(URI.parse(ENV["REDIS_URL"]))
+
+# ... or ...
+
+redis = Redis::Client.from_env("REDIS_URL")
 ```
 
 To connect via SSL, make sure you use the `rediss://` URL scheme. If your Redis server requires a password or uses a different database slot than `0`, make sure you include them in the URL:
