@@ -160,6 +160,16 @@ describe Redis::Client do
     end
   end
 
+  test "checking for existence of keys" do
+    redis.exists(key).should eq 0
+
+    redis.incr key
+    redis.exists(key).should eq 1
+
+    redis.del key
+    redis.exists(key).should eq 0
+  end
+
   it "handles exceptions while pipelining" do
     key = random_key
 

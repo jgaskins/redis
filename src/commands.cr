@@ -119,6 +119,19 @@ module Redis
       run({"del"} + keys)
     end
 
+    # Return the number of specified keys that exist
+    #
+    # ```
+    # redis.exists("foo", "bar") # => 0
+    # redis.set "foo", "exists now"
+    # redis.exists("foo", "bar") # => 1
+    # redis.set "bar", "also exists now"
+    # redis.exists("foo", "bar") # => 2
+    # ```
+    def exists(*keys : String)
+      run({"exists"} + keys)
+    end
+
     # Insert an item at the beginning of a list, returning the number of items
     # in the list after the insert.
     #
