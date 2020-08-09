@@ -95,20 +95,29 @@ module Redis
     # redis.get "foo" # => nil
     # redis.get "counter" # => nil
     # ```
-    def multi
-      txn = Transaction.new(self)
+    def multi(retries = 5)
+      loop do
+        txn = Transaction.new(self)
 
-      begin
-        txn.start!
-        yield txn
-        if txn.discarded?
-          [] of Value
-        else
-          txn.exec.as(Array)
+        begin
+          txn.start!
+          yield txn
+          if txn.discarded?
+            return [] of Value
+          else
+            return txn.exec.as(Array)
+          end
+        rescue ex
+          txn.discard
+          raise ex
         end
-      rescue ex
-        txn.discard
-        raise ex
+      rescue ex : IO::Error
+        if retries > 0
+          retries -= 1
+          initialize @uri
+        else
+          raise ex
+        end
       end
     end
 
@@ -159,10 +168,19 @@ module Redis
     # ```
     # run({"set", "foo", "bar"})
     # ```
-    def run(command)
-      encode command
-      @socket.flush
-      read
+    def run(command, retries = 5)
+      loop do
+        encode command
+        @socket.flush
+        return read
+      rescue ex : IO::Error
+        if retries > 0
+          retries -= 1
+          initialize @uri
+        else
+          raise ex
+        end
+      end
     end
 
     # Close the connection to the server.
