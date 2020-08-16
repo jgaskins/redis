@@ -25,7 +25,9 @@ module Redis
       when '*'
         length = parse_int
         @io.skip 2
-        Array.new(length) { read }
+        if length >= 0
+          Array.new(length) { read }
+        end
       when '$'
         length = parse_int
         @io.skip 2

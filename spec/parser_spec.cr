@@ -24,6 +24,9 @@ module Redis
     it "reads nil" do
       io = IO::Memory.new("$-1\r\n")
       Parser.new(io).read.should eq nil
+
+      io = IO::Memory.new("*-1\r\n")
+      Parser.new(io).read.should eq nil
     end
 
     it "reads arrays" do
