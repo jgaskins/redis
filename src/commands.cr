@@ -366,15 +366,36 @@ module Redis
     #
     # TODO: Make the return value of this command easier to work with. Nested
     # heterogeneous arrays aren't easy to work with.
-    def xreadgroup(group : String, consumer : String, count : String | Int | Nil = nil, streams : NamedTuple = NamedTuple.new)
-      command = Array(Value).new(initial_capacity: 7 + streams.size * 2)
+    def xreadgroup(
+      group : String,
+      consumer : String,
+      count : String | Int | Nil = nil,
+      block : Time::Span | String | Int | Nil = nil,
+      no_ack = false,
+      streams : NamedTuple = NamedTuple.new,
+    )
+      command = Array(Value).new(initial_capacity: 9 + streams.size * 2)
       command << "xreadgroup" << "group" << group << consumer
       command << "count" << count if count
+      case block
+      in Time::Span
+        command << "block" << block.total_milliseconds.to_i.to_s
+      in String
+        command << "block" << block
+      in Int
+        command << "block" << block.to_s
+      in Nil
+        # No blocking, so we don't add it to the command
+      end
+      command << "noack" if no_ack
       command << "streams"
-      streams.each do |key, value|
+      streams.each_key do |key|
         # Symbol#to_s does not allocate a string on the heap, so the only
         # allocation in this method is the array.
-        command << key.to_s << value
+        command << key.to_s
+      end
+      streams.each_value do |value|
+        command << value
       end
 
       run command

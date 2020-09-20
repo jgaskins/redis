@@ -160,7 +160,7 @@ module Redis
       xlen: Int64,
       xgroup: Nil,
       xrange: Array,
-      xreadgroup: Array,
+      xreadgroup: Array(Value)?,
     })
 
     # Execute the given command and return the result from the server. Commands must be an `Enumerable`.
