@@ -6,8 +6,8 @@ authors:
 
 dependencies:
   db:
-    github: jgaskins/crystal-db
-    branch: generic-pool
+    github: crystal-lang/crystal-db
+    branch: master
     version: ~> 0.9.0
 
 crystal: 0.35.1
