@@ -32,9 +32,7 @@ module Redis
         length = parse_int
         @io.skip 2
         if length >= 0
-          bytes = Bytes.new(length)
-          @io.read_fully(bytes)
-          value = String.new(bytes)
+          value = @io.read_string length
           @io.skip 2 # Skip CRLF
           value
         end
