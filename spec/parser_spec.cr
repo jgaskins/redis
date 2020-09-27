@@ -19,6 +19,9 @@ module Redis
     it "reads bulk strings" do
       io = IO::Memory.new("$11\r\nHello world\r\n")
       Parser.new(io).read.should eq "Hello world"
+
+      io = IO::Memory.new("$0\r\n\r\n")
+      Parser.new(io).read.should eq ""
     end
 
     it "reads nil" do
