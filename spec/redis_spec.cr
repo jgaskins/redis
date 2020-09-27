@@ -112,7 +112,7 @@ describe Redis::Client do
       redis.del second if second
     end
 
-    test "can find the intersection of 2 sets" do
+    test "can find the intersection of multiple sets" do
       first = key
       second = random_key
       third = random_key
