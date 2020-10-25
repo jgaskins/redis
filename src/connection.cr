@@ -12,7 +12,7 @@ module Redis
   class Connection
     include Commands
 
-    @socket : TCPSocket | OpenSSL::SSL::Socket::Client
+    @socket : TCPSocket | OpenSSL::SSL::Socket::Client | UNIXSocket
 
     CRLF = "\r\n"
 
@@ -21,16 +21,31 @@ module Redis
     # SSL connections require specifying the `rediss://` scheme.
     # Password authentication uses the URI password.
     # DB selection uses the URI path.
+    #
+    # To use Unix sockets: `socket:/path/to/redis.sock`
     def initialize(@uri = URI.parse("redis:///"))
-      host = uri.host || "localhost"
-      port = uri.port || 6379
-      socket = TCPSocket.new(host, port)
-      socket.sync = false
-
-      # Check whether we should use SSL
-      if uri.scheme == "rediss"
-        socket = OpenSSL::SSL::Socket::Client.new(socket)
+      if uri.scheme == "socket"
+        socket = UNIXSocket.new(uri.path)
         socket.sync = false
+        db = "0"
+      else
+        host = uri.host || "localhost"
+        port = uri.port || 6379
+        socket = TCPSocket.new(host, port)
+        socket.sync = false
+
+        # Check whether we should use SSL
+        if uri.scheme == "rediss"
+          socket = OpenSSL::SSL::Socket::Client.new(socket)
+          socket.sync = false
+        end
+
+        # DB select
+        db = if {"", "/"}.includes?(uri.path)
+          "0"
+        else
+          uri.path[1..-1]
+        end
       end
 
       @socket = socket
@@ -42,12 +57,6 @@ module Redis
           run({"auth", password})
         end
 
-        # DB select
-        db = if {"", "/"}.includes?(uri.path)
-          "0"
-        else
-          uri.path[1..-1]
-        end
         run({"select", db}) unless db == "0"
       end
     end
