@@ -40,7 +40,25 @@ describe Redis::Client do
     end
   end
 
-  it "can get keys" do
+  test "can set expiration timestamps on keys" do
+    redis.set key, "foo", ex: 10.milliseconds.from_now
+    redis.get(key).should eq "foo"
+    sleep 10.milliseconds
+    redis.get(key).should eq nil
+  end
+
+  test "can set a key only if it does not exist" do
+    redis.set(key, "foo", nx: true).should eq "OK"
+    redis.set(key, "foo", nx: true).should eq nil
+  end
+
+  test "can set a key only if it does exist" do
+    redis.set(key, "foo", xx: true).should eq nil
+    redis.set key, "foo"
+    redis.set(key, "foo", xx: true).should eq "OK"
+  end
+
+  it "can get the list of keys" do
     key = random_key
 
     begin

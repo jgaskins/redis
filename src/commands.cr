@@ -43,7 +43,7 @@ module Redis
     # sleep 1.second
     # redis.get("foo") # => nil
     # ```
-    def set(key : String, value : String, ex = nil, px = nil, nx = false, xx = false, keepttl = false) : Nil
+    def set(key : String, value : String, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false)
       command = {"set", key, value}
       command += {"ex", ex.to_s} if ex
       command += {"px", px.to_s} if px
@@ -52,6 +52,14 @@ module Redis
       command += {"keepttl"} if keepttl
 
       run command
+    end
+
+    def set(key, value, ex : Time, nx = false, xx = false, keepttl = false)
+      set key, value, ex: ex - Time.utc, nx: nx, xx: xx, keepttl: keepttl
+    end
+
+    def set(key, value, ex : Time::Span, nx = false, xx = false, keepttl = false)
+      set key, value, px: ex.total_milliseconds.to_i, nx: nx, xx: xx, keepttl: keepttl
     end
 
     # Get the value for the specified key
