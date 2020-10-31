@@ -287,9 +287,17 @@ module Redis
     # redis.xadd "my-stream", "*", name: "foo", id: UUID.random.to_s
     # ```
     def xadd(key : String, id : String, maxlen = nil, **data)
-      command = Array(Value).new(initial_capacity: data.size * 2 + 5)
+      command = Array(Value).new(initial_capacity: data.size * 2 + 6)
       command << "xadd" << key
-      command << "maxlen" << maxlen if maxlen
+      if maxlen
+        command << "maxlen"
+        case maxlen
+        when Tuple
+          maxlen.each { |entry| command << entry }
+        when String
+          command << maxlen
+        end
+      end
       command << id
       data.each do |key, value|
         command << key.to_s << value

@@ -239,15 +239,20 @@ describe Redis::Client do
       end
     end
 
-    it "can cap streams" do
-      key = random_key
-
-      begin
-        11.times { redis.xadd key, "*", maxlen: "10", foo: "bar" }
-        redis.xlen(key).should eq 10
-      ensure
-        redis.del key
+    test "can cap streams" do
+      redis.pipeline do |pipe|
+        11.times { pipe.xadd key, "*", maxlen: "10", foo: "bar" }
       end
+
+      redis.xlen(key).should eq 10
+    end
+
+    test "can approximately cap streams" do
+      redis.pipeline do |pipe|
+        2_000.times { pipe.xadd key, "*", maxlen: {"~", "10"}, foo: "bar" }
+      end
+
+      redis.xlen(key).should be <= 100
     end
 
     it "can consume streams" do
