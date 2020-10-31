@@ -1,4 +1,5 @@
 require "./value"
+require "./errors"
 
 module Redis
   struct Parser
@@ -39,7 +40,8 @@ module Redis
       when '+'
         @io.read_line
       when '-'
-        raise @io.read_line
+        type, message = @io.read_line.split(' ', 2)
+        raise ERROR_MAP[type].new("#{type} #{message}")
       when nil
         raise IO::Error.new("Connection closed")
       else
