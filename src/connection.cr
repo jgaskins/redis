@@ -156,6 +156,12 @@ module Redis
       incrby: Int64,
       decrby: Int64,
       del: Int64,
+
+      lpop: String?,
+      rpop: String?,
+      lpush: Int64,
+      rpush: Int64,
+
       smembers: Array,
       xlen: Int64,
       xgroup: Nil,
