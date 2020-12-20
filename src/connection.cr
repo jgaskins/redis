@@ -121,18 +121,25 @@ module Redis
       end
     end
 
-    def subscribe(*channels : String, &block : Subscription, self ->)
-      subscription = Subscription.new(self)
-      encode({"subscribe"} + channels)
-      flush
+    {% for command in %w[subscribe psubscribe] %}
+      def {{command.id}}(*channels : String, &block : Subscription, self ->)
+        subscription = Subscription.new(self)
+        encode({"{{command.id}}"} + channels)
+        flush
 
-      yield subscription, self
+        yield subscription, self
 
-      subscription.call
-    end
+        subscription.call
+      end
+    {% end %}
 
     def unsubscribe(*channels : String)
       encode({"unsubscribe"} + channels)
+      flush
+    end
+
+    def punsubscribe(*channels : String)
+      encode({"punsubscribe"} + channels)
       flush
     end
 
