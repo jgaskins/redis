@@ -152,6 +152,19 @@ module Redis
       run({"lpush", key} + values)
     end
 
+    # Remove an item from the beginning of a list, returning the item or `nil`
+    # if the list was empty.
+    #
+    # ```
+    # redis.del "my-list" # Delete so we know it's empty
+    # redis.lpush "my-list", "foo"
+    # redis.lpop "my-list" # => "foo"
+    # redis.lpop "my-list" # => nil
+    # ```
+    def lpop(key, *values)
+      run({"lpop", key} + values)
+    end
+
     # Atomically remove an item from the end of a list and insert it at the
     # beginning of another. Returns that list item. If the first list is empty,
     # nothing happens and this method returns `nil`.
@@ -177,6 +190,18 @@ module Redis
     # ```
     def rpop(key : String)
       run({"rpop", key})
+    end
+
+    # Insert an item at the end of a list, returning the number of items
+    # in the list after the insert.
+    #
+    # ```
+    # redis.del "my-list" # Delete so we know it's empty
+    # redis.rpush "my-list", "foo", "bar" # => 2
+    # redis.rpush "my-list", "foo", "bar" # => 4
+    # ```
+    def rpush(key, *values)
+      run({"rpush", key} + values)
     end
 
     # Remove and return an element from the end of the given list. If the list
