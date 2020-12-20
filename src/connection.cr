@@ -163,6 +163,7 @@ module Redis
       rpush: Int64,
 
       smembers: Array,
+      ttl: Int64,
       xlen: Int64,
       xgroup: Nil,
       xrange: Array,
