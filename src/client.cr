@@ -40,9 +40,7 @@ module Redis
     # redis = Redis::Client.new
     # ```
     macro method_missing(call)
-      @pool.checkout do |connection|
-        connection.{{call}}
-      end
+      @pool.checkout(&.{{call}})
     end
   end
 end
