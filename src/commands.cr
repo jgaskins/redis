@@ -59,7 +59,7 @@ module Redis
     end
 
     def set(key, value, ex : Time::Span, nx = false, xx = false, keepttl = false)
-      set key, value, px: ex.total_milliseconds.to_i, nx: nx, xx: xx, keepttl: keepttl
+      set key, value, px: ex.total_milliseconds.to_i64, nx: nx, xx: xx, keepttl: keepttl
     end
 
     # Get the value for the specified key
