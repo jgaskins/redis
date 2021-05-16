@@ -216,6 +216,70 @@ module Redis
     # `nil`.
     #
     # ```
+    # redis.rpush "foo", "first"
+    # spawn do
+    #   sleep 100.milliseconds
+    #   redis.rpush "foo", "second"
+    # end
+    # redis.blpop "foo", 1.second # => "first"
+    # redis.blpop "foo", 1.second # => "second" (after 100 milliseconds)
+    # redis.blpop "foo", 1.second # => nil (after 1 second)
+    # ```
+    def blpop(*keys : String, timeout : Time::Span)
+      blpop(*keys, timeout: timeout.total_seconds.to_i.to_s)
+    end
+
+    # Remove and return an element from the end of the given list. If the list
+    # is empty or the key does not exist, this method waits the specified number
+    # of seconds for an element to be added to it by another connection. If the
+    # element *is* added by another connection within that number of seconds,
+    # this method will return it immediately. If it *is not*, then this method
+    # returns `nil`.
+    #
+    # ```
+    # redis.lpush "foo", "first"
+    # spawn do
+    #   sleep 100.milliseconds
+    #   redis.lpush "foo", "second"
+    # end
+    # redis.blpop "foo", 1 # => "first"
+    # redis.blpop "foo", 1 # => "second" (after 100 milliseconds)
+    # redis.blpop "foo", 1 # => nil (after 1 second)
+    # ```
+    def blpop(*keys : String, timeout : Int | Float)
+      timeout = timeout.to_i if timeout == timeout.to_i
+      blpop(*keys, timeout: timeout.to_s)
+    end
+
+    # Remove and return an element from the end of the given list. If the list
+    # is empty or the key does not exist, this method waits the specified number
+    # of seconds for an element to be added to it by another connection. If the
+    # element *is* added by another connection within that number of seconds,
+    # this method will return it immediately. If it *is not*, then this method
+    # returns `nil`.
+    #
+    # ```
+    # redis.lpush "foo", "first"
+    # spawn do
+    #   sleep 100.milliseconds
+    #   redis.lpush "foo", "second"
+    # end
+    # redis.blpop "foo", "1" # => "first"
+    # redis.blpop "foo", "1" # => "second" (after 100 milliseconds)
+    # redis.blpop "foo", "1" # => nil (after 1 second)
+    # ```
+    def blpop(*keys : String, timeout : String)
+      run({"blpop"} + keys + {timeout})
+    end
+
+    # Remove and return an element from the end of the given list. If the list
+    # is empty or the key does not exist, this method waits the specified amount
+    # of time for an element to be added to it by another connection. If the
+    # element *is* added by another connection within that amount of time, this
+    # method will return it immediately. If it *is not*, then this method returns
+    # `nil`.
+    #
+    # ```
     # redis.lpush "foo", "first"
     # spawn do
     #   sleep 100.milliseconds
