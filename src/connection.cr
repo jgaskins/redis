@@ -133,6 +133,11 @@ module Redis
       end
     {% end %}
 
+    def subscribe(*channels : String)
+      encode({"subscribe"} + channels)
+      flush
+    end
+
     def unsubscribe(*channels : String)
       encode({"unsubscribe"} + channels)
       flush
