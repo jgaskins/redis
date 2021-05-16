@@ -165,6 +165,10 @@ module Redis
       run({"lpop", key} + values)
     end
 
+    def lrange(key, start, finish)
+      run({"lrange", key, start, finish})
+    end
+
     # Atomically remove an item from the end of a list and insert it at the
     # beginning of another. Returns that list item. If the first list is empty,
     # nothing happens and this method returns `nil`.
