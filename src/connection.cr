@@ -190,7 +190,7 @@ module Redis
     def run(command, retries = 5)
       loop do
         encode command
-        @socket.flush
+        flush
         return read
       rescue ex : IO::Error
         if retries > 0
