@@ -20,11 +20,12 @@ module Redis
   # ```
   # > Note: Setting `Redis.current` can only happen once to avoid accidental override
   def self.current=(client : Redis::Client)
-    @@current ||= client
+    raise ArgumentError.new("Warning! `Redis.current =` can only be set once to avoid accidental override") if @@current
+    @@current = client
   end
 
-  def self.current
-    @@current
+  def self.current : Redis::Client
+    @@current || Redis::Client.new
   end
 
   # The Redis client is the expected entrypoint for this shard. By default, it will connect to localhost:6379, but you can also supply a `URI` to connect to an arbitrary Redis server. SSL, password authentication, and DB selection are all supported.

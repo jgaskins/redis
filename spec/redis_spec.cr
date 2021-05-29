@@ -377,15 +377,18 @@ describe Redis::Client do
 
   describe "current" do
     it "allows setting current once and response to Redis.current" do
-      (Redis.current).should eq(nil)
+      (Redis.current).should be_a(Redis::Client)
 
       client = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis:///")))
       Redis.current = client
 
       (Redis.current).should eq(client)
 
-      new_client = Redis.current = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379/0")))
-      Redis.current = new_client
+      new_client = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379/0")))
+
+      expect_raises ArgumentError, "Warning! `Redis.current =` can only be set once to avoid accidental override" do
+        Redis.current = new_client
+      end
 
       (Redis.current).should eq(client)
     end
