@@ -33,6 +33,24 @@ redis.decr "counter" # => 1
 redis.del "foo", "counter" # => 2
 ```
 
+(Optional) Set a global current client with `Redis.current`
+
+```crystal
+require "redis"
+
+Redis.current = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379/0")))
+
+# call it somewhere in the app
+def redis
+  Redis.current
+end
+
+# or
+
+redis = Redis.current
+```
+> Note: Setting `Redis.current` can only happen once to avoid accidental override
+
 ### Pipelined queries
 
 To mitigate latency with multiple queries whose inputs and outputs are completely independent of each other, you can "pipeline" your queries by sending them all at once before reading them. To do this, you can use the `pipeline` method:

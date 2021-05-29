@@ -3,6 +3,31 @@ require "db/pool"
 require "./connection"
 
 module Redis
+  # Set a global current client
+  #
+  # Example
+  # ```
+  # Redis.current = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379/0")))
+  #
+  # # somewhere in the app
+  # def redis
+  #   Redis.current
+  # end
+  #
+  # # or just use a simple local scope
+  #
+  # redis = Redis.current
+  # ```
+  # > Note: Setting `Redis.current` can only happen once to avoid accidental override
+  def self.current=(client : Redis::Client)
+    raise ArgumentError.new("Warning! `Redis.current =` can only be set once to avoid accidental override") if @@current
+    @@current = client
+  end
+
+  def self.current : Redis::Client
+    @@current || Redis::Client.new
+  end
+
   # The Redis client is the expected entrypoint for this shard. By default, it will connect to localhost:6379, but you can also supply a `URI` to connect to an arbitrary Redis server. SSL, password authentication, and DB selection are all supported.
   #
   # ```
