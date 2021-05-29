@@ -84,7 +84,6 @@ describe Redis::Client do
       redis.incrby(key, 3).should eq 5
       redis.decrby(key, 2).should eq 3
       redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
-
     ensure
       redis.del key
     end
@@ -156,9 +155,9 @@ describe Redis::Client do
     key = random_key
 
     begin
-      first_incr  = Redis::Future.new
+      first_incr = Redis::Future.new
       second_incr = Redis::Future.new
-      first_decr  = Redis::Future.new
+      first_decr = Redis::Future.new
       second_decr = Redis::Future.new
 
       redis.pipeline do |redis|
@@ -266,7 +265,6 @@ describe Redis::Client do
         consumer_id = UUID.random.to_s
 
         result = redis.xreadgroup group, consumer_id, count: "10", streams: {"my-stream": ">"}
-
       rescue ex
         pp ex
         raise ex
@@ -374,6 +372,22 @@ describe Redis::Client do
         # Only set ready if *both* subscriptions have gone through
         ready = true if count == 2
       end
+    end
+  end
+
+  describe "current" do
+    it "allows setting current once and response to Redis.current" do
+      (Redis.current).should eq(nil)
+
+      client = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis:///")))
+      Redis.current = client
+
+      (Redis.current).should eq(client)
+
+      new_client = Redis.current = Redis::Client.new(URI.parse(ENV.fetch("REDIS_URL", "redis://127.0.0.1:6379/0")))
+      Redis.current = new_client
+
+      (Redis.current).should eq(client)
     end
   end
 end
