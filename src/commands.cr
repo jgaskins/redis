@@ -21,7 +21,7 @@ module Redis
     # of keys.
     #
     # ```
-    # redis.keys # => ["foo", "bar", "baz"]
+    # redis.keys       # => ["foo", "bar", "baz"]
     # redis.keys("f*") # => ["foo"]
     # redis.keys("b*") # => ["bar", "baz"]
     # ```
@@ -144,11 +144,11 @@ module Redis
     # in the list after the insert.
     #
     # ```
-    # redis.del "my-list" # Delete so we know it's empty
+    # redis.del "my-list"                 # Delete so we know it's empty
     # redis.lpush "my-list", "foo", "bar" # => 2
     # redis.lpush "my-list", "foo", "bar" # => 4
     # ```
-    def lpush(key, *values)
+    def lpush(key, *values : String)
       run({"lpush", key} + values)
     end
 
@@ -200,7 +200,7 @@ module Redis
     # in the list after the insert.
     #
     # ```
-    # redis.del "my-list" # Delete so we know it's empty
+    # redis.del "my-list"                 # Delete so we know it's empty
     # redis.rpush "my-list", "foo", "bar" # => 2
     # redis.rpush "my-list", "foo", "bar" # => 4
     # ```
@@ -481,7 +481,7 @@ module Redis
       count : String | Int | Nil = nil,
       block : Time::Span | String | Int | Nil = nil,
       no_ack = false,
-      streams : NamedTuple = NamedTuple.new,
+      streams : NamedTuple = NamedTuple.new
     )
       command = Array(Value).new(initial_capacity: 9 + streams.size * 2)
       command << "xreadgroup" << "group" << group << consumer

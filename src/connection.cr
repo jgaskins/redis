@@ -44,10 +44,10 @@ module Redis
 
         # DB select
         db = if {"", "/"}.includes?(uri.path)
-          "0"
-        else
-          uri.path[1..-1]
-        end
+               "0"
+             else
+               uri.path[1..-1]
+             end
         run({"select", db}) unless db == "0"
       end
     end
@@ -92,7 +92,7 @@ module Redis
     #   raise "Oops!"
     # end
     #
-    # redis.get "foo" # => nil
+    # redis.get "foo"     # => nil
     # redis.get "counter" # => nil
     # ```
     def multi(retries = 5)
@@ -161,24 +161,24 @@ module Redis
     # When new commands are added to the Commands mixin, add an entry here to
     # make sure the return type is set when run directly on the connection.
     override_return_types({
-      keys: Array,
-      get: String?,
-      incr: Int64,
-      decr: Int64,
+      keys:   Array,
+      get:    String?,
+      incr:   Int64,
+      decr:   Int64,
       incrby: Int64,
       decrby: Int64,
-      del: Int64,
+      del:    Int64,
 
-      lpop: String?,
-      rpop: String?,
+      lpop:  String?,
+      rpop:  String?,
       lpush: Int64,
       rpush: Int64,
 
-      smembers: Array,
-      ttl: Int64,
-      xlen: Int64,
-      xgroup: Nil,
-      xrange: Array,
+      smembers:   Array,
+      ttl:        Int64,
+      xlen:       Int64,
+      xgroup:     Nil,
+      xrange:     Array,
       xreadgroup: Array(Value)?,
     })
 
@@ -249,9 +249,9 @@ module Redis
   end
 
   private class Subscription
-    @on_message = Proc(String, String, Nil).new {}
-    @on_subscribe = Proc(String, Int64, Nil).new {}
-    @on_unsubscribe = Proc(String, Int64, Nil).new {}
+    @on_message = Proc(String, String, Nil).new { }
+    @on_subscribe = Proc(String, Int64, Nil).new { }
+    @on_unsubscribe = Proc(String, Int64, Nil).new { }
     @channels = [] of String
 
     def initialize(@connection : Connection)
