@@ -161,11 +161,14 @@ module Redis
     # redis.lpop "my-list" # => "foo"
     # redis.lpop "my-list" # => nil
     # ```
-    def lpop(key, *values)
-      run({"lpop", key} + values)
+    def lpop(key : String, count : String? = nil)
+      command = {"lpop", key}
+      command += {count} if count
+
+      run(command)
     end
 
-    def lrange(key, start, finish)
+    def lrange(key : String, start : String, finish : String)
       run({"lrange", key, start, finish})
     end
 
@@ -204,7 +207,7 @@ module Redis
     # redis.rpush "my-list", "foo", "bar" # => 2
     # redis.rpush "my-list", "foo", "bar" # => 4
     # ```
-    def rpush(key, *values)
+    def rpush(key, *values : String)
       run({"rpush", key} + values)
     end
 
@@ -310,7 +313,7 @@ module Redis
     # redis.brpop "foo", 1 # => "second" (after 100 milliseconds)
     # redis.brpop "foo", 1 # => nil (after 1 second)
     # ```
-    def brpop(*keys : String, timeout : Int | Float)
+    def brpop(*keys : String, timeout : Number)
       timeout = timeout.to_i if timeout == timeout.to_i
       brpop(*keys, timeout: timeout.to_s)
     end
