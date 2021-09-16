@@ -246,6 +246,10 @@ module Redis
     def encode(nothing : Nil)
       @socket << "$-1" << CRLF
     end
+
+    def url
+      @uri.to_s
+    end
   end
 
   private class Subscription

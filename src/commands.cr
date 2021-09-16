@@ -512,5 +512,169 @@ module Redis
 
       run command
     end
+
+    def hget(key : String, field : String)
+      run({"hget", key, field})
+    end
+
+    def hgetall(key : String)
+      run({"hgetall", key})
+    end
+
+    def hmget(key : String, *fields : String)
+      run({"hmget", key} + fields)
+    end
+
+    def hset(key : String, field : String, value : String)
+      run({"hset", key, field, value})
+    end
+
+    def hmset(key : String, data : Hash(String, String))
+      command = Array(String).new(initial_capacity: 2 + data.size)
+
+      command << "hmset" << key
+      data.each do |key, value|
+        command << key << value
+      end
+
+      run command
+    end
+
+    def llen(key : String)
+      run({"llen", key})
+    end
+
+    def lrange(key : String, starting : String, ending : String)
+      run({"lrange", key, starting, ending})
+    end
+
+    def srem(key : String, members : Enumerable(String))
+      command = Array(String).new(initial_capacity: 2 + members.size)
+      command << "srem" << key
+      members.each do |member|
+        command << member
+      end
+
+      run command
+    end
+
+    def zcard(key : String)
+      run({"zcard", key})
+    end
+
+    def expire(key, ttl : Int)
+      run({"expire", key, ttl.to_s})
+    end
+
+    def type(key : String)
+      run({"type", key})
+    end
+
+    def zrevrange(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = false)
+      command = {"zrevrange", key, starting.to_s, ending.to_s}
+      if with_scores
+        command += {"withscores"}
+      end
+
+      run command
+    end
+
+    def zrange(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = false)
+      command = {"zrange", key, starting.to_s, ending.to_s}
+      if with_scores
+        command += {"withscores"}
+      end
+
+      run command
+    end
+
+    def zrangebyscore(key : String, low : String | Float, high : String | Float, limit : Enumerable(String)? = nil)
+      command = {"zrangebyscore", key, low.to_s, high.to_s}
+
+      if limit
+        command += {"limit", limit[0], limit[1]}
+      end
+
+      run command
+    end
+
+    def zremrangebyscore(key : String, low : String | Float, high : String | Float)
+      run({"zremrangebyscore", key, low.to_s, high.to_s})
+    end
+
+    def zremrangebyrank(key : String, low : Int, high : Int)
+      run({"zremrangebyrank", key, low.to_s, high.to_s})
+    end
+
+    def zadd(key : String, score : String | Float, value : String)
+      run({"zadd", key, score.to_s, value})
+    end
+
+    def zadd(key : String, values : Enumerable)
+      command = Array(String).new(initial_capacity: 2 + values.size)
+      command << "zadd" << key
+      values.each { |value| command << value.as(String) }
+
+      run command
+    end
+
+    def zrem(key : String, value : String)
+      run({"zrem", key, value})
+    end
+
+    def lrem(key : String, count : Int, value : String)
+      run({"lrem", key, count.to_s, value})
+    end
+
+    def lpush(key : String, values : Enumerable(String))
+      command = Array(String).new(initial_capacity: 2 + values.size)
+      command << "lpush" << key
+      values.each { |value| command << value }
+
+      run command
+    end
+
+    def brpop(keys : Enumerable(String), timeout : Int)
+      command = Array(String).new(initial_capacity: 2 + keys.size)
+      command << "brpop"
+      keys.each do |key|
+        command << key
+      end
+
+      command << timeout.to_s
+
+      run command
+    end
+
+    def mget(keys : Enumerable(String))
+      command = Array(String).new(initial_capacity: 1 + keys.size)
+      command << "mget"
+      keys.each { |key| command << key }
+
+      run command
+    end
+
+    def mset(data : Hash(String, String))
+      command = Array(String).new(initial_capacity: 1 + data.size)
+      command << "mset"
+      data.each do |key, value|
+        command << key << value
+      end
+
+      run command
+    end
+
+    def flushdb
+      run({"flushdb"})
+    end
+
+    def info
+      run({"info"})
+        .as(String)
+        .lines
+        .reject { |line| line =~ /^(#|$)/ }
+        .map(&.split(':', 2))
+        .to_h
+    end
   end
 end
