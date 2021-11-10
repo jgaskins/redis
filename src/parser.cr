@@ -54,7 +54,7 @@ module Redis
       negative = false
       loop do
         if peek = @io.peek
-          case next_byte = peek[0] 
+          case next_byte = peek[0]
           when nil
             break
           when '-'

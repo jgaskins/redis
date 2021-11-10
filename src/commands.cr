@@ -21,7 +21,7 @@ module Redis
     # of keys.
     #
     # ```
-    # redis.keys # => ["foo", "bar", "baz"]
+    # redis.keys       # => ["foo", "bar", "baz"]
     # redis.keys("f*") # => ["foo"]
     # redis.keys("b*") # => ["bar", "baz"]
     # ```
@@ -144,7 +144,7 @@ module Redis
     # in the list after the insert.
     #
     # ```
-    # redis.del "my-list" # Delete so we know it's empty
+    # redis.del "my-list"                 # Delete so we know it's empty
     # redis.lpush "my-list", "foo", "bar" # => 2
     # redis.lpush "my-list", "foo", "bar" # => 4
     # ```
@@ -200,7 +200,7 @@ module Redis
     # in the list after the insert.
     #
     # ```
-    # redis.del "my-list" # Delete so we know it's empty
+    # redis.del "my-list"                 # Delete so we know it's empty
     # redis.rpush "my-list", "foo", "bar" # => 2
     # redis.rpush "my-list", "foo", "bar" # => 4
     # ```
@@ -588,7 +588,7 @@ module Redis
       start : String,
       end finish : String,
       count : String | Int,
-      idle : String | Time::Span | Nil = nil,
+      idle : String | Time::Span | Nil = nil
     )
       command = {"xpending", key, group}
       case idle
