@@ -179,7 +179,8 @@ module Redis
       xlen: Int64,
       xgroup: Nil,
       xrange: Array,
-      xreadgroup: Array(Value)?,
+      xpending: Array,
+      xreadgroup: Array?,
     })
 
     # Execute the given command and return the result from the server. Commands must be an `Enumerable`.
@@ -187,7 +188,7 @@ module Redis
     # ```
     # run({"set", "foo", "bar"})
     # ```
-    def run(command, retries = 5)
+    def run(command, retries = 5) : Value
       loop do
         encode command
         flush
