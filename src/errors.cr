@@ -7,6 +7,7 @@ module Redis
   class NoGroup < Error
     ERROR_MAP["NOGROUP"] = self
   end
+
   class BusyGroup < Error
     ERROR_MAP["BUSYGROUP"] = self
   end

@@ -176,10 +176,10 @@ module Redis
 
       smembers:   Array,
       ttl:        Int64,
-      xgroup:     Nil,
       xlen:       Int64,
-      xpending:   Array,
+      xgroup:     Nil,
       xrange:     Array,
+      xpending:   Array,
       xreadgroup: Array(Value)?,
       xautoclaim: Array,
     })
@@ -255,9 +255,9 @@ module Redis
   end
 
   private class Subscription
-    @on_message = Proc(String, String, String, Nil).new {}
-    @on_subscribe = Proc(String, Int64, Nil).new {}
-    @on_unsubscribe = Proc(String, Int64, Nil).new {}
+    @on_message = Proc(String, String, String, Nil).new { }
+    @on_subscribe = Proc(String, Int64, Nil).new { }
+    @on_unsubscribe = Proc(String, Int64, Nil).new { }
     @channels = [] of String
 
     def initialize(@connection : Connection)

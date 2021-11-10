@@ -755,7 +755,7 @@ module Redis
       start : String,
       end finish : String,
       count : String | Int,
-      idle : String | Time::Span | Nil = nil,
+      idle : String | Time::Span | Nil = nil
     )
       command = {"xpending", key, group}
       case idle
