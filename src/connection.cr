@@ -180,7 +180,8 @@ module Redis
       xgroup: Nil,
       xrange: Array,
       xpending: Array,
-      xreadgroup: Array?,
+      xreadgroup: Array(Value)?,
+      xautoclaim: Array,
     })
 
     # Execute the given command and return the result from the server. Commands must be an `Enumerable`.
@@ -250,7 +251,7 @@ module Redis
   end
 
   private class Subscription
-    @on_message = Proc(String, String, Nil).new {}
+    @on_message = Proc(String, String, String, Nil).new {}
     @on_subscribe = Proc(String, Int64, Nil).new {}
     @on_unsubscribe = Proc(String, Int64, Nil).new {}
     @channels = [] of String
@@ -258,7 +259,7 @@ module Redis
     def initialize(@connection : Connection)
     end
 
-    def on_message(&block : String, String ->)
+    def on_message(&block : String, String, String ->)
       @on_message = block
       self
     end
@@ -274,7 +275,11 @@ module Redis
     end
 
     def message!(channel : String, message : String)
-      @on_message.call channel, message
+      @on_message.call channel, message, channel
+    end
+
+    def pmessage!(channel : String, message : String, pattern : String)
+      @on_message.call channel, message, channel
     end
 
     def subscribe!(channel : String, count : Int64)
@@ -289,16 +294,22 @@ module Redis
 
     def call
       loop do
-        action, channel, argument = @connection.read.as(Array)
+        notification = @connection.read.as(Array)
+        action, channel, argument = notification
         action = action.as String
+        if action == "pmessage"
+          _, pattern, channel, argument = notification
+        end
         channel = channel.as String
 
         case action
         when "message"
           message! channel, argument.as(String)
-        when "subscribe"
+        when "pmessage"
+          pmessage! channel, argument.as(String), pattern.as(String)
+        when "subscribe", "psubscribe"
           subscribe! channel, argument.as(Int64)
-        when "unsubscribe"
+        when "unsubscribe", "punsubscribe"
           unsubscribe! channel, argument.as(Int64)
           break if argument == 0
         else

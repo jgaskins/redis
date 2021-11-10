@@ -503,6 +503,42 @@ module Redis
     end
 
     # Execute an `XREADGROUP` command on the Redis server.
+    def xreadgroup(
+      group : String,
+      consumer : String,
+      count : String | Int | Nil = nil,
+      block : Time::Span | String | Int | Nil = nil,
+      no_ack = false,
+      streams : Hash(String, String) = {} of String => String
+    )
+      command = Array(Value).new(initial_capacity: 9 + streams.size * 2)
+      command << "xreadgroup" << "group" << group << consumer
+      command << "count" << count.to_s if count
+      case block
+      in Time::Span
+        command << "block" << block.total_milliseconds.to_i.to_s
+      in String
+        command << "block" << block
+      in Int
+        command << "block" << block.to_s
+      in Nil
+        # No blocking, so we don't add it to the command
+      end
+      command << "noack" if no_ack
+      command << "streams"
+      streams.each_key do |key|
+        # Symbol#to_s does not allocate a string on the heap, so the only
+        # allocation in this method is the array.
+        command << key
+      end
+      streams.each_value do |value|
+        command << value
+      end
+
+      run command
+    end
+
+    # Execute an `XREADGROUP` command on the Redis server.
     #
     # TODO: Make the return value of this command easier to work with. Nested
     # heterogeneous arrays aren't easy to work with.
@@ -565,91 +601,32 @@ module Redis
 
       run command
     end
-  end
 
-  struct XPendingBaseResponse
-    getter count, earliest, latest, data : Array(Data)
-
-    def initialize(response : Array)
-      # [21, "1636510944585-0", "1636513558135-0", [["zappyboi.local", "21"]]]
-      count, first_id, last_id, data = response
-      @count = count.as(Int64)
-      @earliest = first_id.as(String)
-      @latest = last_id.as(String)
-      data = data.as(Array)
-      @data = data.map do |kv|
-        key, value = kv.as(Array)
-
-        Data.new(key.as(String), value.as(String).to_i64)
-      end
+    def xack(key : String, group : String, id : String)
+      run({"xack", key, group, id})
     end
 
-    record Data, consumer : String, pending_count : Int64
-  end
+    def xack(key : String, group : String, ids : Enumerable(String))
+      command = Array(String).new(initial_capacity: ids.size + 3)
+      command << "xack" << key << group
+      ids.each { |id| command << id }
 
-  struct XPendingExtendedResponse
-    getter messages : Array(MessageData)
-
-    def initialize(data : Array, now : Time = Time.utc)
-      @messages = data.map do |result|
-        id, consumer, last_delivered_ago, delivery_count = result.as(Array)
-
-        MessageData.new(
-          id: id.as(String),
-          consumer: consumer.as(String),
-          last_delivered_at: now - last_delivered_ago.as(Int64).milliseconds,
-          delivery_count: delivery_count.as(Int64),
-        )
-      end
+      run command
     end
 
-    struct MessageData
-      getter id : String
-      getter consumer : String
-      getter last_delivered_at : Time
-      getter delivery_count : Int64
+    def xautoclaim(
+      key : String,
+      group : String,
+      consumer : String,
+      min_idle_time : Time::Span,
+      start : String,
+      count : Int | String | Nil = nil
+    )
+      min_idle_time = min_idle_time.total_milliseconds.to_i.to_s
+      command = {"xautoclaim", key, group, consumer, min_idle_time, start}
+      command += {"count", count.to_s} if count
 
-      def initialize(@id, @consumer, @last_delivered_at, @delivery_count)
-      end
-
-      def age
-        Time.utc - last_delivered_at
-      end
-    end
-  end
-
-  struct XReadGroupResponse
-    getter results
-
-    def initialize(response : Array(Redis::Value))
-      @results = Array(Result).new(initial_capacity: response.size)
-
-      response.each do |row|
-        key, data = row.as(Array)
-        @results << Result.new(key.as(String), data.as(Array))
-      end
-    end
-
-    struct Result
-      getter data : Array(Datapoint)
-
-      def initialize(@key : String, data : Array)
-        @data = data.map { |datapoint| Datapoint.new(datapoint.as(Array)) }
-      end
-    end
-
-    struct Datapoint
-      getter id, values
-
-      def initialize(datapoint : Array)
-        id, values = datapoint
-        values = values.as(Array)
-        @id = id.as(String)
-        @values = Hash(String, String).new(initial_capacity: values.size // 2)
-        (values.size // 2).times do |index|
-          @values[values[index].as(String)] = values[index + 1].as(String)
-        end
-      end
+      run command
     end
   end
 end
