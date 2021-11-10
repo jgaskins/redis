@@ -176,8 +176,9 @@ module Redis
 
       smembers:   Array,
       ttl:        Int64,
-      xlen:       Int64,
       xgroup:     Nil,
+      xlen:       Int64,
+      xpending:   Array,
       xrange:     Array,
       xreadgroup: Array(Value)?,
     })
@@ -187,7 +188,7 @@ module Redis
     # ```
     # run({"set", "foo", "bar"})
     # ```
-    def run(command, retries = 5)
+    def run(command, retries = 5) : Value
       loop do
         encode command
         flush

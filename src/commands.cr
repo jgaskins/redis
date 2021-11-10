@@ -456,6 +456,37 @@ module Redis
       run command
     end
 
+    def xgroup_create(key : String, groupname : String, *, id : String = "$", mkstream = false)
+      xgroup XGroup::CREATE, key, groupname, id: id, mkstream: mkstream
+    end
+
+    # XGROUP CREATECONSUMER key groupname consumername
+    def xgroup_create_consumer(key : String, groupname : String, consumer_name : String)
+      xgroup XGroup::CREATECONSUMER, key, groupname, consumer_name: consumer_name
+    end
+
+    # Run a Redis XGROUP subcommand for a given stream. See the [XGROUP command in the Redis documentation](https://redis.io/commands/xgroup) for more information.
+    #
+    # ```
+    # redis.xgroup :create, "my-stream", "my-group", mkstream: true
+    # ```
+    def xgroup(command : XGroup, key : String, groupname : String, *, id : String? = nil, mkstream = false, consumer_name : String? = nil)
+      cmd = Array(String).new(initial_capacity: 7)
+      cmd << "xgroup" << command.to_s << key << groupname
+      cmd << id if id
+      cmd << "mkstream" if mkstream
+      cmd << consumer_name if consumer_name
+
+      run cmd
+    end
+
+    enum XGroup
+      CREATE
+      DESTROY
+      CREATECONSUMER
+      DELCONSUMER
+    end
+
     # Run a Redis XGROUP subcommand for a given stream. See the [XGROUP command in the Redis documentation](https://redis.io/commands/xgroup) for more information.
     #
     # ```
@@ -488,7 +519,7 @@ module Redis
     )
       command = Array(Value).new(initial_capacity: 9 + streams.size * 2)
       command << "xreadgroup" << "group" << group << consumer
-      command << "count" << count if count
+      command << "count" << count.to_s if count
       case block
       in Time::Span
         command << "block" << block.total_milliseconds.to_i.to_s
@@ -675,6 +706,117 @@ module Redis
         .reject { |line| line =~ /^(#|$)/ }
         .map(&.split(':', 2))
         .to_h
+    end
+
+    # XPENDING key group [[IDLE min-idle-time] start end count [consumer]]
+    def xpending(key : String, group : String)
+      run({"xpending", key, group})
+    end
+
+    def xpending(
+      key : String,
+      group : String,
+      start : String,
+      end finish : String,
+      count : String | Int,
+      idle : String | Time::Span | Nil = nil,
+    )
+      command = {"xpending", key, group}
+      case idle
+      when String
+        command += {"idle", idle}
+      when Time::Span
+        command += {"idle", idle.total_milliseconds.to_i.to_s}
+      end
+      command += {start, finish, count.to_s}
+
+      run command
+    end
+  end
+
+  struct XPendingBaseResponse
+    getter count, earliest, latest, data : Array(Data)
+
+    def initialize(response : Array)
+      # [21, "1636510944585-0", "1636513558135-0", [["zappyboi.local", "21"]]]
+      count, first_id, last_id, data = response
+      @count = count.as(Int64)
+      @earliest = first_id.as(String)
+      @latest = last_id.as(String)
+      data = data.as(Array)
+      @data = data.map do |kv|
+        key, value = kv.as(Array)
+
+        Data.new(key.as(String), value.as(String).to_i64)
+      end
+    end
+
+    record Data, consumer : String, pending_count : Int64
+  end
+
+  struct XPendingExtendedResponse
+    getter messages : Array(MessageData)
+
+    def initialize(data : Array, now : Time = Time.utc)
+      @messages = data.map do |result|
+        id, consumer, last_delivered_ago, delivery_count = result.as(Array)
+
+        MessageData.new(
+          id: id.as(String),
+          consumer: consumer.as(String),
+          last_delivered_at: now - last_delivered_ago.as(Int64).milliseconds,
+          delivery_count: delivery_count.as(Int64),
+        )
+      end
+    end
+
+    struct MessageData
+      getter id : String
+      getter consumer : String
+      getter last_delivered_at : Time
+      getter delivery_count : Int64
+
+      def initialize(@id, @consumer, @last_delivered_at, @delivery_count)
+      end
+
+      def age
+        Time.utc - last_delivered_at
+      end
+    end
+  end
+
+  struct XReadGroupResponse
+    getter results
+
+    def initialize(response : Array(Redis::Value))
+      @results = Array(Result).new(initial_capacity: response.size)
+
+      response.each do |row|
+        key, data = row.as(Array)
+        @results << Result.new(key.as(String), data.as(Array))
+      end
+    end
+
+    struct Result
+      getter data : Array(Datapoint)
+
+      def initialize(@key : String, data : Array)
+        @data = data.map { |datapoint| Datapoint.new(datapoint.as(Array)) }
+      end
+    end
+
+    struct Datapoint
+      getter id, values
+
+      def initialize(datapoint : Array)
+        id, values = datapoint
+        values = values.as(Array)
+        @id = id.as(String)
+        @values = Hash(String, String).new(initial_capacity: values.size // 2)
+        (values.size // 2).times do |index|
+          @values[values[index].as(String)] = values[index + 1].as(String)
+        end
+      end
     end
   end
 end
