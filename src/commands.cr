@@ -367,6 +367,16 @@ module Redis
       run({"scard", key})
     end
 
+    def scan(cursor : String = "0", match : String? = nil, count : String | Int | Nil = nil, type : String? = nil)
+      # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
+      command = {"scan", cursor}
+      command += {"match", match} if match
+      command += {"count", count.to_s} if count
+      command += {"type", type} if type
+
+      run command
+    end
+
     def publish(channel : String, message : String)
       run({"publish", channel, message})
     end
