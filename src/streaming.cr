@@ -82,7 +82,9 @@ module Redis
       def initialize(response : Array)
         id, messages = response
         @id = id.as(String)
-        @messages = messages.as(Array).map do |message_data|
+        messages = messages.as(Array)
+        messages.compact!
+        @messages = messages.map do |message_data|
           Message.new(message_data.as(Array))
         end
       end
