@@ -12,8 +12,6 @@ A pure-Crystal implementation of the Redis protocol
        github: jgaskins/redis
    ```
 
-   Note that this shard currently depends on a fork of `crystal-db` for its connection pool. I'm in the process of getting those changes merged upstream so it can depend on the mainline implementation of that shard.
-
 2. Run `shards`
 
 ## Usage
