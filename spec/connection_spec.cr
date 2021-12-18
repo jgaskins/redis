@@ -10,7 +10,7 @@ module Redis
 
       redis.get "foo"
 
-      redis.close
+      redis.@socket.close # THE INTERNET BROKE!
 
       redis.get "foo"
     end
