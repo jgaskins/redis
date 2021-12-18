@@ -173,10 +173,11 @@ module Redis
       decrby: Int64,
       del:    Int64,
 
-      lpop:  String?,
-      rpop:  String?,
-      lpush: Int64,
-      rpush: Int64,
+      lrange: Array,
+      lpop:   String?,
+      rpop:   String?,
+      lpush:  Int64,
+      rpush:  Int64,
 
       smembers:   Array,
       ttl:        Int64,
