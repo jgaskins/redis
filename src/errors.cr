@@ -11,4 +11,21 @@ module Redis
   class BusyGroup < Error
     ERROR_MAP["BUSYGROUP"] = self
   end
+
+  class Cluster
+    class Error < ::Redis::Error
+    end
+
+    class Moved < Error
+      ERROR_MAP["MOVED"] = self
+    end
+
+    class Ask < Error
+      ERROR_MAP["ASK"] = self
+    end
+
+    class CrossSlot < Error
+      ERROR_MAP["CROSSSLOT"] = self
+    end
+  end
 end

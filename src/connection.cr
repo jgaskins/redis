@@ -148,6 +148,10 @@ module Redis
       flush
     end
 
+    def readonly! : Nil
+      run({"readonly"})
+    end
+
     # :nodoc:
     macro override_return_types(methods)
       {% for method, return_type in methods %}
