@@ -6,7 +6,6 @@ module Redis
       getter count, earliest, latest, data : Array(Data)
 
       def initialize(response : Array)
-        # [21, "1636510944585-0", "1636513558135-0", [["consumer", "21"]]]
         count, first_id, last_id, data = response
         @count = count.as(Int64)
         @earliest = first_id.as(String)
