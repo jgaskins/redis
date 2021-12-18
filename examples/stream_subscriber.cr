@@ -3,11 +3,11 @@ require "../src/streaming"
 require "./streamer"
 
 redis = Redis::Client.new
-streamer = Streamer::Client.new(redis, consumer: "hostname")
+streamer = Streamer::Client.new(redis, group: "stuff", consumer: "hostname")
 
 pp streamer.stream_names
 
-streamer.subscribe "chat", group: "stuff", timeout: 30.seconds do |msg|
+streamer.subscribe "chat", timeout: 30.seconds do |msg|
   person = Person.from_json(msg.body)
   pp id: msg.id, person: person, timestamp: msg.timestamp, age: msg.age
 end

@@ -6,12 +6,12 @@ module Streamer
   class Client
     getter consumer
 
-    def initialize(@redis : Redis::Client, @consumer : String = UUID.random.to_s, @log = ::Log.for(self.class))
+    def initialize(@redis : Redis::Client, @group : String, @consumer : String = UUID.random.to_s, @log = ::Log.for(self.class))
     end
 
     def subscribe(
       stream : String,
-      group : String,
+      group : String = @group,
       timeout : Time::Span = 30.minutes,
       &block : Message ->
     ) : Nil

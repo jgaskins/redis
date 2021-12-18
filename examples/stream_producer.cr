@@ -5,7 +5,7 @@ require "../src/redis"
 require "./streamer"
 
 redis = Redis::Client.new
-streamer = Streamer::Client.new(redis)
+streamer = Streamer::Client.new(redis, group: "stuff")
 
 streamer.publish "chat", {
   id:            UUID.random,
