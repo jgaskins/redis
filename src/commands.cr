@@ -127,6 +127,10 @@ module Redis
       run({"del"} + keys)
     end
 
+    def unlink(*keys : String)
+      run({"unlink"} + keys)
+    end
+
     # Return the number of specified keys that exist
     #
     # ```
