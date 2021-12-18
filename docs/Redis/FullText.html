@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.2.0">
+<meta name="crystal_docs.project_version" content="0.3.0">
+<meta name="crystal_docs.project_name" content="redis">
+
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../js/doc.js"></script>
+
+  <meta name="repository-name" content="redis">
+  <title>Redis::FullText(Runnable) - redis 0.3.0</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../index.html">
+          redis
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.0
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="redis/Redis" data-name="redis">
+      <a href="../Redis.html">Redis</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
+      <a href="../Redis/BusyGroup.html">BusyGroup</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+      <a href="../Redis/Client.html">Client</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Cluster" data-name="redis::cluster">
+      <a href="../Redis/Cluster.html">Cluster</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
+      <a href="../Redis/Cluster/Ask.html">Ask</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/CrossSlot" data-name="redis::cluster::crossslot">
+      <a href="../Redis/Cluster/CrossSlot.html">CrossSlot</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Error" data-name="redis::cluster::error">
+      <a href="../Redis/Cluster/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Moved" data-name="redis::cluster::moved">
+      <a href="../Redis/Cluster/Moved.html">Moved</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Commands" data-name="redis::commands">
+      <a href="../Redis/Commands.html">Commands</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/XGroup" data-name="redis::commands::xgroup">
+      <a href="../Redis/Commands/XGroup.html">XGroup</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Connection" data-name="redis::connection">
+      <a href="../Redis/Connection.html">Connection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Error" data-name="redis::error">
+      <a href="../Redis/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+      <a href="../Redis/FullText.html">FullText</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
+      <a href="../Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/SortBy" data-name="redis::fulltext::sortby">
+      <a href="../Redis/FullText/SortBy.html">SortBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
+      <a href="../Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Future" data-name="redis::future">
+      <a href="../Redis/Future.html">Future</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Future/NotResolved" data-name="redis::future::notresolved">
+      <a href="../Redis/Future/NotResolved.html">NotResolved</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph" data-name="redis::graph">
+      <a href="../Redis/Graph.html">Graph</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Client" data-name="redis::graph::client">
+      <a href="../Redis/Graph/Client.html">Client</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Error" data-name="redis::graph::error">
+      <a href="../Redis/Graph/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/List" data-name="redis::graph::list">
+      <a href="../Redis/Graph/List.html">List</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Map" data-name="redis::graph::map">
+      <a href="../Redis/Graph/Map.html">Map</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Node" data-name="redis::graph::node">
+      <a href="../Redis/Graph/Node.html">Node</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Property" data-name="redis::graph::property">
+      <a href="../Redis/Graph/Property.html">Property</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Result" data-name="redis::graph::result">
+      <a href="../Redis/Graph/Result.html">Result</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/ResultValue" data-name="redis::graph::resultvalue">
+      <a href="../Redis/Graph/ResultValue.html">ResultValue</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/JSON" data-name="redis::json(runnable)">
+      <a href="../Redis/JSON.html">JSON</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/NoGroup" data-name="redis::nogroup">
+      <a href="../Redis/NoGroup.html">NoGroup</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Parser" data-name="redis::parser">
+      <a href="../Redis/Parser.html">Parser</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Pipeline" data-name="redis::pipeline">
+      <a href="../Redis/Pipeline.html">Pipeline</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming" data-name="redis::streaming">
+      <a href="../Redis/Streaming.html">Streaming</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/Message" data-name="redis::streaming::message">
+      <a href="../Redis/Streaming/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XAutoClaimResponse" data-name="redis::streaming::xautoclaimresponse">
+      <a href="../Redis/Streaming/XAutoClaimResponse.html">XAutoClaimResponse</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+      <a href="../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
+      <a href="../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingExtendedResponse" data-name="redis::streaming::xpendingextendedresponse">
+      <a href="../Redis/Streaming/XPendingExtendedResponse.html">XPendingExtendedResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingExtendedResponse/MessageData" data-name="redis::streaming::xpendingextendedresponse::messagedata">
+      <a href="../Redis/Streaming/XPendingExtendedResponse/MessageData.html">MessageData</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XReadGroupResponse" data-name="redis::streaming::xreadgroupresponse">
+      <a href="../Redis/Streaming/XReadGroupResponse.html">XReadGroupResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XReadGroupResponse/Result" data-name="redis::streaming::xreadgroupresponse::result">
+      <a href="../Redis/Streaming/XReadGroupResponse/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
+      <a href="../Redis/TimeSeries.html">TimeSeries</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/DuplicatePolicy" data-name="redis::timeseries::duplicatepolicy">
+      <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Encoding" data-name="redis::timeseries::encoding">
+      <a href="../Redis/TimeSeries/Encoding.html">Encoding</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Range" data-name="redis::timeseries::range">
+      <a href="../Redis/TimeSeries/Range.html">Range</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries/RangeOptions" data-name="redis::timeseries::rangeoptions">
+      <a href="../Redis/TimeSeries/RangeOptions.html">RangeOptions</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/Aggregation" data-name="redis::timeseries::rangeoptions::aggregation">
+      <a href="../Redis/TimeSeries/RangeOptions/Aggregation.html">Aggregation</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/AggregationType" data-name="redis::timeseries::rangeoptions::aggregationtype">
+      <a href="../Redis/TimeSeries/RangeOptions/AggregationType.html">AggregationType</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+      <a href="../Redis/Transaction.html">Transaction</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Value" data-name="redis::value">
+      <a href="../Redis/Value.html">Value</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">struct</span> Redis::FullText(Runnable)
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Redis/FullText.html">Redis::FullText(Runnable)</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p><code><a href="../Redis/FullText.html">Redis::FullText</a></code> wraps a <code><a href="../Redis/Client.html">Redis::Client</a></code> or <code><a href="../Redis/Cluster.html">Redis::Cluster</a></code> to execute
+commands against a fulltext search index located on a given server.</p>
+<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>
+redis.ft.create <span class="s">&lt;&lt;-INDEX</span>
+<span class="s">  people-index ON HASH
+    PREFIX 1 person:
+  SCHEMA
+    name TEXT NOSTEM SORTABLE
+    email TEXT NOSTEM SORTABLE
+    location GEO
+INDEX</span></code></pre>
+<p>If your Redis server is running in Cluster mode, you can
+<code>require "redis/cluster/search"</code> to send read-only <code><a href="../Redis/FullText.html">FullText</a></code> commands to
+shard replicas.</p>
+<p><span class="flag lime">EXPERIMENTAL</span>  RediSearch support is still under development. Some APIs may change while details are discovered.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L23" target="_blank">
+        search.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#create%28string%3AString%29-instance-method" class="signature"><strong>#create</strong>(string : String)</a>
+        
+          <div class="summary"><p>Create a search index using the syntax specified in the <a href="https://oss.redis.com/redisearch/Commands/#ftcreate">RediSearch <code>FT.CREATE</code> docs</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#drop%28index%3AString%2Ckeepdocs%3Dfalse%29-instance-method" class="signature"><strong>#drop</strong>(index : String, keepdocs = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Drop the specified <code>index</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dropindex%28key%3AString%2Ckeepdocs%3Dfalse%29-instance-method" class="signature"><strong>#dropindex</strong>(key : String, keepdocs = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Drop the specified <code>index</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#info%28index%3AString%29-instance-method" class="signature"><strong>#info</strong>(index : String)</a>
+        
+          <div class="summary"><p>Get information about the search index contained in <code>index</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#profile%28index%3AString%2Cquery%3AString%29-instance-method" class="signature"><strong>#profile</strong>(index : String, query : String)</a>
+        
+          <div class="summary"><p>Profile the given search.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#search%28index%3AString%2Cquery%3AString%2Cnocontent%3Dfalse%2Cverbatim%3Dfalse%2Cnostopwords%3Dfalse%2Cwithscores%3Dfalse%2Cwithpayloads%3Dfalse%2Cwithsortkeys%3Dfalse%2Cfilter%3ATuple%28String%2CInt%7CString%2CInt%7CString%29%3F%3Dnil%2Cgeofilter%3ATuple%28String%2CFloat%2CFloat%2CNumeric%2CGeoUnit%29%3F%3Dnil%2Cinkeys%3AArray%28String%29%3F%3Dnil%2Cinfields%3AArray%28String%29%3F%3Dnil%2Creturnreturn_value%3AArray%28String%29%3F%3Dnil%2Cslop%3AInt%3F%3Dnil%2Cinorder%3ABool%3F%3Dnil%2Clanguage%3AString%3F%3Dnil%2Cexpander%3AString%3F%3Dnil%2Cscorer%3AString%3F%3Dnil%2Cexplainscore%3Dnil%2Cpayload%3AString%7CBytes%7CNil%3Dnil%2Csortby%3ASortBy%3F%3Dnil%2Climit%3ATuple%28Int%2CInt%29%3F%3Dnil%29-instance-method" class="signature"><strong>#search</strong>(index : String, query : String, nocontent = <span class="n">false</span>, verbatim = <span class="n">false</span>, nostopwords = <span class="n">false</span>, withscores = <span class="n">false</span>, withpayloads = <span class="n">false</span>, withsortkeys = <span class="n">false</span>, filter : Tuple(String, Int | String, Int | String)? = <span class="n">nil</span>, geofilter : Tuple(String, Float, Float, Numeric, GeoUnit)? = <span class="n">nil</span>, inkeys : Array(String)? = <span class="n">nil</span>, infields : Array(String)? = <span class="n">nil</span>, return return_value : Array(String)? = <span class="n">nil</span>, slop : Int? = <span class="n">nil</span>, inorder : Bool? = <span class="n">nil</span>, language : String? = <span class="n">nil</span>, expander : String? = <span class="n">nil</span>, scorer : String? = <span class="n">nil</span>, explainscore = <span class="n">nil</span>, payload : String | Bytes | Nil = <span class="n">nil</span>, sortby : SortBy? = <span class="n">nil</span>, limit : Tuple(Int, Int)? = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Run the specified <code>query</code> against <code>index</code>.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="create(string:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>create</strong>(string : String)
+
+        <a class="method-permalink" href="#create%28string%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Create a search index using the syntax specified in the <a href="https://oss.redis.com/redisearch/Commands/#ftcreate">RediSearch
+<code>FT.CREATE</code> docs</a>.</p>
+<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>
+redis.ft.create <span class="s">&lt;&lt;-INDEX</span>
+<span class="s">  people-index ON HASH
+    PREFIX 1 person:
+  SCHEMA
+    name TEXT NOSTEM SORTABLE
+    email TEXT NOSTEM SORTABLE
+    location GEO
+INDEX</span></code></pre>
+<p><span class="flag purple">NOTE</span>  This method returns immediately, before the index is complete. You can run searches against an incomplete index, but you will also have incomplete results. To find how far along the index is, you can use the <code><a href="../Redis/FullText.html#info%28index%3AString%29-instance-method">#info</a></code> method.</p>
+<p><span class="flag orange">TODO</span>  Add a method that generates the string passed into this overload.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="drop(index:String,keepdocs=false)-instance-method">
+      <div class="signature">
+        
+        def <strong>drop</strong>(index : String, keepdocs = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#drop%28index%3AString%2Ckeepdocs%3Dfalse%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Drop the specified <code>index</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L181" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dropindex(key:String,keepdocs=false)-instance-method">
+      <div class="signature">
+        
+        def <strong>dropindex</strong>(key : String, keepdocs = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#dropindex%28key%3AString%2Ckeepdocs%3Dfalse%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Drop the specified <code>index</code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L186" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="info(index:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>info</strong>(index : String)
+
+        <a class="method-permalink" href="#info%28index%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Get information about the search index contained in <code>index</code>. For more
+details, see <a href="https://oss.redis.com/redisearch/Commands/#ftinfo">the <code>FT.INFO</code> documentation</a>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L81" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="profile(index:String,query:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>profile</strong>(index : String, query : String)
+
+        <a class="method-permalink" href="#profile%28index%3AString%2Cquery%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Profile the given search. For further details, see <a href="https://oss.redis.com/redisearch/Commands/#ftprofile">the <code>FT.PROFILE</code>
+documentation</a>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L176" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="search(index:String,query:String,nocontent=false,verbatim=false,nostopwords=false,withscores=false,withpayloads=false,withsortkeys=false,filter:Tuple(String,Int|String,Int|String)?=nil,geofilter:Tuple(String,Float,Float,Numeric,GeoUnit)?=nil,inkeys:Array(String)?=nil,infields:Array(String)?=nil,returnreturn_value:Array(String)?=nil,slop:Int?=nil,inorder:Bool?=nil,language:String?=nil,expander:String?=nil,scorer:String?=nil,explainscore=nil,payload:String|Bytes|Nil=nil,sortby:SortBy?=nil,limit:Tuple(Int,Int)?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>search</strong>(index : String, query : String, nocontent = <span class="n">false</span>, verbatim = <span class="n">false</span>, nostopwords = <span class="n">false</span>, withscores = <span class="n">false</span>, withpayloads = <span class="n">false</span>, withsortkeys = <span class="n">false</span>, filter : Tuple(String, Int | String, Int | String)? = <span class="n">nil</span>, geofilter : Tuple(String, Float, Float, Numeric, <a href="../Redis/FullText/GeoUnit.html">GeoUnit</a>)? = <span class="n">nil</span>, inkeys : Array(String)? = <span class="n">nil</span>, infields : Array(String)? = <span class="n">nil</span>, return return_value : Array(String)? = <span class="n">nil</span>, slop : Int? = <span class="n">nil</span>, inorder : Bool? = <span class="n">nil</span>, language : String? = <span class="n">nil</span>, expander : String? = <span class="n">nil</span>, scorer : String? = <span class="n">nil</span>, explainscore = <span class="n">nil</span>, payload : String | Bytes | Nil = <span class="n">nil</span>, sortby : <a href="../Redis/FullText/SortBy.html">SortBy</a>? = <span class="n">nil</span>, limit : Tuple(Int, Int)? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#search%28index%3AString%2Cquery%3AString%2Cnocontent%3Dfalse%2Cverbatim%3Dfalse%2Cnostopwords%3Dfalse%2Cwithscores%3Dfalse%2Cwithpayloads%3Dfalse%2Cwithsortkeys%3Dfalse%2Cfilter%3ATuple%28String%2CInt%7CString%2CInt%7CString%29%3F%3Dnil%2Cgeofilter%3ATuple%28String%2CFloat%2CFloat%2CNumeric%2CGeoUnit%29%3F%3Dnil%2Cinkeys%3AArray%28String%29%3F%3Dnil%2Cinfields%3AArray%28String%29%3F%3Dnil%2Creturnreturn_value%3AArray%28String%29%3F%3Dnil%2Cslop%3AInt%3F%3Dnil%2Cinorder%3ABool%3F%3Dnil%2Clanguage%3AString%3F%3Dnil%2Cexpander%3AString%3F%3Dnil%2Cscorer%3AString%3F%3Dnil%2Cexplainscore%3Dnil%2Cpayload%3AString%7CBytes%7CNil%3Dnil%2Csortby%3ASortBy%3F%3Dnil%2Climit%3ATuple%28Int%2CInt%29%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Run the specified <code>query</code> against <code>index</code>. Customize the search with various other arguments. For details about what each one does and the return value, see <a href="https://oss.redis.com/redisearch/Commands/#ftsearch">the <code>FT.SEARCH</code>
+documentation</a>.</p>
+<pre><code class="language-crystal">result <span class="o">=</span> redis.ft.search <span class="s">&quot;people-index&quot;</span>, <span class="s">&quot;@name:Jamie&quot;</span>,
+  <span class="k">return</span>: <span class="s">%w[name email]</span>,
+  sortby: <span class="t">Redis</span><span class="t">::</span><span class="t">FullText</span><span class="t">::</span><span class="t">SortBy</span>.<span class="k">new</span>(<span class="s">&quot;name&quot;</span>, <span class="n">:asc</span>)</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/search.cr#L93" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
