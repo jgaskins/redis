@@ -520,6 +520,9 @@ module Redis
     end
 
     # Execute an `XREADGROUP` command on the Redis server.
+    #
+    # This is returned in its raw form from Redis, but you can pass it to a
+    # `Redis::Streaming::XReadGroupResponse` to make it easier to work with.
     def xreadgroup(
       group : String,
       consumer : String,
@@ -543,22 +546,26 @@ module Redis
       end
       command << "noack" if no_ack
       command << "streams"
-      streams.each_key do |key|
-        # Symbol#to_s does not allocate a string on the heap, so the only
-        # allocation in this method is the array.
-        command << key
-      end
-      streams.each_value do |value|
-        command << value
-      end
+      streams.each_key { |key| command << key }
+      streams.each_value { |value| command << value }
 
       run command
     end
 
-    # Execute an `XREADGROUP` command on the Redis server.
+    # Execute an `XREADGROUP` command on the Redis server. If `block` is not nil, the server will block for up to that much time (if you pass a number, it will be interpreted as milliseconds) until any new messages enter the stream.
     #
-    # TODO: Make the return value of this command easier to work with. Nested
-    # heterogeneous arrays aren't easy to work with.
+    # This is returned in its raw form from Redis, but you can pass it to a
+    # `Redis::Streaming::XReadGroupResponse` to make it easier to work with.
+    #
+    # ```
+    # # Long-poll for up to 10 messages from the stream with key `my_stream`,
+    # # blocking for up to 2 seconds if there are no messages waiting.
+    # response = redis.xreadgroup "group", "consumer",
+    #   streams: {my_stream: ">"},
+    #   count: 10,
+    #   block: 2.seconds
+    # response = Redis::Streaming::XReadGroupResponse.new(response)
+    # ```
     def xreadgroup(
       group : String,
       consumer : String,
@@ -582,14 +589,8 @@ module Redis
       end
       command << "noack" if no_ack
       command << "streams"
-      streams.each_key do |key|
-        # Symbol#to_s does not allocate a string on the heap, so the only
-        # allocation in this method is the array.
-        command << key.to_s
-      end
-      streams.each_value do |value|
-        command << value
-      end
+      streams.each_key { |key| command << key.to_s }
+      streams.each_value { |value| command << value }
 
       run command
     end
