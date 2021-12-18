@@ -342,6 +342,12 @@ module Redis
       self
     end
 
+    def close
+      @channels.each do |channel|
+        @connection.unsubscribe channel
+      end
+    end
+
     class InvalidMessage < Exception
     end
   end
