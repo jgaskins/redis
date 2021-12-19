@@ -109,4 +109,69 @@ describe Redis::JSON do
     # Increment *all* quantities on the order
     redis.json.numincrby(key, "$.products..quantity", 1, as: Array(Int32)).should eq [3, 4, 5]
   end
+
+  test "appends a value to an array" do
+    redis.json.set key, ".", {values: [1]}
+
+    redis.json.arrappend(key, ".values", 2).should eq 2 # now has 2 elements
+
+    redis.json.get(key, ".values", as: Array(Int64)).should eq [1, 2]
+  end
+
+  test "appends an array of values to an array" do
+    redis.json.set key, ".", {values: [1]}
+
+    value = redis.json.arrappend(key, ".values", values: [2, 3])
+
+    value.should eq 3 # now has 3 elements
+    redis.json.get(key, ".values", as: Array(Int64)).should eq [1, 2, 3]
+  end
+
+  test "finds the index of a value in a JSON array" do
+    redis.json.set key, ".", {values: [1, 2, 3]}
+
+    redis.json.arrindex(key, ".values", 3).should eq 2
+  end
+
+  test "finds the index of a value in a JSON array in a specified range" do
+    redis.json.set key, ".", {values: [1, 2, 3]}
+
+    redis.json.arrindex(key, ".values", 3, between: 1..2).should eq 2
+    redis.json.arrindex(key, ".values", 3, between: 1...2).should eq -1
+    redis.json.arrindex(key, ".values", 3, between: 0..1).should eq -1
+  end
+
+  test "inserts a value into a JSON array" do
+    redis.json.set key, ".", {values: [1, 2, 3]}
+
+    result = redis.json.arrinsert(key, ".values", index: 2, value: 4)
+
+    result.should eq 4
+    redis.json.get(key, ".values", as: Array(Int64)).should eq [1, 2, 4, 3]
+  end
+
+  test "inserts many values into a JSON array" do
+    redis.json.set key, ".", {values: [1, 2, 3]}
+
+    result = redis.json.arrinsert(key, ".values", index: 2, values: [4, 5])
+
+    result.should eq 5
+    redis.json.get(key, ".values", as: Array(Int64)).should eq [1, 2, 4, 5, 3]
+  end
+
+  test "gets the length of a JSON array" do
+    redis.json.set key, ".", {values: [1, 2, 3]}
+
+    redis.json.arrlen(key, ".values").should eq 3
+  end
+
+  test "removes and returns the last element in an array" do
+    redis.json.set key, ".", {values: [1, 2, 3]}
+
+    redis.json.arrpop(key, ".values").should eq 3.to_json
+    redis.json.arrlen(key, ".values").should eq 2
+
+    redis.json.arrpop(key, ".values", as: Int64).should eq 2
+    redis.json.arrlen(key, ".values").should eq 1
+  end
 end

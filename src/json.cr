@@ -188,6 +188,132 @@ module Redis
     def numincrby(key : String, path : String, count : String | Int, as type : T.class) : T forall T
       T.from_json(numincrby(key, path, count).as(String))
     end
+
+    # Append `value` as JSON to the array located at the JSONPath in `key`
+    #
+    # ```
+    # redis.json.arrappend "posts:#{id}", ".tags", "redis"
+    # ```
+    def arrappend(key : String, path : String, value)
+      @redis.run({"json.arrappend", key, path, value.to_json})
+    end
+
+    # Append `values` as JSON to the array located at the JSONPath in `key`
+    #
+    # ```
+    # redis.json.arrappend "posts:#{id}", ".tags", %w[redis crystal]
+    # ```
+    def arrappend(key : String, path : String, *, values : Array)
+      command = Array(String).new(initial_capacity: 3 + values.size)
+      command << "json.arrappend" << key << path
+      values.each do |value|
+        command << value.to_json
+      end
+
+      @redis.run command
+    end
+
+    # Get the index of `value` in the array located at the JSONPath in `key`
+    #
+    # ```
+    # redis.json.arrindex "posts:#{id}", ".tags", "redis" # => 2
+    # ```
+    def arrindex(key : String, path : String, value)
+      @redis.run({"json.arrindex", key, path, value.to_json})
+    end
+
+    # Get the index of `value` in the array located at the JSONPath in `key` if
+    # and only if it falls in the specified `range`
+    #
+    # ```
+    # redis.json.arrindex "posts:#{id}", ".tags", "redis", between: 1..3
+    # # => 2
+    # ```
+    def arrindex(key : String, path : String, value, between range : Range(Int, Int?))
+      command = {"json.arrindex", key, path, value.to_json, range.begin.to_s}
+      if last = range.end
+        if range.excludes_end?
+          command += {last.to_s}
+        else
+          command += {(last + 1).to_s}
+        end
+      end
+
+      @redis.run command
+    end
+
+    # Insert `value` into the array located at the JSONPath in `key` at `index`
+    #
+    # ```
+    # redis.json.arrinsert "posts:#{id}", ".tags", index: 1, value: "redis"
+    # # => 3
+    # ```
+    def arrinsert(key : String, path : String, index : Int, value)
+      @redis.run({"json.arrinsert", key, path, index.to_s, value.to_json})
+    end
+
+    # Insert the elements of `values` into the array located at the JSONPath in
+    # `key` at `index`
+    #
+    # ```
+    # redis.json.arrinsert "posts:#{id}", ".tags", index: 1, values: %w[
+    #   redis
+    #   crystal
+    # ]
+    # # => 4
+    # ```
+    def arrinsert(key : String, path : String, index : Int, *, values : Array)
+      command = Array(String).new(initial_capacity: 4 + values.size)
+      command << "json.arrinsert" << key << path << index.to_s
+      values.each do |value|
+        command << value.to_json
+      end
+
+      @redis.run(command)
+    end
+
+    # Get the number of elements in the array located at the JSONPath in `key`
+    #
+    # ```
+    # redis.json.arrlen "posts:#{id}", ".tags"
+    # # => 4
+    # ```
+    def arrlen(key : String, path : String)
+      @redis.run({"json.arrlen", key, path})
+    end
+
+    # Remove and return the value located at `index` (defaulting to the last
+    # element) in the array located at the JSONPath in `key`
+    #
+    # ```
+    # redis.json.arrlen "posts:#{id}", ".tags"
+    # # => 4
+    # ```
+    def arrpop(key : String, path : String? = nil, *, index : Int = -1)
+      command = {"json.arrpop", key}
+      if path
+        command += {path}
+        command += {index.to_s} if index != -1
+      end
+
+      @redis.run command
+    end
+
+    # Remove and return the value located at `index` (defaulting to the last
+    # element) in the array located at the JSONPath in `key`
+    #
+    # ```
+    # redis.json.arrlen "posts:#{id}", ".tags"
+    # # => 4
+    # ```
+    #
+    # NOTE: This method cannot be invoked on a pipeline or the transaction
+    # yielded to a `Redis::Connection#multi` block.
+    def arrpop(key : String, path : String, *, index : Int = -1, as : T.class) : T? forall T
+      if result = arrpop(key, path, index: index)
+        T.from_json(result.as(String))
+      end
+    end
   end
 
   module Commands
