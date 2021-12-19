@@ -4,7 +4,8 @@ require "./redis"
 
 module Redis
   # `Redis::JSON` wraps a `Redis::Client` or `Redis::Cluster` to execute
-  # commands against keys storing JSON data.
+  # commands against keys storing JSON data using the
+  # [RedisJSON](https://oss.redis.com/redisjson/) plugin for Redis.
   #
   # ```
   # require "redis"

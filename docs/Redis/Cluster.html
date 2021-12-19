@@ -8,6 +8,7 @@
 <meta name="crystal_docs.project_name" content="redis">
 
 
+    <link rel="canonical" href="https://github.com/jgaskins/redis/Redis/Cluster.html">
 
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/doc.js"></script>
@@ -384,7 +385,24 @@
     Overview
   </h2>
 
-  <p><span class="flag lime">EXPERIMENTAL</span>  Cluster support is still under development. Some APIs may change while details are discovered and highly customized clusters (for example, servers handling individual hash slots or multiple hash-slot ranges) are not yet supported.</p>
+  <p>Use in place of a <code><a href="../Redis/Client.html">Redis::Client</a></code> when talking to Redis clusters. This class
+will discover all nodes in a Redis cluster when given a URI for any of them,
+route commands to appropriate shards based on the keys they operate on, and
+route commands which do not change state to shard replicas to spread the
+load across the cluster.</p>
+<p>It's important that, when using commands which operate on multiple keys (for
+example: <code>MGET</code>, <code>DEL</code>, <code>RPOPLPUSH</code>, etc) that <em>all</em> specified keys reside
+on the same shard in the cluster. Usually, this means designing your key
+names with curly braces around parts of them to ensure they hash to the same
+<a href="https://redis.io/commands/cluster-keyslot">key slot</a>. For example:</p>
+<pre><code class="language-crystal">redis.del <span class="s">&quot;{comment}:1&quot;</span>, <span class="s">&quot;{comment}:2&quot;</span>
+value <span class="o">=</span> redis.rpoplpush <span class="s">&quot;{queue}:default&quot;</span>, <span class="s">&quot;{queue}:default:pending&quot;</span></code></pre>
+<p>If you want to use a Redis module that provides custom commands, you can
+register them as read-only with <code><a href="../Redis/Cluster.html#register_read_only_commands%28commands%3AEnumerable%28String%29%29-class-method">Redis::Cluster.register_read_only_commands</a></code>
+and they will automatically be routed to replicas. See
+<a href="https://github.com/jgaskins/redis/blob/3e874563dd524df9af6827f72edecca13a615802/src/cluster/json.cr#L5-L15"><code>redis/cluster/json.cr</code></a>
+for example usage.</p>
+<p><span class="flag lime">EXPERIMENTAL</span>  Cluster support is still under development. Some APIs may change while details are discovered and highly customized clusters (for example, servers handling individual hash slots or multiple hash-slot ranges) are not yet supported.</p>
 
 
 
@@ -423,7 +441,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L9" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L31" target="_blank">
         cluster.cr
       </a>
     
@@ -438,25 +456,6 @@
   
 
 
-
-  
-    <h2>
-      <a id="constant-summary" class="anchor" href="#constant-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-      Constant Summary
-    </h2>
-  
-  <dl>
-    
-      <dt class="entry-const" id="LOG">
-        <strong>LOG</strong> = <code><span class="t">::</span><span class="t">Log</span>.<span class="k">for</span>(<span class="k">self</span>)</code>
-      </dt>
-      
-    
-  </dl>
 
 
 
@@ -950,7 +949,7 @@ server in the cluster and <code><a href="../Redis/Cluster.html">Redis::Cluster</
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L49" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -985,7 +984,7 @@ read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1011,7 +1010,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1044,7 +1043,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L315" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L338" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1065,7 +1064,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L187" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L210" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1090,7 +1089,7 @@ we're supporting it because you may have a reasonable use case for it at
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L157" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L180" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1119,7 +1118,7 @@ method. See the example above.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L177" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1146,7 +1145,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L245" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L268" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1167,7 +1166,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L182" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L205" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1189,7 +1188,7 @@ which shard your command will be routed to.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L358" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/cluster.cr#L381" target="_blank">View source</a>]
         
       </div>
     </div>

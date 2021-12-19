@@ -8,6 +8,7 @@
 <meta name="crystal_docs.project_name" content="redis">
 
 
+    <link rel="canonical" href="https://github.com/jgaskins/redis/Redis/JSON.html">
 
 <link href="../css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/doc.js"></script>
@@ -385,7 +386,8 @@
   </h2>
 
   <p><code><a href="../Redis/JSON.html">Redis::JSON</a></code> wraps a <code><a href="../Redis/Client.html">Redis::Client</a></code> or <code><a href="../Redis/Cluster.html">Redis::Cluster</a></code> to execute
-commands against keys storing JSON data.</p>
+commands against keys storing JSON data using the
+<a href="https://oss.redis.com/redisjson/">RedisJSON</a> plugin for Redis.</p>
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;redis&quot;</span>
 <span class="k">require</span> <span class="s">&quot;redis/json&quot;</span>
 <span class="k">require</span> <span class="s">&quot;uuid/json&quot;</span>
@@ -434,7 +436,7 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L35" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L36" target="_blank">
         json.cr
       </a>
     
@@ -475,6 +477,51 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#arrappend%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method" class="signature"><strong>#arrappend</strong>(key : String, path : String, value)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrappend%28key%3AString%2Cpath%3AString%2C%2A%2Cvalues%3AArray%29-instance-method" class="signature"><strong>#arrappend</strong>(key : String, path : String, *, values : Array)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%2Cbetweenrange%3ARange%28Int%2CInt%3F%29%29-instance-method" class="signature"><strong>#arrindex</strong>(key : String, path : String, value, between range : Range(Int, Int?))</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method" class="signature"><strong>#arrindex</strong>(key : String, path : String, value)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2Cvalue%29-instance-method" class="signature"><strong>#arrinsert</strong>(key : String, path : String, index : Int, value)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2C%2A%2Cvalues%3AArray%29-instance-method" class="signature"><strong>#arrinsert</strong>(key : String, path : String, index : Int, *, values : Array)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrlen%28key%3AString%2Cpath%3AString%29-instance-method" class="signature"><strong>#arrlen</strong>(key : String, path : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrpop%28key%3AString%2Cpath%3AString%3F%3Dnil%2C%2A%2Cindex%3AInt%3D-1%29-instance-method" class="signature"><strong>#arrpop</strong>(key : String, path : String? = <span class="n">nil</span>, *, index : Int = <span class="n">-1</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#arrpop%28key%3AString%2Cpath%3AString%2C%2A%2Cas%3AT.class%29%3AT%3FforallT-instance-method" class="signature"><strong>#arrpop</strong>(key : String, path : String, *, as : <span class="t">T</span>.<span class="k">class</span>) : T? forall T</a>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#get%28key%3AString%2Cpath%3AString%2Castype%3AT.class%29%3AT%3FforallT-instance-method" class="signature"><strong>#get</strong>(key : String, path : String, as type : <span class="t">T</span>.<span class="k">class</span>) : T? forall T</a>
@@ -593,7 +640,7 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -611,6 +658,150 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="arrappend(key:String,path:String,value)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrappend</strong>(key : String, path : String, value)
+
+        <a class="method-permalink" href="#arrappend%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L192" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrappend(key:String,path:String,*,values:Array)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrappend</strong>(key : String, path : String, *, values : Array)
+
+        <a class="method-permalink" href="#arrappend%28key%3AString%2Cpath%3AString%2C%2A%2Cvalues%3AArray%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L196" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrindex(key:String,path:String,value,betweenrange:Range(Int,Int?))-instance-method">
+      <div class="signature">
+        
+        def <strong>arrindex</strong>(key : String, path : String, value, between range : Range(Int, Int?))
+
+        <a class="method-permalink" href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%2Cbetweenrange%3ARange%28Int%2CInt%3F%29%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L210" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrindex(key:String,path:String,value)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrindex</strong>(key : String, path : String, value)
+
+        <a class="method-permalink" href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L206" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrinsert(key:String,path:String,index:Int,value)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrinsert</strong>(key : String, path : String, index : Int, value)
+
+        <a class="method-permalink" href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2Cvalue%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L223" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrinsert(key:String,path:String,index:Int,*,values:Array)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrinsert</strong>(key : String, path : String, index : Int, *, values : Array)
+
+        <a class="method-permalink" href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2C%2A%2Cvalues%3AArray%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L227" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrlen(key:String,path:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrlen</strong>(key : String, path : String)
+
+        <a class="method-permalink" href="#arrlen%28key%3AString%2Cpath%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L237" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrpop(key:String,path:String?=nil,*,index:Int=-1)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrpop</strong>(key : String, path : String? = <span class="n">nil</span>, *, index : Int = <span class="n">-1</span>)
+
+        <a class="method-permalink" href="#arrpop%28key%3AString%2Cpath%3AString%3F%3Dnil%2C%2A%2Cindex%3AInt%3D-1%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L241" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrpop(key:String,path:String,*,as:T.class):T?forallT-instance-method">
+      <div class="signature">
+        
+        def <strong>arrpop</strong>(key : String, path : String, *, as : <span class="t">T</span>.<span class="k">class</span>) : T? forall T
+
+        <a class="method-permalink" href="#arrpop%28key%3AString%2Cpath%3AString%2C%2A%2Cas%3AT.class%29%3AT%3FforallT-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L251" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="get(key:String,path:String,astype:T.class):T?forallT-instance-method">
       <div class="signature">
@@ -654,7 +845,7 @@ inside the method, which isn't possible when using pipelines or <code>multi</cod
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -678,7 +869,7 @@ given JSONPath.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L84" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -707,7 +898,7 @@ which isn't a thing when using pipelines or <code>multi</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L100" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L101" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -728,7 +919,7 @@ which isn't a thing when using pipelines or <code>multi</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -757,7 +948,7 @@ shard.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L153" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L154" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -786,7 +977,7 @@ specify that it can be an <code>Array</code> of that type.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L187" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L188" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -808,7 +999,7 @@ specify that it can be an <code>Array</code> of that type.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L170" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L171" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -844,7 +1035,7 @@ the new email value at the <code>.email</code> JSONPath:</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L63" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>

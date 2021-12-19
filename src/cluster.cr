@@ -5,10 +5,33 @@ require "db/pool"
 require "set"
 
 module Redis
+  # Use in place of a `Redis::Client` when talking to Redis clusters. This class
+  # will discover all nodes in a Redis cluster when given a URI for any of them,
+  # route commands to appropriate shards based on the keys they operate on, and
+  # route commands which do not change state to shard replicas to spread the
+  # load across the cluster.
+  #
+  # It's important that, when using commands which operate on multiple keys (for
+  # example: `MGET`, `DEL`, `RPOPLPUSH`, etc) that _all_ specified keys reside
+  # on the same shard in the cluster. Usually, this means designing your key
+  # names with curly braces around parts of them to ensure they hash to the same
+  # [key slot](https://redis.io/commands/cluster-keyslot). For example:
+  #
+  # ```
+  # redis.del "{comment}:1", "{comment}:2"
+  # value = redis.rpoplpush "{queue}:default", "{queue}:default:pending"
+  # ```
+  #
+  # If you want to use a Redis module that provides custom commands, you can
+  # register them as read-only with `Redis::Cluster.register_read_only_commands`
+  # and they will automatically be routed to replicas. See
+  # [`redis/cluster/json.cr`](https://github.com/jgaskins/redis/blob/3e874563dd524df9af6827f72edecca13a615802/src/cluster/json.cr#L5-L15)
+  # for example usage.
   @[Experimental("Cluster support is still under development. Some APIs may change while details are discovered and highly customized clusters (for example, servers handling individual hash slots or multiple hash-slot ranges) are not yet supported.")]
   class Cluster
     include Commands
 
+    # :nodoc:
     LOG = ::Log.for(self)
 
     # :nodoc:
