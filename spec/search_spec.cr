@@ -24,7 +24,7 @@ module Redis
       redis.ft.dropindex index
     end
 
-    it "does a thing" do
+    it "gets index metadata" do
       redis.ft.info(index).should eq [
         "index_name", index,
         "index_options", [] of String,
