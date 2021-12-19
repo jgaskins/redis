@@ -481,45 +481,63 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       <li class="entry-summary">
         <a href="#arrappend%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method" class="signature"><strong>#arrappend</strong>(key : String, path : String, value)</a>
         
+          <div class="summary"><p>Append <code>value</code> as JSON to the array located at the JSONPath in <code>key</code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#arrappend%28key%3AString%2Cpath%3AString%2C%2A%2Cvalues%3AArray%29-instance-method" class="signature"><strong>#arrappend</strong>(key : String, path : String, *, values : Array)</a>
+        
+          <div class="summary"><p>Append <code>values</code> as JSON to the array located at the JSONPath in <code>key</code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%2Cbetweenrange%3ARange%28Int%2CInt%3F%29%29-instance-method" class="signature"><strong>#arrindex</strong>(key : String, path : String, value, between range : Range(Int, Int?))</a>
         
+          <div class="summary"><p>Get the index of <code>value</code> in the array located at the JSONPath in <code>key</code> if and only if it falls in the specified <code>range</code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method" class="signature"><strong>#arrindex</strong>(key : String, path : String, value)</a>
+        
+          <div class="summary"><p>Get the index of <code>value</code> in the array located at the JSONPath in <code>key</code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2Cvalue%29-instance-method" class="signature"><strong>#arrinsert</strong>(key : String, path : String, index : Int, value)</a>
         
+          <div class="summary"><p>Insert <code>value</code> into the array located at the JSONPath in <code>key</code> at <code>index</code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2C%2A%2Cvalues%3AArray%29-instance-method" class="signature"><strong>#arrinsert</strong>(key : String, path : String, index : Int, *, values : Array)</a>
+        
+          <div class="summary"><p>Insert the elements of <code>values</code> into the array located at the JSONPath in <code>key</code> at <code>index</code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#arrlen%28key%3AString%2Cpath%3AString%29-instance-method" class="signature"><strong>#arrlen</strong>(key : String, path : String)</a>
         
+          <div class="summary"><p>Get the number of elements in the array located at the JSONPath in <code>key</code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#arrpop%28key%3AString%2Cpath%3AString%3F%3Dnil%2C%2A%2Cindex%3AInt%3D-1%29-instance-method" class="signature"><strong>#arrpop</strong>(key : String, path : String? = <span class="n">nil</span>, *, index : Int = <span class="n">-1</span>)</a>
         
+          <div class="summary"><p>Remove and return the value located at <code>index</code> (defaulting to the last element) in the array located at the JSONPath in <code>key</code></p></div>
+        
       </li>
     
       <li class="entry-summary">
-        <a href="#arrpop%28key%3AString%2Cpath%3AString%2C%2A%2Cas%3AT.class%29%3AT%3FforallT-instance-method" class="signature"><strong>#arrpop</strong>(key : String, path : String, *, as : <span class="t">T</span>.<span class="k">class</span>) : T? forall T</a>
+        <a href="#arrpop%28key%3AString%2Cpath%3AString%2C%2A%2Cindex%3AInt%3D-1%2Cas%3AT.class%29%3AT%3FforallT-instance-method" class="signature"><strong>#arrpop</strong>(key : String, path : String, *, index : Int = <span class="n">-1</span>, as : <span class="t">T</span>.<span class="k">class</span>) : T? forall T</a>
+        
+          <div class="summary"><p>Remove and return the value located at <code>index</code> (defaulting to the last element) in the array located at the JSONPath in <code>key</code></p></div>
         
       </li>
     
@@ -667,10 +685,16 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrappend%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Append <code>value</code> as JSON to the array located at the JSONPath in <code>key</code></p>
+<pre><code class="language-crystal">redis.json.arrappend <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>, <span class="s">&quot;redis&quot;</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L192" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L197" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -683,10 +707,16 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrappend%28key%3AString%2Cpath%3AString%2C%2A%2Cvalues%3AArray%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Append <code>values</code> as JSON to the array located at the JSONPath in <code>key</code></p>
+<pre><code class="language-crystal">redis.json.arrappend <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>, <span class="s">%w[redis crystal]</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L196" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L206" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -699,10 +729,18 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%2Cbetweenrange%3ARange%28Int%2CInt%3F%29%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Get the index of <code>value</code> in the array located at the JSONPath in <code>key</code> if
+and only if it falls in the specified <code>range</code></p>
+<pre><code class="language-crystal">redis.json.arrindex <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>, <span class="s">&quot;redis&quot;</span>, between: <span class="n">1</span>..<span class="n">3</span>
+<span class="c"># =&gt; 2</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L210" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -715,10 +753,16 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrindex%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Get the index of <code>value</code> in the array located at the JSONPath in <code>key</code></p>
+<pre><code class="language-crystal">redis.json.arrindex <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>, <span class="s">&quot;redis&quot;</span> <span class="c"># =&gt; 2</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L206" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L221" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -731,10 +775,17 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2Cvalue%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Insert <code>value</code> into the array located at the JSONPath in <code>key</code> at <code>index</code></p>
+<pre><code class="language-crystal">redis.json.arrinsert <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>, index: <span class="n">1</span>, value: <span class="s">&quot;redis&quot;</span>
+<span class="c"># =&gt; 3</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L223" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L251" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -747,10 +798,21 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrinsert%28key%3AString%2Cpath%3AString%2Cindex%3AInt%2C%2A%2Cvalues%3AArray%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Insert the elements of <code>values</code> into the array located at the JSONPath in
+<code>key</code> at <code>index</code></p>
+<pre><code class="language-crystal">redis.json.arrinsert <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>, index: <span class="n">1</span>, values: <span class="s">%w[
+  redis
+  crystal
+]</span>
+<span class="c"># =&gt; 4</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L227" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L265" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -763,10 +825,17 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrlen%28key%3AString%2Cpath%3AString%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Get the number of elements in the array located at the JSONPath in <code>key</code></p>
+<pre><code class="language-crystal">redis.json.arrlen <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>
+<span class="c"># =&gt; 4</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L237" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L281" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -779,26 +848,44 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a class="method-permalink" href="#arrpop%28key%3AString%2Cpath%3AString%3F%3Dnil%2C%2A%2Cindex%3AInt%3D-1%29-instance-method">#</a>
       </div>
       
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L241" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="arrpop(key:String,path:String,*,as:T.class):T?forallT-instance-method">
-      <div class="signature">
-        
-        def <strong>arrpop</strong>(key : String, path : String, *, as : <span class="t">T</span>.<span class="k">class</span>) : T? forall T
-
-        <a class="method-permalink" href="#arrpop%28key%3AString%2Cpath%3AString%2C%2A%2Cas%3AT.class%29%3AT%3FforallT-instance-method">#</a>
-      </div>
+        <div class="doc">
+          
+          <p>Remove and return the value located at <code>index</code> (defaulting to the last
+element) in the array located at the JSONPath in <code>key</code></p>
+<pre><code class="language-crystal">redis.json.arrlen <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>
+<span class="c"># =&gt; 4</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L251" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L292" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrpop(key:String,path:String,*,index:Int=-1,as:T.class):T?forallT-instance-method">
+      <div class="signature">
+        
+        def <strong>arrpop</strong>(key : String, path : String, *, index : Int = <span class="n">-1</span>, as : <span class="t">T</span>.<span class="k">class</span>) : T? forall T
+
+        <a class="method-permalink" href="#arrpop%28key%3AString%2Cpath%3AString%2C%2A%2Cindex%3AInt%3D-1%2Cas%3AT.class%29%3AT%3FforallT-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Remove and return the value located at <code>index</code> (defaulting to the last
+element) in the array located at the JSONPath in <code>key</code></p>
+<pre><code class="language-crystal">redis.json.arrlen <span class="s">&quot;posts:</span><span class="i">#{</span>id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.tags&quot;</span>
+<span class="c"># =&gt; 4</span></code></pre>
+<p><span class="flag purple">NOTE</span>  This method cannot be invoked on a pipeline or the transaction
+yielded to a <code><a href="../Redis/Connection.html#multi%28retries%3D5%2C%26%29-instance-method">Redis::Connection#multi</a></code> block.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.3.0/src/json.cr#L312" target="_blank">View source</a>]
         
       </div>
     </div>
