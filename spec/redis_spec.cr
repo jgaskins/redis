@@ -47,6 +47,46 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  test "can expire key after a specified number of seconds" do
+    redis.set key, "foo"
+    redis.expire key, 1
+    sleep 1.second
+    redis.get(key).should eq nil
+  end
+
+  test "can expire key at a given timestamp" do
+    redis.set key, "foo"
+    redis.expireAt key, 1.second.from_now
+    sleep 1.second
+    redis.get(key).should eq nil
+  end
+
+  test "can expire key after a specified number of milliseconds" do
+    redis.set key, "foo"
+    redis.pexpire key, 10
+    sleep 10.milliseconds
+    redis.get(key).should eq nil
+  end
+
+  test "can expire key at a given milliseconds-timestamp" do
+    redis.set key, "foo"
+    redis.pexpireAt key, 10.milliseconds.from_now
+    sleep 10.milliseconds
+    redis.get(key).should eq nil
+  end
+
+  test "can returns the remaining time to live of a key that has a timeout in seconds" do
+    redis.set key, "foo", ex: 1
+    redis.ttl(key).should eq 1
+  end
+
+  test "can returns the remaining time to live of a key that has a timeout in milliseconds" do
+    redis.set key, "foo", px: 10
+    result = redis.pttl(key)
+    result.should be <= 10
+    result.should be >= 1
+  end
+
   test "can set a key only if it does not exist" do
     redis.set(key, "foo", nx: true).should eq "OK"
     redis.set(key, "foo", nx: true).should eq nil
@@ -84,7 +124,6 @@ describe Redis::Client do
       redis.incrby(key, 3).should eq 5
       redis.decrby(key, 2).should eq 3
       redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
-
     ensure
       redis.del key
     end
@@ -156,9 +195,9 @@ describe Redis::Client do
     key = random_key
 
     begin
-      first_incr  = Redis::Future.new
+      first_incr = Redis::Future.new
       second_incr = Redis::Future.new
-      first_decr  = Redis::Future.new
+      first_decr = Redis::Future.new
       second_decr = Redis::Future.new
 
       redis.pipeline do |redis|
@@ -266,7 +305,6 @@ describe Redis::Client do
         consumer_id = UUID.random.to_s
 
         result = redis.xreadgroup group, consumer_id, count: "10", streams: {"my-stream": ">"}
-
       rescue ex
         pp ex
         raise ex

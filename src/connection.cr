@@ -181,6 +181,7 @@ module Redis
 
       smembers:   Array,
       ttl:        Int64,
+      pttl:       Int64,
       xlen:       Int64,
       xgroup:     Nil,
       xrange:     Array,
