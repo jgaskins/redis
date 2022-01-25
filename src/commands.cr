@@ -652,7 +652,7 @@ module Redis
       run({"pexpire", key, ttl.to_s})
     end
 
-    def expireAt(key : String, at : Time)
+    def expireat(key : String, at : Time)
       run({"expireat", key, at.to_unix.to_s})
     end
 
