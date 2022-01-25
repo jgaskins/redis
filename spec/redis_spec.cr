@@ -56,7 +56,7 @@ describe Redis::Client do
 
   test "can expire key at a given timestamp" do
     redis.set key, "foo"
-    redis.expireAt key, 1.second.from_now
+    redis.expireat key, 1.second.from_now
     sleep 1.second
     redis.get(key).should eq nil
   end
