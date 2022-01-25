@@ -644,8 +644,28 @@ module Redis
       run({"zcard", key})
     end
 
-    def expire(key, ttl : Int)
+    def expire(key : String, ttl : Int)
       run({"expire", key, ttl.to_s})
+    end
+
+    def pexpire(key : String, ttl : Int)
+      run({"pexpire", key, ttl.to_s})
+    end
+
+    def expireat(key : String, at : Time)
+      run({"expireat", key, at.to_unix.to_s})
+    end
+
+    def pexpireat(key : String, at : Time)
+      run({"pexpireat", key, at.to_unix_ms.to_s})
+    end
+
+    def ttl(key : String)
+      run({"ttl", key})
+    end
+
+    def pttl(key : String)
+      run({"pttl", key})
     end
 
     def type(key : String)
