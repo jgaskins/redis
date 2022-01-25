@@ -656,7 +656,7 @@ module Redis
       run({"expireat", key, at.to_unix.to_s})
     end
 
-    def pexpireAt(key : String, at : Time)
+    def pexpireat(key : String, at : Time)
       run({"pexpireat", key, at.to_unix_ms.to_s})
     end
 
