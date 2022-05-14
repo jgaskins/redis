@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.3.2">
-<meta name="crystal_docs.project_version" content="master-dev">
+<meta name="crystal_docs.project_version" content="0.4.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Relationship - redis master-dev</title>
+  <title>Redis::Graph::Relationship - redis 0.4.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        master-dev
+        0.4.0
       </span>
     </div>
   </div>
@@ -50,21 +50,6 @@
 
   <div class="types-list">
     <ul>
-  
-  <li class=" " data-id="redis/Array" data-name="array(t)">
-      <a href="../../Array.html">Array</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Bool" data-name="bool">
-      <a href="../../Bool.html">Bool</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Int" data-name="int">
-      <a href="../../Int.html">Int</a>
-      
-    </li>
   
   <li class=" " data-id="redis/Int16" data-name="int16">
       <a href="../../Int16.html">Int16</a>
@@ -83,11 +68,6 @@
   
   <li class=" " data-id="redis/Int8" data-name="int8">
       <a href="../../Int8.html">Int8</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Nil" data-name="nil">
-      <a href="../../Nil.html">Nil</a>
       
     </li>
   
@@ -456,26 +436,6 @@
       
     </li>
   
-  <li class=" " data-id="redis/String" data-name="string">
-      <a href="../../String.html">String</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Time" data-name="time">
-      <a href="../../Time.html">Time</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Tuple" data-name="tuple(*t)">
-      <a href="../../Tuple.html">Tuple</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/UUID" data-name="uuid">
-      <a href="../../UUID.html">UUID</a>
-      
-    </li>
-  
 </ul>
 
   </div>
@@ -538,7 +498,9 @@ result.each <span class="k">do</span> <span class="o">|</span>(membership)<span 
   </h2>
   
     
-      graph.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L225" target="_blank">
+        graph.cr
+      </a>
     
     <br/>
   
@@ -668,6 +630,8 @@ result.each <span class="k">do</span> <span class="o">|</span>(membership)<span 
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L248" target="_blank">View source</a>]
+        
       </div>
     </div>
   
@@ -691,13 +655,15 @@ the last time you queried it.</p>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L232" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="properties:Hash(String,Property)-instance-method">
       <div class="signature">
         
-        def <strong>properties</strong> : Hash(<a href="../../String.html">String</a>, <a href="../../Redis/Graph/Property.html">Property</a>)
+        def <strong>properties</strong> : Hash(String, <a href="../../Redis/Graph/Property.html">Property</a>)
 
         <a class="method-permalink" href="#properties%3AHash%28String%2CProperty%29-instance-method">#</a>
       </div>
@@ -714,6 +680,8 @@ result.first.properties <span class="c"># =&gt; {&quot;since&quot; =&gt; 2022-05
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L259" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -736,13 +704,15 @@ result.first.properties <span class="c"># =&gt; {&quot;since&quot; =&gt; 2022-05
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L242" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="type:String-instance-method">
       <div class="signature">
         
-        def <strong>type</strong> : <a href="../../String.html">String</a>
+        def <strong>type</strong> : String
 
         <a class="method-permalink" href="#type%3AString-instance-method">#</a>
       </div>
@@ -755,6 +725,8 @@ will be <code>&quot;MEMBER_OF&quot;</code>.</p>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L236" target="_blank">View source</a>]
         
       </div>
     </div>

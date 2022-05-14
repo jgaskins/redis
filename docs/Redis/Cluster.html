@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.3.2">
-<meta name="crystal_docs.project_version" content="master-dev">
+<meta name="crystal_docs.project_version" content="0.4.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Cluster - redis master-dev</title>
+  <title>Redis::Cluster - redis 0.4.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        master-dev
+        0.4.0
       </span>
     </div>
   </div>
@@ -50,21 +50,6 @@
 
   <div class="types-list">
     <ul>
-  
-  <li class=" " data-id="redis/Array" data-name="array(t)">
-      <a href="../Array.html">Array</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Bool" data-name="bool">
-      <a href="../Bool.html">Bool</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Int" data-name="int">
-      <a href="../Int.html">Int</a>
-      
-    </li>
   
   <li class=" " data-id="redis/Int16" data-name="int16">
       <a href="../Int16.html">Int16</a>
@@ -83,11 +68,6 @@
   
   <li class=" " data-id="redis/Int8" data-name="int8">
       <a href="../Int8.html">Int8</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Nil" data-name="nil">
-      <a href="../Nil.html">Nil</a>
       
     </li>
   
@@ -456,26 +436,6 @@
       
     </li>
   
-  <li class=" " data-id="redis/String" data-name="string">
-      <a href="../String.html">String</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Time" data-name="time">
-      <a href="../Time.html">Time</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Tuple" data-name="tuple(*t)">
-      <a href="../Tuple.html">Tuple</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/UUID" data-name="uuid">
-      <a href="../UUID.html">UUID</a>
-      
-    </li>
-  
 </ul>
 
   </div>
@@ -560,12 +520,16 @@ for example usage.</p>
   </h2>
   
     
-      cluster.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L31" target="_blank">
+        cluster.cr
+      </a>
     
     <br/>
   
     
-      errors.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/errors.cr#L15" target="_blank">
+        errors.cr
+      </a>
     
     <br/>
   
@@ -1089,6 +1053,8 @@ server in the cluster and <code><a href="../Redis/Cluster.html">Redis::Cluster</
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L72" target="_blank">View source</a>]
+        
       </div>
     </div>
   
@@ -1107,7 +1073,7 @@ server in the cluster and <code><a href="../Redis/Cluster.html">Redis::Cluster</
     <div class="entry-detail" id="register_read_only_command(command:String)-class-method">
       <div class="signature">
         
-        def self.<strong>register_read_only_command</strong>(command : <a href="../String.html">String</a>)
+        def self.<strong>register_read_only_command</strong>(command : String)
 
         <a class="method-permalink" href="#register_read_only_command%28command%3AString%29-class-method">#</a>
       </div>
@@ -1122,13 +1088,15 @@ read-only replicas.</p>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L65" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="register_read_only_commands(commands:Enumerable(String))-class-method">
       <div class="signature">
         
-        def self.<strong>register_read_only_commands</strong>(commands : Enumerable(<a href="../String.html">String</a>))
+        def self.<strong>register_read_only_commands</strong>(commands : Enumerable(String))
 
         <a class="method-permalink" href="#register_read_only_commands%28commands%3AEnumerable%28String%29%29-class-method">#</a>
       </div>
@@ -1145,6 +1113,8 @@ routed to read-only replicas.</p>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1177,6 +1147,8 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L338" target="_blank">View source</a>]
+        
       </div>
     </div>
   
@@ -1196,13 +1168,15 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L210" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="keys:Array(String)-instance-method">
       <div class="signature">
         
-        def <strong>keys</strong> : <a href="../Array.html">Array</a>(<a href="../String.html">String</a>)
+        def <strong>keys</strong> : Array(String)
 
         <a class="method-permalink" href="#keys%3AArray%28String%29-instance-method">#</a>
       </div>
@@ -1219,13 +1193,15 @@ we're supporting it because you may have a reasonable use case for it at
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L180" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="pipeline(key:String,&amp;)-instance-method">
       <div class="signature">
         
-        def <strong>pipeline</strong>(key : <a href="../String.html">String</a>, &)
+        def <strong>pipeline</strong>(key : String, &)
 
         <a class="method-permalink" href="#pipeline%28key%3AString%2C%26%29-instance-method">#</a>
       </div>
@@ -1245,6 +1221,8 @@ method. See the example above.</p>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1271,13 +1249,15 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L268" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="scan_each(*args,**kwargs,&amp;):Nil-instance-method">
       <div class="signature">
         
-        def <strong>scan_each</strong>(*args, **kwargs, &) : <a href="../Nil.html">Nil</a>
+        def <strong>scan_each</strong>(*args, **kwargs, &) : Nil
 
         <a class="method-permalink" href="#scan_each%28%2Aargs%2C%2A%2Akwargs%2C%26%29%3ANil-instance-method">#</a>
       </div>
@@ -1290,13 +1270,15 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L205" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="slot_for(key:String)-instance-method">
       <div class="signature">
         
-        def <strong>slot_for</strong>(key : <a href="../String.html">String</a>)
+        def <strong>slot_for</strong>(key : String)
 
         <a class="method-permalink" href="#slot_for%28key%3AString%29-instance-method">#</a>
       </div>
@@ -1309,6 +1291,8 @@ which shard your command will be routed to.</p>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/cluster.cr#L381" target="_blank">View source</a>]
         
       </div>
     </div>

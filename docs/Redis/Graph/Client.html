@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.3.2">
-<meta name="crystal_docs.project_version" content="master-dev">
+<meta name="crystal_docs.project_version" content="0.4.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Client(Runnable) - redis master-dev</title>
+  <title>Redis::Graph::Client(Runnable) - redis 0.4.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        master-dev
+        0.4.0
       </span>
     </div>
   </div>
@@ -50,21 +50,6 @@
 
   <div class="types-list">
     <ul>
-  
-  <li class=" " data-id="redis/Array" data-name="array(t)">
-      <a href="../../Array.html">Array</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Bool" data-name="bool">
-      <a href="../../Bool.html">Bool</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Int" data-name="int">
-      <a href="../../Int.html">Int</a>
-      
-    </li>
   
   <li class=" " data-id="redis/Int16" data-name="int16">
       <a href="../../Int16.html">Int16</a>
@@ -83,11 +68,6 @@
   
   <li class=" " data-id="redis/Int8" data-name="int8">
       <a href="../../Int8.html">Int8</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Nil" data-name="nil">
-      <a href="../../Nil.html">Nil</a>
       
     </li>
   
@@ -456,26 +436,6 @@
       
     </li>
   
-  <li class=" " data-id="redis/String" data-name="string">
-      <a href="../../String.html">String</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Time" data-name="time">
-      <a href="../../Time.html">Time</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Tuple" data-name="tuple(*t)">
-      <a href="../../Tuple.html">Tuple</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/UUID" data-name="uuid">
-      <a href="../../UUID.html">UUID</a>
-      
-    </li>
-  
 </ul>
 
   </div>
@@ -518,7 +478,9 @@
   </h2>
   
     
-      graph.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L56" target="_blank">
+        graph.cr
+      </a>
     
     <br/>
   
@@ -602,7 +564,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#write_query%28cypher%3AString%2C%2A%2Aparams%3AProperty%29-instance-method" class="signature"><strong>#write_query</strong>(cypher : String, **params : Property)</a>
+        <a href="#write_query%28cypher%3AString%2C%2A%2Aparams%29-instance-method" class="signature"><strong>#write_query</strong>(cypher : String, **params)</a>
         
           <div class="summary"><p>Write data to the graph using the given cypher query, passing in the given query parameters.</p></div>
         
@@ -661,13 +623,15 @@
     <div class="entry-detail" id="new(redis:Runnable,key:String)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(redis : Runnable, key : <a href="../../String.html">String</a>)
+        def self.<strong>new</strong>(redis : Runnable, key : String)
 
         <a class="method-permalink" href="#new%28redis%3ARunnable%2Ckey%3AString%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -708,13 +672,15 @@
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L147" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="read_query(cypher:String,params:NamedTuple|Hash,returntypes:Tuple(*T))forallT-instance-method">
       <div class="signature">
         
-        def <strong>read_query</strong>(cypher : <a href="../../String.html">String</a>, params : NamedTuple | Hash, return types : <a href="../../Tuple.html">Tuple</a>(<span class="o">*</span><span class="t">T</span>)) forall T
+        def <strong>read_query</strong>(cypher : String, params : NamedTuple | Hash, return types : Tuple(<span class="o">*</span><span class="t">T</span>)) forall T
 
         <a class="method-permalink" href="#read_query%28cypher%3AString%2Cparams%3ANamedTuple%7CHash%2Creturntypes%3ATuple%28%2AT%29%29forallT-instance-method">#</a>
       </div>
@@ -734,13 +700,15 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L130" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="read_query(cypher:String)-instance-method">
       <div class="signature">
         
-        def <strong>read_query</strong>(cypher : <a href="../../String.html">String</a>)
+        def <strong>read_query</strong>(cypher : String)
 
         <a class="method-permalink" href="#read_query%28cypher%3AString%29-instance-method">#</a>
       </div>
@@ -757,13 +725,15 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L101" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="read_query(cypher:String,**params)-instance-method">
       <div class="signature">
         
-        def <strong>read_query</strong>(cypher : <a href="../../String.html">String</a>, **params)
+        def <strong>read_query</strong>(cypher : String, **params)
 
         <a class="method-permalink" href="#read_query%28cypher%3AString%2C%2A%2Aparams%29-instance-method">#</a>
       </div>
@@ -782,13 +752,15 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L115" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="write_query(cypher:String,params:NamedTuple|Hash,returntypes:Tuple(*T))forallT-instance-method">
       <div class="signature">
         
-        def <strong>write_query</strong>(cypher : <a href="../../String.html">String</a>, params : NamedTuple | Hash, return types : <a href="../../Tuple.html">Tuple</a>(<span class="o">*</span><span class="t">T</span>)) forall T
+        def <strong>write_query</strong>(cypher : String, params : NamedTuple | Hash, return types : Tuple(<span class="o">*</span><span class="t">T</span>)) forall T
 
         <a class="method-permalink" href="#write_query%28cypher%3AString%2Cparams%3ANamedTuple%7CHash%2Creturntypes%3ATuple%28%2AT%29%29forallT-instance-method">#</a>
       </div>
@@ -808,13 +780,15 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L80" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="write_query(cypher:String)-instance-method">
       <div class="signature">
         
-        def <strong>write_query</strong>(cypher : <a href="../../String.html">String</a>)
+        def <strong>write_query</strong>(cypher : String)
 
         <a class="method-permalink" href="#write_query%28cypher%3AString%29-instance-method">#</a>
       </div>
@@ -828,15 +802,17 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L65" target="_blank">View source</a>]
+        
       </div>
     </div>
   
-    <div class="entry-detail" id="write_query(cypher:String,**params:Property)-instance-method">
+    <div class="entry-detail" id="write_query(cypher:String,**params)-instance-method">
       <div class="signature">
         
-        def <strong>write_query</strong>(cypher : <a href="../../String.html">String</a>, **params : Property)
+        def <strong>write_query</strong>(cypher : String, **params)
 
-        <a class="method-permalink" href="#write_query%28cypher%3AString%2C%2A%2Aparams%3AProperty%29-instance-method">#</a>
+        <a class="method-permalink" href="#write_query%28cypher%3AString%2C%2A%2Aparams%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -847,6 +823,8 @@ given query parameters.</p>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/graph.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>

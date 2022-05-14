@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.3.2">
-<meta name="crystal_docs.project_version" content="master-dev">
+<meta name="crystal_docs.project_version" content="0.4.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Streaming::XReadGroupResponse::Result - redis master-dev</title>
+  <title>Redis::Streaming::XReadGroupResponse::Result - redis 0.4.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        master-dev
+        0.4.0
       </span>
     </div>
   </div>
@@ -50,21 +50,6 @@
 
   <div class="types-list">
     <ul>
-  
-  <li class=" " data-id="redis/Array" data-name="array(t)">
-      <a href="../../../Array.html">Array</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Bool" data-name="bool">
-      <a href="../../../Bool.html">Bool</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Int" data-name="int">
-      <a href="../../../Int.html">Int</a>
-      
-    </li>
   
   <li class=" " data-id="redis/Int16" data-name="int16">
       <a href="../../../Int16.html">Int16</a>
@@ -83,11 +68,6 @@
   
   <li class=" " data-id="redis/Int8" data-name="int8">
       <a href="../../../Int8.html">Int8</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Nil" data-name="nil">
-      <a href="../../../Nil.html">Nil</a>
       
     </li>
   
@@ -456,26 +436,6 @@
       
     </li>
   
-  <li class=" " data-id="redis/String" data-name="string">
-      <a href="../../../String.html">String</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Time" data-name="time">
-      <a href="../../../Time.html">Time</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Tuple" data-name="tuple(*t)">
-      <a href="../../../Tuple.html">Tuple</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/UUID" data-name="uuid">
-      <a href="../../../UUID.html">UUID</a>
-      
-    </li>
-  
 </ul>
 
   </div>
@@ -518,7 +478,9 @@
   </h2>
   
     
-      streaming.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/streaming.cr#L67" target="_blank">
+        streaming.cr
+      </a>
     
     <br/>
   
@@ -621,13 +583,15 @@
     <div class="entry-detail" id="new(key:String,messages:Array)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(key : <a href="../../../String.html">String</a>, messages : <a href="../../../Array.html">Array</a>)
+        def self.<strong>new</strong>(key : String, messages : Array)
 
         <a class="method-permalink" href="#new%28key%3AString%2Cmessages%3AArray%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/streaming.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -649,7 +613,7 @@
     <div class="entry-detail" id="key:String-instance-method">
       <div class="signature">
         
-        def <strong>key</strong> : <a href="../../../String.html">String</a>
+        def <strong>key</strong> : String
 
         <a class="method-permalink" href="#key%3AString-instance-method">#</a>
       </div>
@@ -657,19 +621,23 @@
       <br/>
       <div>
         
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/streaming.cr#L69" target="_blank">View source</a>]
+        
       </div>
     </div>
   
     <div class="entry-detail" id="messages:Array(Message)-instance-method">
       <div class="signature">
         
-        def <strong>messages</strong> : <a href="../../../Array.html">Array</a>(<a href="../../../Redis/Streaming/Message.html">Message</a>)
+        def <strong>messages</strong> : Array(<a href="../../../Redis/Streaming/Message.html">Message</a>)
 
         <a class="method-permalink" href="#messages%3AArray%28Message%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/streaming.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
