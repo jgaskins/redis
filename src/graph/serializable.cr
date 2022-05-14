@@ -123,8 +123,8 @@ struct Tuple
   def self.from_graph_result(result : Array)
     {% begin %}
       {
-        {% for type in @type.type_vars %}
-          {{type.instance}}.from_graph_result(result),
+        {% for type, index in @type.type_vars %}
+          {{type.instance}}.from_graph_result(result[{{index}}]),
         {% end %}
       }
     {% end %}

@@ -30,10 +30,10 @@ describe Redis::Graph do
   test "creates and retrieves nodes" do
     2.times do
       result = graph.write_query("CREATE (user:User { id: randomUUID() }) RETURN user")
-      Redis::Graph::Result.new(result).size.should eq 1
+      result.size.should eq 1
     end
 
-    result = Redis::Graph::Result.new(graph.read_query("MATCH (user:User) RETURN user"))
+    result = graph.read_query("MATCH (user:User) RETURN user")
 
     result.size.should eq 2
   end
@@ -45,7 +45,6 @@ describe Redis::Graph do
     CYPHER
 
     count = 0
-    result = Redis::Graph::Result.new(result)
     result.each do |(user)|
       count += 1
     end
@@ -156,7 +155,7 @@ describe Redis::Graph::Result do
     result = Redis::Graph::Result.new(raw)
 
     result.size.should eq 1
-    result.columns.should eq %w[user membership]
+    result.fields.should eq %w[user membership]
     result.labels_added.should eq 1
     result.nodes_created.should eq 2
     result.properties_set.should eq 3
