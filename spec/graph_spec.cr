@@ -160,7 +160,7 @@ describe Redis::Graph::Result do
     result.nodes_created.should eq 2
     result.properties_set.should eq 3
     result.duration.should eq 0.196421.milliseconds
-    result.cached_execution?.should eq false
+    result.cached_execution?.should eq true
 
     user = result.first.first.as(Redis::Graph::Node)
     user.labels.should eq %w[User]

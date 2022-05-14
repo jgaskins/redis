@@ -334,7 +334,7 @@ module Redis
           when /Query internal execution time: (\d+\.\d+) milliseconds/
             query_time = $1.to_f64.milliseconds
           when /Cached execution: (\d+)/
-            cached = $1 != "0"
+            cached = ($1 != "0")
           end
         end
 
@@ -353,7 +353,7 @@ module Redis
             end
             list
           },
-          cached_execution: !!(cached =~ /1/),
+          cached_execution: !!cached,
           duration: query_time,
           labels_added: labels_added,
           nodes_created: nodes_created,
