@@ -6,6 +6,7 @@ require "./parser"
 require "./pipeline"
 require "./value"
 require "./transaction"
+require "./writer"
 
 module Redis
   # The connection wraps the TCP connection to the Redis server.
@@ -13,8 +14,6 @@ module Redis
     include Commands
 
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
-
-    CRLF = "\r\n"
 
     # We receive all connection information in the URI.
     #
@@ -34,6 +33,7 @@ module Redis
       end
 
       @socket = socket
+      @writer = Writer.new(socket)
       @parser = Parser.new(@socket)
 
       pipeline do |redis|
@@ -124,7 +124,7 @@ module Redis
     {% for command in %w[subscribe psubscribe] %}
       def {{command.id}}(*channels : String, &block : Subscription, self ->)
         subscription = Subscription.new(self)
-        encode({"{{command.id}}"} + channels)
+        @writer.encode({"{{command.id}}"} + channels)
         flush
 
         yield subscription, self
@@ -134,17 +134,17 @@ module Redis
     {% end %}
 
     def subscribe(*channels : String)
-      encode({"subscribe"} + channels)
+      @writer.encode({"subscribe"} + channels)
       flush
     end
 
     def unsubscribe(*channels : String)
-      encode({"unsubscribe"} + channels)
+      @writer.encode({"unsubscribe"} + channels)
       flush
     end
 
     def punsubscribe(*channels : String)
-      encode({"punsubscribe"} + channels)
+      @writer.encode({"punsubscribe"} + channels)
       flush
     end
 
@@ -197,7 +197,7 @@ module Redis
     # ```
     def run(command, retries = 5) : Value
       loop do
-        encode command
+        @writer.encode command
         flush
         return read
       rescue ex : IO::Error
@@ -244,32 +244,12 @@ module Redis
       @parser.read
     end
 
-    # :nodoc:
-    def encode(values : Enumerable)
-      @socket << '*' << values.size << CRLF
-      values.each do |part|
-        encode part
-      end
-    end
-
-    # :nodoc:
-    def encode(string : String)
-      @socket << '$' << string.bytesize << CRLF
-      @socket << string << CRLF
-    end
-
-    # :nodoc:
-    def encode(int : Int)
-      @socket << ':' << int << CRLF
-    end
-
-    # :nodoc:
-    def encode(nothing : Nil)
-      @socket << "$-1" << CRLF
-    end
-
     def url
       @uri.to_s
+    end
+
+    def encode(command)
+      @writer.encode command
     end
   end
 

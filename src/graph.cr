@@ -1,4 +1,8 @@
+require "json"
+require "uuid/json"
+
 require "./redis"
+require "./graph/serializable"
 
 module Redis
   @[Experimental("Please don't use this in production yet. I'm not even sure what I'm doing here.")]
@@ -6,33 +10,57 @@ module Redis
     class Error < ::Redis::Error
     end
 
-    struct Client
-      def initialize(@redis : ::Redis::Client, @key : String)
+    struct Client(Runnable)
+      def initialize(@redis : Runnable, @key : String)
       end
 
       def write_query(cypher : String)
         @redis.run({"GRAPH.QUERY", @key, cypher}).as Array
       end
 
-      def write_query(cypher : String, **params : Property)
-        cypher = String.build do |str|
-          str << "CYPHER "
-          params.each do |key, value|
-            str << key << '='
-            encode_param value, str
-          end
-          str << ' ' << cypher.strip
+      def write_query(cypher : String, params : NamedTuple | Hash, return types : Tuple(*T)) forall T
+        result = Result.new(@redis.run({"GRAPH.QUERY", @key, build_query(cypher, params)}).as(Array))
+        result.map do |row|
+          types.from_graph_result(row.as(Array))
         end
+      end
 
-        @redis.run({"GRAPH.QUERY", @key, cypher}).as Array
+      def write_query(cypher : String, **params : Property)
+        @redis.run({"GRAPH.QUERY", @key, build_query(cypher, params)}).as Array
       end
 
       def read_query(cypher : String)
         @redis.run({"GRAPH.RO_QUERY", @key, cypher}).as Array
       end
 
-      private def encode_param(value : String | Int | Float, io : IO) : Nil
-        value.inspect io
+      def read_query(cypher : String, params : NamedTuple | Hash, return types : Tuple(*T)) forall T
+        result = Result.new(@redis.run({"GRAPH.RO_QUERY", @key, build_query(cypher, params)}).as(Array))
+        result.map do |row|
+          types.from_graph_result(row.as(Array))
+        end
+      end
+
+      def multi
+        @redis.multi do |txn|
+          yield Client.new(txn.@connection, @key)
+        end
+      end
+
+      private def build_query(cypher, params)
+        String.build do |str|
+          str << "CYPHER "
+          params.each do |key, value|
+            key.to_s str
+            str << '='
+            encode_param value, str
+            str << ' '
+          end
+          str << ' ' << cypher.strip
+        end
+      end
+
+      private def encode_param(value, io : IO) : Nil
+        value.to_json io
       end
     end
 
@@ -62,8 +90,40 @@ module Redis
       end
     end
 
+    struct Relationship
+      getter id : Int64
+      getter type : String
+      getter src_node : Int64
+      getter dest_node : Int64
+      getter properties : Hash(String, Property)
+
+      def self.from?(array : Array)
+        return if array.size != 5
+        return unless array[0].as?(Array).try(&.[0]?) == "id"
+        return unless array[1].as?(Array).try(&.[0]?) == "type"
+        return unless array[2].as?(Array).try(&.[0]?) == "src_node"
+        return unless array[3].as?(Array).try(&.[0]?) == "dest_node"
+        return unless array[4].as?(Array).try(&.[0]?) == "properties"
+
+        id = array[0].as(Array)[1].as(Int64)
+        type = array[1].as(Array)[1].as(String)
+        src_node = array[2].as(Array)[1].as(Int64)
+        dest_node = array[3].as(Array)[1].as(Int64)
+        properties = Map.new(initial_capacity: array[4].as(Array).size)
+        array[4].as(Array)[1].as(Array).each do |prop|
+          key, value = prop.as(Array)
+          properties[key.as(String)] = value.as(Property)
+        end
+
+        new(id, type, src_node, dest_node, properties)
+      end
+
+      def initialize(@id, @type, @src_node, @dest_node, @properties)
+      end
+    end
+
     alias Property = ::Redis::Value
-    alias ResultValue = Property | Node
+    alias ResultValue = Property | Node | Relationship
     alias List = Array(ResultValue | Array(ResultValue))
     alias Map = Hash(String, Property)
 
@@ -111,7 +171,7 @@ module Redis
               in String, Int64, Nil
                 list << item
               in Array
-                list << Node.from?(item) || item
+                list << (Node.from?(item) || Relationship.from?(item) || item)
               end.as(ResultValue | List)
             end
             list
