@@ -303,6 +303,7 @@ struct Int
 end
 
 {% for bits in %w[8 16 32 64] %}
+  # :nodoc:
   struct Int{{bits.id}}
     def self.from_graph_result(result : Int64)
       result.to_i{{bits.id}}
