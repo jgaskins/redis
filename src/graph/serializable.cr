@@ -8,37 +8,37 @@ module Redis::Graph
   #
   # struct Person
   #   include Redis::Graph::Serializable::Node
-
+  #
   #   getter id : UUID
   #   getter name : String
   #   getter created_at : Time
   # end
-
+  #
   # struct Team
   #   include Redis::Graph::Serializable::Node
-
+  #
   #   getter name : String
   # end
-
+  #
   # struct Membership
   #   include Redis::Graph::Serializable::Relationship
-
+  #
   #   getter since : Time
   # end
-
+  #
   # redis = Redis::Client.new
   # redis.del "my-graph"
-
+  #
   # # Store the graph data in the Redis key "my-graph"
   # graph = redis.graph(key: "my-graph")
-
+  #
   # id = UUID.random
-
+  #
   # # Create some data in our graph
   # pp graph.write_query <<-CYPHER, id: id, name: "Jamie", now: Time.utc.to_unix_ms, team_name: "My Team"
   #   CREATE (:Person{id: $id, name: $name, created_at: $now})-[:MEMBER_OF{since: $now}]->(team:Team{name: $team_name})
   # CYPHER
-
+  #
   # # The `return` argument specifies the return types of the results in your
   # # Cypher query's `RETURN` clause
   # pp graph.read_query(<<-CYPHER, {id: id}, return: {Person, Membership, Team})

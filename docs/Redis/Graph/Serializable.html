@@ -442,20 +442,50 @@
     Overview
   </h2>
 
-  <h1><a id="the-return-argument-specifies-the-return-types-of-the-results-in-your" class="anchor" href="#the-return-argument-specifies-the-return-types-of-the-results-in-your">  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>The <code>return</code> argument specifies the return types of the results in your</h1>
-<h1><a id="cypher-querys-return-clause" class="anchor" href="#cypher-querys-return-clause">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>Cypher query's <code>RETURN</code> clause</h1>
-<p>pp graph.read_query(&lt;&lt;-CYPHER, {id: id}, return: {Person, Membership, Team})
-MATCH (person:Person{id: $id})-[membership:MEMBER_OF]-&gt;(team:Team)
-RETURN person, membership, team
-CYPHER</p>
-<pre><code class="language-crystal"></code></pre>
+  <p>The <code><a href="../../Redis/Graph/Serializable.html">Redis::Graph::Serializable</a>::*</code> mixins tell <code><a href="../../Redis/Graph/Client.html">Redis::Graph::Client</a></code> how
+to deserialize nodes and relationships as your own Crystal object types,
+similar to <a href="http://crystal-lang.github.io/crystal-db/api/0.11.0/DB/Serializable.html"><code>DB::Serializable</code></a>.</p>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;redis/graph&quot;</span>
+
+<span class="k">struct</span> <span class="t">Person</span>
+  <span class="k">include</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Graph</span><span class="t">::</span><span class="t">Serializable</span><span class="t">::</span><span class="t">Node</span>
+
+  getter id : <span class="t">UUID</span>
+  getter name : <span class="t">String</span>
+  getter created_at : <span class="t">Time</span>
+<span class="k">end</span>
+
+<span class="k">struct</span> <span class="t">Team</span>
+  <span class="k">include</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Graph</span><span class="t">::</span><span class="t">Serializable</span><span class="t">::</span><span class="t">Node</span>
+
+  getter name : <span class="t">String</span>
+<span class="k">end</span>
+
+<span class="k">struct</span> <span class="t">Membership</span>
+  <span class="k">include</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Graph</span><span class="t">::</span><span class="t">Serializable</span><span class="t">::</span><span class="t">Relationship</span>
+
+  getter since : <span class="t">Time</span>
+<span class="k">end</span>
+
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>
+redis.del <span class="s">&quot;my-graph&quot;</span>
+
+<span class="c"># Store the graph data in the Redis key &quot;my-graph&quot;</span>
+graph <span class="o">=</span> redis.graph(key: <span class="s">&quot;my-graph&quot;</span>)
+
+id <span class="o">=</span> <span class="t">UUID</span>.random
+
+<span class="c"># Create some data in our graph</span>
+pp graph.write_query <span class="s">&lt;&lt;-CYPHER</span>, id: id, name: <span class="s">&quot;Jamie&quot;</span>, now: <span class="t">Time</span>.utc.to_unix_ms, team_name: <span class="s">&quot;My Team&quot;</span>
+<span class="s">  CREATE (:Person{id: $id, name: $name, created_at: $now})-[:MEMBER_OF{since: $now}]-&gt;(team:Team{name: $team_name})
+CYPHER</span>
+
+<span class="c"># The `return` argument specifies the return types of the results in your</span>
+<span class="c"># Cypher query&#39;s `RETURN` clause</span>
+pp graph.read_query(<span class="s">&lt;&lt;-CYPHER</span>, {id: id}, <span class="k">return</span>: {<span class="t">Person</span>, <span class="t">Membership</span>, <span class="t">Team</span>})
+<span class="s">  MATCH (person:Person{id: $id})-[membership:MEMBER_OF]-&gt;(team:Team)
+  RETURN person, membership, team
+CYPHER</span></code></pre>
 
 
 
