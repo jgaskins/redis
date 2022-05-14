@@ -1,4 +1,51 @@
 module Redis::Graph
+  # The `Redis::Graph::Serializable::*` mixins tell `Redis::Graph::Client` how
+  # to deserialize nodes and relationships as your own Crystal object types,
+  # similar to [`DB::Serializable`](http://crystal-lang.github.io/crystal-db/api/0.11.0/DB/Serializable.html).
+  #
+  # ```
+  # require "redis/graph"
+  #
+  # struct Person
+  #   include Redis::Graph::Serializable::Node
+
+  #   getter id : UUID
+  #   getter name : String
+  #   getter created_at : Time
+  # end
+
+  # struct Team
+  #   include Redis::Graph::Serializable::Node
+
+  #   getter name : String
+  # end
+
+  # struct Membership
+  #   include Redis::Graph::Serializable::Relationship
+
+  #   getter since : Time
+  # end
+
+  # redis = Redis::Client.new
+  # redis.del "my-graph"
+
+  # # Store the graph data in the Redis key "my-graph"
+  # graph = redis.graph(key: "my-graph")
+
+  # id = UUID.random
+
+  # # Create some data in our graph
+  # pp graph.write_query <<-CYPHER, id: id, name: "Jamie", now: Time.utc.to_unix_ms, team_name: "My Team"
+  #   CREATE (:Person{id: $id, name: $name, created_at: $now})-[:MEMBER_OF{since: $now}]->(team:Team{name: $team_name})
+  # CYPHER
+
+  # # The `return` argument specifies the return types of the results in your
+  # # Cypher query's `RETURN` clause
+  # pp graph.read_query(<<-CYPHER, {id: id}, return: {Person, Membership, Team})
+  #   MATCH (person:Person{id: $id})-[membership:MEMBER_OF]->(team:Team)
+  #   RETURN person, membership, team
+  # CYPHER
+  # ```
   module Serializable
     annotation Property
     end
@@ -119,6 +166,7 @@ module Redis::Graph
   end
 end
 
+# :nodoc:
 struct Tuple
   def self.from_graph_result(result : Array)
     {% begin %}
@@ -145,6 +193,7 @@ struct Tuple
   end
 end
 
+# :nodoc:
 struct Time
   def self.from_graph_result(result : Redis::Value)
     raise ArgumentError.new("Cannot create a {{@type.id}} from #{result.inspect}")
@@ -171,6 +220,7 @@ struct Time
   end
 end
 
+# :nodoc:
 struct UUID
   def self.from_graph_result(result : Redis::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
@@ -195,6 +245,7 @@ struct UUID
   end
 end
 
+# :nodoc:
 class String
   def self.from_graph_result(result : Redis::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
@@ -217,6 +268,7 @@ class String
   end
 end
 
+# :nodoc:
 struct Nil
   def self.from_graph_result(result : Redis::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
@@ -239,6 +291,7 @@ struct Nil
   end
 end
 
+# :nodoc:
 struct Int
   def self.from_graph_result(result : Redis::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
@@ -257,6 +310,7 @@ end
   end
 {% end %}
 
+# :nodoc:
 struct Bool
   def self.from_graph_result(result : Redis::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
@@ -272,6 +326,7 @@ struct Bool
   end
 end
 
+# :nodoc:
 class Array
   def self.from_graph_result(result : Redis::Value)
     # FIXME: For some reason overloading this method for various types isn't working for deserialization, so we're doing it Ruby style
@@ -300,6 +355,7 @@ class Array
   end
 end
 
+# :nodoc:
 def Union.from_graph_result(result : Redis::Value)
   {% begin %}
   if false

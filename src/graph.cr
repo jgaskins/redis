@@ -78,15 +78,15 @@ module Redis
       # CYPHER
       # ```
       def write_query(cypher : String, params : NamedTuple | Hash, return types : Tuple(*T)) forall T
-        result = Result.new(@redis.run({"GRAPH.QUERY", @key, build_query(cypher, params)}).as(Array))
-        result.map do |row|
-          types.from_graph_result(row.as(Array))
-        end
+        {% begin %}
+          result = Result.new(@redis.run({"GRAPH.QUERY", @key, build_query(cypher, params)}).as(Array))
+          TypedResult({ {{T.type_vars.map(&.instance).join(", ").id}} }).new(result)
+        {% end %}
       end
 
       # Write data to the graph using the given cypher query, passing in the
       # given query parameters.
-      def write_query(cypher : String, **params : Property)
+      def write_query(cypher : String, **params)
         Result.new(@redis.run({"GRAPH.QUERY", @key, build_query(cypher, params)}).as(Array))
       end
 
@@ -312,13 +312,26 @@ module Redis
       # How many nodes were created in this query
       getter nodes_created : Int64
 
+      # How many relationships were created in this query
+      getter relationships_created : Int64
+
       # How many properties were set in this query
       getter properties_set : Int64
 
       def self.new(raw : Array)
-        fields, rows, metadata = raw
+        case raw.size
+        when 1
+          fields = [] of String
+          rows = [] of Redis::Value
+          metadata = raw.first
+        when 3
+          fields, rows, metadata = raw
+        else
+          raise Error.new("Don't know how to process this result: #{raw.inspect}")
+        end
         labels_added = 0i64
         nodes_created = 0i64
+        relationships_created = 0i64
         properties_set = 0i64
         cached = false
         query_time = 0.seconds
@@ -329,6 +342,8 @@ module Redis
             labels_added = $1.to_i64
           when /Nodes created: (\d+)/
             nodes_created = $1.to_i64
+          when /Relationships created: (\d+)/
+            relationships_created = $1.to_i64
           when /Properties set: (\d+)/
             properties_set = $1.to_i64
           when /Query internal execution time: (\d+\.\d+) milliseconds/
@@ -357,11 +372,12 @@ module Redis
           duration: query_time,
           labels_added: labels_added,
           nodes_created: nodes_created,
+          relationships_created: relationships_created,
           properties_set: properties_set,
         )
       end
 
-      def initialize(*, @fields, @rows, @cached_execution, @duration, @labels_added, @nodes_created, @properties_set)
+      def initialize(*, @fields, @rows, @cached_execution, @duration, @labels_added, @nodes_created, @relationships_created, @properties_set)
       end
 
       def each
@@ -384,6 +400,8 @@ module Redis
       getter labels_added : Int64
       # How many nodes were created in this query
       getter nodes_created : Int64
+      # How many relationships were created in this query
+      getter relationships_created : Int64
       # How many properties were set in this query
       getter properties_set : Int64
 
@@ -400,12 +418,13 @@ module Redis
           duration: result.duration,
           labels_added: result.labels_added,
           nodes_created: result.nodes_created,
+          relationships_created: result.relationships_created,
           properties_set: result.properties_set,
         )
       end
 
       # :nodoc:
-      def initialize(*, @fields, @rows, @cached_execution, @duration, @labels_added, @nodes_created, @properties_set)
+      def initialize(*, @fields, @rows, @cached_execution, @duration, @labels_added, @nodes_created, @relationships_created, @properties_set)
       end
 
       # Iterate over each of the results, yielding a tuple containing instances
