@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 1.3.2">
+<meta name="crystal_docs.project_version" content="master-dev">
+<meta name="crystal_docs.project_name" content="redis">
+
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/doc.js"></script>
+
+  <meta name="repository-name" content="redis">
+  <title>Time - redis master-dev</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          redis
+        </a>
+      </h1>
+
+      <span class="project-version">
+        master-dev
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class=" " data-id="redis/Array" data-name="array(t)">
+      <a href="Array.html">Array</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Bool" data-name="bool">
+      <a href="Bool.html">Bool</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Int" data-name="int">
+      <a href="Int.html">Int</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Int16" data-name="int16">
+      <a href="Int16.html">Int16</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Int32" data-name="int32">
+      <a href="Int32.html">Int32</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Int64" data-name="int64">
+      <a href="Int64.html">Int64</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Int8" data-name="int8">
+      <a href="Int8.html">Int8</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Nil" data-name="nil">
+      <a href="Nil.html">Nil</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis" data-name="redis">
+      <a href="Redis.html">Redis</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
+      <a href="Redis/BusyGroup.html">BusyGroup</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+      <a href="Redis/Client.html">Client</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Cluster" data-name="redis::cluster">
+      <a href="Redis/Cluster.html">Cluster</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
+      <a href="Redis/Cluster/Ask.html">Ask</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/CrossSlot" data-name="redis::cluster::crossslot">
+      <a href="Redis/Cluster/CrossSlot.html">CrossSlot</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Error" data-name="redis::cluster::error">
+      <a href="Redis/Cluster/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Moved" data-name="redis::cluster::moved">
+      <a href="Redis/Cluster/Moved.html">Moved</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Commands" data-name="redis::commands">
+      <a href="Redis/Commands.html">Commands</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/XGroup" data-name="redis::commands::xgroup">
+      <a href="Redis/Commands/XGroup.html">XGroup</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Connection" data-name="redis::connection">
+      <a href="Redis/Connection.html">Connection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Error" data-name="redis::error">
+      <a href="Redis/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+      <a href="Redis/FullText.html">FullText</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
+      <a href="Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/SortBy" data-name="redis::fulltext::sortby">
+      <a href="Redis/FullText/SortBy.html">SortBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
+      <a href="Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Future" data-name="redis::future">
+      <a href="Redis/Future.html">Future</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Future/NotResolved" data-name="redis::future::notresolved">
+      <a href="Redis/Future/NotResolved.html">NotResolved</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph" data-name="redis::graph">
+      <a href="Redis/Graph.html">Graph</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Client" data-name="redis::graph::client(runnable)">
+      <a href="Redis/Graph/Client.html">Client</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Error" data-name="redis::graph::error">
+      <a href="Redis/Graph/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/List" data-name="redis::graph::list">
+      <a href="Redis/Graph/List.html">List</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Map" data-name="redis::graph::map">
+      <a href="Redis/Graph/Map.html">Map</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Node" data-name="redis::graph::node">
+      <a href="Redis/Graph/Node.html">Node</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Property" data-name="redis::graph::property">
+      <a href="Redis/Graph/Property.html">Property</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Relationship" data-name="redis::graph::relationship">
+      <a href="Redis/Graph/Relationship.html">Relationship</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Result" data-name="redis::graph::result">
+      <a href="Redis/Graph/Result.html">Result</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/ResultValue" data-name="redis::graph::resultvalue">
+      <a href="Redis/Graph/ResultValue.html">ResultValue</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph/Serializable" data-name="redis::graph::serializable">
+      <a href="Redis/Graph/Serializable.html">Serializable</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="redis/Redis/Graph/Serializable/Node" data-name="redis::graph::serializable::node">
+      <a href="Redis/Graph/Serializable/Node.html">Node</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Serializable/Node/Metadata" data-name="redis::graph::serializable::node::metadata">
+      <a href="Redis/Graph/Serializable/Node/Metadata.html">Metadata</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Serializable/Property" data-name="redis::graph::serializable::property">
+      <a href="Redis/Graph/Serializable/Property.html">Property</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph/Serializable/Relationship" data-name="redis::graph::serializable::relationship">
+      <a href="Redis/Graph/Serializable/Relationship.html">Relationship</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Serializable/Relationship/Metadata" data-name="redis::graph::serializable::relationship::metadata">
+      <a href="Redis/Graph/Serializable/Relationship/Metadata.html">Metadata</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/TypedResult" data-name="redis::graph::typedresult(t)">
+      <a href="Redis/Graph/TypedResult.html">TypedResult</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/JSON" data-name="redis::json(runnable)">
+      <a href="Redis/JSON.html">JSON</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/NoGroup" data-name="redis::nogroup">
+      <a href="Redis/NoGroup.html">NoGroup</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Parser" data-name="redis::parser">
+      <a href="Redis/Parser.html">Parser</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Pipeline" data-name="redis::pipeline">
+      <a href="Redis/Pipeline.html">Pipeline</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming" data-name="redis::streaming">
+      <a href="Redis/Streaming.html">Streaming</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/Message" data-name="redis::streaming::message">
+      <a href="Redis/Streaming/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XAutoClaimResponse" data-name="redis::streaming::xautoclaimresponse">
+      <a href="Redis/Streaming/XAutoClaimResponse.html">XAutoClaimResponse</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+      <a href="Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
+      <a href="Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingExtendedResponse" data-name="redis::streaming::xpendingextendedresponse">
+      <a href="Redis/Streaming/XPendingExtendedResponse.html">XPendingExtendedResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingExtendedResponse/MessageData" data-name="redis::streaming::xpendingextendedresponse::messagedata">
+      <a href="Redis/Streaming/XPendingExtendedResponse/MessageData.html">MessageData</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XReadGroupResponse" data-name="redis::streaming::xreadgroupresponse">
+      <a href="Redis/Streaming/XReadGroupResponse.html">XReadGroupResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XReadGroupResponse/Result" data-name="redis::streaming::xreadgroupresponse::result">
+      <a href="Redis/Streaming/XReadGroupResponse/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
+      <a href="Redis/TimeSeries.html">TimeSeries</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/DuplicatePolicy" data-name="redis::timeseries::duplicatepolicy">
+      <a href="Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Encoding" data-name="redis::timeseries::encoding">
+      <a href="Redis/TimeSeries/Encoding.html">Encoding</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Range" data-name="redis::timeseries::range">
+      <a href="Redis/TimeSeries/Range.html">Range</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries/RangeOptions" data-name="redis::timeseries::rangeoptions">
+      <a href="Redis/TimeSeries/RangeOptions.html">RangeOptions</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/Aggregation" data-name="redis::timeseries::rangeoptions::aggregation">
+      <a href="Redis/TimeSeries/RangeOptions/Aggregation.html">Aggregation</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/AggregationType" data-name="redis::timeseries::rangeoptions::aggregationtype">
+      <a href="Redis/TimeSeries/RangeOptions/AggregationType.html">AggregationType</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+      <a href="Redis/Transaction.html">Transaction</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Value" data-name="redis::value">
+      <a href="Redis/Value.html">Value</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Writer" data-name="redis::writer">
+      <a href="Redis/Writer.html">Writer</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/String" data-name="string">
+      <a href="String.html">String</a>
+      
+    </li>
+  
+  <li class=" current" data-id="redis/Time" data-name="time">
+      <a href="Time.html">Time</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Tuple" data-name="tuple(*t)">
+      <a href="Tuple.html">Tuple</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/UUID" data-name="uuid">
+      <a href="UUID.html">UUID</a>
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">struct</span> Time
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="Time.html">Time</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p><code><a href="Time.html">Time</a></code> represents a date-time instant in
+<a href="https://www.w3.org/International/articles/definitions-time/#incremental_time">incremental time</a>
+observed in a specific time zone.</p>
+<p>The calendaric calculations are based on the rules of the proleptic Gregorian
+calendar as specified in <a href="http://xml.coverpages.org/ISO-FDIS-8601.pdf">ISO 8601</a>.
+Leap seconds are ignored.</p>
+<p>Internally, the time is stored as an <code><a href="Int64.html">Int64</a></code> representing seconds from epoch
+(<code>0001-01-01 00:00:00.0 UTC</code>) and an <code><a href="Int32.html">Int32</a></code> representing
+nanosecond-of-second with value range <code>0..999_999_999</code>.</p>
+<p>The supported date range is <code>0001-01-01 00:00:00.0</code> to
+<code>9999-12-31 23:59:59.999_999_999</code> in any local time zone.</p>
+<h3><a id="telling-the-time" class="anchor" href="#telling-the-time">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Telling the Time</h3>
+<p>There are several methods to retrieve a <code><a href="Time.html">Time</a></code> instance representing the
+current time:</p>
+<pre><code class="language-crystal"><span class="t">Time</span>.utc                                        <span class="c"># returns the current time in UTC</span>
+<span class="t">Time</span>.local <span class="t">Time</span><span class="t">::</span><span class="t">Location</span>.load(<span class="s">&quot;Europe/Berlin&quot;</span>) <span class="c"># returns the current time in time zone Europe/Berlin</span>
+<span class="t">Time</span>.local                                      <span class="c"># returns the current time in current time zone</span></code></pre>
+<p>It is generally recommended to keep instances in UTC and only apply a
+local time zone when formatting for user display, unless the domain logic
+requires having a specific time zone (for example for calendaric operations).</p>
+<h3><a id="creating-a-specific-instant" class="anchor" href="#creating-a-specific-instant">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Creating a Specific Instant</h3>
+<p><code><a href="Time.html">Time</a></code> instances representing a specific instant can be created by
+<code>.utc</code> or <code>.new</code> with the date-time specified as individual arguments:</p>
+<pre><code class="language-crystal">time <span class="o">=</span> <span class="t">Time</span>.utc(<span class="n">2016</span>, <span class="n">2</span>, <span class="n">15</span>, <span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>)
+time.to_s <span class="c"># =&gt; 2016-02-15 10:20:30 UTC</span>
+time <span class="o">=</span> <span class="t">Time</span>.local(<span class="n">2016</span>, <span class="n">2</span>, <span class="n">15</span>, <span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>, location: <span class="t">Time</span><span class="t">::</span><span class="t">Location</span>.load(<span class="s">&quot;Europe/Berlin&quot;</span>))
+time.to_s <span class="c"># =&gt; 2016-02-15 10:20:30 +01:00 Europe/Berlin</span>
+<span class="c"># The time-of-day can be omitted and defaults to midnight (start of day):</span>
+time <span class="o">=</span> <span class="t">Time</span>.utc(<span class="n">2016</span>, <span class="n">2</span>, <span class="n">15</span>)
+time.to_s <span class="c"># =&gt; 2016-02-15 00:00:00 UTC</span></code></pre>
+<h3><a id="retrieving-time-information" class="anchor" href="#retrieving-time-information">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Retrieving Time Information</h3>
+<p>Each <code><a href="Time.html">Time</a></code> instance allows querying calendar data:</p>
+<pre><code class="language-crystal">time <span class="o">=</span> <span class="t">Time</span>.utc(<span class="n">2016</span>, <span class="n">2</span>, <span class="n">15</span>, <span class="n">10</span>, <span class="n">20</span>, <span class="n">30</span>)
+time.year        <span class="c"># =&gt; 2016</span>
+time.month       <span class="c"># =&gt; 2</span>
+time.day         <span class="c"># =&gt; 15</span>
+time.hour        <span class="c"># =&gt; 10</span>
+time.minute      <span class="c"># =&gt; 20</span>
+time.second      <span class="c"># =&gt; 30</span>
+time.millisecond <span class="c"># =&gt; 0</span>
+time.nanosecond  <span class="c"># =&gt; 0</span>
+time.day_of_week <span class="c"># =&gt; Time::DayOfWeek::Monday</span>
+time.day_of_year <span class="c"># =&gt; 46</span>
+time.monday?     <span class="c"># =&gt; true</span>
+time.time_of_day <span class="c"># =&gt; 10:20:30</span></code></pre>
+<p>For querying if a time is at a specific day of week, <code><a href="Time.html">Time</a></code> offers named
+predicate methods, delegating to <code>#day_of_week</code>:</p>
+<pre><code class="language-crystal">time.monday? <span class="c"># =&gt; true</span>
+<span class="c"># ...</span>
+time.sunday? <span class="c"># =&gt; false</span></code></pre>
+<h3><a id="time-zones" class="anchor" href="#time-zones">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Time Zones</h3>
+<p>Each time is attached to a specific time zone, represented by a <code>Location</code>
+(see <code>#location</code>).
+<code>#zone</code> returns the time zone observed in this location at the current time
+(i.e. the instant represented by this <code><a href="Time.html">Time</a></code>).
+<code>#offset</code> returns the offset of the current zone in seconds.</p>
+<pre><code class="language-crystal">time <span class="o">=</span> <span class="t">Time</span>.local(<span class="n">2018</span>, <span class="n">3</span>, <span class="n">8</span>, <span class="n">22</span>, <span class="n">5</span>, <span class="n">13</span>, location: <span class="t">Time</span><span class="t">::</span><span class="t">Location</span>.load(<span class="s">&quot;Europe/Berlin&quot;</span>))
+time          <span class="c"># =&gt; 2018-03-08 22:05:13 +01:00 Europe/Berlin</span>
+time.location <span class="c"># =&gt; #&lt;Time::Location Europe/Berlin&gt;</span>
+time.zone     <span class="c"># =&gt; #&lt;Time::Location::Zone CET +01:00 (3600s) STD&gt;</span>
+time.offset   <span class="c"># =&gt; 3600</span></code></pre>
+<p>Using <code>.utc</code>, the location is <code>Time::Location::UTC</code>:</p>
+<pre><code class="language-crystal">time <span class="o">=</span> <span class="t">Time</span>.utc(<span class="n">2018</span>, <span class="n">3</span>, <span class="n">8</span>, <span class="n">22</span>, <span class="n">5</span>, <span class="n">13</span>)
+time          <span class="c"># =&gt; 2018-03-08 22:05:13.0 UTC</span>
+time.location <span class="c"># =&gt; #&lt;Time::Location UTC&gt;</span>
+time.zone     <span class="c"># =&gt; #&lt;Time::Location::Zone UTC +00:00 (0s) STD&gt;</span>
+time.offset   <span class="c"># =&gt; 0</span></code></pre>
+<p>A <code><a href="Time.html">Time</a></code> instance can be transformed to a different time zone while retaining
+the same instant using <code>#in</code>:</p>
+<pre><code class="language-crystal">time_de <span class="o">=</span> <span class="t">Time</span>.local(<span class="n">2018</span>, <span class="n">3</span>, <span class="n">8</span>, <span class="n">22</span>, <span class="n">5</span>, <span class="n">13</span>, location: <span class="t">Time</span><span class="t">::</span><span class="t">Location</span>.load(<span class="s">&quot;Europe/Berlin&quot;</span>))
+time_ar <span class="o">=</span> time_de.<span class="k">in</span> <span class="t">Time</span><span class="t">::</span><span class="t">Location</span>.load(<span class="s">&quot;America/Buenos_Aires&quot;</span>)
+time_de <span class="c"># =&gt; 2018-03-08 22:05:13 +01:00 Europe/Berlin</span>
+time_ar <span class="c"># =&gt; 2018-03-08 18:05:13 -03:00 America/Buenos_Aires</span></code></pre>
+<p>Both <code><a href="Time.html">Time</a></code> instances show a different local date-time, but they represent
+the same date-time in the instant time-line, therefore they are considered
+equal:</p>
+<pre><code class="language-crystal">time_de.to_utc     <span class="c"># =&gt; 2018-03-08 21:05:13 UTC</span>
+time_ar.to_utc     <span class="c"># =&gt; 2018-03-08 21:05:13 UTC</span>
+time_de <span class="o">==</span> time_ar <span class="c"># =&gt; true</span></code></pre>
+<p>There are also two special methods for converting to UTC and local time zone:</p>
+<pre><code class="language-crystal">time.to_utc   <span class="c"># equals time.in(Location::UTC)</span>
+time.to_local <span class="c"># equals time.in(Location.local)</span></code></pre>
+<p><code>#to_local_in</code> allows changing the time zone while keeping
+the same local date-time (wall clock) which results in a different instant
+on the time line.</p>
+<h3><a id="formatting-and-parsing-time" class="anchor" href="#formatting-and-parsing-time">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Formatting and Parsing Time</h3>
+<p>To make date-time instances exchangeable between different computer systems
+or readable to humans, they are usually converted to and from a string
+representation.</p>
+<p>The method <code>#to_s</code> formats the date-time according to a specified pattern.</p>
+<pre><code class="language-crystal">time <span class="o">=</span> <span class="t">Time</span>.utc(<span class="n">2015</span>, <span class="n">10</span>, <span class="n">12</span>, <span class="n">10</span>, <span class="n">30</span>, <span class="n">0</span>)
+time.to_s(<span class="s">&quot;%Y-%m-%d %H:%M:%S %:z&quot;</span>) <span class="c"># =&gt; &quot;2015-10-12 10:30:00 +00:00&quot;</span></code></pre>
+<p>Similarly, <code>Time.parse</code> and <code>Time.parse!</code> are used to construct a <code><a href="Time.html">Time</a></code> instance from date-time
+information in a string, according to a specified pattern:</p>
+<pre><code class="language-crystal"><span class="t">Time</span>.parse(<span class="s">&quot;2015-10-12 10:30:00 +00:00&quot;</span>, <span class="s">&quot;%Y-%m-%d %H:%M:%S %z&quot;</span>, <span class="t">Time</span><span class="t">::</span><span class="t">Location</span><span class="t">::</span><span class="t">UTC</span>)
+<span class="t">Time</span>.parse!(<span class="s">&quot;2015-10-12 10:30:00 +00:00&quot;</span>, <span class="s">&quot;%Y-%m-%d %H:%M:%S %z&quot;</span>)</code></pre>
+<p>See <code>Time::Format</code> for all directives.</p>
+<h3><a id="calculations" class="anchor" href="#calculations">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Calculations</h3>
+<pre><code class="language-crystal"><span class="t">Time</span>.utc(<span class="n">2015</span>, <span class="n">10</span>, <span class="n">10</span>) <span class="o">-</span> <span class="n">5</span>.days <span class="c"># =&gt; 2015-10-05 00:00:00 +00:00</span>
+
+span <span class="o">=</span> <span class="t">Time</span>.utc(<span class="n">2015</span>, <span class="n">10</span>, <span class="n">10</span>) <span class="o">-</span> <span class="t">Time</span>.utc(<span class="n">2015</span>, <span class="n">9</span>, <span class="n">10</span>)
+span.days          <span class="c"># =&gt; 30</span>
+span.total_hours   <span class="c"># =&gt; 720</span>
+span.total_minutes <span class="c"># =&gt; 43200</span></code></pre>
+<h2><a id="measuring-time" class="anchor" href="#measuring-time">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Measuring Time</h2>
+<p>The typical time representation provided by the operating system is based on
+a &quot;wall clock&quot; which is subject to changes for clock synchronization.
+This can result in discontinuous jumps in the time-line making it not
+suitable for accurately measuring elapsed time.</p>
+<p>Instances of <code><a href="Time.html">Time</a></code> are focused on telling time – using a &quot;wall clock&quot;.
+When <code>Time.local</code> is called multiple times, the difference between the
+returned instances is not guaranteed to equal to the time elapsed between
+making the calls; even the order of the returned <code><a href="Time.html">Time</a></code> instances might
+not reflect invocation order.</p>
+<pre><code class="language-crystal">t1 <span class="o">=</span> <span class="t">Time</span>.utc
+<span class="c"># operation that takes 1 minute</span>
+t2 <span class="o">=</span> <span class="t">Time</span>.utc
+t2 <span class="o">-</span> t1 <span class="c"># =&gt; ?</span></code></pre>
+<p>The resulting <code>Time::Span</code> could be anything, even negative, if the
+computer's wall clock has changed between both calls.</p>
+<p>As an alternative, the operating system also provides a monotonic clock.
+Its time-line has no specified starting point but is strictly linearly
+increasing.</p>
+<p>This monotonic clock should always be used for measuring elapsed time.</p>
+<p>A reading from this clock can be taken using <code>.monotonic</code>:</p>
+<pre><code class="language-crystal">t1 <span class="o">=</span> <span class="t">Time</span>.monotonic
+<span class="c"># operation that takes 1 minute</span>
+t2 <span class="o">=</span> <span class="t">Time</span>.monotonic
+t2 <span class="o">-</span> t1 <span class="c"># =&gt; 1.minute (approximately)</span></code></pre>
+<p>The execution time of a block can be measured using <code>.measure</code>:</p>
+<pre><code class="language-crystal">elapsed_time <span class="o">=</span> <span class="t">Time</span>.measure <span class="k">do</span>
+  <span class="c"># operation that takes 20 milliseconds</span>
+<span class="k">end</span>
+elapsed_time <span class="c"># =&gt; 20.milliseconds (approximately)</span></code></pre>
+
+
+
+
+
+  <h2>
+    <a id="included-modules" class="anchor" href="#included-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Included Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type">Comparable(<a href="Time.html">Time</a>)</li>
+    
+      <li class="other-type">Steppable</li>
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      graph/serializable.cr
+    
+    <br/>
+  
+
+
+
+
+
+
+
+  <h2>
+    <a id="class-method-summary" class="anchor" href="#class-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#can_transform_graph_result%3F%28result%3AInt64%7CString%29-class-method" class="signature"><strong>.can_transform_graph_result?</strong>(result : Int64 | String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#can_transform_graph_result%3F%28result%3ARedis%3A%3AValue%29-class-method" class="signature"><strong>.can_transform_graph_result?</strong>(result : Redis::Value)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#from_graph_result%28result%3AString%29-class-method" class="signature"><strong>.from_graph_result</strong>(result : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#from_graph_result%28result%3AInt64%29-class-method" class="signature"><strong>.from_graph_result</strong>(result : Int64)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#from_graph_result%28result%3ARedis%3A%3AValue%29-class-method" class="signature"><strong>.from_graph_result</strong>(result : Redis::Value)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#to_redis_graph_param%28io%3AIO%29-instance-method" class="signature"><strong>#to_redis_graph_param</strong>(io : IO)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+
+
+  <h2>
+    <a id="class-method-detail" class="anchor" href="#class-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Class Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="can_transform_graph_result?(result:Int64|String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>can_transform_graph_result?</strong>(result : <a href="Int64.html">Int64</a> | <a href="String.html">String</a>)
+
+        <a class="method-permalink" href="#can_transform_graph_result%3F%28result%3AInt64%7CString%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="can_transform_graph_result?(result:Redis::Value)-class-method">
+      <div class="signature">
+        
+        def self.<strong>can_transform_graph_result?</strong>(result : <a href="Redis/Value.html">Redis::Value</a>)
+
+        <a class="method-permalink" href="#can_transform_graph_result%3F%28result%3ARedis%3A%3AValue%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="from_graph_result(result:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>from_graph_result</strong>(result : <a href="String.html">String</a>)
+
+        <a class="method-permalink" href="#from_graph_result%28result%3AString%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="from_graph_result(result:Int64)-class-method">
+      <div class="signature">
+        
+        def self.<strong>from_graph_result</strong>(result : <a href="Int64.html">Int64</a>)
+
+        <a class="method-permalink" href="#from_graph_result%28result%3AInt64%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="from_graph_result(result:Redis::Value)-class-method">
+      <div class="signature">
+        
+        def self.<strong>from_graph_result</strong>(result : <a href="Redis/Value.html">Redis::Value</a>)
+
+        <a class="method-permalink" href="#from_graph_result%28result%3ARedis%3A%3AValue%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="to_redis_graph_param(io:IO)-instance-method">
+      <div class="signature">
+        
+        def <strong>to_redis_graph_param</strong>(io : IO)
+
+        <a class="method-permalink" href="#to_redis_graph_param%28io%3AIO%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
