@@ -47,6 +47,7 @@ module Redis
         "num_terms", "0",
         "num_records", "0",
         "inverted_sz_mb", "0",
+        "vector_index_sz_mb", "0",
         "total_inverted_index_blocks", "0",
         "offset_vectors_sz_mb", "0",
         "doc_table_size_mb", "0",
