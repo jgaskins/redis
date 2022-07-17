@@ -265,7 +265,7 @@ module Redis
       zrevrangebylex
     ].to_set
 
-    def run(full_command)
+    def run(command full_command)
       if full_command.empty?
         raise ArgumentError.new("Redis commands must have at least one component")
       end
