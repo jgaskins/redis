@@ -119,6 +119,10 @@ module Redis
       @redis.run command
     end
 
+    def get(key : String)
+      @redis.run({"ts.get", key})
+    end
+
     def range(key : String, time_range : ::Range(Time, Time), & : RangeOptions ->)
       command = Array(String).new(initial_capacity: 14)
       options = RangeOptions.new

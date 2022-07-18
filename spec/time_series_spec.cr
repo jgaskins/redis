@@ -46,6 +46,18 @@ module Redis
       ]
     end
 
+    test "gets the last datapoint for a key" do
+      ts = 1.second.ago
+      redis.ts.create key,
+        retention: 1.week,
+        duplicate_policy: :first,
+        labels: {"test" => UUID.random.to_s}
+
+      redis.ts.add key, ts, 1i64
+
+      redis.ts.get(key).should eq [ts.to_unix_ms, "1"]
+    end
+
     test "gets a range for keys" do
       2.times do
         redis.ts.add "mrange-test:foo=included", 1i64,
