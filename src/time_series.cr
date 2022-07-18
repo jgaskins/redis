@@ -8,8 +8,6 @@ module Redis
   # ```
   # require "redis"
   # require "redis/time_series"
-  #
-  # 
   # ```
   @[Experimental("Support for the Redis TimeSeries module is subject to change.")]
   struct TimeSeries(Runnable)
@@ -30,12 +28,15 @@ module Redis
       if retention
         command << "retention" << retention.total_milliseconds.to_i64.to_s
       end
+
       if encoding
         command << "encoding" << encoding.to_s
       end
+
       if chunk_size
         command << "chunk_size" << chunk_size.to_s
       end
+
       if duplicate_policy
         command << "duplicate_policy" << duplicate_policy.to_s
       end
@@ -64,12 +65,15 @@ module Redis
       if retention
         command << "retention" << retention.total_milliseconds.to_i64.to_s
       end
+
       if encoding
         command << "encoding" << encoding.to_s
       end
+
       if chunk_size
         command << "chunk_size" << chunk_size.to_s
       end
+
       if duplicate_policy
         command << "on_duplicate" << duplicate_policy.to_s
       end
