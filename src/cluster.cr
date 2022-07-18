@@ -397,7 +397,7 @@ module Redis
       # Set to the write-pool size because that's the maximum size we'll need
       # for this data structure. The number of hash-slot ranges is based on
       # what *they* use.
-      slot_sets = Set(Slots).new(@write_pools.size)
+      slot_sets = ::Set(Slots).new(@write_pools.size)
 
       @read_pools.each do |(slots, pool)|
         # Only yield a connection from this pool if we haven't already acted
