@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.3.2">
-<meta name="crystal_docs.project_version" content="0.4.0">
+<meta name="generator" content="Crystal Docs 1.4.1">
+<meta name="crystal_docs.project_version" content="0.5.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries(Runnable) - redis 0.4.0</title>
+  <title>Redis::TimeSeries(Runnable) - redis 0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.4.0
+        0.5.0
       </span>
     </div>
   </div>
@@ -101,8 +101,38 @@
       
         <ul>
   
-  <li class=" " data-id="redis/Redis/Commands/XGroup" data-name="redis::commands::xgroup">
-      <a href="../Redis/Commands/XGroup.html">XGroup</a>
+  <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
+      <a href="../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+      <a href="../Redis/Commands/List.html">List</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Set" data-name="redis::commands::set">
+      <a href="../Redis/Commands/Set.html">Set</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+      <a href="../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Commands/Stream" data-name="redis::commands::stream">
+      <a href="../Redis/Commands/Stream.html">Stream</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/Stream/XGroup" data-name="redis::commands::stream::xgroup">
+      <a href="../Redis/Commands/Stream/XGroup.html">XGroup</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -356,6 +386,31 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/TimeSeries/Aggregation" data-name="redis::timeseries::aggregation">
+      <a href="../Redis/TimeSeries/Aggregation.html">Aggregation</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/AggregationType" data-name="redis::timeseries::aggregationtype">
+      <a href="../Redis/TimeSeries/AggregationType.html">AggregationType</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
+      <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Datapoint" data-name="redis::timeseries::datapoint">
+      <a href="../Redis/TimeSeries/Datapoint.html">Datapoint</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Datapoints" data-name="redis::timeseries::datapoints">
+      <a href="../Redis/TimeSeries/Datapoints.html">Datapoints</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/TimeSeries/DuplicatePolicy" data-name="redis::timeseries::duplicatepolicy">
       <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>
       
@@ -363,6 +418,26 @@
   
   <li class=" " data-id="redis/Redis/TimeSeries/Encoding" data-name="redis::timeseries::encoding">
       <a href="../Redis/TimeSeries/Encoding.html">Encoding</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Labels" data-name="redis::timeseries::labels">
+      <a href="../Redis/TimeSeries/Labels.html">Labels</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries/MRangeResponse" data-name="redis::timeseries::mrangeresponse">
+      <a href="../Redis/TimeSeries/MRangeResponse.html">MRangeResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/MRangeResponse/DatapointMap" data-name="redis::timeseries::mrangeresponse::datapointmap">
+      <a href="../Redis/TimeSeries/MRangeResponse/DatapointMap.html">DatapointMap</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -378,11 +453,6 @@
   
   <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/Aggregation" data-name="redis::timeseries::rangeoptions::aggregation">
       <a href="../Redis/TimeSeries/RangeOptions/Aggregation.html">Aggregation</a>
-      
-    </li>
-  
-  <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/AggregationType" data-name="redis::timeseries::rangeoptions::aggregationtype">
-      <a href="../Redis/TimeSeries/RangeOptions/AggregationType.html">AggregationType</a>
       
     </li>
   
@@ -447,9 +517,7 @@
   <p>Time-series support for Redis using the
 <a href="https://oss.redis.com/redistimeseries/">RedisTimeSeries module</a>.</p>
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;redis&quot;</span>
-<span class="k">require</span> <span class="s">&quot;redis/time_series&quot;</span>
-
-</code></pre>
+<span class="k">require</span> <span class="s">&quot;redis/time_series&quot;</span></code></pre>
 <p><span class="flag lime">EXPERIMENTAL</span>  Support for the Redis TimeSeries module is subject to change.</p>
 
 
@@ -475,7 +543,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/time_series.cr#L15" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L13" target="_blank">
         time_series.cr
       </a>
     
@@ -511,12 +579,27 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Cbuckettimestamp%3ABucketTimestamp%3F%3Dnil%2Cempty%3ABool%3F%3Dnil%29-instance-method" class="signature"><strong>#aggregation</strong>(aggregator : AggregationType, bucket_duration : Time::Span, buckettimestamp : BucketTimestamp? = <span class="n">nil</span>, empty : Bool? = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method" class="signature"><strong>#create</strong>(key : String, retention : Time::Span? = <span class="n">nil</span>, encoding : Encoding? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, duplicate_policy : DuplicatePolicy? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)</a>
         
       </li>
     
       <li class="entry-summary">
+        <a href="#get%28key%3AString%29-instance-method" class="signature"><strong>#get</strong>(key : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#info%28key%3AString%29-instance-method" class="signature"><strong>#info</strong>(key : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%3F%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%3F%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%3F%3Dnil%2Cwithlabels%3ABool%3F%3Dnil%2Cselected_labels%3AEnumerable%28String%29%3F%3Dnil%2Ccount%3AInt%3F%3Dnil%2Caggregation%3AAggregation%3F%3Dnil%2Cgroupby%3AString%3F%3Dnil%2Creduce%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#mrange</strong>(time_range : ::Range(Time, Time?), filter : String, filter_by_ts : Enumerable(Time)? = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64)? = <span class="n">nil</span>, withlabels : Bool? = <span class="n">nil</span>, selected_labels : Enumerable(String)? = <span class="n">nil</span>, count : Int? = <span class="n">nil</span>, aggregation : Aggregation? = <span class="n">nil</span>, groupby : String? = <span class="n">nil</span>, reduce : String? = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -590,7 +673,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/time_series.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -606,7 +689,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/time_series.cr#L87" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L91" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="aggregation(aggregator:AggregationType,bucket_duration:Time::Span,buckettimestamp:BucketTimestamp?=nil,empty:Bool?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>aggregation</strong>(aggregator : <a href="../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket_duration : Time::Span, buckettimestamp : <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>? = <span class="n">nil</span>, empty : Bool? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Cbuckettimestamp%3ABucketTimestamp%3F%3Dnil%2Cempty%3ABool%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L149" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -622,7 +721,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/time_series.cr#L20" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L18" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="get(key:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>get</strong>(key : String)
+
+        <a class="method-permalink" href="#get%28key%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -638,7 +753,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/time_series.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L145" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mrange(time_range:::Range(Time,Time?),filter:String,filter_by_ts:Enumerable(Time)?=nil,filter_by_value:::Range(Float64,Float64)?=nil,withlabels:Bool?=nil,selected_labels:Enumerable(String)?=nil,count:Int?=nil,aggregation:Aggregation?=nil,groupby:String?=nil,reduce:String?=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>mrange</strong>(time_range : ::Range(Time, Time?), filter : String, filter_by_ts : Enumerable(Time)? = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64)? = <span class="n">nil</span>, withlabels : Bool? = <span class="n">nil</span>, selected_labels : Enumerable(String)? = <span class="n">nil</span>, count : Int? = <span class="n">nil</span>, aggregation : <a href="../Redis/TimeSeries/Aggregation.html">Aggregation</a>? = <span class="n">nil</span>, groupby : String? = <span class="n">nil</span>, reduce : String? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%3F%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%3F%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%3F%3Dnil%2Cwithlabels%3ABool%3F%3Dnil%2Cselected_labels%3AEnumerable%28String%29%3F%3Dnil%2Ccount%3AInt%3F%3Dnil%2Caggregation%3AAggregation%3F%3Dnil%2Cgroupby%3AString%3F%3Dnil%2Creduce%3AString%3F%3Dnil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L164" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -654,7 +785,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.4.0/src/time_series.cr#L122" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
