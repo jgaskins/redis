@@ -71,7 +71,7 @@ module Redis
         command << "chunk_size" << chunk_size.to_s
       end
       if duplicate_policy
-        command << "duplicate_policy" << duplicate_policy.to_s
+        command << "on_duplicate" << duplicate_policy.to_s
       end
 
       if labels && labels.any?
@@ -106,7 +106,7 @@ module Redis
         command << "chunk_size" << chunk_size.to_s
       end
       if duplicate_policy
-        command << "duplicate_policy" << duplicate_policy.to_s
+        command << "on_duplicate" << duplicate_policy.to_s
       end
 
       if labels && labels.any?
