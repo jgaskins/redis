@@ -45,5 +45,28 @@ module Redis
         "rules", [] of String,
       ]
     end
+
+    test "gets a range for keys" do
+      2.times do
+        redis.ts.add "mrange-test:foo=included", 1i64,
+          retention: 1.minute,
+          on_duplicate: :sum,
+          labels: {"foo" => "included"}
+        redis.ts.add "mrange-test:foo=excluded", 1i64,
+          retention: 1.minute,
+          on_duplicate: :sum,
+          labels: {"foo" => "excluded"}
+      end
+
+      result = redis.ts.mrange 1.day.ago...,
+        filter: "foo=included"
+      response = Redis::TimeSeries::MRangeResponse.new(result)
+      response["mrange-test:foo=included"]
+        .datapoints
+        .first
+        .value.should eq 2
+    ensure
+      redis.del "mrange-test:foo=included", "mrange-test:foo=excluded"
+    end
   end
 end
