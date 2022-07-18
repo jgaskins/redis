@@ -28,7 +28,7 @@ module Redis
       command = Array(String).new(initial_capacity: 11 + (labels.try(&.size) || 0) * 2)
       command << "ts.create" << key
       if retention
-        command << "retention" << retention.total_milliseconds.to_i.to_s
+        command << "retention" << retention.total_milliseconds.to_i64.to_s
       end
       if encoding
         command << "encoding" << encoding.to_s
@@ -62,7 +62,7 @@ module Redis
       command = Array(String).new(initial_capacity: 12 + (labels.try(&.size) || 0) * 2)
       command << "ts.add" << key << "*" << value.to_s
       if retention
-        command << "retention" << retention.total_milliseconds.to_i.to_s
+        command << "retention" << retention.total_milliseconds.to_i64.to_s
       end
       if encoding
         command << "encoding" << encoding.to_s
@@ -97,7 +97,7 @@ module Redis
       command = Array(String).new(initial_capacity: 13 + (labels.try(&.size) || 0) * 2)
       command << "ts.add" << key << timestamp.to_unix_ms.to_s << value.to_s
       if retention
-        command << "retention" << retention.total_milliseconds.to_i.to_s
+        command << "retention" << retention.total_milliseconds.to_i64.to_s
       end
       if encoding
         command << "encoding" << encoding.to_s
