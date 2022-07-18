@@ -138,6 +138,11 @@ module Redis
       flush
     end
 
+    def unsubscribe
+      @writer.encode({"unsubscribe"})
+      flush
+    end
+
     def unsubscribe(*channels : String)
       @writer.encode({"unsubscribe"} + channels)
       flush
