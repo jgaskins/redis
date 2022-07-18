@@ -70,7 +70,7 @@ module Redis
         error = ex
       end
 
-      @socket.flush
+      flush
       result = pipeline.commit
 
       if error
@@ -244,6 +244,10 @@ module Redis
       @parser.read
     end
 
+    def read?
+      @parser.read?
+    end
+
     def url
       @uri.to_s
     end
@@ -297,7 +301,10 @@ module Redis
 
     def call
       loop do
-        notification = @connection.read.as(Array)
+        notification = @connection.read?
+        break if notification.nil?
+
+        notification = notification.as(Array)
         action, channel, argument = notification
         action = action.as String
         if action == "pmessage"

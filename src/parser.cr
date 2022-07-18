@@ -20,6 +20,16 @@ module Redis
     # Parser.new(io).read # => "foo"
     # ```
     def read : Value
+      read { raise IO::Error.new("Connection closed") }
+    end
+
+    # Reads a value from the `IO`, returning `nil` on EOF.
+    def read?
+      return if @io.closed?
+      read { nil }
+    end
+
+    private def read
       case byte_marker = @io.read_byte
       when ':'
         parse_int.tap { @io.skip 2 }
@@ -43,10 +53,12 @@ module Redis
         type, message = @io.read_line.split(' ', 2)
         raise ERROR_MAP[type].new("#{type} #{message}")
       when nil
-        raise IO::Error.new("Connection closed")
+        yield
       else
         raise "Invalid byte marker: #{byte_marker.chr.inspect}"
       end
+    rescue ex : IO::Error
+      yield
     end
 
     private def parse_int

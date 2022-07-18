@@ -35,12 +35,24 @@ module Redis
     it "reads arrays" do
       io = IO::Memory.new
       io << "*3\r\n"
-      io << "$4\r\n" # Bulk string, length 4
-      io << "foo!\r\n" # Value of that bulk string
+      io << "$4\r\n"     # Bulk string, length 4
+      io << "foo!\r\n"   # Value of that bulk string
       io << ":12345\r\n" # Int value 12345
-      io << "$-1\r\n" # nil
+      io << "$-1\r\n"    # nil
 
       Parser.new(io.rewind).read.should eq ["foo!", 12345, nil]
+    end
+
+    it "can read without failing if the IO is closed" do
+      reader, writer = IO.pipe
+      begin
+        parser = Parser.new(reader)
+        writer.close
+
+        parser.read?.should eq nil
+      ensure
+        reader.close
+      end
     end
   end
 end
