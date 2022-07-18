@@ -381,6 +381,21 @@
       
     </li>
   
+  <li class="parent " data-id="redis/Redis/Subscription" data-name="redis::subscription">
+      <a href="../Redis/Subscription.html">Subscription</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Subscription/InvalidMessage" data-name="redis::subscription::invalidmessage">
+      <a href="../Redis/Subscription/InvalidMessage.html">InvalidMessage</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
   <li class="parent " data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
       <a href="../Redis/TimeSeries.html">TimeSeries</a>
       
@@ -553,7 +568,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L13" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L14" target="_blank">
         connection.cr
       </a>
     
@@ -614,6 +629,8 @@
       <li class="entry-summary">
         <a href="#encode%28command%29-instance-method" class="signature"><strong>#encode</strong>(command)</a>
         
+          <div class="summary"><p>Send the given command over the wire without waiting for a reply.</p></div>
+        
       </li>
     
       <li class="entry-summary">
@@ -640,6 +657,8 @@
       <li class="entry-summary">
         <a href="#psubscribe%28%2Achannels%3AString%2C%26block%3ASubscription%2Cself-%3E%29-instance-method" class="signature"><strong>#psubscribe</strong>(*channels : String, &block : Subscription, <span class="k">self</span> -> )</a>
         
+          <div class="summary"><p>Subscribe to the given pubsub channels.</p></div>
+        
       </li>
     
       <li class="entry-summary">
@@ -657,10 +676,14 @@
       <li class="entry-summary">
         <a href="#read%3F-instance-method" class="signature"><strong>#read?</strong></a>
         
+          <div class="summary"><p>Read the next value from the server, returning <code>nil</code> if the connection is closed.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#readonly%21%3ANil-instance-method" class="signature"><strong>#readonly!</strong> : Nil</a>
+        
+          <div class="summary"><p>Put this connection in a readonly state.</p></div>
         
       </li>
     
@@ -674,30 +697,42 @@
       <li class="entry-summary">
         <a href="#scan_each%28matchpattern%3AString%3F%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2Ctype%3AString%3F%3Dnil%2C%26%29%3ANil-instance-method" class="signature"><strong>#scan_each</strong>(match pattern : String? = <span class="n">nil</span>, count : String | Int | Nil = <span class="n">nil</span>, type : String? = <span class="n">nil</span>, &) : Nil</a>
         
+          <div class="summary"><p>Iterate over keys that match the given pattern or all keys if no pattern is supplied, yielding each key to the block.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#subscribe%28%2Achannels%3AString%2C%26block%3ASubscription%2Cself-%3E%29-instance-method" class="signature"><strong>#subscribe</strong>(*channels : String, &block : Subscription, <span class="k">self</span> -> )</a>
+        
+          <div class="summary"><p>Subscribe to the given pubsub channels.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#subscribe%28%2Achannels%3AString%29-instance-method" class="signature"><strong>#subscribe</strong>(*channels : String)</a>
         
+          <div class="summary"><p>Subscribe to the given channels without having to pass a block, which would block execution.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#unsubscribe-instance-method" class="signature"><strong>#unsubscribe</strong></a>
+        
+          <div class="summary"><p>Unsubscribe this connection from all subscriptions.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#unsubscribe%28%2Achannels%3AString%29-instance-method" class="signature"><strong>#unsubscribe</strong>(*channels : String)</a>
         
+          <div class="summary"><p>Unsubscribe this connection the given channels.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#url-instance-method" class="signature"><strong>#url</strong></a>
+        
+          <div class="summary"><p>The URI</p></div>
         
       </li>
     
@@ -1184,7 +1219,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1219,7 +1254,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L232" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L275" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1232,10 +1267,19 @@ DB selection uses the URI path.</p>
         <a class="method-permalink" href="#encode%28command%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Send the given command over the wire without waiting for a reply. This is
+useful for query pipelining or sending commands that have no return value.</p>
+<p><span class="flag yellow">WARNING</span>  Be careful with this because you can get the client out of sync
+with the server. You should almost never have to use this, but it can be
+useful if a command like this has not been implemented yet.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L260" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L312" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1257,7 +1301,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L243" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L286" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1289,7 +1333,7 @@ redis.get <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; nil
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L98" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1315,7 +1359,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1323,15 +1367,46 @@ server before reading any of the results.</p>
     <div class="entry-detail" id="psubscribe(*channels:String,&amp;block:Subscription,self-&gt;)-instance-method">
       <div class="signature">
         
-        def <strong>psubscribe</strong>(*channels : String, &block : Subscription, <span class="k">self</span> -> )
+        def <strong>psubscribe</strong>(*channels : String, &block : <a href="../Redis/Subscription.html">Subscription</a>, <span class="k">self</span> -> )
 
         <a class="method-permalink" href="#psubscribe%28%2Achannels%3AString%2C%26block%3ASubscription%2Cself-%3E%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Subscribe to the given pubsub channels. The block yields a subscription
+object and the connection. You can setup <code>on_message</code>, <code>on_subscribe</code>,
+and <code>on_unsubscribe</code> on the subscription.</p>
+<pre><code class="language-crystal">redis.subscribe <span class="s">&quot;channel1&quot;</span>, <span class="s">&quot;channel2&quot;</span> <span class="k">do</span> <span class="o">|</span>subscription, connection<span class="o">|</span>
+  subscription.on_message <span class="k">do</span> <span class="o">|</span>channel, message<span class="o">|</span>
+    <span class="k">if</span> message <span class="o">==</span> <span class="s">&quot;unsubscribe&quot;</span>
+      connection.unsubscribe channel
+    <span class="k">end</span>
+
+    <span class="c"># ...</span>
+  <span class="k">end</span>
+
+  <span class="c"># Respond to new subscribers</span>
+  subscription.on_subscribe <span class="k">do</span> <span class="o">|</span>channel, sub_count<span class="o">|</span>
+    connection.set <span class="s">&quot;sub_count:</span><span class="i">#{</span>channel<span class="i">}</span><span class="s">&quot;</span>, sub_count.to_s
+  <span class="k">end</span>
+
+  <span class="c"># Respond to losing subscribers</span>
+  subscription.on_unsubscribe <span class="k">do</span> <span class="o">|</span>channel, sub_count<span class="o">|</span>
+    connection.set <span class="s">&quot;sub_count:</span><span class="i">#{</span>channel<span class="i">}</span><span class="s">&quot;</span>, sub_count.to_s
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+<p>For more information, see the documentation for:</p>
+<ul>
+<li><a href="https://redis.io/commands/subscribe/"><code>SUBSCRIBE</code></a></li>
+<li><a href="https://redis.io/commands/psubscribe/"><code>PSUBSCRIBE</code></a></li>
+</ul>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L124" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L125" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1347,7 +1422,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L151" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L186" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1368,7 +1443,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L248" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L291" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1381,10 +1456,16 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#read%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Read the next value from the server, returning <code>nil</code> if the connection is
+closed.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L252" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L297" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1397,10 +1478,17 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#readonly%21%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Put this connection in a readonly state. This is typically used when
+talking to replicas, and used automatically by <code><a href="../Redis/Cluster.html">Cluster</a></code> for cluster
+replicas.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L156" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L194" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1422,7 +1510,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L203" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L241" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1435,10 +1523,19 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#scan_each%28matchpattern%3AString%3F%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2Ctype%3AString%3F%3Dnil%2C%26%29%3ANil-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Iterate over keys that match the given pattern or all keys if no pattern
+is supplied, yielding each key to the block. This is a much more efficient
+way to iterate over keys than <code>keys.each</code> — it avoids loading every key in
+memory at the same time and also doesn't block the Redis server while it
+generates the array of all those keys.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L218" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1446,15 +1543,46 @@ server before reading any of the results.</p>
     <div class="entry-detail" id="subscribe(*channels:String,&amp;block:Subscription,self-&gt;)-instance-method">
       <div class="signature">
         
-        def <strong>subscribe</strong>(*channels : String, &block : Subscription, <span class="k">self</span> -> )
+        def <strong>subscribe</strong>(*channels : String, &block : <a href="../Redis/Subscription.html">Subscription</a>, <span class="k">self</span> -> )
 
         <a class="method-permalink" href="#subscribe%28%2Achannels%3AString%2C%26block%3ASubscription%2Cself-%3E%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Subscribe to the given pubsub channels. The block yields a subscription
+object and the connection. You can setup <code>on_message</code>, <code>on_subscribe</code>,
+and <code>on_unsubscribe</code> on the subscription.</p>
+<pre><code class="language-crystal">redis.subscribe <span class="s">&quot;channel1&quot;</span>, <span class="s">&quot;channel2&quot;</span> <span class="k">do</span> <span class="o">|</span>subscription, connection<span class="o">|</span>
+  subscription.on_message <span class="k">do</span> <span class="o">|</span>channel, message<span class="o">|</span>
+    <span class="k">if</span> message <span class="o">==</span> <span class="s">&quot;unsubscribe&quot;</span>
+      connection.unsubscribe channel
+    <span class="k">end</span>
+
+    <span class="c"># ...</span>
+  <span class="k">end</span>
+
+  <span class="c"># Respond to new subscribers</span>
+  subscription.on_subscribe <span class="k">do</span> <span class="o">|</span>channel, sub_count<span class="o">|</span>
+    connection.set <span class="s">&quot;sub_count:</span><span class="i">#{</span>channel<span class="i">}</span><span class="s">&quot;</span>, sub_count.to_s
+  <span class="k">end</span>
+
+  <span class="c"># Respond to losing subscribers</span>
+  subscription.on_unsubscribe <span class="k">do</span> <span class="o">|</span>channel, sub_count<span class="o">|</span>
+    connection.set <span class="s">&quot;sub_count:</span><span class="i">#{</span>channel<span class="i">}</span><span class="s">&quot;</span>, sub_count.to_s
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+<p>For more information, see the documentation for:</p>
+<ul>
+<li><a href="https://redis.io/commands/subscribe/"><code>SUBSCRIBE</code></a></li>
+<li><a href="https://redis.io/commands/psubscribe/"><code>PSUBSCRIBE</code></a></li>
+</ul>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L124" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L125" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1467,10 +1595,17 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#subscribe%28%2Achannels%3AString%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Subscribe to the given channels without having to pass a block, which
+would block execution. This is useful to run inside of other subscription
+blocks to add new subscriptions.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L136" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L169" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1483,10 +1618,15 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#unsubscribe-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Unsubscribe this connection from all subscriptions.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1499,10 +1639,15 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#unsubscribe%28%2Achannels%3AString%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Unsubscribe this connection the given channels.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L146" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L181" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1515,10 +1660,15 @@ server before reading any of the results.</p>
         <a class="method-permalink" href="#url-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>The URI</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L256" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L302" target="_blank">View source</a>]
         
       </div>
     </div>

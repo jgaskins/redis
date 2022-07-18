@@ -2,6 +2,7 @@ require "socket"
 require "openssl"
 
 require "./commands"
+require "./errors"
 require "./parser"
 require "./pipeline"
 require "./value"
@@ -122,6 +123,35 @@ module Redis
     end
 
     {% for command in %w[subscribe psubscribe] %}
+      # Subscribe to the given pubsub channels. The block yields a subscription
+      # object and the connection. You can setup `on_message`, `on_subscribe`,
+      # and `on_unsubscribe` on the subscription.
+      #
+      # ```
+      # redis.subscribe "channel1", "channel2" do |subscription, connection|
+      #   subscription.on_message do |channel, message|
+      #     if message == "unsubscribe"
+      #       connection.unsubscribe channel
+      #     end
+      #
+      #     # ...
+      #   end
+      #
+      #   # Respond to new subscribers
+      #   subscription.on_subscribe do |channel, sub_count|
+      #     connection.set "sub_count:#{channel}", sub_count.to_s
+      #   end
+      #
+      #   # Respond to losing subscribers
+      #   subscription.on_unsubscribe do |channel, sub_count|
+      #     connection.set "sub_count:#{channel}", sub_count.to_s
+      #   end
+      # end
+      # ```
+      #
+      # For more information, see the documentation for:
+      # - [`SUBSCRIBE`](https://redis.io/commands/subscribe/)
+      # - [`PSUBSCRIBE`](https://redis.io/commands/psubscribe/)
       def {{command.id}}(*channels : String, &block : Subscription, self ->)
         subscription = Subscription.new(self)
         @writer.encode({"{{command.id}}"} + channels)
@@ -133,16 +163,21 @@ module Redis
       end
     {% end %}
 
+    # Subscribe to the given channels without having to pass a block, which
+    # would block execution. This is useful to run inside of other subscription
+    # blocks to add new subscriptions.
     def subscribe(*channels : String)
       @writer.encode({"subscribe"} + channels)
       flush
     end
 
+    # Unsubscribe this connection from all subscriptions.
     def unsubscribe
       @writer.encode({"unsubscribe"})
       flush
     end
 
+    # Unsubscribe this connection the given channels.
     def unsubscribe(*channels : String)
       @writer.encode({"unsubscribe"} + channels)
       flush
@@ -153,6 +188,9 @@ module Redis
       flush
     end
 
+    # Put this connection in a readonly state. This is typically used when
+    # talking to replicas, and used automatically by `Cluster` for cluster
+    # replicas.
     def readonly! : Nil
       run({"readonly"})
     end
@@ -215,6 +253,11 @@ module Redis
       end
     end
 
+    # Iterate over keys that match the given pattern or all keys if no pattern
+    # is supplied, yielding each key to the block. This is a much more efficient
+    # way to iterate over keys than `keys.each` — it avoids loading every key in
+    # memory at the same time and also doesn't block the Redis server while it
+    # generates the array of all those keys.
     def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil) : Nil
       # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
       cursor = ""
@@ -249,61 +292,114 @@ module Redis
       @parser.read
     end
 
+    # Read the next value from the server, returning `nil` if the connection is
+    # closed.
     def read?
       @parser.read?
     end
 
+    # The URI
     def url
       @uri.to_s
     end
 
+    # Send the given command over the wire without waiting for a reply. This is
+    # useful for query pipelining or sending commands that have no return value.
+    #
+    # WARNING: Be careful with this because you can get the client out of sync
+    # with the server. You should almost never have to use this, but it can be
+    # useful if a command like this has not been implemented yet.
     def encode(command)
       @writer.encode command
     end
   end
 
-  private class Subscription
+  # The `Subscription` is what is yielded to a `Connection#subscribe` block. It
+  # is used to setup callbacks when messages come in, the connection is
+  # subscribed to other channels or patterns, or unsubscribed from any channels
+  # or patterns.
+  #
+  # ```
+  # redis.subscribe "channel1", "channel2" do |subscription, connection|
+  #   subscription.on_message do |channel, message|
+  #     if message == "unsubscribe"
+  #       connection.unsubscribe channel
+  #     end
+  #
+  #     # ...
+  #   end
+  #
+  #   # Respond to new subscribers
+  #   subscription.on_subscribe do |channel, sub_count|
+  #     connection.incr "sub_count:#{channel}"
+  #   end
+  #
+  #   # Respond to losing subscribers
+  #   subscription.on_unsubscribe do |channel, sub_count|
+  #     connection.incr "sub_count:#{channel}"
+  #   end
+  # end
+  # ```
+  #
+  # For more information, see the documentation for:
+  # - [`SUBSCRIBE`](https://redis.io/commands/subscribe/)
+  # - [`PSUBSCRIBE`](https://redis.io/commands/psubscribe/)
+  class Subscription
     @on_message = Proc(String, String, String, Nil).new { }
     @on_subscribe = Proc(String, Int64, Nil).new { }
     @on_unsubscribe = Proc(String, Int64, Nil).new { }
     @channels = [] of String
 
+    # :nodoc:
     def initialize(@connection : Connection)
     end
 
-    def on_message(&block : String, String, String ->)
-      @on_message = block
+    # Define a callback for when a new message is received.
+    #
+    # ```
+    # subscription.on_message do |channel, message|
+    #   pp channel: channel, message: message
+    # end
+    # ```
+    def on_message(&@on_message : String, String, String ->)
       self
     end
 
-    def on_subscribe(&block : String, Int64 ->)
-      @on_subscribe = block
+    # Define a callback to execute when the connection is subscribed to another
+    # channel.
+    def on_subscribe(&@on_subscribe : String, Int64 ->)
       self
     end
 
-    def on_unsubscribe(&block : String, Int64 ->)
-      @on_unsubscribe = block
+    # Define a callback to execute when the connection is unsubscribed from
+    # another channel.
+    def on_unsubscribe(&@on_unsubscribe : String, Int64 ->)
       self
     end
 
+    # :nodoc:
     def message!(channel : String, message : String)
       @on_message.call channel, message, channel
     end
 
+    # :nodoc:
     def pmessage!(channel : String, message : String, pattern : String)
       @on_message.call channel, message, channel
     end
 
+    # :nodoc:
     def subscribe!(channel : String, count : Int64)
       @channels << channel
       @on_subscribe.call channel, count
     end
 
+    # :nodoc:
     def unsubscribe!(channel : String, count : Int64)
       @channels.delete channel
       @on_unsubscribe.call channel, count
     end
 
+    # :nodoc:
     def call
       loop do
         notification = @connection.read?
@@ -341,7 +437,7 @@ module Redis
       end
     end
 
-    class InvalidMessage < Exception
+    class InvalidMessage < Error
     end
   end
 end

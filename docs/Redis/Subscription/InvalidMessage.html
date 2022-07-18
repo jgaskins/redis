@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries::RangeOptions - redis 0.5.0</title>
+  <title>Redis::Subscription::InvalidMessage - redis 0.5.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -381,12 +381,12 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Subscription" data-name="redis::subscription">
+  <li class="parent open current" data-id="redis/Redis/Subscription" data-name="redis::subscription">
       <a href="../../Redis/Subscription.html">Subscription</a>
       
         <ul>
   
-  <li class=" " data-id="redis/Redis/Subscription/InvalidMessage" data-name="redis::subscription::invalidmessage">
+  <li class=" current" data-id="redis/Redis/Subscription/InvalidMessage" data-name="redis::subscription::invalidmessage">
       <a href="../../Redis/Subscription/InvalidMessage.html">InvalidMessage</a>
       
     </li>
@@ -396,7 +396,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
+  <li class="parent " data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
       <a href="../../Redis/TimeSeries.html">TimeSeries</a>
       
         <ul>
@@ -461,7 +461,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/TimeSeries/RangeOptions" data-name="redis::timeseries::rangeoptions">
+  <li class="parent " data-id="redis/Redis/TimeSeries/RangeOptions" data-name="redis::timeseries::rangeoptions">
       <a href="../../Redis/TimeSeries/RangeOptions.html">RangeOptions</a>
       
         <ul>
@@ -510,12 +510,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> Redis::TimeSeries::RangeOptions
+  <span class="kind">class</span> Redis::Subscription::InvalidMessage
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/TimeSeries/RangeOptions.html">Redis::TimeSeries::RangeOptions</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Subscription/InvalidMessage.html">Redis::Subscription::InvalidMessage</a></li><li class="superclass"><a href="../../Redis/Error.html">Redis::Error</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -543,8 +543,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L325" target="_blank">
-        time_series.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/connection.cr#L440" target="_blank">
+        connection.cr
       </a>
     
     <br/>
@@ -557,28 +557,6 @@
 
 
 
-
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#aggregation%28type%3AAggregationType%2Cbucket%3ATime%3A%3ASpan%29-instance-method" class="signature"><strong>#aggregation</strong>(type : AggregationType, bucket : Time::Span)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#aggregation%3AAggregation%3F-instance-method" class="signature"><strong>#aggregation</strong> : Aggregation?</a>
-        
-      </li>
-    
-  </ul>
 
 
 
@@ -606,54 +584,32 @@
 
 
   
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
 </div>
 
 
 
 
 
-
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="aggregation(type:AggregationType,bucket:Time::Span)-instance-method">
-      <div class="signature">
-        
-        def <strong>aggregation</strong>(type : <a href="../../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket : Time::Span)
-
-        <a class="method-permalink" href="#aggregation%28type%3AAggregationType%2Cbucket%3ATime%3A%3ASpan%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L328" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="aggregation:Aggregation?-instance-method">
-      <div class="signature">
-        
-        def <strong>aggregation</strong> : <a href="../../Redis/TimeSeries/RangeOptions/Aggregation.html">Aggregation</a>?
-
-        <a class="method-permalink" href="#aggregation%3AAggregation%3F-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/time_series.cr#L326" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
 
 
 
