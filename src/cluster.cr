@@ -35,13 +35,13 @@ module Redis
     LOG = ::Log.for(self)
 
     # :nodoc:
-    alias Pool = DB::Pool(Redis::Connection)
+    alias Pool = DB::Pool(Connection)
 
     # :nodoc:
     alias Slots = Range(Int32, Int32)
 
-    @write_pools : Array({Slots, DB::Pool(Redis::Connection)})
-    @read_pools : Array({Slots, DB::Pool(Redis::Connection)})
+    @write_pools : Array({Slots, DB::Pool(Connection)})
+    @read_pools : Array({Slots, DB::Pool(Connection)})
 
     # Tell the cluster driver that all the specified Redis commands can be
     # routed to read-only replicas.
