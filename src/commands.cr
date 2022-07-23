@@ -142,6 +142,14 @@ module Redis
       run({"unlink"} + keys)
     end
 
+    def unlink(keys : Enumerable(String))
+      command = Array(String).new(initial_capacity: 1 + keys.size)
+      command << "unlink"
+      keys.each { |key| command << key }
+
+      run command
+    end
+
     # Return the number of specified keys that exist
     #
     # ```
