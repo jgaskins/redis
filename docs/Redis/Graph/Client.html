@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.0">
+<meta name="crystal_docs.project_version" content="0.5.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Client(Runnable) - redis 0.5.0</title>
+  <title>Redis::Graph::Client(Runnable) - redis 0.5.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.0
+        0.5.1
       </span>
     </div>
   </div>
@@ -156,8 +156,23 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
+      <a href="../../Redis/FullText/Filter.html">Filter</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoFilter" data-name="redis::fulltext::geofilter">
+      <a href="../../Redis/FullText/GeoFilter.html">GeoFilter</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
       <a href="../../Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
+      <a href="../../Redis/FullText/Highlight.html">Highlight</a>
       
     </li>
   
@@ -168,6 +183,11 @@
   
   <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
       <a href="../../Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+      <a href="../../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
   
@@ -288,6 +308,11 @@
   
   <li class=" " data-id="redis/Redis/Graph/TypedResult" data-name="redis::graph::typedresult(t)">
       <a href="../../Redis/Graph/TypedResult.html">TypedResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Value" data-name="redis::graph::value">
+      <a href="../../Redis/Graph/Value.html">Value</a>
       
     </li>
   
@@ -543,7 +568,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L56" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L56" target="_blank">
         graph.cr
       </a>
     
@@ -597,6 +622,11 @@
         <a href="#read_query%28cypher%3AString%2Cparams%3ANamedTuple%7CHash%2Creturntypes%3ATuple%28%2AT%29%29forallT-instance-method" class="signature"><strong>#read_query</strong>(cypher : String, params : NamedTuple | Hash, return types : Tuple(<span class="o">*</span><span class="t">T</span>)) forall T</a>
         
           <div class="summary"><p>Query the graph with the given Cypher query, passing in the given params, and returning the given types corresponding to the values in your Cypher <code>RETURN</code> clause.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#read_query%28cypher%3AString%2Creturntypes%3ATuple%28%2AT%29%29forallT-instance-method" class="signature"><strong>#read_query</strong>(cypher : String, return types : Tuple(<span class="o">*</span><span class="t">T</span>)) forall T</a>
         
       </li>
     
@@ -696,7 +726,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L57" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -737,7 +767,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L147" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L151" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -765,7 +795,23 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L134" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="read_query(cypher:String,returntypes:Tuple(*T))forallT-instance-method">
+      <div class="signature">
+        
+        def <strong>read_query</strong>(cypher : String, return types : Tuple(<span class="o">*</span><span class="t">T</span>)) forall T
+
+        <a class="method-permalink" href="#read_query%28cypher%3AString%2Creturntypes%3ATuple%28%2AT%29%29forallT-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L119" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -790,7 +836,7 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L101" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L101" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -817,7 +863,7 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -845,7 +891,7 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L80" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -867,7 +913,7 @@ CYPHER</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -889,7 +935,7 @@ given query parameters.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/graph.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/graph.cr#L89" target="_blank">View source</a>]
         
       </div>
     </div>

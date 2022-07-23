@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.0">
+<meta name="crystal_docs.project_version" content="0.5.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::FullText(Runnable) - redis 0.5.0</title>
+  <title>Redis::FullText(Runnable) - redis 0.5.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.0
+        0.5.1
       </span>
     </div>
   </div>
@@ -156,8 +156,23 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
+      <a href="../Redis/FullText/Filter.html">Filter</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoFilter" data-name="redis::fulltext::geofilter">
+      <a href="../Redis/FullText/GeoFilter.html">GeoFilter</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
       <a href="../Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
+      <a href="../Redis/FullText/Highlight.html">Highlight</a>
       
     </li>
   
@@ -168,6 +183,11 @@
   
   <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
       <a href="../Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+      <a href="../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
   
@@ -288,6 +308,11 @@
   
   <li class=" " data-id="redis/Redis/Graph/TypedResult" data-name="redis::graph::typedresult(t)">
       <a href="../Redis/Graph/TypedResult.html">TypedResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Value" data-name="redis::graph::value">
+      <a href="../Redis/Graph/Value.html">Value</a>
       
     </li>
   
@@ -568,7 +593,7 @@ shard replicas.</p>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L23" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L23" target="_blank">
         search.cr
       </a>
     
@@ -629,7 +654,7 @@ shard replicas.</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#search%28index%3AString%2Cquery%3AString%2Cnocontent%3Dfalse%2Cverbatim%3Dfalse%2Cnostopwords%3Dfalse%2Cwithscores%3Dfalse%2Cwithpayloads%3Dfalse%2Cwithsortkeys%3Dfalse%2Cfilter%3ATuple%28String%2CInt%7CString%2CInt%7CString%29%3F%3Dnil%2Cgeofilter%3ATuple%28String%2CFloat%2CFloat%2CNumeric%2CGeoUnit%29%3F%3Dnil%2Cinkeys%3AArray%28String%29%3F%3Dnil%2Cinfields%3AArray%28String%29%3F%3Dnil%2Creturnreturn_value%3AArray%28String%29%3F%3Dnil%2Cslop%3AInt%3F%3Dnil%2Cinorder%3ABool%3F%3Dnil%2Clanguage%3AString%3F%3Dnil%2Cexpander%3AString%3F%3Dnil%2Cscorer%3AString%3F%3Dnil%2Cexplainscore%3Dnil%2Cpayload%3AString%7CBytes%7CNil%3Dnil%2Csortby%3ASortBy%3F%3Dnil%2Climit%3ATuple%28Int%2CInt%29%3F%3Dnil%29-instance-method" class="signature"><strong>#search</strong>(index : String, query : String, nocontent = <span class="n">false</span>, verbatim = <span class="n">false</span>, nostopwords = <span class="n">false</span>, withscores = <span class="n">false</span>, withpayloads = <span class="n">false</span>, withsortkeys = <span class="n">false</span>, filter : Tuple(String, Int | String, Int | String)? = <span class="n">nil</span>, geofilter : Tuple(String, Float, Float, Numeric, GeoUnit)? = <span class="n">nil</span>, inkeys : Array(String)? = <span class="n">nil</span>, infields : Array(String)? = <span class="n">nil</span>, return return_value : Array(String)? = <span class="n">nil</span>, slop : Int? = <span class="n">nil</span>, inorder : Bool? = <span class="n">nil</span>, language : String? = <span class="n">nil</span>, expander : String? = <span class="n">nil</span>, scorer : String? = <span class="n">nil</span>, explainscore = <span class="n">nil</span>, payload : String | Bytes | Nil = <span class="n">nil</span>, sortby : SortBy? = <span class="n">nil</span>, limit : Tuple(Int, Int)? = <span class="n">nil</span>)</a>
+        <a href="#search%28index%3AString%2Cquery%3AString%2Cnocontent%3Dfalse%2Cverbatim%3Dfalse%2Cnostopwords%3Dfalse%2Cwithscores%3Dfalse%2Cwithpayloads%3Dfalse%2Cwithsortkeys%3Dfalse%2Cfilter%3AArray%28Filter%29%3F%3Dnil%2Cgeofilter%3AGeoFilter%3F%3Dnil%2Cinkeys%3AArray%28String%29%3F%3Dnil%2Cinfields%3AArray%28String%29%3F%3Dnil%2Creturnreturn_value%3AArray%28String%29%3F%3Dnil%2Csummarize%3ASummarize%3F%3Dnil%2Chighlight%3AHighlight%3F%3Dnil%2Cslop%3AInt%3F%3Dnil%2Ctimeout%3ATime%3A%3ASpan%3F%3Dnil%2Cinorder%3ABool%3F%3Dnil%2Clanguage%3AString%3F%3Dnil%2Cexpander%3AString%3F%3Dnil%2Cscorer%3AString%3F%3Dnil%2Cexplainscore%3ABool%3F%3Dnil%2Cpayload%3AString%7CBytes%7CNil%3Dnil%2Csortby%3ASortBy%3F%3Dnil%2Climit%3ATuple%28Int%2CInt%29%3F%3Dnil%29-instance-method" class="signature"><strong>#search</strong>(index : String, query : String, nocontent = <span class="n">false</span>, verbatim = <span class="n">false</span>, nostopwords = <span class="n">false</span>, withscores = <span class="n">false</span>, withpayloads = <span class="n">false</span>, withsortkeys = <span class="n">false</span>, filter : Array(Filter)? = <span class="n">nil</span>, geofilter : GeoFilter? = <span class="n">nil</span>, inkeys : Array(String)? = <span class="n">nil</span>, infields : Array(String)? = <span class="n">nil</span>, return return_value : Array(String)? = <span class="n">nil</span>, summarize : Summarize? = <span class="n">nil</span>, highlight : Highlight? = <span class="n">nil</span>, slop : Int? = <span class="n">nil</span>, timeout : Time::Span? = <span class="n">nil</span>, inorder : Bool? = <span class="n">nil</span>, language : String? = <span class="n">nil</span>, expander : String? = <span class="n">nil</span>, scorer : String? = <span class="n">nil</span>, explainscore : Bool? = <span class="n">nil</span>, payload : String | Bytes | Nil = <span class="n">nil</span>, sortby : SortBy? = <span class="n">nil</span>, limit : Tuple(Int, Int)? = <span class="n">nil</span>)</a>
         
           <div class="summary"><p>Run the specified <code>query</code> against <code>index</code>.</p></div>
         
@@ -717,7 +742,7 @@ INDEX</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L75" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -738,7 +763,7 @@ INDEX</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L181" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L258" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -759,7 +784,7 @@ INDEX</span></code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L186" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L263" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -781,7 +806,7 @@ details, see <a href="https://oss.redis.com/redisearch/Commands/#ftinfo">the <co
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L81" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -803,17 +828,17 @@ documentation</a>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L176" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L253" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="search(index:String,query:String,nocontent=false,verbatim=false,nostopwords=false,withscores=false,withpayloads=false,withsortkeys=false,filter:Tuple(String,Int|String,Int|String)?=nil,geofilter:Tuple(String,Float,Float,Numeric,GeoUnit)?=nil,inkeys:Array(String)?=nil,infields:Array(String)?=nil,returnreturn_value:Array(String)?=nil,slop:Int?=nil,inorder:Bool?=nil,language:String?=nil,expander:String?=nil,scorer:String?=nil,explainscore=nil,payload:String|Bytes|Nil=nil,sortby:SortBy?=nil,limit:Tuple(Int,Int)?=nil)-instance-method">
+    <div class="entry-detail" id="search(index:String,query:String,nocontent=false,verbatim=false,nostopwords=false,withscores=false,withpayloads=false,withsortkeys=false,filter:Array(Filter)?=nil,geofilter:GeoFilter?=nil,inkeys:Array(String)?=nil,infields:Array(String)?=nil,returnreturn_value:Array(String)?=nil,summarize:Summarize?=nil,highlight:Highlight?=nil,slop:Int?=nil,timeout:Time::Span?=nil,inorder:Bool?=nil,language:String?=nil,expander:String?=nil,scorer:String?=nil,explainscore:Bool?=nil,payload:String|Bytes|Nil=nil,sortby:SortBy?=nil,limit:Tuple(Int,Int)?=nil)-instance-method">
       <div class="signature">
         
-        def <strong>search</strong>(index : String, query : String, nocontent = <span class="n">false</span>, verbatim = <span class="n">false</span>, nostopwords = <span class="n">false</span>, withscores = <span class="n">false</span>, withpayloads = <span class="n">false</span>, withsortkeys = <span class="n">false</span>, filter : Tuple(String, Int | String, Int | String)? = <span class="n">nil</span>, geofilter : Tuple(String, Float, Float, Numeric, <a href="../Redis/FullText/GeoUnit.html">GeoUnit</a>)? = <span class="n">nil</span>, inkeys : Array(String)? = <span class="n">nil</span>, infields : Array(String)? = <span class="n">nil</span>, return return_value : Array(String)? = <span class="n">nil</span>, slop : Int? = <span class="n">nil</span>, inorder : Bool? = <span class="n">nil</span>, language : String? = <span class="n">nil</span>, expander : String? = <span class="n">nil</span>, scorer : String? = <span class="n">nil</span>, explainscore = <span class="n">nil</span>, payload : String | Bytes | Nil = <span class="n">nil</span>, sortby : <a href="../Redis/FullText/SortBy.html">SortBy</a>? = <span class="n">nil</span>, limit : Tuple(Int, Int)? = <span class="n">nil</span>)
+        def <strong>search</strong>(index : String, query : String, nocontent = <span class="n">false</span>, verbatim = <span class="n">false</span>, nostopwords = <span class="n">false</span>, withscores = <span class="n">false</span>, withpayloads = <span class="n">false</span>, withsortkeys = <span class="n">false</span>, filter : Array(<a href="../Redis/FullText/Filter.html">Filter</a>)? = <span class="n">nil</span>, geofilter : <a href="../Redis/FullText/GeoFilter.html">GeoFilter</a>? = <span class="n">nil</span>, inkeys : Array(String)? = <span class="n">nil</span>, infields : Array(String)? = <span class="n">nil</span>, return return_value : Array(String)? = <span class="n">nil</span>, summarize : <a href="../Redis/FullText/Summarize.html">Summarize</a>? = <span class="n">nil</span>, highlight : <a href="../Redis/FullText/Highlight.html">Highlight</a>? = <span class="n">nil</span>, slop : Int? = <span class="n">nil</span>, timeout : Time::Span? = <span class="n">nil</span>, inorder : Bool? = <span class="n">nil</span>, language : String? = <span class="n">nil</span>, expander : String? = <span class="n">nil</span>, scorer : String? = <span class="n">nil</span>, explainscore : Bool? = <span class="n">nil</span>, payload : String | Bytes | Nil = <span class="n">nil</span>, sortby : <a href="../Redis/FullText/SortBy.html">SortBy</a>? = <span class="n">nil</span>, limit : Tuple(Int, Int)? = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#search%28index%3AString%2Cquery%3AString%2Cnocontent%3Dfalse%2Cverbatim%3Dfalse%2Cnostopwords%3Dfalse%2Cwithscores%3Dfalse%2Cwithpayloads%3Dfalse%2Cwithsortkeys%3Dfalse%2Cfilter%3ATuple%28String%2CInt%7CString%2CInt%7CString%29%3F%3Dnil%2Cgeofilter%3ATuple%28String%2CFloat%2CFloat%2CNumeric%2CGeoUnit%29%3F%3Dnil%2Cinkeys%3AArray%28String%29%3F%3Dnil%2Cinfields%3AArray%28String%29%3F%3Dnil%2Creturnreturn_value%3AArray%28String%29%3F%3Dnil%2Cslop%3AInt%3F%3Dnil%2Cinorder%3ABool%3F%3Dnil%2Clanguage%3AString%3F%3Dnil%2Cexpander%3AString%3F%3Dnil%2Cscorer%3AString%3F%3Dnil%2Cexplainscore%3Dnil%2Cpayload%3AString%7CBytes%7CNil%3Dnil%2Csortby%3ASortBy%3F%3Dnil%2Climit%3ATuple%28Int%2CInt%29%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#search%28index%3AString%2Cquery%3AString%2Cnocontent%3Dfalse%2Cverbatim%3Dfalse%2Cnostopwords%3Dfalse%2Cwithscores%3Dfalse%2Cwithpayloads%3Dfalse%2Cwithsortkeys%3Dfalse%2Cfilter%3AArray%28Filter%29%3F%3Dnil%2Cgeofilter%3AGeoFilter%3F%3Dnil%2Cinkeys%3AArray%28String%29%3F%3Dnil%2Cinfields%3AArray%28String%29%3F%3Dnil%2Creturnreturn_value%3AArray%28String%29%3F%3Dnil%2Csummarize%3ASummarize%3F%3Dnil%2Chighlight%3AHighlight%3F%3Dnil%2Cslop%3AInt%3F%3Dnil%2Ctimeout%3ATime%3A%3ASpan%3F%3Dnil%2Cinorder%3ABool%3F%3Dnil%2Clanguage%3AString%3F%3Dnil%2Cexpander%3AString%3F%3Dnil%2Cscorer%3AString%3F%3Dnil%2Cexplainscore%3ABool%3F%3Dnil%2Cpayload%3AString%7CBytes%7CNil%3Dnil%2Csortby%3ASortBy%3F%3Dnil%2Climit%3ATuple%28Int%2CInt%29%3F%3Dnil%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -828,7 +853,7 @@ documentation</a>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/search.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>

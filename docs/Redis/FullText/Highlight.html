@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Cluster::Ask - redis 0.5.1</title>
+  <title>Redis::FullText::Highlight - redis 0.5.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -66,12 +66,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/Cluster" data-name="redis::cluster">
+  <li class="parent " data-id="redis/Redis/Cluster" data-name="redis::cluster">
       <a href="../../Redis/Cluster.html">Cluster</a>
       
         <ul>
   
-  <li class=" current" data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
+  <li class=" " data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
       <a href="../../Redis/Cluster/Ask.html">Ask</a>
       
     </li>
@@ -151,7 +151,7 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+  <li class="parent open current" data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
       <a href="../../Redis/FullText.html">FullText</a>
       
         <ul>
@@ -171,7 +171,7 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
+  <li class=" current" data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
       <a href="../../Redis/FullText/Highlight.html">Highlight</a>
       
     </li>
@@ -535,12 +535,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> Redis::Cluster::Ask
+  <span class="kind">struct</span> Redis::FullText::Highlight
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Cluster/Ask.html">Redis::Cluster::Ask</a></li><li class="superclass"><a href="../../Redis/Cluster/Error.html">Redis::Cluster::Error</a></li><li class="superclass"><a href="../../Redis/Error.html">Redis::Error</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/FullText/Highlight.html">Redis::FullText::Highlight</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
 
 
 
@@ -568,8 +568,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/errors.cr#L23" target="_blank">
-        errors.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L245" target="_blank">
+        search.cr
       </a>
     
     <br/>
@@ -579,9 +579,58 @@
 
 
 
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28fields%3AArray%28String%29%3F%3Dnil%2Ctags%3ATuple%28String%2CString%29%3F%3Dnil%29-class-method" class="signature"><strong>.new</strong>(fields : Array(String)? = <span class="n">nil</span>, tags : Tuple(String, String)? = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+  </ul>
 
 
 
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#copy_with%28fields_fields%3D%40fields%2Ctags_tags%3D%40tags%29-instance-method" class="signature"><strong>#copy_with</strong>(fields _fields = @fields, tags _tags = @tags)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#fields%3AArray%28String%29%3F-instance-method" class="signature"><strong>#fields</strong> : Array(String)?</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#tags%3ATuple%28String%2CString%29%3F-instance-method" class="signature"><strong>#tags</strong> : Tuple(String, String)?</a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -619,32 +668,108 @@
 
 
   
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
 </div>
 
 
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(fields:Array(String)?=nil,tags:Tuple(String,String)?=nil)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(fields : Array(String)? = <span class="n">nil</span>, tags : Tuple(String, String)? = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#new%28fields%3AArray%28String%29%3F%3Dnil%2Ctags%3ATuple%28String%2CString%29%3F%3Dnil%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L245" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="clone-instance-method">
+      <div class="signature">
+        
+        def <strong>clone</strong>
+
+        <a class="method-permalink" href="#clone-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L245" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="copy_with(fields_fields=@fields,tags_tags=@tags)-instance-method">
+      <div class="signature">
+        
+        def <strong>copy_with</strong>(fields _fields = @fields, tags _tags = @tags)
+
+        <a class="method-permalink" href="#copy_with%28fields_fields%3D%40fields%2Ctags_tags%3D%40tags%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L245" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="fields:Array(String)?-instance-method">
+      <div class="signature">
+        
+        def <strong>fields</strong> : Array(String)?
+
+        <a class="method-permalink" href="#fields%3AArray%28String%29%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="tags:Tuple(String,String)?-instance-method">
+      <div class="signature">
+        
+        def <strong>tags</strong> : Tuple(String, String)?
+
+        <a class="method-permalink" href="#tags%3ATuple%28String%2CString%29%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
 
 
 

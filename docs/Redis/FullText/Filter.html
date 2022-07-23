@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Cluster::Ask - redis 0.5.1</title>
+  <title>Redis::FullText::Filter - redis 0.5.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -66,12 +66,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/Cluster" data-name="redis::cluster">
+  <li class="parent " data-id="redis/Redis/Cluster" data-name="redis::cluster">
       <a href="../../Redis/Cluster.html">Cluster</a>
       
         <ul>
   
-  <li class=" current" data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
+  <li class=" " data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
       <a href="../../Redis/Cluster/Ask.html">Ask</a>
       
     </li>
@@ -151,12 +151,12 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+  <li class="parent open current" data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
       <a href="../../Redis/FullText.html">FullText</a>
       
         <ul>
   
-  <li class=" " data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
+  <li class=" current" data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
       <a href="../../Redis/FullText/Filter.html">Filter</a>
       
     </li>
@@ -535,12 +535,12 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> Redis::Cluster::Ask
+  <span class="kind">struct</span> Redis::FullText::Filter
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Cluster/Ask.html">Redis::Cluster::Ask</a></li><li class="superclass"><a href="../../Redis/Cluster/Error.html">Redis::Cluster::Error</a></li><li class="superclass"><a href="../../Redis/Error.html">Redis::Error</a></li><li class="superclass">Exception</li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/FullText/Filter.html">Redis::FullText::Filter</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
 
 
 
@@ -568,8 +568,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/errors.cr#L23" target="_blank">
-        errors.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L270" target="_blank">
+        search.cr
       </a>
     
     <br/>
@@ -579,9 +579,68 @@
 
 
 
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28field%3AString%2Cmin%3AString%2Cmax%3AString%29-class-method" class="signature"><strong>.new</strong>(field : String, min : String, max : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28field%3AString%2Crange%3ARange%28B%2CE%29%29forallB%2CE-class-method" class="signature"><strong>.new</strong>(field : String, range : Range(B, E)) forall B, E</a>
+        
+      </li>
+    
+  </ul>
 
 
 
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#copy_with%28field_field%3D%40field%2Cmin_min%3D%40min%2Cmax_max%3D%40max%29-instance-method" class="signature"><strong>#copy_with</strong>(field _field = @field, min _min = @min, max _max = @max)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#field%3AString-instance-method" class="signature"><strong>#field</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#max%3AString-instance-method" class="signature"><strong>#max</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#min%3AString-instance-method" class="signature"><strong>#min</strong> : String</a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -619,32 +678,138 @@
 
 
   
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-  
 </div>
 
 
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(field:String,min:String,max:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(field : String, min : String, max : String)
+
+        <a class="method-permalink" href="#new%28field%3AString%2Cmin%3AString%2Cmax%3AString%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L270" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(field:String,range:Range(B,E))forallB,E-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(field : String, range : Range(B, E)) forall B, E
+
+        <a class="method-permalink" href="#new%28field%3AString%2Crange%3ARange%28B%2CE%29%29forallB%2CE-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L271" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="clone-instance-method">
+      <div class="signature">
+        
+        def <strong>clone</strong>
+
+        <a class="method-permalink" href="#clone-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L270" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="copy_with(field_field=@field,min_min=@min,max_max=@max)-instance-method">
+      <div class="signature">
+        
+        def <strong>copy_with</strong>(field _field = @field, min _min = @min, max _max = @max)
+
+        <a class="method-permalink" href="#copy_with%28field_field%3D%40field%2Cmin_min%3D%40min%2Cmax_max%3D%40max%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/search.cr#L270" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="field:String-instance-method">
+      <div class="signature">
+        
+        def <strong>field</strong> : String
+
+        <a class="method-permalink" href="#field%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="max:String-instance-method">
+      <div class="signature">
+        
+        def <strong>max</strong> : String
+
+        <a class="method-permalink" href="#max%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="min:String-instance-method">
+      <div class="signature">
+        
+        def <strong>min</strong> : String
+
+        <a class="method-permalink" href="#min%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
 
 
 

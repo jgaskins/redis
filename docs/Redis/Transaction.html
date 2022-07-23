@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.0">
+<meta name="crystal_docs.project_version" content="0.5.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Transaction - redis 0.5.0</title>
+  <title>Redis::Transaction - redis 0.5.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.0
+        0.5.1
       </span>
     </div>
   </div>
@@ -156,8 +156,23 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
+      <a href="../Redis/FullText/Filter.html">Filter</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoFilter" data-name="redis::fulltext::geofilter">
+      <a href="../Redis/FullText/GeoFilter.html">GeoFilter</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
       <a href="../Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
+      <a href="../Redis/FullText/Highlight.html">Highlight</a>
       
     </li>
   
@@ -168,6 +183,11 @@
   
   <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
       <a href="../Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+      <a href="../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
   
@@ -288,6 +308,11 @@
   
   <li class=" " data-id="redis/Redis/Graph/TypedResult" data-name="redis::graph::typedresult(t)">
       <a href="../Redis/Graph/TypedResult.html">TypedResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Value" data-name="redis::graph::value">
+      <a href="../Redis/Graph/Value.html">Value</a>
       
     </li>
   
@@ -557,7 +582,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L5" target="_blank">
         transaction.cr
       </a>
     
@@ -769,8 +794,8 @@
     type</a>, 
     
   
-    <a href="../Redis/Commands.html#unlink%28%2Akeys%3AString%29-instance-method" class="tooltip">
-      <span>unlink(*keys : String)</span>
+    <a href="../Redis/Commands.html#unlink%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>unlink(keys : Enumerable(String))<br/>unlink(*keys : String)</span>
     unlink</a>
     
   
@@ -1039,13 +1064,13 @@
     hmget</a>, 
     
   
-    <a href="../Redis/Commands/Hash.html#hmset%28key%3AString%2Cdata%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
-      <span>hmset(key : String, data : Hash(String, String))</span>
+    <a href="../Redis/Commands/Hash.html#hmset%28key%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
+      <span>hmset(key : String, data : ::Hash(String, String))</span>
     hmset</a>, 
     
   
-    <a href="../Redis/Commands/Hash.html#hset%28key%3AString%2Cfield%3AString%2Cvalue%3AString%29-instance-method" class="tooltip">
-      <span>hset(key : String, field : String, value : String)</span>
+    <a href="../Redis/Commands/Hash.html#hset%28key%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
+      <span>hset(key : String, data : ::Hash(String, String))<br/>hset(key : String, *fields : String)<br/>hset(key : String, **fields : String)</span>
     hset</a>
     
   
@@ -1101,7 +1126,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1131,7 +1156,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1147,7 +1172,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1163,7 +1188,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1190,7 +1215,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1206,7 +1231,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/transaction.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/transaction.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>

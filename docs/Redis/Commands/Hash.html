@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.0">
+<meta name="crystal_docs.project_version" content="0.5.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::Hash - redis 0.5.0</title>
+  <title>Redis::Commands::Hash - redis 0.5.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.0
+        0.5.1
       </span>
     </div>
   </div>
@@ -156,8 +156,23 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
+      <a href="../../Redis/FullText/Filter.html">Filter</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoFilter" data-name="redis::fulltext::geofilter">
+      <a href="../../Redis/FullText/GeoFilter.html">GeoFilter</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
       <a href="../../Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
+      <a href="../../Redis/FullText/Highlight.html">Highlight</a>
       
     </li>
   
@@ -168,6 +183,11 @@
   
   <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
       <a href="../../Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+      <a href="../../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
   
@@ -288,6 +308,11 @@
   
   <li class=" " data-id="redis/Redis/Graph/TypedResult" data-name="redis::graph::typedresult(t)">
       <a href="../../Redis/Graph/TypedResult.html">TypedResult</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Value" data-name="redis::graph::value">
+      <a href="../../Redis/Graph/Value.html">Value</a>
       
     </li>
   
@@ -555,7 +580,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/commands/hash.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L1" target="_blank">
         commands/hash.cr
       </a>
     
@@ -596,12 +621,24 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#hmset%28key%3AString%2Cdata%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#hmset</strong>(key : String, data : Hash(String, String))</a>
+        <a href="#hmset%28key%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#hmset</strong>(key : String, data : ::Hash(String, String))</a>
+        
+          <div class="summary"><p><span class="flag red">DEPRECATED</span>  The Redis HMSET command is deprecated. Use HSET instead. This method will be removed in v1.0.0 of this shard. See https://redis.io/commands/hmset/</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#hset%28key%3AString%2Cfield%3AString%2Cvalue%3AString%29-instance-method" class="signature"><strong>#hset</strong>(key : String, field : String, value : String)</a>
+        <a href="#hset%28key%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#hset</strong>(key : String, data : ::Hash(String, String))</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#hset%28key%3AString%2C%2Afields%3AString%29-instance-method" class="signature"><strong>#hset</strong>(key : String, *fields : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#hset%28key%3AString%2C%2A%2Afields%3AString%29-instance-method" class="signature"><strong>#hset</strong>(key : String, **fields : String)</a>
         
       </li>
     
@@ -640,7 +677,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/commands/hash.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -656,7 +693,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/commands/hash.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -672,39 +709,76 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/commands/hash.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="hmset(key:String,data:Hash(String,String))-instance-method">
+    <div class="entry-detail" id="hmset(key:String,data:::Hash(String,String))-instance-method">
       <div class="signature">
         
-        def <strong>hmset</strong>(key : String, data : <a href="../../Redis/Commands/Hash.html">Hash</a>(String, String))
+        def <strong>hmset</strong>(key : String, data : ::Hash(String, String))
 
-        <a class="method-permalink" href="#hmset%28key%3AString%2Cdata%3AHash%28String%2CString%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#hmset%28key%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag red">DEPRECATED</span>  The Redis HMSET command is deprecated. Use HSET instead. This method will be removed in v1.0.0 of this shard. See https://redis.io/commands/hmset/</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L43" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="hset(key:String,data:::Hash(String,String))-instance-method">
+      <div class="signature">
+        
+        def <strong>hset</strong>(key : String, data : ::Hash(String, String))
+
+        <a class="method-permalink" href="#hset%28key%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/commands/hash.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="hset(key:String,field:String,value:String)-instance-method">
+    <div class="entry-detail" id="hset(key:String,*fields:String)-instance-method">
       <div class="signature">
         
-        def <strong>hset</strong>(key : String, field : String, value : String)
+        def <strong>hset</strong>(key : String, *fields : String)
 
-        <a class="method-permalink" href="#hset%28key%3AString%2Cfield%3AString%2Cvalue%3AString%29-instance-method">#</a>
+        <a class="method-permalink" href="#hset%28key%3AString%2C%2Afields%3AString%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.0/src/commands/hash.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="hset(key:String,**fields:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>hset</strong>(key : String, **fields : String)
+
+        <a class="method-permalink" href="#hset%28key%3AString%2C%2A%2Afields%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.1/src/commands/hash.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
