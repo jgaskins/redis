@@ -99,24 +99,52 @@ module Redis
       withscores = false,
       withpayloads = false,
       withsortkeys = false,
-      filter : {String, Int | String, Int | String}? = nil,
-      geofilter : {String, Float, Float, Numeric, GeoUnit}? = nil,
+      filter : Array(Filter)? = nil,
+      geofilter : GeoFilter? = nil,
       inkeys : Array(String)? = nil,
       infields : Array(String)? = nil,
       return return_value : Array(String)? = nil,
-      # summarize : idk what to do here
-      # highlight : idk what to do here
+      summarize : Summarize? = nil,
+      highlight : Highlight? = nil,
       slop : Int? = nil,
+      timeout : Time::Span? = nil,
       inorder : Bool? = nil,
       language : String? = nil,
       expander : String? = nil,
       scorer : String? = nil,
-      explainscore = nil,
+      explainscore : Bool? = nil,
       payload : String | Bytes | Nil = nil,
       sortby : SortBy? = nil,
       limit : {Int, Int}? = nil
     )
-      command = ["ft.search", index, query]
+      command = Array(String).new(
+        1 + # index
+        1 + # query
+        1 + # nocontent
+        1 + # verbatim
+        1 + # nostopwords
+        1 + # withscores
+        1 + # withpayloads
+        4 + # filter
+        6 + # geofilter
+        (inkeys.try(&.size) || 0) + 1 +
+        (infields.try(&.size) || 0) + 1 +
+        (return_value.try(&.size) || 0) + 1 +
+        (summarize.try(&.fields).try(&.size) || 0) + 8 +
+        (highlight.try(&.fields).try(&.size) || 0) + 6 +
+        2 + # slop
+        2 + # timeout
+        1 + # inorder
+        2 + # language
+        2 + # expander
+        2 + # scorer
+        1 + # explainscore
+        2 + # payload
+        3 + # sortby
+        3 + # limit
+        0 # end
+      )
+      command << "ft.search" << index << query
 
       command << "nocontent" if nocontent
       command << "verbatim" if verbatim
@@ -125,15 +153,13 @@ module Redis
       command << "withpayloads" if withpayloads
       command << "withsortkeys" if withsortkeys
       if filter
-        command << "filter"
-        attr, min, max = filter
-        command << attr << min.to_s << max.to_s
+        filter.each do |f|
+          command << "filter"
+          command << f.field << f.min << f.max
+        end
       end
       if geofilter
-        command << "geofilter"
-        geofilter.each do |(attr, lon, lat, radius, unit)|
-          command << attr << lon.to_s << lat.to_s << radius.to_s << unit.to_s
-        end
+        command << "geofilter" << geofilter.field << geofilter.longitude.to_s << geofilter.latitude.to_s << geofilter.radius.to_s << geofilter.unit.to_s.downcase
       end
       if inkeys
         command << "inkeys"
@@ -145,7 +171,45 @@ module Redis
       end
 
       if return_value
-        command += ["return", return_value.size.to_s] + return_value
+        command << "return" << return_value.size.to_s
+        command.concat return_value
+      end
+
+      if summarize
+        command << "summarize"
+
+        # fields : {Int32, String}? = nil,
+        if fields = summarize.fields
+          command << "fields" << fields.size.to_s
+          command.concat fields
+        end
+        # frags : Int32? = nil,
+        if frags = summarize.frags
+          command << "frags" << frags.to_s
+        end
+        # len : Int32? = nil,
+        if len = summarize.len
+          command << "len" << len.to_s
+        end
+        # separator : String? = nil
+        if separator = summarize.separator
+          command << "separator" << separator
+        end
+      end
+
+      if highlight
+        command << "highlight"
+        if fields = highlight.fields
+          field_names = fields
+          command << "fields" << fields.size.to_s
+          if field_names
+            command.concat field_names
+          end
+        end
+        if tags = highlight.tags
+          command << "tags"
+          command.concat tags
+        end
       end
 
       command << "slop" << slop.to_s if slop
@@ -168,8 +232,21 @@ module Redis
         command.concat limit.map(&.to_s).to_a
       end
 
-      @redis.run command
+      @redis.run(command).as Array
     end
+
+    record Summarize,
+      # SUMMARIZE [FIELDS {num} {field}] [FRAGS {numFrags}] [LEN {fragLen}] [SEPARATOR {sepstr}]
+      fields : Array(String)? = nil,
+      frags : Int32? = nil,
+      len : Int32? = nil,
+      separator : String? = nil
+
+    record Highlight,
+      # HIGHLIGHT [FIELDS {num} {field}] [TAGS {openTag} {closeTag}]
+      fields : Array(String)? = nil,
+      tags : {String, String}? = nil
+
 
     # Profile the given search. For further details, see [the `FT.PROFILE`
     # documentation](https://oss.redis.com/redisearch/Commands/#ftprofile).
@@ -189,6 +266,20 @@ module Redis
 
       @redis.run command
     end
+
+    record Filter, field : String, min : String, max : String do
+      def self.new(field : String, range : Range(B, E)) forall B, E
+        new field,
+          min: range.begin.to_s,
+          max: range.end.to_s
+      end
+    end
+    record GeoFilter,
+      field : String,
+      longitude : Float64,
+      latitude : Float64,
+      radius : Int64 | Float64,
+      unit : GeoUnit
   end
 
   module Commands
