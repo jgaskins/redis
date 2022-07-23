@@ -8,6 +8,7 @@ struct Person
 
   getter id : UUID
   getter name : String
+  getter value : Int32?
   getter created_at : Time
 end
 
@@ -51,6 +52,16 @@ describe Redis::Graph do
     count.should eq 1
 
     result.first.first.as(Redis::Graph::Node).properties["id"].should eq 123
+  end
+
+  test "runs queries returning scalars" do
+    result = graph.read_query <<-CYPHER, return: {Int32, String}
+      RETURN
+        42 AS answer,
+        'hello' AS greeting
+    CYPHER
+
+    result.first.should eq({42, "hello"})
   end
 
   test "runs queries on custom types" do

@@ -116,6 +116,10 @@ module Redis
         Result.new(@redis.run({"GRAPH.RO_QUERY", @key, build_query(cypher, params)}).as(Array))
       end
 
+      def read_query(cypher : String, return types : Tuple(*T)) forall T
+        read_query cypher, params: NamedTuple.new, return: types
+      end
+
       # Query the graph with the given Cypher query, passing in the given
       # params, and returning the given types corresponding to the values in
       # your Cypher `RETURN` clause.
@@ -161,6 +165,37 @@ module Redis
           end
           str << ' ' << cypher.strip
         end
+      end
+
+      private def encode_param(array : Array, io : IO) : Nil
+        io << '['
+        array.each_with_index 1 do |value, index|
+          encode_param value, io
+          io << ',' if index < array.size
+        end
+        io << ']'
+      end
+
+      private def encode_param(hash : Hash, io : IO) : Nil
+        io << '{'
+        hash.each_with_index 1 do |(key, value), index|
+          key.to_s io
+          io << ':'
+          encode_param value, io
+          io << ',' if index < hash.size
+        end
+        io << '}'
+      end
+
+      private def encode_param(kv : NamedTuple, io : IO) : Nil
+        io << '{'
+        kv.each_with_index 1 do |key, value, index|
+          key.to_s io
+          io << ':'
+          encode_param value, io
+          io << ',' if index < kv.size
+        end
+        io << '}'
       end
 
       private def encode_param(value, io : IO) : Nil
@@ -289,6 +324,7 @@ module Redis
     alias ResultValue = Property | Node | Relationship
     alias List = Array(ResultValue | Array(ResultValue))
     alias Map = Hash(String, Property)
+    alias Value = ResultValue | List | Map
 
     # Parses the results of a Cypher query
     struct Result
@@ -329,6 +365,7 @@ module Redis
         else
           raise Error.new("Don't know how to process this result: #{raw.inspect}")
         end
+
         labels_added = 0i64
         nodes_created = 0i64
         relationships_created = 0i64

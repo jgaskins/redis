@@ -58,7 +58,6 @@ module Redis::Graph
         getter node : Metadata = Metadata.new(0i64, %w[])
 
         def self.from_graph_result(array : Array)
-          pp array: array
           if array.is_a?(Array(Redis::Graph::List)) && (node = Redis::Graph::Node.from?(array))
             new node
           else
@@ -172,7 +171,7 @@ struct Tuple
     {% begin %}
       {
         {% for type, index in @type.type_vars %}
-          {{type.instance}}.from_graph_result(result[{{index}}]),
+          {{type.instance}}.from_graph_result(result[{{index}}].as(::Redis::Graph::Value)),
         {% end %}
       }
     {% end %}
@@ -182,7 +181,7 @@ struct Tuple
     {% begin %}
       {
         {% for type, index in @type.type_vars %}
-          {{type.instance}}.from_graph_result(result[{{index}}]),
+          {{type.instance}}.from_graph_result(result[{{index}}]).as(::Redis::Graph::Value),
         {% end %}
       }
     {% end %}
@@ -226,7 +225,7 @@ struct UUID
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
     false
   end
 
@@ -247,11 +246,11 @@ end
 
 # :nodoc:
 class String
-  def self.from_graph_result(result : Redis::Value)
+  def self.from_graph_result(result : Redis::Graph::ResultValue)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
     false
   end
 
@@ -270,11 +269,11 @@ end
 
 # :nodoc:
 struct Nil
-  def self.from_graph_result(result : Redis::Value)
+  def self.from_graph_result(result : Redis::Graph::ResultValue)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
     false
   end
 
@@ -293,8 +292,16 @@ end
 
 # :nodoc:
 struct Int
-  def self.from_graph_result(result : Redis::Value)
+  def self.from_graph_result(result : Redis::Graph::ResultValue)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
+  end
+
+  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+    false
+  end
+
+  def self.can_transform_graph_result?(result : Int)
+    true
   end
 
   def to_redis_graph_param(io : IO)
@@ -313,7 +320,7 @@ end
 
 # :nodoc:
 struct Bool
-  def self.from_graph_result(result : Redis::Value)
+  def self.from_graph_result(result : Redis::Graph::ResultValue)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
@@ -329,19 +336,17 @@ end
 
 # :nodoc:
 class Array
-  def self.from_graph_result(result : Redis::Value)
-    # FIXME: For some reason overloading this method for various types isn't working for deserialization, so we're doing it Ruby style
-    case result
-    when Array
-      result.map do |item|
-        T.from_graph_result(item)
-      end
-    else
-      raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
+  def self.from_graph_result(result : Redis::Graph::Value)
+    raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
+  end
+
+  def self.from_graph_result(result : Array)
+    result.map do |item|
+      T.from_graph_result(item)
     end
   end
 
-  def self.can_transform_graph_result?(result : Redis::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value)
     false
   end
 
