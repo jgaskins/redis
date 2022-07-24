@@ -40,10 +40,11 @@ module Redis
       pipeline do |redis|
         # Authentication
         if (username = uri.user) && (password = uri.password)
-          run({"auth", username, password})
+          auth = {"auth", username, password}
         elsif password = uri.password
-          run({"auth", password})
+          auth = {"auth", password}
         end
+        redis.run auth
 
         # DB select
         db = if {"", "/"}.includes?(uri.path)
@@ -51,7 +52,9 @@ module Redis
              else
                uri.path[1..-1]
              end
-        run({"select", db}) unless db == "0"
+        unless db == "0"
+          redis.run({"select", db})
+        end
       end
     end
 
