@@ -39,7 +39,9 @@ module Redis
 
       pipeline do |redis|
         # Authentication
-        if password = uri.password
+        if (username = uri.user) && (password = uri.password)
+          run({"auth", username, password})
+        elsif password = uri.password
           run({"auth", password})
         end
 
