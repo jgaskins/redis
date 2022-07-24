@@ -362,7 +362,7 @@ class Array
 end
 
 # :nodoc:
-def Union.from_graph_result(result : Redis::Value)
+def Union.from_graph_result(result : Redis::Graph::Value)
   {% begin %}
   if false
     raise "lolwut"
