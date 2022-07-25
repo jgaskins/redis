@@ -319,6 +319,29 @@ end
 {% end %}
 
 # :nodoc:
+struct Float64
+  def self.from_graph_result(result : Redis::Graph::ResultValue)
+    raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
+  end
+
+  def self.from_graph_result(result : String)
+    result.to_f64
+  end
+
+  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+    false
+  end
+
+  def self.can_transform_graph_result?(result : String)
+    true
+  end
+
+  def to_redis_graph_param(io : IO)
+    to_s io
+  end
+end
+
+# :nodoc:
 struct Bool
   def self.from_graph_result(result : Redis::Graph::ResultValue)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
