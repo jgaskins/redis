@@ -99,6 +99,41 @@ describe Redis::Graph do
     count.should eq 1
   end
 
+  test "runs queries on a single custom type" do
+    id = UUID.random
+    result = graph.write_query <<-CYPHER, {id: id, name: "Jamie", created_at: Time.utc.to_unix_ms}, return: Person
+      CREATE (user:User {
+        id: $id,
+        name: $name,
+        created_at: $created_at
+      })
+      RETURN user
+    CYPHER
+
+    count = 0
+    jamie = uninitialized Person
+    result.each do |person|
+      count += 1
+      jamie = person
+      person.name.should eq "Jamie"
+      person.created_at.should be_within(1.second, of: Time.utc)
+    end
+    count.should eq 1
+
+    result = graph.read_query <<-CYPHER, {id: jamie.id}, return: Person
+      MATCH (user:User {id: $id})
+      RETURN user
+      LIMIT 1
+    CYPHER
+
+    count = 0
+    result.each do |person|
+      count += 1
+      person.should eq jamie
+    end
+    count.should eq 1
+  end
+
   test "can use transactions" do
     id = UUID.random
     begin

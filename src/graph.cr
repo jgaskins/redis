@@ -84,6 +84,13 @@ module Redis
         {% end %}
       end
 
+      def write_query(cypher : String, params : NamedTuple | Hash, return type : T.class) forall T
+        {% begin %}
+          result = Result.new(@redis.run({"GRAPH.QUERY", @key, build_query(cypher, params)}).as(Array))
+          TypedResult({{T.instance}}).new(result)
+        {% end %}
+      end
+
       # Write data to the graph using the given cypher query, passing in the
       # given query parameters.
       def write_query(cypher : String, **params)
@@ -135,6 +142,13 @@ module Redis
         {% begin %}
           result = Result.new(@redis.run({"GRAPH.RO_QUERY", @key, build_query(cypher, params)}).as(Array))
           TypedResult({ {{T.type_vars.map(&.instance).join(", ").id}} }).new(result)
+        {% end %}
+      end
+
+      def read_query(cypher : String, params : NamedTuple | Hash, return type : T.class) forall T
+        {% begin %}
+          result = Result.new(@redis.run({"GRAPH.RO_QUERY", @key, build_query(cypher, params)}).as(Array))
+          TypedResult({{T.instance}}).new(result)
         {% end %}
       end
 
@@ -445,7 +459,11 @@ module Redis
       # :nodoc:
       def self.new(result : Result)
         rows = result.map do |row|
-          T.from_graph_result(row.as(Array))
+          {% if T < Tuple %}
+            T.from_graph_result(row.as(Array))
+          {% else %}
+            T.from_graph_result(row.as(Array).first)
+          {% end %}
         end
 
         new(
