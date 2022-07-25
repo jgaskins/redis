@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.3">
+<meta name="crystal_docs.project_version" content="0.5.4">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Connection - redis 0.5.3</title>
+  <title>Redis::Connection - redis 0.5.4</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.3
+        0.5.4
       </span>
     </div>
   </div>
@@ -593,14 +593,14 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L14" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L14" target="_blank">
         connection.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/graph.cr#L482" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/graph.cr#L500" target="_blank">
         graph.cr
       </a>
     
@@ -622,7 +622,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28uri%3AURI%3DURI.parse%28%22redis%3A///%22%29%2Cdns_timeout%3D5.seconds%2Cconnect_timeout%3D10.seconds%29-class-method" class="signature"><strong>.new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="s">&quot;redis:///&quot;</span>), dns_timeout = <span class="n">5</span>.seconds, connect_timeout = <span class="n">10</span>.seconds)</a>
+        <a href="#new%28uri%3AURI%3DURI.parse%28%22redis%3A///%22%29%29-class-method" class="signature"><strong>.new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="s">&quot;redis:///&quot;</span>))</a>
         
           <div class="summary"><p>We receive all connection information in the URI.</p></div>
         
@@ -1225,12 +1225,12 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(uri:URI=URI.parse(&quot;redis:///&quot;),dns_timeout=5.seconds,connect_timeout=10.seconds)-class-method">
+    <div class="entry-detail" id="new(uri:URI=URI.parse(&quot;redis:///&quot;))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="s">&quot;redis:///&quot;</span>), dns_timeout = <span class="n">5</span>.seconds, connect_timeout = <span class="n">10</span>.seconds)
+        def self.<strong>new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="s">&quot;redis:///&quot;</span>))
 
-        <a class="method-permalink" href="#new%28uri%3AURI%3DURI.parse%28%22redis%3A///%22%29%2Cdns_timeout%3D5.seconds%2Cconnect_timeout%3D10.seconds%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28uri%3AURI%3DURI.parse%28%22redis%3A///%22%29%29-class-method">#</a>
       </div>
       
         <div class="doc">
@@ -1244,7 +1244,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1279,7 +1279,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L282" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L279" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1304,7 +1304,7 @@ useful if a command like this has not been implemented yet.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L319" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L316" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1326,7 +1326,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L293" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L290" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1358,7 +1358,7 @@ redis.get <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; nil
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L106" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L103" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1384,7 +1384,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L69" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1431,7 +1431,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1447,7 +1447,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L193" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L190" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1468,7 +1468,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L298" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L295" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1490,7 +1490,7 @@ closed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L304" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L301" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1513,7 +1513,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L201" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L198" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1535,7 +1535,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L248" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L245" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1560,7 +1560,7 @@ generates the array of all those keys.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L268" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L265" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1607,7 +1607,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L129" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1630,7 +1630,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L176" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L173" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1651,7 +1651,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L182" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L179" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1672,7 +1672,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L188" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L185" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1693,7 +1693,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.3/src/connection.cr#L309" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/connection.cr#L306" target="_blank">View source</a>]
         
       </div>
     </div>
