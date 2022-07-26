@@ -85,7 +85,7 @@ describe Redis::Graph do
     end
     count.should eq 1
 
-    result = graph.read_query <<-CYPHER, {id: jamie.id}, return: {Person}
+    result = graph.read_query <<-CYPHER, {id: jamie.id}, return: {Person?}
       MATCH (user:User {id: $id})
       RETURN user
       LIMIT 1

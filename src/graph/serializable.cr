@@ -57,6 +57,14 @@ module Redis::Graph
         @[Redis::Graph::Serializable::Property(ignore: true)]
         getter node : Metadata = Metadata.new(0i64, %w[])
 
+        def self.can_transform_graph_result?(value : ::Redis::Graph::Node)
+          true
+        end
+
+        def self.can_transform_graph_result?(value)
+          false
+        end
+
         def self.from_graph_result(array : Array)
           if array.is_a?(Array(Redis::Graph::List)) && (node = Redis::Graph::Node.from?(array))
             new node
