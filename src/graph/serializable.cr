@@ -233,7 +233,7 @@ struct UUID
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value)
     false
   end
 
@@ -254,11 +254,11 @@ end
 
 # :nodoc:
 class String
-  def self.from_graph_result(result : Redis::Graph::ResultValue)
+  def self.from_graph_result(result : Redis::Graph::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value)
     false
   end
 
@@ -277,11 +277,11 @@ end
 
 # :nodoc:
 struct Nil
-  def self.from_graph_result(result : Redis::Graph::ResultValue)
+  def self.from_graph_result(result : Redis::Graph::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value)
     false
   end
 
@@ -300,11 +300,11 @@ end
 
 # :nodoc:
 struct Int
-  def self.from_graph_result(result : Redis::Graph::ResultValue)
+  def self.from_graph_result(result : Redis::Graph::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value)
     false
   end
 
@@ -328,7 +328,7 @@ end
 
 # :nodoc:
 struct Float64
-  def self.from_graph_result(result : Redis::Graph::ResultValue)
+  def self.from_graph_result(result : Redis::Graph::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
@@ -336,7 +336,7 @@ struct Float64
     result.to_f64
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::ResultValue)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value)
     false
   end
 
@@ -351,7 +351,7 @@ end
 
 # :nodoc:
 struct Bool
-  def self.from_graph_result(result : Redis::Graph::ResultValue)
+  def self.from_graph_result(result : Redis::Graph::Value)
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 

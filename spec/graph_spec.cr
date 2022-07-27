@@ -100,6 +100,12 @@ describe Redis::Graph do
   end
 
   test "runs queries on a single custom type" do
+    result = graph.read_query "RETURN $value", {value: "hello"}, return: String
+    result.size.should eq 1
+    result.each do |string|
+      string.should eq "hello"
+    end
+
     id = UUID.random
     result = graph.write_query <<-CYPHER, {id: id, name: "Jamie", created_at: Time.utc.to_unix_ms}, return: Person
       CREATE (user:User {
