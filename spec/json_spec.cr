@@ -36,8 +36,8 @@ struct Order
   end
 end
 
-private macro test(name)
-  it {{name}} do
+private macro test(name, focus = false)
+  it {{name}}, focus: {{focus}} do
     key = UUID.random.to_s
 
     begin
