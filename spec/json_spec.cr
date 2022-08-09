@@ -58,6 +58,12 @@ describe Redis::JSON do
     redis.json.get(key).should eq({"foo" => "bar"}.to_json)
   end
 
+  test "sets JSON objects only if they do not exist" do
+    redis.json.set(key, ".", {foo: "bar"}, nx: true).should_not be_nil
+    redis.json.set(key, ".", {foo: "bar"}, nx: true).should be_nil
+    redis.json.set(key, ".", {foo: "bar"}, nx: true).should be_nil
+  end
+
   test "gets the value via a JSONPath" do
     redis.json.set key, ".", {
       id:       "123",

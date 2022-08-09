@@ -61,7 +61,7 @@ module Redis
     # ```
     # redis.json.set "user:#{id}", ".email", new_email, xx: true
     # ```
-    def set(key : String, path : String, value, *, nx = false, xx = false) : Nil
+    def set(key : String, path : String, value, *, nx = false, xx = false)
       command = {"json.set", key, path, value.to_json}
       command += {"nx"} if nx
       command += {"xx"} if xx
