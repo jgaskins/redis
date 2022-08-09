@@ -163,6 +163,13 @@ module Redis
       end
     end
 
+    def clear(key : String, path : String? = nil)
+      command = {"json.clear", key}
+      command += {path} if path
+
+      @redis.run command
+    end
+
     # Increment the number at the specified JSONPath
     #
     # ```

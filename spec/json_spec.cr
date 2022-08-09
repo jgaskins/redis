@@ -116,6 +116,16 @@ describe Redis::JSON do
     redis.json.numincrby(key, "$.products..quantity", 1, as: Array(Int32)).should eq [3, 4, 5]
   end
 
+  test "clears JSON values" do
+    redis.json.set key, ".", {values: [1], count: 1234}
+
+    redis.json.clear key, ".values"
+    redis.json.get(key, ".values", as: Array(Int64)).not_nil!.should be_empty
+
+    redis.json.clear key, ".count"
+    redis.json.get(key, ".count", as: Int64).should eq 0
+  end
+
   test "appends a value to an array" do
     redis.json.set key, ".", {values: [1]}
 
