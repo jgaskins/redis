@@ -170,6 +170,13 @@ module Redis
       @redis.run command
     end
 
+    def del(key : String, path : String? = nil)
+      command = {"json.del", key}
+      command += {path} if path
+
+      @redis.run command
+    end
+
     # Increment the number at the specified JSONPath
     #
     # ```

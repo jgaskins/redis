@@ -126,6 +126,14 @@ describe Redis::JSON do
     redis.json.get(key, ".count", as: Int64).should eq 0
   end
 
+  test "deletes keys from a JSON object" do
+    redis.json.set key, ".", {values: [1], count: 1234}
+
+    redis.json.del key, ".values"
+    redis.json.get(key, "$.values", as: Array(Array(Int64))).not_nil!.should be_empty
+    redis.json.get(key, ".count", as: Int64).should eq 1234
+  end
+
   test "appends a value to an array" do
     redis.json.set key, ".", {values: [1]}
 
