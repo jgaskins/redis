@@ -177,8 +177,16 @@ module Redis
       run({"publish", channel, message})
     end
 
+    def expire(key : String, ttl : Time::Span)
+      expire key, ttl.total_seconds.to_i64
+    end
+
     def expire(key : String, ttl : Int)
       run({"expire", key, ttl.to_s})
+    end
+
+    def pexpire(key : String, ttl : Time::Span)
+      pexpire key, ttl.total_milliseconds.to_i64
     end
 
     def pexpire(key : String, ttl : Int)
