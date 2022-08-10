@@ -105,6 +105,10 @@ module Redis
       @redis.run({"ft.info", index})
     end
 
+    def tagvals(index : String, field : String)
+      @redis.run({"ft.tagvals", index, field})
+    end
+
     # Run the specified `query` against `index`. Customize the search with various other arguments. For details about what each one does and the return value, see [the `FT.SEARCH`
     # documentation](https://oss.redis.com/redisearch/Commands/#ftsearch).
     #
