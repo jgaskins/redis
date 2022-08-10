@@ -49,9 +49,12 @@ module Redis
           post_count NUMERIC SORTABLE
       INDEX
 
+      # Please leave the FILTER clause in there, it ensures we send the quoted
+      # filter expression as a single token.
       redis.ft.create <<-INDEX
         #{json_index} ON JSON
         PREFIX 1 #{json_prefix}:
+        FILTER "@post_count >= 0"
         SCHEMA
           $.name AS name TEXT NOSTEM SORTABLE
           $.body AS body TEXT

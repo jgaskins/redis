@@ -73,7 +73,30 @@ module Redis
     # NOTE: This method returns immediately, before the index is complete. You can run searches against an incomplete index, but you will also have incomplete results. To find how far along the index is, you can use the `info` method.
     # TODO: Add a method that generates the string passed into this overload.
     def create(string : String)
-      @redis.run ["ft.create"] + string.split
+      command = [] of String
+      start = 0
+      in_quotes = false
+
+      start.upto(string.size - 1) do |index|
+        if string[index] == '"'
+          if in_quotes
+            part = string[start...index].strip
+            command << part unless part.empty?
+            in_quotes = false
+          else
+            in_quotes = true
+          end
+
+          start = index + 1
+        elsif string[index].whitespace? && !string[index - 1].whitespace? && !in_quotes
+          part = part = string[start...index].strip
+          command << part unless part.empty?
+          start = index + 1
+        end
+      end
+      command << string[start..-1]
+
+      @redis.run ["ft.create"] + command
     end
 
     # Get information about the search index contained in `index`. For more
