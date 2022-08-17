@@ -309,6 +309,13 @@ module Redis
       unit : GeoUnit
   end
 
+  class Client
+    @[Experimental("RediSearch support is still under development. Some APIs may change while details are discovered.")]
+    def ft
+      FullText.new(self)
+    end
+  end
+
   module Commands
     @[Experimental("RediSearch support is still under development. Some APIs may change while details are discovered.")]
     def ft
