@@ -41,7 +41,7 @@ module Redis
 
       # Check whether we should use SSL
       if uri.scheme == "rediss"
-        socket = OpenSSL::SSL::Socket::Client.new(socket)
+        socket = OpenSSL::SSL::Socket::Client.new(socket, hostname: host)
         socket.sync = false
       end
 
