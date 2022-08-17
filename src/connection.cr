@@ -243,10 +243,14 @@ module Redis
     # run({"set", "foo", "bar"})
     # ```
     def run(command, retries = 5) : Value
+      start = Time.monotonic
+
       loop do
         @writer.encode command
         flush
-        return read
+        result = read
+        Log.debug &.emit "redis", command: command.to_a, duration_ms: (Time.monotonic - start).total_milliseconds
+        return result
       rescue ex : IO::Error
         if retries > 0
           retries -= 1
