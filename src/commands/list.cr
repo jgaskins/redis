@@ -35,8 +35,8 @@ module Redis::Commands::List
     run(command)
   end
 
-  def lrange(key : String, start : String, finish : String)
-    run({"lrange", key, start, finish})
+  def lrange(key : String, start : String | Int, finish : String | Int)
+    run({"lrange", key, start.to_s, finish.to_s})
   end
 
   # Atomically remove an item from the end of a list and insert it at the
