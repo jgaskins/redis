@@ -54,4 +54,8 @@ module Redis::Commands::SortedSet
   def zrem(key : String, value : String)
     run({"zrem", key, value})
   end
+
+  def zcount(key : String, min : String, max : String)
+    run({"zcount", key, min, max})
+  end
 end

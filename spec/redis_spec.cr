@@ -191,6 +191,42 @@ describe Redis::Client do
     end
   end
 
+  describe "sorted sets" do
+    it "can add and remove members of a sorted set" do
+      key = random_key
+
+      begin
+        redis.zadd(key, "1", "a").should eq 1
+        redis.zadd(key, "1", "a").should eq 0
+        redis.zrange(key, "0", "-1").should eq %w[a]
+
+        redis.zadd key, "2", "b"
+        redis.zrange(key, "0", "-1").as(Array).should contain "a"
+        redis.zrange(key, "0", "-1").as(Array).should contain "b"
+
+        redis.zrem key, "a"
+        redis.zrange(key, "0", "-1").as(Array).should_not contain "a"
+        redis.zrange(key, "0", "-1").as(Array).should contain "b"
+      ensure
+        redis.del key
+      end
+    end
+
+    it "counts the number of elements set at the key" do
+      key = random_key
+
+      begin
+        redis.zadd(key, "1", "one")
+        redis.zadd(key, "2", "two")
+        redis.zadd(key, "3", "three")
+        redis.zcount(key, "0", "+inf").should eq(3)
+        redis.zcount(key, "(1", "3").should eq(2)
+      ensure
+        redis.del key
+      end
+    end
+  end
+
   it "can pipeline commands" do
     key = random_key
 
