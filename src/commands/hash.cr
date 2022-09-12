@@ -24,10 +24,6 @@ module Redis::Commands::Hash
     run({"hset", key} + fields)
   end
 
-  def hset(key : String, *fields : String)
-    run({"hset", key} + fields)
-  end
-
   def hset(key : String, data : ::Hash(String, String))
     command = Array(String).new(initial_capacity: 2 + data.size)
 
