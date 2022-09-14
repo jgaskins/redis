@@ -231,8 +231,15 @@ module Redis
       run command
     end
 
+    # Delete all the keys of the currently selected DB
     def flushdb
       run({"flushdb"})
+    end
+
+    # Delete all the keys of all the existing databases,
+    # not just the currently selected one.
+    def flushall
+      run({"flushall"})
     end
 
     def info
