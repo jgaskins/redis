@@ -129,6 +129,22 @@ describe Redis::Client do
     end
   end
 
+  describe "lists" do
+    it "can push and get a range" do
+      key = random_key
+
+      begin
+        redis.rpush key, "one"
+        redis.rpush key, "two"
+        redis.rpush key, "three"
+        redis.lrange(key, 0, 0).should eq %w[one]
+        redis.lrange(key, "-3", "2").should eq %w[one two three]
+      ensure
+        redis.del key
+      end
+    end
+  end
+
   describe "sets" do
     it "can add and remove members of a set" do
       key = random_key
