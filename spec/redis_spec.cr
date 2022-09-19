@@ -25,19 +25,13 @@ private macro test(msg, &block)
 end
 
 describe Redis::Client do
-  it "can set, get, and delete keys" do
-    known_key = random_key
-
-    begin
-      redis.get(random_key).should eq nil
-      redis.set(known_key, "hello")
-      redis.get(known_key).should eq "hello"
-      redis.del(known_key).should eq 1
-      redis.del(known_key).should eq 0
-      redis.get(known_key).should eq nil
-    ensure
-      redis.del known_key
-    end
+  test "can set, get, and delete keys" do
+    redis.get(random_key).should eq nil
+    redis.set(key, "hello")
+    redis.get(key).should eq "hello"
+    redis.del(key).should eq 1
+    redis.del(key).should eq 0
+    redis.get(key).should eq nil
   end
 
   test "can set expiration timestamps on keys" do
@@ -98,72 +92,48 @@ describe Redis::Client do
     redis.set(key, "foo", xx: true).should eq "OK"
   end
 
-  it "can get the list of keys" do
-    key = random_key
-
-    begin
-      redis.set key, "yep"
-      redis.keys.includes?(key).should eq true
-    ensure
-      redis.del key
-    end
+  test "can get the list of keys" do
+    redis.set key, "yep"
+    redis.keys.includes?(key).should eq true
   end
 
-  it "can increment and decrement" do
-    key = random_key
+  test "can increment and decrement" do
+    redis.incr(key).should eq 1
+    redis.incr(key).should eq 2
+    redis.get(key).should eq "2"
+    redis.decr(key).should eq 1
+    redis.decr(key).should eq 0
+    redis.get(key).should eq "0"
 
-    begin
-      redis.incr(key).should eq 1
-      redis.incr(key).should eq 2
-      redis.get(key).should eq "2"
-      redis.decr(key).should eq 1
-      redis.decr(key).should eq 0
-      redis.get(key).should eq "0"
-
-      redis.incrby(key, 2).should eq 2
-      redis.incrby(key, 3).should eq 5
-      redis.decrby(key, 2).should eq 3
-      redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
-    ensure
-      redis.del key
-    end
+    redis.incrby(key, 2).should eq 2
+    redis.incrby(key, 3).should eq 5
+    redis.decrby(key, 2).should eq 3
+    redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
   end
 
   describe "lists" do
-    it "can push and get a range" do
-      key = random_key
-
-      begin
-        redis.rpush key, "one"
-        redis.rpush key, "two"
-        redis.rpush key, "three"
-        redis.lrange(key, 0, 0).should eq %w[one]
-        redis.lrange(key, "-3", "2").should eq %w[one two three]
-      ensure
-        redis.del key
-      end
+    test "can push and get a range" do
+      redis.rpush key, "one"
+      redis.rpush key, "two"
+      redis.rpush key, "three"
+      redis.lrange(key, 0, 0).should eq %w[one]
+      redis.lrange(key, "-3", "2").should eq %w[one two three]
     end
   end
 
   describe "sets" do
-    it "can add and remove members of a set" do
-      key = random_key
+    test "can add and remove members of a set" do
+      redis.sadd(key, "a").should eq 1
+      redis.sadd(key, "a").should eq 0
+      redis.smembers(key).should eq %w[a]
 
-      begin
-        redis.sadd(key, "a").should eq 1
-        redis.sadd(key, "a").should eq 0
-        redis.smembers(key).should eq %w[a]
+      redis.sadd key, "b"
+      redis.smembers(key).includes?("a").should eq true
+      redis.smembers(key).includes?("b").should eq true
 
-        redis.sadd key, "b"
-        redis.smembers(key).includes?("a").should eq true
-        redis.smembers(key).includes?("b").should eq true
-
-        redis.srem key, "a"
-        redis.smembers(key).includes?("a").should eq false
-        redis.smembers(key).includes?("b").should eq true
-      ensure
-        redis.del key
-      end
+      redis.srem key, "a"
+      redis.smembers(key).includes?("a").should eq false
+      redis.smembers(key).includes?("b").should eq true
     end
 
     test "can check whether a set has a value" do
@@ -231,30 +201,24 @@ describe Redis::Client do
     end
   end
 
-  it "can pipeline commands" do
-    key = random_key
+  test "can pipeline commands" do
+    first_incr = Redis::Future.new
+    second_incr = Redis::Future.new
+    first_decr = Redis::Future.new
+    second_decr = Redis::Future.new
 
-    begin
-      first_incr = Redis::Future.new
-      second_incr = Redis::Future.new
-      first_decr = Redis::Future.new
-      second_decr = Redis::Future.new
+    redis.pipeline do |redis|
+      first_incr = redis.incr key
+      second_incr = redis.incr key
 
-      redis.pipeline do |redis|
-        first_incr = redis.incr key
-        second_incr = redis.incr key
+      first_decr = redis.decr key
+      second_decr = redis.decr key
+    end.should eq [1, 2, 1, 0]
 
-        first_decr = redis.decr key
-        second_decr = redis.decr key
-      end.should eq [1, 2, 1, 0]
-
-      first_incr.value.should eq 1
-      second_incr.value.should eq 2
-      first_decr.value.should eq 1
-      second_decr.value.should eq 0
-    ensure
-      redis.del key
-    end
+    first_incr.value.should eq 1
+    second_incr.value.should eq 2
+    first_decr.value.should eq 1
+    second_decr.value.should eq 0
   end
 
   test "checking for existence of keys" do
@@ -267,9 +231,7 @@ describe Redis::Client do
     redis.exists(key).should eq 0
   end
 
-  it "handles exceptions while pipelining" do
-    key = random_key
-
+  test "handles exceptions while pipelining" do
     begin
       redis.pipeline do |redis|
         redis.incr key
@@ -278,43 +240,33 @@ describe Redis::Client do
       end
     rescue
       redis.get(key).should eq "2"
-    ensure
-      redis.del key
     end
   end
 
-  it "can use different Redis DBs" do
+  test "can use different Redis DBs" do
     secondary_uri = redis_uri.dup
     secondary_uri.path = "/15"
     secondary_db = Redis::Client.new(uri: secondary_uri)
-    key = random_key
 
     begin
       redis.set key, "42"
       redis.get(key).should eq "42"
       secondary_db.get(key).should eq nil
     ensure
-      redis.del key
       secondary_db.close
     end
   end
 
   describe "streams" do
-    it "can use streams" do
-      key = random_key
-
-      begin
-        # entry_id = redis.xadd key, "*", {"foo" => "bar"}
-        entry_id = redis.xadd key, "*", foo: "bar"
-        range = redis.xrange(key, "-", "+")
-        range.size.should eq 1
-        range.each do |result|
-          id, data = result.as(Array)
-          id.as(String).should eq entry_id
-          data.should eq %w[foo bar]
-        end
-      ensure
-        redis.del key
+    test "can use streams" do
+      # entry_id = redis.xadd key, "*", {"foo" => "bar"}
+      entry_id = redis.xadd key, "*", foo: "bar"
+      range = redis.xrange(key, "-", "+")
+      range.size.should eq 1
+      range.each do |result|
+        id, data = result.as(Array)
+        id.as(String).should eq entry_id
+        data.should eq %w[foo bar]
       end
     end
 
@@ -355,68 +307,57 @@ describe Redis::Client do
     end
   end
 
-  it "can use transactions" do
-    key = random_key
+  test "can use transactions" do
+    redis.multi do |redis|
+      redis.set key, "yep"
+      redis.discard
+
+      redis.get "fuck"
+    end.should be_empty
+
+    redis.get(key).should eq nil
+
+    _, nope, _, yep = redis.multi do |redis|
+      redis.set key, "nope"
+      redis.get key
+      redis.set key, "yep"
+      redis.get key
+    end
+
+    nope.should eq "nope"
+    yep.should eq "yep"
+
+    redis.get(key).should eq "yep"
+    redis.del key
 
     begin
       redis.multi do |redis|
-        redis.set key, "yep"
-        redis.discard
+        redis.set key, "lol"
 
-        redis.get "fuck"
-      end.should be_empty
-
-      redis.get(key).should eq nil
-
-      _, nope, _, yep = redis.multi do |redis|
-        redis.set key, "nope"
-        redis.get key
-        redis.set key, "yep"
-        redis.get key
+        raise "oops"
+      ensure
+        redis.get(key).should eq nil
       end
-
-      nope.should eq "nope"
-      yep.should eq "yep"
-
-      redis.get(key).should eq "yep"
-      redis.del key
-
-      begin
-        redis.multi do |redis|
-          redis.set key, "lol"
-
-          raise "oops"
-        ensure
-          redis.get(key).should eq nil
-        end
-      rescue
-      end
-
-      # Ensure we're still in the same state
-      redis.get(key).should eq nil
-      # Ensure we can still set the key
-      redis.set key, "yep"
-      redis.get(key).should eq "yep"
-    ensure
-      redis.del key
+    rescue
     end
+
+    # Ensure we're still in the same state
+    redis.get(key).should eq nil
+    # Ensure we can still set the key
+    redis.set key, "yep"
+    redis.get(key).should eq "yep"
   end
 
-  it "works with lists" do
-    key = random_key
-
-    begin
-      spawn do
-        sleep 10.milliseconds
-        redis.lpush key, "omg", "lol", "wtf", "bbq"
-      end
-      redis.brpop(key, timeout: 1).should eq [key, "omg"]
-      redis.brpop(key, timeout: "1").should eq [key, "lol"]
-      redis.brpop(key, timeout: 1.second).should eq [key, "wtf"]
-      redis.brpop(key, timeout: 1.0).should eq [key, "bbq"]
-    ensure
-      redis.del key
+  test "works with lists" do
+    spawn do
+      sleep 10.milliseconds
+      redis.lpush key, "omg", "lol", "wtf", "bbq"
     end
+    redis.brpop(key, timeout: 1).should eq [key, "omg"]
+    redis.brpop(key, timeout: "1").should eq [key, "lol"]
+    redis.brpop(key, timeout: 1.second).should eq [key, "wtf"]
+    redis.brpop(key, timeout: 1.0).should eq [key, "bbq"]
+
 
     left = random_key
     right = random_key
