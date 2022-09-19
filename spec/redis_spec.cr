@@ -231,6 +231,15 @@ describe Redis::Client do
     end
   end
 
+  describe "hash" do
+    test "hincrby increments the number stored at field in the hash" do
+      redis.hset(key, {"field" => "5"})
+      redis.hincrby(key, "field", 1).should eq(6)
+      redis.hincrby(key, "field", -1).should eq(5)
+      redis.hincrby(key, "field", -10).should eq(-5)
+    end
+  end
+
   it "can pipeline commands" do
     key = random_key
 
