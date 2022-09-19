@@ -35,8 +35,8 @@ module Redis::Commands::Hash
     run command
   end
 
-  def hincrby(key : String, field : String, increment : Int32)
-    run({"hincrby", key, field, increment})
+  def hincrby(key : String, field : String, increment : Int | String)
+    run({"hincrby", key, field, increment.to_s})
   end
 
   @[Deprecated("The Redis HMSET command is deprecated. Use HSET instead. This method will be removed in v1.0.0 of this shard. See https://redis.io/commands/hmset/")]
