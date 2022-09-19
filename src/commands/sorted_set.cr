@@ -58,4 +58,8 @@ module Redis::Commands::SortedSet
   def zcount(key : String, min : String, max : String)
     run({"zcount", key, min, max})
   end
+
+  def zscore(key : String, value : String)
+    run({"zscore", key, value})
+  end
 end

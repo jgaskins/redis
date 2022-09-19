@@ -207,7 +207,7 @@ describe Redis::Client do
     end
   end
 
-  describe "sorted sets" do
+  describe "sorted sets", focus: true do
     test "can add and remove members of a sorted set" do
       redis.zadd(key, "1", "a").should eq 1
       redis.zadd(key, "1", "a").should eq 0
@@ -228,6 +228,11 @@ describe Redis::Client do
       redis.zadd(key, "3", "three")
       redis.zcount(key, "0", "+inf").should eq(3)
       redis.zcount(key, "(1", "3").should eq(2)
+    end
+
+    test "returns the score of a member in a sorted set at key" do
+      redis.zadd(key, "1", "one")
+      redis.zscore(key, "one").should eq("1")
     end
   end
 
