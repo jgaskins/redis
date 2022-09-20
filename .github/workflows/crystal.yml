@@ -18,7 +18,7 @@ jobs:
       uses: addnab/docker-run-action@4f65fabd2431ebc8d299f8e5a018d79a769ae185
       with:
         image: redis/redis-stack-server
-        options: --detach
+        options: --detach -p 6379:6379
         run: redis-stack-server
     - name: Install dependencies
       run: shards install
