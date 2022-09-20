@@ -12,14 +12,18 @@ jobs:
     container:
       image: crystallang/crystal
 
+    services:
+      redis:
+        image: redis/redis-stack-server
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v3
-    - name: Docker Run Action
-      uses: addnab/docker-run-action@4f65fabd2431ebc8d299f8e5a018d79a769ae185
-      with:
-        image: redis/redis-stack-server
-        options: --detach -p 6379:6379
-        run: redis-stack-server
     - name: Install dependencies
       run: shards install
     - name: Run tests
