@@ -1,0 +1,28 @@
+name: Crystal CI
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    container:
+      image: crystallang/crystal
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Run Action
+      # You may pin to the exact commit or the version.
+      uses: addnab/docker-run-action@4f65fabd2431ebc8d299f8e5a018d79a769ae185
+      with:
+        # Image
+        image: redis/redis-stack-server
+        # Run command in container
+        run: redis-stack-server
+    - name: Install dependencies
+      run: shards install
+    - name: Run tests
+      run: crystal spec
