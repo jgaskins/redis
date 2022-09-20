@@ -28,3 +28,5 @@ jobs:
       run: shards install
     - name: Run tests
       run: crystal spec
+      env:
+        REDIS_URL: redis://redis/

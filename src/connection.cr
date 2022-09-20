@@ -21,7 +21,7 @@ module Redis
     # SSL connections require specifying the `rediss://` scheme.
     # Password authentication uses the URI password.
     # DB selection uses the URI path.
-    def initialize(@uri = URI.parse("redis:///"))
+    def initialize(@uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///")))
       host = uri.host.presence || "localhost"
       port = uri.port || 6379
       socket = TCPSocket.new(host, port)
