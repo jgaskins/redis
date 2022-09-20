@@ -71,7 +71,10 @@ module Redis
       end
 
       result = redis.ts.mrange 1.day.ago...,
-        filter: "foo=included"
+        filter: "foo=included",
+        # TODO: Aggregating mitigates flakiness here, but does not 100% fix it
+        aggregation: redis.ts.aggregation(:sum, 1.minute)
+
       response = Redis::TimeSeries::MRangeResponse.new(result)
       response["mrange-test:foo=included"]
         .datapoints
