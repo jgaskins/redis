@@ -89,6 +89,24 @@ The `Redis::Client` maintains its own connection pool, so there is no need to ru
 
 Make sure you have a Redis or KeyDB server running locally on port 6379.
 
+Redis must be installed with a stack server for the full text search (`ft`) and time series modules (`ts`) in order for all specs to run.
+
+### With Docker
+
+You can use this for your docker-compose file
+
+```yaml
+redis:
+  image: redis/redis-stack-server
+  ports:
+    - "6379:6379"
+```
+
+### With Homebrew
+
+Install the [`redis-stack` from homebrew](https://github.com/redis-stack/homebrew-redis-stack)
+
+
 ## Contributing
 
 1. Fork it (<https://github.com/jgaskins/redis/fork>)
