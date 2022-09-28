@@ -14,6 +14,9 @@ module Redis
   class Connection
     include Commands
 
+    # :nodoc:
+    LOG = ::Log.for(self)
+
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
 
     # We receive all connection information in the URI.
@@ -249,7 +252,7 @@ module Redis
         @writer.encode command
         flush
         result = read
-        Log.debug &.emit "redis", command: command.to_a, duration_ms: (Time.monotonic - start).total_milliseconds
+        LOG.debug &.emit "redis", command: command.to_a, duration_ms: (Time.monotonic - start).total_milliseconds
         return result
       rescue ex : IO::Error
         if retries > 0
