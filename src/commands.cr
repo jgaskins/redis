@@ -138,6 +138,21 @@ module Redis
       run({"del"} + keys)
     end
 
+    # Delete all specified keys and return the number of keys deleted.
+    #
+    # ```
+    # redis.set "foo", "12"
+    # redis.del ["foo", "bar"] # => 1
+    # redis.del ["foo", "bar"] # => 0
+    # ```
+    def del(keys : Enumerable(String))
+      command = Array(String).new(initial_capacity: 1 + keys.size)
+      command << "del"
+      keys.each { |key| command << key }
+
+      run command
+    end
+
     def unlink(*keys : String)
       run({"unlink"} + keys)
     end
