@@ -83,7 +83,102 @@ redis = Redis::Client.new(URI.parse("rediss://:my_password@example.com/3"))
 
 ### Connection Pool
 
-The `Redis::Client` maintains its own connection pool, so there is no need to run your own within your application. When you execute a command on the `Redis::Client`, it is automatically being executed against a connection. When you execute a pipeline or transaction with `multi`, all commands within that block will automatically be routed to the same connection.
+The `Redis::Client` maintains a connection pool, so there is no need to run your own within your application. When you execute a command on the `Redis::Client`, it is automatically executed against a connection. When you execute a pipeline or transaction with `multi`, all commands within that block will automatically be routed to the same connection.
+
+**Configuration**
+
+For this shard, we use the following default setting (outside of the Standard Lib defaults);
+
+```
+max_idle_pool_size = 25
+```
+
+> You can override this manually using the URI parameters.
+> All other settings follow the DB::Pool defaults.
+
+The behaviour of the connection pool can be configured from a set of query string parameters in the connection URI.
+
+| Name | Default value |
+| :--- | :--- |
+| initial\_pool\_size | 1 |
+| max\_pool\_size | 0 \(unlimited\) |
+| max\_idle\_pool\_size | 1 |
+| checkout\_timeout | 5.0 \(seconds\) |
+| retry\_attempts | 1 |
+| retry\_delay | 1.0 \(seconds\) |
+
+See [Crystal guides](https://crystal-lang.org/reference/1.6/database/connection_pool.html) to learn more.
+
+**Example**
+
+```crystal
+pool_params = "?initial_pool_size=1&max_pool_size=10&checkout_timeout=10&retry_attempts=2&retry_delay=0.5&max_idle_pool_size=50"
+redis = Redis::Client.new(URI.parse("redis://localhost:6379/0#{pool_params}"))
+```
+
+**Recommendations**
+
+If you encounter any issues, keep these setting the same;
+
+- `initial_pool_size`
+- `max_pool_size`
+- `max_idle_pool_size`
+
+Example:
+
+```
+initial_pool_size = 50
+max_pool_size = 50
+max_idle_pool_size = 50
+```
+
+### TCP Keep-Alive
+
+The `Redis::Client` uses a pool of `Redis::Connection` under the hood.
+Within `Redis::Connection` we create a `TCPSocket`, which can accept keepalive params.
+The TCP keepalive settings can help you mitigate Redis connection stability issues.
+
+> NOTE: This behaviour is disabled by default. See Configuration below on how to enable it.
+
+**Configuration**
+
+For this shard, we use the following override setting;
+
+| Name | Default value |
+| :--- | :--- |
+| keepalive | false |
+| keepalive\_count | 3 |
+| keepalive\_idle | 60 |
+| keepalive\_interval | 30 |
+
+> You can override this manually using the URI parameters.
+> The settings above have proven to have good results in production environments. However, every environment is different, so tweaking these settings may be necessary.
+
+See [Crystal API](https://crystal-lang.org/api/1.6.0/TCPSocket.html) to learn more.
+
+**Example**
+
+```crystal
+params = "?keepalive=true&keepalive_count=5&keepalive_idle=10&keepalive_interval=15"
+
+redis = Redis::Client.new(URI.parse("redis://localhost:6379/0#{params}"))
+# or direct connections
+redis = Redis::Connection.new(URI.parse("redis://localhost:6379/0#{params}"))
+```
+
+**Recommendations**
+
+Enable this setting with the defaults if you are encountering connection issues.
+
+Example:
+
+```crystal
+params = "?keepalive=true"
+
+redis = Redis::Client.new(URI.parse("redis://localhost:6379/0#{params}"))
+# or direct connections
+redis = Redis::Connection.new(URI.parse("redis://localhost:6379/0#{params}"))
+```
 
 ## Development
 
