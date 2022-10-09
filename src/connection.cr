@@ -30,6 +30,15 @@ module Redis
       socket = TCPSocket.new(host, port)
       socket.sync = false
 
+      # TCP keepalive settings
+      # allow disabling keepalive
+      if uri.query_params.fetch("keepalive", false)
+        socket.keepalive = true
+        socket.tcp_keepalive_count = uri.query_params.fetch("keepalive_count", 3).to_i
+        socket.tcp_keepalive_idle = uri.query_params.fetch("keepalive_idle", 60).to_i
+        socket.tcp_keepalive_interval = uri.query_params.fetch("keepalive_interval", 30).to_i
+      end
+
       # Check whether we should use SSL
       if uri.scheme == "rediss"
         socket = OpenSSL::SSL::Socket::Client.new(socket)
