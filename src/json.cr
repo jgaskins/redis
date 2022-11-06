@@ -330,15 +330,6 @@ module Redis
     end
   end
 
-  class Client
-    # Return a `Redis::JSON` instance that wraps the current `Redis::Client` or
-    # `Redis::Cluster`.
-    @[Experimental("Support for the RedisJSON module is still under development and subject to change.")]
-    def json
-      JSON.new(self)
-    end
-  end
-
   module Commands
     # Return a `Redis::JSON` instance that wraps the current `Redis::Client` or
     # `Redis::Cluster`.

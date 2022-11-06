@@ -490,13 +490,6 @@ module Redis
     end
   end
 
-  class Client
-    # Instantiate a `Redis::Graph::Client` backed by this `Redis::Client`.
-    def graph(key : String)
-      Graph::Client.new(self, key)
-    end
-  end
-
   module Commands
     # Instantiate a `Redis::Graph::Client` backed by this `Redis::Client`.
     def graph(key : String)
