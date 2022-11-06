@@ -17,6 +17,8 @@ module Redis
   # redis = Redis::Client.from_env("REDIS_URL")
   # ```
   class Client
+    include Commands
+
     @pool : DB::Pool(Connection)
 
     def self.from_env(env_var)
@@ -48,6 +50,8 @@ module Redis
       end
     end
 
+    Connection.set_return_types!
+
     # All Redis commands invoked on the client check out a connection from the
     # connection pool, invoke the command on that connection, and then check the
     # connection back into the pool.
@@ -55,8 +59,24 @@ module Redis
     # ```
     # redis = Redis::Client.new
     # ```
-    macro method_missing(call)
-      @pool.checkout(&.{{call}})
+    def run(command)
+      @pool.checkout(&.run(command))
+    end
+
+    def pipeline
+      @pool.checkout(&.pipeline { |pipe| yield pipe })
+    end
+
+    def multi
+      @pool.checkout(&.multi { |txn| yield txn })
+    end
+
+    def subscribe(*channels)
+      @pool.checkout(&.subscribe(*channels) { |subscription, conn| yield subscription, conn })
+    end
+
+    def close
+      @pool.close
     end
   end
 end

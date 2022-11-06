@@ -221,33 +221,37 @@ module Redis
       {% end %}
     end
 
+    macro set_return_types!
     # When new commands are added to the Commands mixin, add an entry here to
     # make sure the return type is set when run directly on the connection.
-    override_return_types({
-      keys:   Array,
-      get:    String?,
-      incr:   Int64,
-      decr:   Int64,
-      incrby: Int64,
-      decrby: Int64,
-      del:    Int64,
+      ::Redis::Connection.override_return_types({
+        keys:   Array,
+        get:    String?,
+        incr:   Int64,
+        decr:   Int64,
+        incrby: Int64,
+        decrby: Int64,
+        del:    Int64,
 
-      lrange: Array,
-      lpop:   String?,
-      rpop:   String?,
-      lpush:  Int64,
-      rpush:  Int64,
+        lrange: Array,
+        lpop:   String?,
+        rpop:   String?,
+        lpush:  Int64,
+        rpush:  Int64,
 
-      smembers:   Array,
-      ttl:        Int64,
-      pttl:       Int64,
-      xlen:       Int64,
-      xgroup:     Nil,
-      xrange:     Array,
-      xpending:   Array,
-      xreadgroup: Array(Value)?,
-      xautoclaim: Array,
-    })
+        smembers:   Array,
+        ttl:        Int64,
+        pttl:       Int64,
+        xlen:       Int64,
+        xgroup:     Nil,
+        xrange:     Array,
+        xpending:   Array,
+        xreadgroup: Array(Value)?,
+        xautoclaim: Array,
+      })
+    end
+
+    set_return_types!
 
     # Execute the given command and return the result from the server. Commands must be an `Enumerable`.
     #

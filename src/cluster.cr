@@ -297,42 +297,7 @@ module Redis
       end
     end
 
-    # :nodoc:
-    macro override_return_types(methods)
-      {% for method, return_type in methods %}
-        # :nodoc:
-        def {{method.id}}(*args, **kwargs) : {{return_type}}
-          super(*args, **kwargs){{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
-        end
-      {% end %}
-    end
-
-    # When new commands are added to the Commands mixin, add an entry here to
-    # make sure the return type is set when run directly on the connection.
-    override_return_types({
-      keys:   Array,
-      get:    String?,
-      incr:   Int64,
-      decr:   Int64,
-      incrby: Int64,
-      decrby: Int64,
-      del:    Int64,
-
-      lrange: Array,
-      lpop:   String?,
-      rpop:   String?,
-      lpush:  Int64,
-      rpush:  Int64,
-
-      smembers:   Array,
-      ttl:        Int64,
-      xlen:       Int64,
-      xgroup:     Nil,
-      xrange:     Array,
-      xpending:   Array,
-      xreadgroup: Array(Value)?,
-      xautoclaim: Array,
-    })
+    Connection.set_return_types!
 
     # Close all connections to this Redis cluster
     def close
