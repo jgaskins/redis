@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.4">
+<meta name="generator" content="Crystal Docs 1.5.1">
+<meta name="crystal_docs.project_version" content="0.6.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Client - redis 0.5.4</title>
+  <title>Redis::Client - redis 0.6.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.4
+        0.6.0
       </span>
     </div>
   </div>
@@ -556,11 +556,11 @@
 
   <p>The Redis client is the expected entrypoint for this shard. By default, it will connect to localhost:6379, but you can also supply a <code>URI</code> to connect to an arbitrary Redis server. SSL, password authentication, and DB selection are all supported.</p>
 <pre><code class="language-crystal"><span class="c"># Connects to localhost:6379</span>
-redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new
 
 <span class="c"># Connects to a server at &quot;redis.example.com&quot; on port 6000 over a TLS</span>
 <span class="c"># connection, authenticates with the password &quot;password&quot;, and uses DB 3</span>
-redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>(<span class="t">URI</span>.parse(<span class="s">&quot;rediss://:password@redis.example.com:6000/3&quot;</span>))
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;rediss://:password@redis.example.com:6000/3&quot;</span>))
 
 <span class="c"># Connects to a server at the URL in `ENV[&quot;REDIS_URL&quot;]`</span>
 redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.from_env(<span class="s">&quot;REDIS_URL&quot;</span>)</code></pre>
@@ -588,15 +588,36 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/client.cr#L19" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/client.cr#L19" target="_blank">
         client.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/graph.cr#L493" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/graph.cr#L493" target="_blank">
         graph.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/json.cr#L333" target="_blank">
+        json.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/search.cr#L312" target="_blank">
+        search.cr
+      </a>
+    
+    <br/>
+  
+    
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/time_series.cr#L384" target="_blank">
+        time_series.cr
       </a>
     
     <br/>
@@ -657,9 +678,31 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#ft-instance-method" class="signature"><strong>#ft</strong></a>
+        
+          <div class="summary"><p><span class="flag lime">EXPERIMENTAL</span>  RediSearch support is still under development. Some APIs may change while details are discovered.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#graph%28key%3AString%29-instance-method" class="signature"><strong>#graph</strong>(key : String)</a>
         
           <div class="summary"><p>Instantiate a <code><a href="../Redis/Graph/Client.html">Redis::Graph::Client</a></code> backed by this <code><a href="../Redis/Client.html">Redis::Client</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#json-instance-method" class="signature"><strong>#json</strong></a>
+        
+          <div class="summary"><p>Return a <code><a href="../Redis/JSON.html">Redis::JSON</a></code> instance that wraps the current <code><a href="../Redis/Client.html">Redis::Client</a></code> or <code><a href="../Redis/Cluster.html">Redis::Cluster</a></code>.</p>
+<p><span class="flag lime">EXPERIMENTAL</span>  Support for the RedisJSON module is still under development and subject to change.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#ts-instance-method" class="signature"><strong>#ts</strong></a>
+        
+          <div class="summary"><p>Return a <code><a href="../Redis/TimeSeries.html">Redis::TimeSeries</a></code> that wraps the current <code><a href="../Redis/Client.html">Redis::Client</a></code> or <code><a href="../Redis/Cluster.html">Redis::Cluster</a></code>.</p></div>
         
       </li>
     
@@ -739,7 +782,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/client.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/client.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -767,7 +810,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/client.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/client.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -783,6 +826,27 @@ needed.</p>
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="ft-instance-method">
+      <div class="signature">
+        
+        def <strong>ft</strong>
+
+        <a class="method-permalink" href="#ft-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag lime">EXPERIMENTAL</span>  RediSearch support is still under development. Some APIs may change while details are discovered.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/search.cr#L314" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="graph(key:String)-instance-method">
       <div class="signature">
@@ -800,7 +864,52 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/graph.cr#L495" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/graph.cr#L495" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="json-instance-method">
+      <div class="signature">
+        
+        def <strong>json</strong>
+
+        <a class="method-permalink" href="#json-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Return a <code><a href="../Redis/JSON.html">Redis::JSON</a></code> instance that wraps the current <code><a href="../Redis/Client.html">Redis::Client</a></code> or
+<code><a href="../Redis/Cluster.html">Redis::Cluster</a></code>.</p>
+<p><span class="flag lime">EXPERIMENTAL</span>  Support for the RedisJSON module is still under development and subject to change.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/json.cr#L337" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="ts-instance-method">
+      <div class="signature">
+        
+        def <strong>ts</strong>
+
+        <a class="method-permalink" href="#ts-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Return a <code><a href="../Redis/TimeSeries.html">Redis::TimeSeries</a></code> that wraps the current <code><a href="../Redis/Client.html">Redis::Client</a></code> or
+<code><a href="../Redis/Cluster.html">Redis::Cluster</a></code>.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/time_series.cr#L387" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -830,13 +939,13 @@ needed.</p>
           <p>All Redis commands invoked on the client check out a connection from the
 connection pool, invoke the command on that connection, and then check the
 connection back into the pool.</p>
-<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span></code></pre>
+<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new</code></pre>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/client.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/client.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>

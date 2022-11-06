@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.4">
+<meta name="generator" content="Crystal Docs 1.5.1">
+<meta name="crystal_docs.project_version" content="0.6.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Serializable - redis 0.5.4</title>
+  <title>Redis::Graph::Serializable - redis 0.6.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.4
+        0.6.0
       </span>
     </div>
   </div>
@@ -577,7 +577,7 @@ similar to <a href="http://crystal-lang.github.io/crystal-db/api/0.11.0/DB/Seria
   getter since : <span class="t">Time</span>
 <span class="k">end</span>
 
-redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new
 redis.del <span class="s">&quot;my-graph&quot;</span>
 
 <span class="c"># Store the graph data in the Redis key &quot;my-graph&quot;</span>
@@ -620,7 +620,7 @@ CYPHER</span></code></pre>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/graph/serializable.cr#L49" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/graph/serializable.cr#L49" target="_blank">
         graph/serializable.cr
       </a>
     

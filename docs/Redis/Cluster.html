@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.4">
+<meta name="generator" content="Crystal Docs 1.5.1">
+<meta name="crystal_docs.project_version" content="0.6.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Cluster - redis 0.5.4</title>
+  <title>Redis::Cluster - redis 0.6.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.4
+        0.6.0
       </span>
     </div>
   </div>
@@ -610,14 +610,14 @@ for example usage.</p>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L31" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L31" target="_blank">
         cluster.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/errors.cr#L15" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/errors.cr#L15" target="_blank">
         errors.cr
       </a>
     
@@ -639,7 +639,7 @@ for example usage.</p>
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28uri%3AURI%3DURI.parse%28ENV%5B%22REDIS_CLUSTER_URL%22%5D%3F%7C%7C%22redis%3A///%22%29%29-class-method" class="signature"><strong>.new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="t">ENV</span>[<span class="s">&quot;REDIS_CLUSTER_URL&quot;</span>]? || <span class="s">&quot;redis:///&quot;</span>))</a>
+        <a href="#new%28uri%3AURI%3DURI.parse%28ENV%5B%22REDIS_CLUSTER_URL%22%5D%3F%7C%7C%22redis%3A///%22%29%29-class-method" class="signature"><strong>.new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="t">ENV</span>[<span class="s">&quot;REDIS_CLUSTER_URL&quot;</span>]? <span class="o">||</span> <span class="s">&quot;redis:///&quot;</span>))</a>
         
           <div class="summary"><p>Pass a <code>URI</code> (defaulting to the <code>REDIS_CLUSTER_URL</code> environment variable) to connect to the specified Redis cluster — the URI can point to <em>any</em> server in the cluster and <code><a href="../Redis/Cluster.html">Redis::Cluster</a></code> will discover the rest.</p></div>
         
@@ -759,8 +759,8 @@ for example usage.</p>
     decrby</a>, 
     
   
-    <a href="../Redis/Commands.html#del%28%2Akeys%3AString%29-instance-method" class="tooltip">
-      <span>del(*keys : String)</span>
+    <a href="../Redis/Commands.html#del%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>del(keys : Enumerable(String))<br/>del(*keys : String)</span>
     del</a>, 
     
   
@@ -769,14 +769,19 @@ for example usage.</p>
     exists</a>, 
     
   
-    <a href="../Redis/Commands.html#expire%28key%3AString%2Cttl%3AInt%29-instance-method" class="tooltip">
-      <span>expire(key : String, ttl : Int)</span>
+    <a href="../Redis/Commands.html#expire%28key%3AString%2Cttl%3ATime%3A%3ASpan%29-instance-method" class="tooltip">
+      <span>expire(key : String, ttl : Time::Span)<br/>expire(key : String, ttl : Int)</span>
     expire</a>, 
     
   
     <a href="../Redis/Commands.html#expireat%28key%3AString%2Cat%3ATime%29-instance-method" class="tooltip">
       <span>expireat(key : String, at : Time)</span>
     expireat</a>, 
+    
+  
+    <a href="../Redis/Commands.html#flushall-instance-method" class="tooltip">
+      <span>flushall</span>
+    flushall</a>, 
     
   
     <a href="../Redis/Commands.html#flushdb-instance-method" class="tooltip">
@@ -792,6 +797,11 @@ for example usage.</p>
     <a href="../Redis/Commands.html#get%28key%3AString%29-instance-method" class="tooltip">
       <span>get(key : String)</span>
     get</a>, 
+    
+  
+    <a href="../Redis/Commands.html#graph%28key%3AString%29-instance-method" class="tooltip">
+      <span>graph(key : String)</span>
+    graph</a>, 
     
   
     <a href="../Redis/Commands.html#incr%28key%3AString%29-instance-method" class="tooltip">
@@ -829,8 +839,8 @@ for example usage.</p>
     mset</a>, 
     
   
-    <a href="../Redis/Commands.html#pexpire%28key%3AString%2Cttl%3AInt%29-instance-method" class="tooltip">
-      <span>pexpire(key : String, ttl : Int)</span>
+    <a href="../Redis/Commands.html#pexpire%28key%3AString%2Cttl%3ATime%3A%3ASpan%29-instance-method" class="tooltip">
+      <span>pexpire(key : String, ttl : Time::Span)<br/>pexpire(key : String, ttl : Int)</span>
     pexpire</a>, 
     
   
@@ -949,7 +959,7 @@ for example usage.</p>
     
   
     <a href="../Redis/Commands/Stream.html#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="tooltip">
-      <span>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> =&gt; <span class="t">String</span>)<br/>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.<span class="k">new</span>)</span>
+      <span>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)<br/>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</span>
     xreadgroup</a>
     
   
@@ -975,6 +985,11 @@ for example usage.</p>
     <a href="../Redis/Commands/SortedSet.html#zcard%28key%3AString%29-instance-method" class="tooltip">
       <span>zcard(key : String)</span>
     zcard</a>, 
+    
+  
+    <a href="../Redis/Commands/SortedSet.html#zcount%28key%3AString%2Cmin%3AString%2Cmax%3AString%29-instance-method" class="tooltip">
+      <span>zcount(key : String, min : String, max : String)</span>
+    zcount</a>, 
     
   
     <a href="../Redis/Commands/SortedSet.html#zrange%28key%3AString%2Cstarting%3AString%7CInt%2Cending%3AString%7CInt%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
@@ -1004,7 +1019,12 @@ for example usage.</p>
   
     <a href="../Redis/Commands/SortedSet.html#zrevrange%28key%3AString%2Cstarting%3AString%7CInt%2Cending%3AString%7CInt%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
       <span>zrevrange(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = <span class="n">false</span>)</span>
-    zrevrange</a>
+    zrevrange</a>, 
+    
+  
+    <a href="../Redis/Commands/SortedSet.html#zscore%28key%3AString%2Cvalue%3AString%29-instance-method" class="tooltip">
+      <span>zscore(key : String, value : String)</span>
+    zscore</a>
     
   
 
@@ -1095,8 +1115,8 @@ for example usage.</p>
     lpush</a>, 
     
   
-    <a href="../Redis/Commands/List.html#lrange%28key%3AString%2Cstart%3AString%2Cfinish%3AString%29-instance-method" class="tooltip">
-      <span>lrange(key : String, start : String, finish : String)</span>
+    <a href="../Redis/Commands/List.html#lrange%28key%3AString%2Cstart%3AString%7CInt%2Cfinish%3AString%7CInt%29-instance-method" class="tooltip">
+      <span>lrange(key : String, start : String | Int, finish : String | Int)</span>
     lrange</a>, 
     
   
@@ -1142,6 +1162,11 @@ for example usage.</p>
     <a href="../Redis/Commands/Hash.html#hgetall%28key%3AString%29-instance-method" class="tooltip">
       <span>hgetall(key : String)</span>
     hgetall</a>, 
+    
+  
+    <a href="../Redis/Commands/Hash.html#hincrby%28key%3AString%2Cfield%3AString%2Cincrement%3AInt%7CString%29-instance-method" class="tooltip">
+      <span>hincrby(key : String, field : String, increment : Int | String)</span>
+    hincrby</a>, 
     
   
     <a href="../Redis/Commands/Hash.html#hmget%28key%3AString%2C%2Afields%3AString%29-instance-method" class="tooltip">
@@ -1203,7 +1228,7 @@ for example usage.</p>
     <div class="entry-detail" id="new(uri:URI=URI.parse(ENV[&quot;REDIS_CLUSTER_URL&quot;]?||&quot;redis:///&quot;))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="t">ENV</span>[<span class="s">&quot;REDIS_CLUSTER_URL&quot;</span>]? || <span class="s">&quot;redis:///&quot;</span>))
+        def self.<strong>new</strong>(uri : URI = <span class="t">URI</span>.parse(<span class="t">ENV</span>[<span class="s">&quot;REDIS_CLUSTER_URL&quot;</span>]? <span class="o">||</span> <span class="s">&quot;redis:///&quot;</span>))
 
         <a class="method-permalink" href="#new%28uri%3AURI%3DURI.parse%28ENV%5B%22REDIS_CLUSTER_URL%22%5D%3F%7C%7C%22redis%3A///%22%29%29-class-method">#</a>
       </div>
@@ -1218,7 +1243,7 @@ server in the cluster and <code><a href="../Redis/Cluster.html">Redis::Cluster</
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1253,7 +1278,7 @@ read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1279,7 +1304,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L55" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1312,7 +1337,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L338" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L338" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1333,7 +1358,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L210" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L210" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1358,7 +1383,7 @@ we're supporting it because you may have a reasonable use case for it at
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L180" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L180" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1387,7 +1412,7 @@ method. See the example above.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L200" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1414,7 +1439,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L268" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L268" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1435,7 +1460,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L205" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L205" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1457,7 +1482,7 @@ which shard your command will be routed to.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/cluster.cr#L381" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/cluster.cr#L381" target="_blank">View source</a>]
         
       </div>
     </div>

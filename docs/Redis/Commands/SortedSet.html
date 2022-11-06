@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.4">
+<meta name="generator" content="Crystal Docs 1.5.1">
+<meta name="crystal_docs.project_version" content="0.6.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::SortedSet - redis 0.5.4</title>
+  <title>Redis::Commands::SortedSet - redis 0.6.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.4
+        0.6.0
       </span>
     </div>
   </div>
@@ -580,7 +580,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L1" target="_blank">
         commands/sorted_set.cr
       </a>
     
@@ -621,6 +621,11 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#zcount%28key%3AString%2Cmin%3AString%2Cmax%3AString%29-instance-method" class="signature"><strong>#zcount</strong>(key : String, min : String, max : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#zrange%28key%3AString%2Cstarting%3AString%7CInt%2Cending%3AString%7CInt%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#zrange</strong>(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = <span class="n">false</span>)</a>
         
       </li>
@@ -647,6 +652,11 @@
     
       <li class="entry-summary">
         <a href="#zrevrange%28key%3AString%2Cstarting%3AString%7CInt%2Cending%3AString%7CInt%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#zrevrange</strong>(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = <span class="n">false</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#zscore%28key%3AString%2Cvalue%3AString%29-instance-method" class="signature"><strong>#zscore</strong>(key : String, value : String)</a>
         
       </li>
     
@@ -685,7 +695,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -701,7 +711,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -717,7 +727,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="zcount(key:String,min:String,max:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>zcount</strong>(key : String, min : String, max : String)
+
+        <a class="method-permalink" href="#zcount%28key%3AString%2Cmin%3AString%2Cmax%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -733,7 +759,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -749,7 +775,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -765,7 +791,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -781,7 +807,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L38" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -797,7 +823,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -813,7 +839,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="zscore(key:String,value:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>zscore</strong>(key : String, value : String)
+
+        <a class="method-permalink" href="#zscore%28key%3AString%2Cvalue%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/commands/sorted_set.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>

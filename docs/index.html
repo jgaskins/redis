@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.4">
+<meta name="generator" content="Crystal Docs 1.5.1">
+<meta name="crystal_docs.project_version" content="0.6.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>redis 0.5.4</title>
+  <title>redis 0.6.0</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.4
+        0.6.0
       </span>
     </div>
   </div>
@@ -561,7 +561,7 @@
 </a>Usage</h2>
 <pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;redis&quot;</span>
 
-redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span> <span class="c"># Defaults to `localhost` port 6379</span>
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new <span class="c"># Defaults to `localhost` port 6379</span>
 
 redis.set <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&quot;</span>
 redis.get <span class="s">&quot;foo&quot;</span> <span class="c"># =&gt; &quot;bar&quot;</span>
@@ -603,25 +603,111 @@ redis.del <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;counter&
   </svg>
 </a>Beyond <code>localhost</code></h3>
 <p>To use a Redis server that isn't at <code>localhost:6379</code>, pass a <code>URI</code> to the client. For example, if you store it in your shell environment:</p>
-<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>(<span class="t">URI</span>.parse(<span class="t">ENV</span>[<span class="s">&quot;REDIS_URL&quot;</span>]))
+<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new(<span class="t">URI</span>.parse(<span class="t">ENV</span>[<span class="s">&quot;REDIS_URL&quot;</span>]))
 
 <span class="c"># ... or ...</span>
 
 redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.from_env(<span class="s">&quot;REDIS_URL&quot;</span>)</code></pre>
 <p>To connect via SSL, make sure you use the <code>rediss://</code> URL scheme. If your Redis server requires a password or uses a different database slot than <code>0</code>, make sure you include them in the URL:</p>
-<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.<span class="k">new</span>(<span class="t">URI</span>.parse(<span class="s">&quot;rediss://:my_password@example.com/3&quot;</span>))</code></pre>
+<pre><code class="language-crystal">redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;rediss://:my_password@example.com/3&quot;</span>))</code></pre>
 <h3><a id="connection-pool" class="anchor" href="#connection-pool">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Connection Pool</h3>
-<p>The <code><a href="Redis/Client.html">Redis::Client</a></code> maintains its own connection pool, so there is no need to run your own within your application. When you execute a command on the <code><a href="Redis/Client.html">Redis::Client</a></code>, it is automatically being executed against a connection. When you execute a pipeline or transaction with <code>multi</code>, all commands within that block will automatically be routed to the same connection.</p>
+<p>The <code><a href="Redis/Client.html">Redis::Client</a></code> maintains a connection pool, so there is no need to run your own within your application. When you execute a command on the <code><a href="Redis/Client.html">Redis::Client</a></code>, it is automatically executed against a connection. When you execute a pipeline or transaction with <code>multi</code>, all commands within that block will automatically be routed to the same connection.</p>
+<p><strong>Configuration</strong></p>
+<p>For this shard, we use the following default setting (outside of the Standard Lib defaults);</p>
+<pre><code class="language-crystal">max_idle_pool_size <span class="o">=</span> <span class="n">25</span></code></pre>
+<blockquote>
+<p>You can override this manually using the URI parameters.
+All other settings follow the DB::Pool defaults.</p>
+</blockquote>
+<p>The behaviour of the connection pool can be configured from a set of query string parameters in the connection URI.</p>
+<p>| Name | Default value |
+| :--- | :--- |
+| initial_pool_size | 1 |
+| max_pool_size | 0 (unlimited) |
+| max_idle_pool_size | 1 |
+| checkout_timeout | 5.0 (seconds) |
+| retry_attempts | 1 |
+| retry_delay | 1.0 (seconds) |</p>
+<p>See <a href="https://crystal-lang.org/reference/1.6/database/connection_pool.html">Crystal guides</a> to learn more.</p>
+<p><strong>Example</strong></p>
+<pre><code class="language-crystal">pool_params <span class="o">=</span> <span class="s">&quot;?initial_pool_size=1&amp;max_pool_size=10&amp;checkout_timeout=10&amp;retry_attempts=2&amp;retry_delay=0.5&amp;max_idle_pool_size=50&quot;</span>
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;redis://localhost:6379/0</span><span class="i">#{</span>pool_params<span class="i">}</span><span class="s">&quot;</span>))</code></pre>
+<p><strong>Recommendations</strong></p>
+<p>If you encounter any issues, keep these setting the same;</p>
+<ul>
+<li><code>initial_pool_size</code></li>
+<li><code>max_pool_size</code></li>
+<li><code>max_idle_pool_size</code></li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-crystal">initial_pool_size <span class="o">=</span> <span class="n">50</span>
+max_pool_size <span class="o">=</span> <span class="n">50</span>
+max_idle_pool_size <span class="o">=</span> <span class="n">50</span></code></pre>
+<h3><a id="tcp-keep-alive" class="anchor" href="#tcp-keep-alive">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>TCP Keep-Alive</h3>
+<p>The <code><a href="Redis/Client.html">Redis::Client</a></code> uses a pool of <code><a href="Redis/Connection.html">Redis::Connection</a></code> under the hood.
+Within <code><a href="Redis/Connection.html">Redis::Connection</a></code> we create a <code>TCPSocket</code>, which can accept keepalive params.
+The TCP keepalive settings can help you mitigate Redis connection stability issues.</p>
+<blockquote>
+<p><span class="flag purple">NOTE</span>  This behaviour is disabled by default. See Configuration below on how to enable it.</p>
+</blockquote>
+<p><strong>Configuration</strong></p>
+<p>For this shard, we use the following override setting;</p>
+<p>| Name | Default value |
+| :--- | :--- |
+| keepalive | false |
+| keepalive_count | 3 |
+| keepalive_idle | 60 |
+| keepalive_interval | 30 |</p>
+<blockquote>
+<p>You can override this manually using the URI parameters.
+The settings above have proven to have good results in production environments. However, every environment is different, so tweaking these settings may be necessary.</p>
+</blockquote>
+<p>See <a href="https://crystal-lang.org/api/1.6.0/TCPSocket.html">Crystal API</a> to learn more.</p>
+<p><strong>Example</strong></p>
+<pre><code class="language-crystal">params <span class="o">=</span> <span class="s">&quot;?keepalive=true&amp;keepalive_count=5&amp;keepalive_idle=10&amp;keepalive_interval=15&quot;</span>
+
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;redis://localhost:6379/0</span><span class="i">#{</span>params<span class="i">}</span><span class="s">&quot;</span>))
+<span class="c"># or direct connections</span>
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Connection</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;redis://localhost:6379/0</span><span class="i">#{</span>params<span class="i">}</span><span class="s">&quot;</span>))</code></pre>
+<p><strong>Recommendations</strong></p>
+<p>Enable this setting with the defaults if you are encountering connection issues.</p>
+<p>Example:</p>
+<pre><code class="language-crystal">params <span class="o">=</span> <span class="s">&quot;?keepalive=true&quot;</span>
+
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Client</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;redis://localhost:6379/0</span><span class="i">#{</span>params<span class="i">}</span><span class="s">&quot;</span>))
+<span class="c"># or direct connections</span>
+redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</span><span class="t">Connection</span>.new(<span class="t">URI</span>.parse(<span class="s">&quot;redis://localhost:6379/0</span><span class="i">#{</span>params<span class="i">}</span><span class="s">&quot;</span>))</code></pre>
 <h2><a id="development" class="anchor" href="#development">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>Development</h2>
 <p>Make sure you have a Redis or KeyDB server running locally on port 6379.</p>
+<p>Redis must be installed with a stack server for the full text search (<code>ft</code>) and time series modules (<code>ts</code>) in order for all specs to run.</p>
+<h3><a id="with-docker" class="anchor" href="#with-docker">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>With Docker</h3>
+<p>You can use this for your docker-compose file</p>
+<pre><code class="language-yaml">redis:
+  image: redis/redis-stack-server
+  ports:
+    - &quot;6379:6379&quot;</code></pre>
+<h3><a id="with-homebrew" class="anchor" href="#with-homebrew">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>With Homebrew</h3>
+<p>Install the <a href="https://github.com/redis-stack/homebrew-redis-stack"><code>redis-stack</code> from homebrew</a></p>
 <h2><a id="contributing" class="anchor" href="#contributing">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>

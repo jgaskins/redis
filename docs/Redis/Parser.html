@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 1.4.1">
-<meta name="crystal_docs.project_version" content="0.5.4">
+<meta name="generator" content="Crystal Docs 1.5.1">
+<meta name="crystal_docs.project_version" content="0.6.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Parser - redis 0.5.4</title>
+  <title>Redis::Parser - redis 0.6.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.5.4
+        0.6.0
       </span>
     </div>
   </div>
@@ -568,7 +568,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/parser.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/parser.cr#L5" target="_blank">
         parser.cr
       </a>
     
@@ -692,7 +692,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/parser.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/parser.cr#L7" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -723,18 +723,18 @@
           
           <p>Read a <code><a href="../Redis/Value.html">Redis::Value</a></code> from the parser's <code>IO</code></p>
 <p>Example:</p>
-<pre><code class="language-crystal">io <span class="o">=</span> <span class="t">IO</span><span class="t">::</span><span class="t">Memory</span>.<span class="k">new</span>
+<pre><code class="language-crystal">io <span class="o">=</span> <span class="t">IO</span><span class="t">::</span><span class="t">Memory</span>.new
 io <span class="o">&lt;&lt;</span> <span class="s">&quot;$3\r\n&quot;</span>
 io <span class="o">&lt;&lt;</span> <span class="s">&quot;foo\r\n&quot;</span>
 io.rewind
 
-<span class="t">Parser</span>.<span class="k">new</span>(io).read <span class="c"># =&gt; &quot;foo&quot;</span></code></pre>
+<span class="t">Parser</span>.new(io).read <span class="c"># =&gt; &quot;foo&quot;</span></code></pre>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/parser.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/parser.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -755,7 +755,7 @@ io.rewind
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.5.4/src/parser.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.6.0/src/parser.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
