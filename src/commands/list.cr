@@ -46,10 +46,31 @@ module Redis::Commands::List
   # ```
   # redis.del "foo"
   # redis.lpush "foo", "hello", "world"
+  # redis.lmove "foo", "bar" # => "hello"
+  # redis.lmove "foo", "bar" # => "world"
+  # redis.lmove "foo", "bar" # => nil
+  # ```
+  def lmove(from source : String, to destination : String, from_side source_side : Side, to_side destination_side : Side)
+    run({"lmove", source, destination, source_side.to_s, destination_side.to_s})
+  end
+
+  enum Side
+    LEFT
+    RIGHT
+  end
+
+  # Atomically remove an item from the end of a list and insert it at the
+  # beginning of another. Returns that list item. If the first list is empty,
+  # nothing happens and this method returns `nil`.
+  #
+  # ```
+  # redis.del "foo"
+  # redis.lpush "foo", "hello", "world"
   # redis.rpoplpush "foo", "bar" # => "hello"
   # redis.rpoplpush "foo", "bar" # => "world"
   # redis.rpoplpush "foo", "bar" # => nil
   # ```
+  @[Deprecated("Use the `lmove` method instead. See [the Redis docs](https://redis.io/commands/rpoplpush/) for more inforamtion.")]
   def rpoplpush(source : String, destination : String)
     run({"rpoplpush", source, destination})
   end

@@ -372,13 +372,12 @@ describe Redis::Client do
     redis.brpop(key, timeout: 1.second).should eq [key, "wtf"]
     redis.brpop(key, timeout: 1.0).should eq [key, "bbq"]
 
-
     left = random_key
     right = random_key
 
     begin
       redis.lpush left, "foo"
-      redis.rpoplpush left, right
+      redis.lmove left, right, :left, :right
       redis.rpop(right).should eq "foo"
     ensure
       redis.del left, right

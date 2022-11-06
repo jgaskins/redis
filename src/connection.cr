@@ -214,10 +214,13 @@ module Redis
     # :nodoc:
     macro override_return_types(methods)
       {% for method, return_type in methods %}
-        # :nodoc:
-        def {{method.id}}(*args, **kwargs) : {{return_type}}
-          super(*args, **kwargs){{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
-        end
+        {% if m = [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream].map(&.methods.find{ |m| m.name == method }).reject(&.nil?).first %}
+          # :nodoc:
+          def {{method.id}}({{m.args.join(", ").id}}) : {{return_type}}
+            super{{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
+          end
+          {% else %}
+        {% end %}
       {% end %}
     end
 
