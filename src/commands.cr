@@ -192,6 +192,14 @@ module Redis
       run({"publish", channel, message})
     end
 
+    # Preload a Lua script, returning the SHA of the script to pass to `evalsha`.
+    # ```
+    # sha = redis.script_load(<<-LUA)
+    #   return "Hello " + ARGV[1]
+    # LUA
+    #
+    # redis.evalsha(sha, args: ["world"]) # => "Hello world"
+    # ```
     def script_load(script : String)
       run({"script", "load", script})
     end
