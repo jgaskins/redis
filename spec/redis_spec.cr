@@ -384,6 +384,51 @@ describe Redis::Client do
     end
   end
 
+  test "can load and evaluate scripts" do
+    script = <<-LUA
+      return {KEYS[1] or 1337, ARGV[1] or 42}
+    LUA
+    sha = redis.script_load script
+    key_arg = UUID.random.to_s
+    redis.set key_arg, "this is the key arg"
+
+    begin
+      ## EVALSHA
+      redis.evalsha(sha, keys: [key_arg], args: %w[hi])
+        .should eq [key_arg, "hi"]
+
+      # Can we run it without providing args?
+      redis.evalsha(sha, keys: [key_arg])
+        .should eq [key_arg, 42]
+
+      # Can we run it without providing keys?
+      redis.evalsha(sha, args: %w[hi])
+        .should eq [1337, "hi"]
+
+      # Can we run it without providing anything?
+      redis.evalsha(sha)
+        .should eq [1337, 42]
+
+      ## EVAL
+      redis.eval(script, keys: [key_arg], args: %w[hi])
+        .should eq [key_arg, "hi"]
+
+      # Can we run it without providing args?
+      redis.eval(script, keys: [key_arg])
+        .should eq [key_arg, 42]
+
+      # Can we run it without providing keys?
+      redis.eval(script, args: %w[hi])
+        .should eq [1337, "hi"]
+
+      # Can we run it without providing anything?
+      redis.eval(script)
+        .should eq [1337, 42]
+    ensure
+      redis.unlink key_arg
+    end
+  end
+
   it "can publish and subscribe" do
     ready = false
     spawn do

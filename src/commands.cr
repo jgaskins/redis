@@ -192,6 +192,40 @@ module Redis
       run({"publish", channel, message})
     end
 
+    def script_load(script : String)
+      run({"script", "load", script})
+    end
+
+    # Shorthand for defining all of the EVAL* commands since they're all pretty
+    # much identical.
+    private macro define_eval(command, arg_name)
+      def {{command.id}}({{arg_name.id}} : String, keys : Enumerable(String) = EmptyEnumerable.new, args : Enumerable(String) = EmptyEnumerable.new)
+        command = Array(String).new(initial_capacity: 3 + keys.size + args.size)
+        command << "{{command.id}}" << {{arg_name.id}} << keys.size.to_s
+        keys.each { |key| command << key }
+        args.each { |arg| command << arg }
+
+        run command
+      end
+    end
+
+    define_eval evalsha, sha
+    define_eval evalsha_ro, script
+    define_eval eval, script
+    define_eval eval_ro, script
+
+    # This type exists to avoid allocation of an array on the heap.
+    struct EmptyEnumerable
+      include Enumerable(String)
+
+      def each(&block : String ->)
+      end
+
+      def size
+        0
+      end
+    end
+
     def expire(key : String, ttl : Time::Span)
       expire key, ttl.total_seconds.to_i64
     end

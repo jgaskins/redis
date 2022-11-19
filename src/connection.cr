@@ -228,11 +228,12 @@ module Redis
       # When new commands are added to the Commands mixin, add an entry here to
       # make sure the return type is set when run directly on the connection.
       ::Redis::Connection.override_return_types({
-        keys:   Array,
-        del:    Int64,
-        unlink: Int64,
-        ttl:    Int64,
-        pttl:   Int64,
+        keys:        Array,
+        del:         Int64,
+        unlink:      Int64,
+        ttl:         Int64,
+        pttl:        Int64,
+        script_load: String,
 
         # String commands
         append:      Int64,
