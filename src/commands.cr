@@ -199,6 +199,25 @@ module Redis
     # Shorthand for defining all of the EVAL* commands since they're all pretty
     # much identical.
     private macro define_eval(command, arg_name)
+      # Evaluate the given Lua script, either referenced by SHA with `evalsha`
+      # or directly with `eval`.
+      #
+      # NOTE: Use `eval` only for very trivial scripts and `evalsha` for larger
+      # or frequently executed scripts to amortize parse/compile time as well as
+      # send fewer bytes along the wire.
+      #
+      # NOTE: Use `eval_ro` and `evalsha_ro` in a clustered environment to
+      # evaluate the scripts on read-only replicas.
+      #
+      # ```
+      # script = <<-LUA
+      #   return "this script was " + ARGV[1]
+      # LUA
+      #
+      # sha = redis.script_load(script)
+      # redis.eval(script, args: ["evaluated on the fly"]
+      # redis.evalsha(sha, args: ["precompiled"])
+      # ```
       def {{command.id}}({{arg_name.id}} : String, keys : Enumerable(String) = EmptyEnumerable.new, args : Enumerable(String) = EmptyEnumerable.new)
         command = Array(String).new(initial_capacity: 3 + keys.size + args.size)
         command << "{{command.id}}" << {{arg_name.id}} << keys.size.to_s
