@@ -215,6 +215,8 @@ module Redis
     private READ_ONLY_COMMANDS = %w[
       dump
       echo
+      eval_ro
+      evalsha_ro
       exists
       expiretime
       get
