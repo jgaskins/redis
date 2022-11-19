@@ -204,6 +204,42 @@ module Redis
       run({"script", "load", script})
     end
 
+    # Flush the Lua scripts cache, see [the official docs](https://redis.io/commands/script-flush/).
+    #
+    # ```
+    # redis.script_flush :async # Flush scripts asynchronously
+    # redis.script_flush :sync  # Flush scripts immediately
+    # ```
+    def script_flush(mode : ScriptFlushMode)
+      run({"script", "flush", mode.to_s})
+    end
+
+    enum ScriptFlushMode
+      ASYNC
+      SYNC
+    end
+
+    # Return an array where each entry is `1` if the corresponding entry in the
+    # list of `shas` exists or `0` if it does not.
+    def script_exists(*shas : String)
+      script_exists shas
+    end
+
+    # :ditto:
+    def script_exists(shas : Enumerable(String))
+      command = Array(String).new(initial_capacity: 2 + keys.size)
+      command << "script" << "exists"
+      shas.each { |sha| command << sha }
+
+      run command
+    end
+
+    # Kill the currently executing `eval` script, assuming no write operation
+    # was yet performed by the script.
+    def script_kill
+      run({"script", "kill"})
+    end
+
     # Shorthand for defining all of the EVAL* commands since they're all pretty
     # much identical.
     private macro define_eval(command, arg_name)
