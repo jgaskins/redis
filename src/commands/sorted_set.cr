@@ -39,7 +39,7 @@ module Redis::Commands::SortedSet
     run({"zremrangebyrank", key, low.to_s, high.to_s})
   end
 
-  def zadd(key : String, score : String | Float, value : String)
+  def zadd(key : String, score : String | Float | Int, value : String)
     run({"zadd", key, score.to_s, value})
   end
 
