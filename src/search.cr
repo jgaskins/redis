@@ -142,8 +142,12 @@ module Redis
       explainscore : Bool? = nil,
       payload : String | Bytes | Nil = nil,
       sortby : SortBy? = nil,
-      limit : {Int, Int}? = nil
+      limit : {Int, Int}? = nil,
+      params : NamedTuple | Hash(String, String) | Nil = nil,
+      dialect : Int? = nil
     )
+      # Pre-allocate the command buffer based on args so it performs as few
+      # heap allocations as possible.
       command = Array(String).new(
         1 + # index
         1 + # query
@@ -169,7 +173,9 @@ module Redis
         2 + # payload
         3 + # sortby
         3 + # limit
-        0 # end
+        1 + (params.try { |params| params.size * 2 } || 0) +
+        2 + # dialect
+        0   # end
       )
       command << "ft.search" << index << query
 
@@ -257,6 +263,25 @@ module Redis
       if limit
         command << "limit"
         command.concat limit.map(&.to_s).to_a
+      end
+
+      if params
+        command << "params" << (params.size * 2).to_s
+        case params
+        in NamedTuple
+          # I understand *why* NamedTuple#each has a different block signature,
+          # but I don't love it.
+          params.each { |key, value| command << key.to_s << value }
+        in Hash
+          params.each { |(key, value)| command << key << value }
+        in Nil
+          # This should never happen
+        end
+        dialect ||= 2
+      end
+
+      if dialect
+        command << "dialect" << dialect.to_s
       end
 
       @redis.run(command).as Array

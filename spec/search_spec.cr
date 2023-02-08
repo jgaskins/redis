@@ -281,6 +281,36 @@ module Redis
         key.should eq "#{hash_prefix}:highlight:match"
         result.should eq ["body", "<strong>tests</strong> for the RediSearch module. The purpose is to ensure that <strong>highlighting</strong> … <strong>testing</strong> more <strong>highlighting</strong>. … More <strong>highlighting</strong>. … "]
       end
+
+      it "can choose a dialect to search with" do
+        prefix = "#{hash_prefix}:search-dialect"
+        d1match = "#{prefix}:dialect-1-match"
+        d2match = "#{prefix}:dialect-2-match"
+        redis.hset d1match, name: "matches dialect 1"
+        redis.hset d2match, name: "world"
+
+        d1result = redis.ft.search(hash_index, "-hello world", dialect: 1)
+        d2result = redis.ft.search(hash_index, "-hello world", dialect: 2)
+
+        d1result.should_not eq d2result
+      end
+
+      it "can search with params" do
+        prefix = "#{hash_prefix}:params-search"
+        key1 = "#{prefix}:1"
+        key2 = "#{prefix}:2"
+        redis.hset key1, post_count: "12"
+        redis.hset key2, post_count: "1024"
+
+        result = redis.ft.search hash_index, "@post_count:[$min_posts +inf]",
+          params: {min_posts: "100"}
+
+        result.size.should eq 3
+        count, matched_key, matched_hash = result
+        count.should eq 1
+        matched_key.should eq key2
+        matched_hash.should eq %w[post_count 1024]
+      end
     end
 
     describe "JSON" do
