@@ -316,8 +316,8 @@ module Redis
     describe "JSON" do
       it "can search JSON" do
         redis.pipeline do |pipe|
-        pipe.json.set "#{json_prefix}:json:match:1", ".", {body: "json match"}
-        pipe.json.set "#{json_prefix}:json:no-match:1", ".", {body: "nothin to see here"}
+          pipe.json.set "#{json_prefix}:json:match:1", ".", {body: "json match"}
+          pipe.json.set "#{json_prefix}:json:no-match:1", ".", {body: "nothin to see here"}
         end
 
         results = redis.ft.search(json_index, "match json").as(Array)

@@ -299,7 +299,6 @@ module Redis
       fields : Array(String)? = nil,
       tags : {String, String}? = nil
 
-
     # Profile the given search. For further details, see [the `FT.PROFILE`
     # documentation](https://oss.redis.com/redisearch/Commands/#ftprofile).
     def profile(index : String, query : String)
