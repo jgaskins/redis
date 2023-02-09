@@ -203,6 +203,10 @@ module Redis
       T.from_json(numincrby(key, path, count).as(String))
     end
 
+    def toggle(key : String, path : String)
+      @redis.run({"json.toggle", key, path})
+    end
+
     # Append `value` as JSON to the array located at the JSONPath in `key`
     #
     # ```

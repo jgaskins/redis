@@ -134,6 +134,16 @@ describe Redis::JSON do
     redis.json.get(key, ".count", as: Int64).should eq 1234
   end
 
+  test "toggles a key in a JSON object" do
+    json = redis.json
+    json.set key, ".", {bool: true}
+
+    json.toggle(key, "$.bool").should eq [0]
+    json.get(key).should eq({bool: false}.to_json)
+    json.toggle(key, "$.bool").should eq [1]
+    json.get(key).should eq({bool: true}.to_json)
+  end
+
   test "appends a value to an array" do
     redis.json.set key, ".", {values: [1]}
 
