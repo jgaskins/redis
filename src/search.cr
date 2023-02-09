@@ -187,8 +187,7 @@ module Redis
       command << "withsortkeys" if withsortkeys
       if filter
         filter.each do |f|
-          command << "filter"
-          command << f.field << f.min << f.max
+          command << "filter" << f.field << f.min << f.max
         end
       end
       if geofilter
