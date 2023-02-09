@@ -134,7 +134,7 @@ module Redis
         redis.hset "#{hash_prefix}:simple:match", "name", "included"
         redis.hset "#{hash_prefix}:simple:no-match", "name", "excluded"
 
-        result = redis.ft.search(hash_index, "included").as(Array)
+        result = redis.ft.search(hash_index, "included")
 
         result[0].should eq 1
         result[2].should eq %w[name included]
@@ -154,7 +154,6 @@ module Redis
             radius: 0.5,
             unit: :mi,
           )
-        results = results.as(Array)
 
         result_count, key, result = results
 
@@ -168,9 +167,8 @@ module Redis
           "name", "match",
           "who", "cares"
 
-        results = redis.ft.search(hash_index, "match", return: %w[name]).as(Array)
+        results = redis.ft.search(hash_index, "match", return: %w[name])
         count, key, result = results
-        result = result.as(Array)
 
         result.should eq %w[name match]
       end
@@ -195,7 +193,7 @@ module Redis
         redis.hset "#{hash_prefix}:nocontent:match:2", name: "nocontent match"
         redis.hset "#{hash_prefix}:nocontent:no-match:3", name: "nope"
 
-        results = redis.ft.search(hash_index, "nocontent match", nocontent: true).as(Array)
+        results = redis.ft.search(hash_index, "nocontent match", nocontent: true)
 
         results.size.should eq 3
         count, match1, match2 = results
@@ -210,7 +208,7 @@ module Redis
         redis.hset "#{hash_prefix}:verbatim:no-match:1", name: "matching my text verbatim"
         redis.hset "#{hash_prefix}:verbatim:no-match:2", name: "texting my match verbatim"
 
-        results = redis.ft.search(hash_index, %{match my text verbatim}, verbatim: true).as(Array)
+        results = redis.ft.search(hash_index, %{match my text verbatim}, verbatim: true)
 
         count, key = results
         count.should eq 1
@@ -222,7 +220,7 @@ module Redis
         redis.hset "#{hash_prefix}:inorder:no-match:1", body: "my inorder match text"
         redis.hset "#{hash_prefix}:inorder:no-match:2", body: "text my inorder match"
 
-        results = redis.ft.search(hash_index, "match my text inorder", inorder: true).as(Array)
+        results = redis.ft.search(hash_index, "match my text inorder", inorder: true)
 
         count, key = results
         count.should eq 1
@@ -320,12 +318,12 @@ module Redis
           pipe.json.set "#{json_prefix}:json:no-match:1", ".", {body: "nothin to see here"}
         end
 
-        results = redis.ft.search(json_index, "match json").as(Array)
+        results = redis.ft.search(json_index, "match json")
 
         count, key, result = results
         count.should eq 1
         key.should eq "#{json_prefix}:json:match:1"
-        result.as(Array).map(&.as(String)).should eq ["$", {body: "json match"}.to_json]
+        result.should eq ["$", {body: "json match"}.to_json]
       end
     end
   end
