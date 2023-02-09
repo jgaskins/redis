@@ -321,8 +321,8 @@ module Redis
     record Filter, field : String, min : String, max : String do
       def self.new(field : String, range : Range(B, E)) forall B, E
         new field,
-          min: range.begin.to_s,
-          max: range.end.to_s
+          min: (range.begin || "-inf").to_s,
+          max: (range.end || "+inf").to_s
       end
     end
     record GeoFilter,

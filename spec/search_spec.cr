@@ -173,19 +173,45 @@ module Redis
         result.should eq %w[name match]
       end
 
-      it "can filter results based on numeric ranges" do
-        redis.hset "#{hash_prefix}:filter:match:too-high  ", name: "match", post_count: "51"
-        redis.hset "#{hash_prefix}:filter:match:goldilocks", name: "match", post_count: "50"
-        redis.hset "#{hash_prefix}:filter:match:too-low   ", name: "match", post_count: "49"
-        redis.hset "#{hash_prefix}:filter:no-match        ", name: "nope!", post_count: "50"
+      describe "FILTER" do
+        it "can filter results based on numeric ranges" do
+          redis.hset "#{hash_prefix}:filter:match:too-high  ", name: "match", post_count: "51"
+          redis.hset "#{hash_prefix}:filter:match:goldilocks", name: "match", post_count: "50"
+          redis.hset "#{hash_prefix}:filter:match:too-low   ", name: "match", post_count: "49"
+          redis.hset "#{hash_prefix}:filter:no-match        ", name: "nope!", post_count: "50"
 
-        results = redis.ft.search(hash_index, "match", filter: [
-          Redis::FullText::Filter.new("post_count", 0..50),
-          Redis::FullText::Filter.new("post_count", 50..100),
-        ]).as(Array)
+          # Testing multiple FILTER clauses in a single query
+          results = redis.ft.search(hash_index, "match", filter: [
+            Redis::FullText::Filter.new("post_count", 0..50),
+            Redis::FullText::Filter.new("post_count", 50..100),
+          ])
 
-        results[0].should eq 1
-        results[1].should eq "#{hash_prefix}:filter:match:goldilocks"
+          results[0].should eq 1
+          results[1].should eq "#{hash_prefix}:filter:match:goldilocks"
+        end
+
+        it "can filter results based on open-ended numeric ranges" do
+          prefix = "#{hash_prefix}:filter-open"
+          redis.hset "#{prefix}:match:higher", name: "filter-open-match", post_count: "51"
+          redis.hset "#{prefix}:match:middle", name: "filter-open-match", post_count: "50"
+          redis.hset "#{prefix}:match:2-low ", name: "filter-open-match", post_count: "49"
+          redis.hset "#{prefix}:no-match    ", name: "nope!", post_count: "50"
+
+          results = redis.ft.search(hash_index, "filter open match", filter: [
+            Redis::FullText::Filter.new("post_count", 50..),
+          ])
+
+          results.size.should eq 5
+          count, key1, result1, key2, result2 = results
+          # The results aren't ordered, so we can get them back in any order
+          keys = [key1, key2]
+          hashes = [result1, result2]
+          count.should eq 2
+          keys.should contain "#{prefix}:match:middle"
+          keys.should contain "#{prefix}:match:higher"
+          hashes.should contain %w[name filter-open-match post_count 51]
+          hashes.should contain %w[name filter-open-match post_count 50]
+        end
       end
 
       it "can search without content" do
