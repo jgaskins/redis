@@ -199,6 +199,10 @@ module Redis
     # returns a value of type `T`. If the JSONPath resolves to multiple values
     # (for example, it begins with "$" or is recursive), you will need to
     # specify that it can be an `Array` of that type.
+    #
+    # NOTE: This method cannot be used on deferred command runners like
+    # `Redis::Pipeline` or `Redis::Transaction`. It eagerly consumes the
+    # result from the server, so the result must not be deferred.
     def numincrby(key : String, path : String, count : String | Int, as type : T.class) : T forall T
       T.from_json(numincrby(key, path, count).as(String))
     end
