@@ -323,17 +323,17 @@ module Redis
         prefix = "#{hash_prefix}:params-search"
         key1 = "#{prefix}:1"
         key2 = "#{prefix}:2"
-        redis.hset key1, post_count: "12"
-        redis.hset key2, post_count: "1024"
+        redis.hset key1, name: "hash-params", post_count: "12"
+        redis.hset key2, name: "hash-params", post_count: "1024"
 
-        result = redis.ft.search hash_index, "@post_count:[$min_posts +inf]",
-          params: {min_posts: "100"}
+        result = redis.ft.search hash_index, "@name:($name) @post_count:[$min_posts +inf]",
+          params: {name: "params", min_posts: 100}
 
         result.size.should eq 3
         count, matched_key, matched_hash = result
         count.should eq 1
         matched_key.should eq key2
-        matched_hash.should eq %w[post_count 1024]
+        matched_hash.should eq %w[name hash-params post_count 1024]
       end
     end
 

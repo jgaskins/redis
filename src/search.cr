@@ -270,7 +270,7 @@ module Redis
         in NamedTuple
           # I understand *why* NamedTuple#each has a different block signature,
           # but I don't love it.
-          params.each { |key, value| command << key.to_s << value }
+          params.each { |key, value| command << key.to_s << value.to_s }
         in Hash
           params.each { |(key, value)| command << key << value }
         in Nil
