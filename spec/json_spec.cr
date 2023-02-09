@@ -130,8 +130,7 @@ describe Redis::JSON do
     redis.json.set key, ".", {values: [1], count: 1234}
 
     redis.json.del key, ".values"
-    redis.json.get(key, "$.values", as: Array(Array(Int64))).not_nil!.should be_empty
-    redis.json.get(key, ".count", as: Int64).should eq 1234
+    redis.json.get(key, ".").should eq({count: 1234}.to_json)
   end
 
   test "toggles a key in a JSON object" do
