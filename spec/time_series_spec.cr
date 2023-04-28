@@ -83,5 +83,38 @@ module Redis
     ensure
       redis.del "mrange-test:foo=included", "mrange-test:foo=excluded"
     end
+
+    test "gets a range aligned" do
+      now = Time.unix_ms Time.utc.to_unix_ms
+      start = now - 15.seconds
+      included = now - 1.millisecond
+      labels = {"name" => "mrange-alignment-test"}
+      redis.ts.add key, value: 1i64, timestamp: start, labels: labels
+      redis.ts.add key, value: 2i64, timestamp: included, labels: labels
+      redis.ts.add key, value: 4i64, timestamp: now, labels: labels
+
+      result = redis.ts.mrange start..now,
+        aggregation: redis.ts.aggregation(
+          aggregator: :sum,
+          bucket_duration: 10.seconds,
+          align: :end,
+        ),
+        filter: "name=mrange-alignment-test"
+      response = Redis::TimeSeries::MRangeResponse.new(result)
+      response[key].datapoints.should eq [
+        Redis::TimeSeries::Datapoint.new(
+          timestamp: now - 20.seconds,
+          value: 1.0,
+        ),
+        Redis::TimeSeries::Datapoint.new(
+          timestamp: now - 10.seconds,
+          value: 2.0,
+        ),
+        Redis::TimeSeries::Datapoint.new(
+          timestamp: now,
+          value: 4.0,
+        ),
+      ]
+    end
   end
 end

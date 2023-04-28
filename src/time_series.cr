@@ -149,17 +149,30 @@ module Redis
     def aggregation(
       aggregator : AggregationType,
       bucket_duration : Time::Span,
+      align : Alignment | Time | Nil = nil,
       buckettimestamp : BucketTimestamp? = nil,
       empty : Bool? = nil
     )
-      Aggregation.new(aggregator, bucket_duration, buckettimestamp, empty)
+      Aggregation.new(
+        aggregator: aggregator,
+        bucket_duration: bucket_duration,
+        alignment: align,
+        buckettimestamp: buckettimestamp,
+        empty: empty,
+      )
     end
 
     record Aggregation,
       aggregator : AggregationType,
       bucket_duration : Time::Span,
+      alignment : Alignment | Time | Nil = nil,
       buckettimestamp : BucketTimestamp? = nil,
       empty : Bool? = nil
+
+    enum Alignment
+      Start
+      End
+    end
 
     def mrange(
       time_range : ::Range(Time, Time?),
@@ -226,9 +239,14 @@ module Redis
       if aggregation
         # [[ALIGN value] AGGREGATION aggregator bucketDuration [BUCKETTIMESTAMP bt] [EMPTY]]
         # TODO: Implement this
-        # if alignment = aggregation.align
-        #   command << "align" << alignment
-        # end
+        case alignment = aggregation.alignment
+        in Alignment
+          command << "align" << alignment.to_s.downcase
+        in Time
+          command << "align" << alignment.to_unix_ms.to_s
+        in Nil
+          # Do nothing
+        end
 
         command << "aggregation" << aggregation.aggregator.to_s << aggregation.bucket_duration.total_milliseconds.to_i64.to_s
         if bucket_ts = aggregation.buckettimestamp
