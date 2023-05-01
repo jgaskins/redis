@@ -34,6 +34,11 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  test "can get a string key as Bytes" do
+    redis.set key, "bar"
+    redis.get_bytes(key).should eq "bar".to_slice
+  end
+
   test "can set expiration timestamps on keys" do
     redis.set key, "foo", ex: 10.milliseconds.from_now
     redis.get(key).should eq "foo"
