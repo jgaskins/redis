@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.6.1">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries::Aggregation - redis 0.6.1</title>
+  <title>Redis::TimeSeries::Aggregation - redis 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.1
+        0.7.0
       </span>
     </div>
   </div>
@@ -101,13 +101,33 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
+      <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+  <li class="parent " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
       <a href="../../Redis/Commands/List.html">List</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/List/Side" data-name="redis::commands::list::side">
+      <a href="../../Redis/Commands/List/Side.html">Side</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/ScriptFlushMode" data-name="redis::commands::scriptflushmode">
+      <a href="../../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>
       
     </li>
   
@@ -436,6 +456,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/TimeSeries/Alignment" data-name="redis::timeseries::alignment">
+      <a href="../../Redis/TimeSeries/Alignment.html">Alignment</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
       <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
       
@@ -568,7 +593,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L158" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L165" target="_blank">
         time_series.cr
       </a>
     
@@ -590,7 +615,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Cbuckettimestamp%3ABucketTimestamp%3F%3Dnil%2Cempty%3ABool%3F%3Dnil%29-class-method" class="signature"><strong>.new</strong>(aggregator : AggregationType, bucket_duration : Time::Span, buckettimestamp : BucketTimestamp? = <span class="n">nil</span>, empty : Bool? = <span class="n">nil</span>)</a>
+        <a href="#new%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Calignment%3AAlignment%7CTime%7CNil%3Dnil%2Cbuckettimestamp%3ABucketTimestamp%7CNil%3Dnil%2Cempty%3ABool%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(aggregator : AggregationType, bucket_duration : Time::Span, alignment : Alignment | Time | Nil = <span class="n">nil</span>, buckettimestamp : BucketTimestamp | Nil = <span class="n">nil</span>, empty : Bool | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -616,12 +641,17 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#alignment%3AAlignment%7CTime%7CNil-instance-method" class="signature"><strong>#alignment</strong> : Alignment | Time | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#bucket_duration%3ATime%3A%3ASpan-instance-method" class="signature"><strong>#bucket_duration</strong> : Time::Span</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#buckettimestamp%3ABucketTimestamp%3F-instance-method" class="signature"><strong>#buckettimestamp</strong> : BucketTimestamp?</a>
+        <a href="#buckettimestamp%3ABucketTimestamp%7CNil-instance-method" class="signature"><strong>#buckettimestamp</strong> : BucketTimestamp | Nil</a>
         
       </li>
     
@@ -631,12 +661,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#copy_with%28aggregator_aggregator%3D%40aggregator%2Cbucket_duration_bucket_duration%3D%40bucket_duration%2Cbuckettimestamp_buckettimestamp%3D%40buckettimestamp%2Cempty_empty%3D%40empty%29-instance-method" class="signature"><strong>#copy_with</strong>(aggregator _aggregator = @aggregator, bucket_duration _bucket_duration = @bucket_duration, buckettimestamp _buckettimestamp = @buckettimestamp, empty _empty = @empty)</a>
+        <a href="#copy_with%28aggregator_aggregator%3D%40aggregator%2Cbucket_duration_bucket_duration%3D%40bucket_duration%2Calignment_alignment%3D%40alignment%2Cbuckettimestamp_buckettimestamp%3D%40buckettimestamp%2Cempty_empty%3D%40empty%29-instance-method" class="signature"><strong>#copy_with</strong>(aggregator _aggregator = @aggregator, bucket_duration _bucket_duration = @bucket_duration, alignment _alignment = @alignment, buckettimestamp _buckettimestamp = @buckettimestamp, empty _empty = @empty)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#empty%3ABool%3F-instance-method" class="signature"><strong>#empty</strong> : Bool?</a>
+        <a href="#empty%3ABool%7CNil-instance-method" class="signature"><strong>#empty</strong> : Bool | Nil</a>
         
       </li>
     
@@ -690,18 +720,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(aggregator:AggregationType,bucket_duration:Time::Span,buckettimestamp:BucketTimestamp?=nil,empty:Bool?=nil)-class-method">
+    <div class="entry-detail" id="new(aggregator:AggregationType,bucket_duration:Time::Span,alignment:Alignment|Time|Nil=nil,buckettimestamp:BucketTimestamp|Nil=nil,empty:Bool|Nil=nil)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(aggregator : <a href="../../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket_duration : Time::Span, buckettimestamp : <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>? = <span class="n">nil</span>, empty : Bool? = <span class="n">nil</span>)
+        def self.<strong>new</strong>(aggregator : <a href="../../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket_duration : Time::Span, alignment : <a href="../../Redis/TimeSeries/Alignment.html">Alignment</a> | Time | Nil = <span class="n">nil</span>, buckettimestamp : <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a> | Nil = <span class="n">nil</span>, empty : Bool | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#new%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Cbuckettimestamp%3ABucketTimestamp%3F%3Dnil%2Cempty%3ABool%3F%3Dnil%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Calignment%3AAlignment%7CTime%7CNil%3Dnil%2Cbuckettimestamp%3ABucketTimestamp%7CNil%3Dnil%2Cempty%3ABool%7CNil%3Dnil%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L158" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L165" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -734,6 +764,20 @@
       </div>
     </div>
   
+    <div class="entry-detail" id="alignment:Alignment|Time|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>alignment</strong> : <a href="../../Redis/TimeSeries/Alignment.html">Alignment</a> | Time | Nil
+
+        <a class="method-permalink" href="#alignment%3AAlignment%7CTime%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="bucket_duration:Time::Span-instance-method">
       <div class="signature">
         
@@ -748,12 +792,12 @@
       </div>
     </div>
   
-    <div class="entry-detail" id="buckettimestamp:BucketTimestamp?-instance-method">
+    <div class="entry-detail" id="buckettimestamp:BucketTimestamp|Nil-instance-method">
       <div class="signature">
         
-        def <strong>buckettimestamp</strong> : <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>?
+        def <strong>buckettimestamp</strong> : <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a> | Nil
 
-        <a class="method-permalink" href="#buckettimestamp%3ABucketTimestamp%3F-instance-method">#</a>
+        <a class="method-permalink" href="#buckettimestamp%3ABucketTimestamp%7CNil-instance-method">#</a>
       </div>
       
       <br/>
@@ -773,33 +817,33 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L158" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L165" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="copy_with(aggregator_aggregator=@aggregator,bucket_duration_bucket_duration=@bucket_duration,buckettimestamp_buckettimestamp=@buckettimestamp,empty_empty=@empty)-instance-method">
+    <div class="entry-detail" id="copy_with(aggregator_aggregator=@aggregator,bucket_duration_bucket_duration=@bucket_duration,alignment_alignment=@alignment,buckettimestamp_buckettimestamp=@buckettimestamp,empty_empty=@empty)-instance-method">
       <div class="signature">
         
-        def <strong>copy_with</strong>(aggregator _aggregator = @aggregator, bucket_duration _bucket_duration = @bucket_duration, buckettimestamp _buckettimestamp = @buckettimestamp, empty _empty = @empty)
+        def <strong>copy_with</strong>(aggregator _aggregator = @aggregator, bucket_duration _bucket_duration = @bucket_duration, alignment _alignment = @alignment, buckettimestamp _buckettimestamp = @buckettimestamp, empty _empty = @empty)
 
-        <a class="method-permalink" href="#copy_with%28aggregator_aggregator%3D%40aggregator%2Cbucket_duration_bucket_duration%3D%40bucket_duration%2Cbuckettimestamp_buckettimestamp%3D%40buckettimestamp%2Cempty_empty%3D%40empty%29-instance-method">#</a>
+        <a class="method-permalink" href="#copy_with%28aggregator_aggregator%3D%40aggregator%2Cbucket_duration_bucket_duration%3D%40bucket_duration%2Calignment_alignment%3D%40alignment%2Cbuckettimestamp_buckettimestamp%3D%40buckettimestamp%2Cempty_empty%3D%40empty%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L158" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L165" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="empty:Bool?-instance-method">
+    <div class="entry-detail" id="empty:Bool|Nil-instance-method">
       <div class="signature">
         
-        def <strong>empty</strong> : Bool?
+        def <strong>empty</strong> : Bool | Nil
 
-        <a class="method-permalink" href="#empty%3ABool%3F-instance-method">#</a>
+        <a class="method-permalink" href="#empty%3ABool%7CNil-instance-method">#</a>
       </div>
       
       <br/>

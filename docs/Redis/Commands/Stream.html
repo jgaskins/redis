@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.6.1">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::Stream - redis 0.6.1</title>
+  <title>Redis::Commands::Stream - redis 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.1
+        0.7.0
       </span>
     </div>
   </div>
@@ -101,13 +101,33 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
+      <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+  <li class="parent " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
       <a href="../../Redis/Commands/List.html">List</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/List/Side" data-name="redis::commands::list::side">
+      <a href="../../Redis/Commands/List/Side.html">Side</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/ScriptFlushMode" data-name="redis::commands::scriptflushmode">
+      <a href="../../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>
       
     </li>
   
@@ -436,6 +456,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/TimeSeries/Alignment" data-name="redis::timeseries::alignment">
+      <a href="../../Redis/TimeSeries/Alignment.html">Alignment</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
       <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
       
@@ -580,7 +605,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L1" target="_blank">
         commands/stream.cr
       </a>
     
@@ -659,7 +684,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#xgroup%28command%3AXGroup%2Ckey%3AString%2Cgroupname%3AString%2C%2A%2Cid%3AString%3F%3Dnil%2Cmkstream%3Dfalse%2Cconsumer_name%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#xgroup</strong>(command : XGroup, key : String, groupname : String, *, id : String? = <span class="n">nil</span>, mkstream = <span class="n">false</span>, consumer_name : String? = <span class="n">nil</span>)</a>
+        <a href="#xgroup%28command%3AXGroup%2Ckey%3AString%2Cgroupname%3AString%2C%2A%2Cid%3AString%7CNil%3Dnil%2Cmkstream%3Dfalse%2Cconsumer_name%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xgroup</strong>(command : XGroup, key : String, groupname : String, *, id : String | Nil = <span class="n">nil</span>, mkstream = <span class="n">false</span>, consumer_name : String | Nil = <span class="n">nil</span>)</a>
         
           <div class="summary"><p>Run a Redis XGROUP subcommand for a given stream.</p></div>
         
@@ -759,7 +784,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L249" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L249" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -775,7 +800,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L253" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L253" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -803,7 +828,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -831,7 +856,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L44" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -859,7 +884,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -875,7 +900,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -891,7 +916,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L75" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -907,7 +932,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -929,17 +954,17 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L135" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L135" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xgroup(command:XGroup,key:String,groupname:String,*,id:String?=nil,mkstream=false,consumer_name:String?=nil)-instance-method">
+    <div class="entry-detail" id="xgroup(command:XGroup,key:String,groupname:String,*,id:String|Nil=nil,mkstream=false,consumer_name:String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>xgroup</strong>(command : <a href="../../Redis/Commands/Stream/XGroup.html">XGroup</a>, key : String, groupname : String, *, id : String? = <span class="n">nil</span>, mkstream = <span class="n">false</span>, consumer_name : String? = <span class="n">nil</span>)
+        def <strong>xgroup</strong>(command : <a href="../../Redis/Commands/Stream/XGroup.html">XGroup</a>, key : String, groupname : String, *, id : String | Nil = <span class="n">nil</span>, mkstream = <span class="n">false</span>, consumer_name : String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#xgroup%28command%3AXGroup%2Ckey%3AString%2Cgroupname%3AString%2C%2A%2Cid%3AString%3F%3Dnil%2Cmkstream%3Dfalse%2Cconsumer_name%3AString%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#xgroup%28command%3AXGroup%2Ckey%3AString%2Cgroupname%3AString%2C%2A%2Cid%3AString%7CNil%3Dnil%2Cmkstream%3Dfalse%2Cconsumer_name%3AString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -951,7 +976,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L113" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L113" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -973,7 +998,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L144" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L144" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -989,7 +1014,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1010,7 +1035,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L104" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1031,7 +1056,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L84" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1047,7 +1072,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L229" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L229" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1068,7 +1093,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L225" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L225" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1090,7 +1115,7 @@ If <code>count</code> is provided, Redis will return only that number of entries
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L90" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L90" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1113,7 +1138,7 @@ If <code>count</code> is provided, Redis will return only that number of entries
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L152" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L152" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1143,7 +1168,7 @@ response <span class="o">=</span> <span class="t">Redis</span><span class="t">::
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/stream.cr#L195" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/stream.cr#L195" target="_blank">View source</a>]
         
       </div>
     </div>

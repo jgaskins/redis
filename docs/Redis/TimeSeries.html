@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.6.1">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries(Runnable) - redis 0.6.1</title>
+  <title>Redis::TimeSeries(Runnable) - redis 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.1
+        0.7.0
       </span>
     </div>
   </div>
@@ -101,13 +101,33 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
+      <a href="../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../Redis/Commands/Hash.html">Hash</a>
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+  <li class="parent " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
       <a href="../Redis/Commands/List.html">List</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/List/Side" data-name="redis::commands::list::side">
+      <a href="../Redis/Commands/List/Side.html">Side</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/ScriptFlushMode" data-name="redis::commands::scriptflushmode">
+      <a href="../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>
       
     </li>
   
@@ -436,6 +456,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/TimeSeries/Alignment" data-name="redis::timeseries::alignment">
+      <a href="../Redis/TimeSeries/Alignment.html">Alignment</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
       <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
       
@@ -583,7 +608,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L13" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L13" target="_blank">
         time_series.cr
       </a>
     
@@ -609,22 +634,22 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#add%28key%3AString%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method" class="signature"><strong>#add</strong>(key : String, value : Float64 | Int64, retention : Time::Span? = <span class="n">nil</span>, encoding : Encoding? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, on_duplicate duplicate_policy : DuplicatePolicy? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)</a>
+        <a href="#add%28key%3AString%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#add</strong>(key : String, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : Encoding | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : DuplicatePolicy | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#add%28key%3AString%2Ctimestamp%3ATime%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method" class="signature"><strong>#add</strong>(key : String, timestamp : Time, value : Float64 | Int64, retention : Time::Span? = <span class="n">nil</span>, encoding : Encoding? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, on_duplicate duplicate_policy : DuplicatePolicy? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)</a>
+        <a href="#add%28key%3AString%2Ctimestamp%3ATime%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#add</strong>(key : String, timestamp : Time, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : Encoding | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : DuplicatePolicy | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Cbuckettimestamp%3ABucketTimestamp%3F%3Dnil%2Cempty%3ABool%3F%3Dnil%29-instance-method" class="signature"><strong>#aggregation</strong>(aggregator : AggregationType, bucket_duration : Time::Span, buckettimestamp : BucketTimestamp? = <span class="n">nil</span>, empty : Bool? = <span class="n">nil</span>)</a>
+        <a href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Calign%3AAlignment%7CTime%7CNil%3Dnil%2Cbuckettimestamp%3ABucketTimestamp%7CNil%3Dnil%2Cempty%3ABool%7CNil%3Dnil%29-instance-method" class="signature"><strong>#aggregation</strong>(aggregator : AggregationType, bucket_duration : Time::Span, align : Alignment | Time | Nil = <span class="n">nil</span>, buckettimestamp : BucketTimestamp | Nil = <span class="n">nil</span>, empty : Bool | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method" class="signature"><strong>#create</strong>(key : String, retention : Time::Span? = <span class="n">nil</span>, encoding : Encoding? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, duplicate_policy : DuplicatePolicy? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)</a>
+        <a href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#create</strong>(key : String, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : Encoding | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, duplicate_policy : DuplicatePolicy | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -639,7 +664,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%3F%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%3F%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%3F%3Dnil%2Cwithlabels%3ABool%3F%3Dnil%2Cselected_labels%3AEnumerable%28String%29%3F%3Dnil%2Ccount%3AInt%3F%3Dnil%2Caggregation%3AAggregation%3F%3Dnil%2Cgroupby%3AString%3F%3Dnil%2Creduce%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#mrange</strong>(time_range : ::Range(Time, Time?), filter : String, filter_by_ts : Enumerable(Time)? = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64)? = <span class="n">nil</span>, withlabels : Bool? = <span class="n">nil</span>, selected_labels : Enumerable(String)? = <span class="n">nil</span>, count : Int? = <span class="n">nil</span>, aggregation : Aggregation? = <span class="n">nil</span>, groupby : String? = <span class="n">nil</span>, reduce : String? = <span class="n">nil</span>)</a>
+        <a href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%7CNil%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%7CNil%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%7CNil%3Dnil%2Cwithlabels%3ABool%7CNil%3Dnil%2Cselected_labels%3AEnumerable%28String%29%7CNil%3Dnil%2Ccount%3AInt%7CNil%3Dnil%2Caggregation%3AAggregation%7CNil%3Dnil%2Cgroupby%3AString%7CNil%3Dnil%2Creduce%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#mrange</strong>(time_range : ::Range(Time, Time | Nil), filter : String, filter_by_ts : Enumerable(Time) | Nil = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64) | Nil = <span class="n">nil</span>, withlabels : Bool | Nil = <span class="n">nil</span>, selected_labels : Enumerable(String) | Nil = <span class="n">nil</span>, count : Int | Nil = <span class="n">nil</span>, aggregation : Aggregation | Nil = <span class="n">nil</span>, groupby : String | Nil = <span class="n">nil</span>, reduce : String | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -702,66 +727,66 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="add(key:String,value:Float64|Int64,retention:Time::Span?=nil,encoding:Encoding?=nil,chunk_size:Int64?=nil,on_duplicateduplicate_policy:DuplicatePolicy?=nil,labels:Hash(String,String|Int32|Int64)?=nil)-instance-method">
+    <div class="entry-detail" id="add(key:String,value:Float64|Int64,retention:Time::Span|Nil=nil,encoding:Encoding|Nil=nil,chunk_size:Int64|Nil=nil,on_duplicateduplicate_policy:DuplicatePolicy|Nil=nil,labels:Hash(String,String|Int32|Int64)|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>add</strong>(key : String, value : Float64 | Int64, retention : Time::Span? = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a>? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, on_duplicate duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)
+        def <strong>add</strong>(key : String, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a> | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a> | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#add%28key%3AString%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#add%28key%3AString%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="add(key:String,timestamp:Time,value:Float64|Int64,retention:Time::Span?=nil,encoding:Encoding?=nil,chunk_size:Int64?=nil,on_duplicateduplicate_policy:DuplicatePolicy?=nil,labels:Hash(String,String|Int32|Int64)?=nil)-instance-method">
+    <div class="entry-detail" id="add(key:String,timestamp:Time,value:Float64|Int64,retention:Time::Span|Nil=nil,encoding:Encoding|Nil=nil,chunk_size:Int64|Nil=nil,on_duplicateduplicate_policy:DuplicatePolicy|Nil=nil,labels:Hash(String,String|Int32|Int64)|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>add</strong>(key : String, timestamp : Time, value : Float64 | Int64, retention : Time::Span? = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a>? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, on_duplicate duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)
+        def <strong>add</strong>(key : String, timestamp : Time, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a> | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a> | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#add%28key%3AString%2Ctimestamp%3ATime%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#add%28key%3AString%2Ctimestamp%3ATime%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L91" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="aggregation(aggregator:AggregationType,bucket_duration:Time::Span,buckettimestamp:BucketTimestamp?=nil,empty:Bool?=nil)-instance-method">
+    <div class="entry-detail" id="aggregation(aggregator:AggregationType,bucket_duration:Time::Span,align:Alignment|Time|Nil=nil,buckettimestamp:BucketTimestamp|Nil=nil,empty:Bool|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>aggregation</strong>(aggregator : <a href="../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket_duration : Time::Span, buckettimestamp : <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>? = <span class="n">nil</span>, empty : Bool? = <span class="n">nil</span>)
+        def <strong>aggregation</strong>(aggregator : <a href="../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket_duration : Time::Span, align : <a href="../Redis/TimeSeries/Alignment.html">Alignment</a> | Time | Nil = <span class="n">nil</span>, buckettimestamp : <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a> | Nil = <span class="n">nil</span>, empty : Bool | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Cbuckettimestamp%3ABucketTimestamp%3F%3Dnil%2Cempty%3ABool%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Calign%3AAlignment%7CTime%7CNil%3Dnil%2Cbuckettimestamp%3ABucketTimestamp%7CNil%3Dnil%2Cempty%3ABool%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L149" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L149" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="create(key:String,retention:Time::Span?=nil,encoding:Encoding?=nil,chunk_size:Int64?=nil,duplicate_policy:DuplicatePolicy?=nil,labels:Hash(String,String|Int32|Int64)?=nil)-instance-method">
+    <div class="entry-detail" id="create(key:String,retention:Time::Span|Nil=nil,encoding:Encoding|Nil=nil,chunk_size:Int64|Nil=nil,duplicate_policy:DuplicatePolicy|Nil=nil,labels:Hash(String,String|Int32|Int64)|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>create</strong>(key : String, retention : Time::Span? = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a>? = <span class="n">nil</span>, chunk_size : Int64? = <span class="n">nil</span>, duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>? = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64)? = <span class="n">nil</span>)
+        def <strong>create</strong>(key : String, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a> | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a> | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%3F%3Dnil%2Cencoding%3AEncoding%3F%3Dnil%2Cchunk_size%3AInt64%3F%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%3F%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -777,7 +802,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L126" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -793,23 +818,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L145" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L145" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="mrange(time_range:::Range(Time,Time?),filter:String,filter_by_ts:Enumerable(Time)?=nil,filter_by_value:::Range(Float64,Float64)?=nil,withlabels:Bool?=nil,selected_labels:Enumerable(String)?=nil,count:Int?=nil,aggregation:Aggregation?=nil,groupby:String?=nil,reduce:String?=nil)-instance-method">
+    <div class="entry-detail" id="mrange(time_range:::Range(Time,Time|Nil),filter:String,filter_by_ts:Enumerable(Time)|Nil=nil,filter_by_value:::Range(Float64,Float64)|Nil=nil,withlabels:Bool|Nil=nil,selected_labels:Enumerable(String)|Nil=nil,count:Int|Nil=nil,aggregation:Aggregation|Nil=nil,groupby:String|Nil=nil,reduce:String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>mrange</strong>(time_range : ::Range(Time, Time?), filter : String, filter_by_ts : Enumerable(Time)? = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64)? = <span class="n">nil</span>, withlabels : Bool? = <span class="n">nil</span>, selected_labels : Enumerable(String)? = <span class="n">nil</span>, count : Int? = <span class="n">nil</span>, aggregation : <a href="../Redis/TimeSeries/Aggregation.html">Aggregation</a>? = <span class="n">nil</span>, groupby : String? = <span class="n">nil</span>, reduce : String? = <span class="n">nil</span>)
+        def <strong>mrange</strong>(time_range : ::Range(Time, Time | Nil), filter : String, filter_by_ts : Enumerable(Time) | Nil = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64) | Nil = <span class="n">nil</span>, withlabels : Bool | Nil = <span class="n">nil</span>, selected_labels : Enumerable(String) | Nil = <span class="n">nil</span>, count : Int | Nil = <span class="n">nil</span>, aggregation : <a href="../Redis/TimeSeries/Aggregation.html">Aggregation</a> | Nil = <span class="n">nil</span>, groupby : String | Nil = <span class="n">nil</span>, reduce : String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%3F%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%3F%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%3F%3Dnil%2Cwithlabels%3ABool%3F%3Dnil%2Cselected_labels%3AEnumerable%28String%29%3F%3Dnil%2Ccount%3AInt%3F%3Dnil%2Caggregation%3AAggregation%3F%3Dnil%2Cgroupby%3AString%3F%3Dnil%2Creduce%3AString%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%7CNil%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%7CNil%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%7CNil%3Dnil%2Cwithlabels%3ABool%7CNil%3Dnil%2Cselected_labels%3AEnumerable%28String%29%7CNil%3Dnil%2Ccount%3AInt%7CNil%3Dnil%2Caggregation%3AAggregation%7CNil%3Dnil%2Cgroupby%3AString%7CNil%3Dnil%2Creduce%3AString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L164" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L177" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -825,7 +850,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>

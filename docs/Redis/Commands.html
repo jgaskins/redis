@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.6.1">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands - redis 0.6.1</title>
+  <title>Redis::Commands - redis 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.1
+        0.7.0
       </span>
     </div>
   </div>
@@ -101,13 +101,33 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
+      <a href="../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../Redis/Commands/Hash.html">Hash</a>
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+  <li class="parent " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
       <a href="../Redis/Commands/List.html">List</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/List/Side" data-name="redis::commands::list::side">
+      <a href="../Redis/Commands/List/Side.html">Side</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/ScriptFlushMode" data-name="redis::commands::scriptflushmode">
+      <a href="../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>
       
     </li>
   
@@ -436,6 +456,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/TimeSeries/Alignment" data-name="redis::timeseries::alignment">
+      <a href="../Redis/TimeSeries/Alignment.html">Alignment</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
       <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
       
@@ -624,42 +649,42 @@ object, which must be an <code>Enumerable</code>.</p>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L14" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L14" target="_blank">
         commands.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands/hash.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands/hash.cr#L1" target="_blank">
         commands/hash.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/graph.cr#L493" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/graph.cr#L493" target="_blank">
         graph.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/json.cr#L333" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/json.cr#L341" target="_blank">
         json.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/search.cr#L312" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/search.cr#L335" target="_blank">
         search.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L384" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L402" target="_blank">
         time_series.cr
       </a>
     
@@ -709,6 +734,34 @@ object, which must be an <code>Enumerable</code>.</p>
         <a href="#del%28%2Akeys%3AString%29-instance-method" class="signature"><strong>#del</strong>(*keys : String)</a>
         
           <div class="summary"><p>Delete all specified keys and return the number of keys deleted.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="signature"><strong>#eval</strong>(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)</a>
+        
+          <div class="summary"><p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#eval_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="signature"><strong>#eval_ro</strong>(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)</a>
+        
+          <div class="summary"><p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="signature"><strong>#evalsha</strong>(sha : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)</a>
+        
+          <div class="summary"><p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="signature"><strong>#evalsha_ro</strong>(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)</a>
+        
+          <div class="summary"><p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p></div>
         
       </li>
     
@@ -846,12 +899,47 @@ object, which must be an <code>Enumerable</code>.</p>
       </li>
     
       <li class="entry-summary">
-        <a href="#scan%28cursor%3AString%3D%220%22%2Cmatch%3AString%3F%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2Ctype%3AString%3F%3Dnil%29-instance-method" class="signature"><strong>#scan</strong>(cursor : String = <span class="s">&quot;0&quot;</span>, match : String? = <span class="n">nil</span>, count : String | Int | Nil = <span class="n">nil</span>, type : String? = <span class="n">nil</span>)</a>
+        <a href="#scan%28cursor%3AString%3D%220%22%2Cmatch%3AString%7CNil%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2Ctype%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#scan</strong>(cursor : String = <span class="s">&quot;0&quot;</span>, match : String | Nil = <span class="n">nil</span>, count : String | Int | Nil = <span class="n">nil</span>, type : String | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#set%28key%3AString%2Cvalue%3AString%2Cex%3AString%7CInt%3F%3Dnil%2Cpx%3AString%7CInt%7CNil%3Dnil%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%29-instance-method" class="signature"><strong>#set</strong>(key : String, value : String, ex : String | Int? = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)</a>
+        <a href="#script_exists%28shas%3AEnumerable%28String%29%29-instance-method" class="signature"><strong>#script_exists</strong>(shas : Enumerable(String))</a>
+        
+          <div class="summary"><p>Return an array where each entry is <code>1</code> if the corresponding entry in the list of <code>shas</code> exists or <code>0</code> if it does not.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#script_exists%28%2Ashas%3AString%29-instance-method" class="signature"><strong>#script_exists</strong>(*shas : String)</a>
+        
+          <div class="summary"><p>Return an array where each entry is <code>1</code> if the corresponding entry in the list of <code>shas</code> exists or <code>0</code> if it does not.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#script_flush%28mode%3AScriptFlushMode%29-instance-method" class="signature"><strong>#script_flush</strong>(mode : ScriptFlushMode)</a>
+        
+          <div class="summary"><p>Flush the Lua scripts cache, see <a href="https://redis.io/commands/script-flush/">the official docs</a>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#script_kill-instance-method" class="signature"><strong>#script_kill</strong></a>
+        
+          <div class="summary"><p>Kill the currently executing <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code> script, assuming no write operation was yet performed by the script.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#script_load%28script%3AString%29-instance-method" class="signature"><strong>#script_load</strong>(script : String)</a>
+        
+          <div class="summary"><p>Preload a Lua script, returning the SHA of the script to pass to <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#set%28key%3AString%2Cvalue%3AString%2Cex%3AString%7CInt%7CNil%3Dnil%2Cpx%3AString%7CInt%7CNil%3Dnil%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%29-instance-method" class="signature"><strong>#set</strong>(key : String, value : String, ex : String | Int | Nil = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)</a>
         
           <div class="summary"><p>Set a given key to a given value, optionally specifying time-to-live (TTL).</p></div>
         
@@ -928,7 +1016,7 @@ object, which must be an <code>Enumerable</code>.</p>
     
   
     <a href="../Redis/Commands/Stream.html#xgroup%28command%3AString%2Ckey%3AString%2Cgroupname%3AString%29-instance-method" class="tooltip">
-      <span>xgroup(command : String, key : String, groupname : String)<br/>xgroup(command : XGroup, key : String, groupname : String, *, id : String? = <span class="n">nil</span>, mkstream = <span class="n">false</span>, consumer_name : String? = <span class="n">nil</span>)<br/>xgroup(command : String, key : String, groupname : String, *args : String)</span>
+      <span>xgroup(command : String, key : String, groupname : String)<br/>xgroup(command : XGroup, key : String, groupname : String, *, id : String | Nil = <span class="n">nil</span>, mkstream = <span class="n">false</span>, consumer_name : String | Nil = <span class="n">nil</span>)<br/>xgroup(command : String, key : String, groupname : String, *args : String)</span>
     xgroup</a>, 
     
   
@@ -976,8 +1064,8 @@ object, which must be an <code>Enumerable</code>.</p>
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/SortedSet.html">Redis::Commands::SortedSet</a></code></h3>
   
   
-    <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CFloat%2Cvalue%3AString%29-instance-method" class="tooltip">
-      <span>zadd(key : String, score : String | Float, value : String)<br/>zadd(key : String, values : Enumerable)</span>
+    <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CFloat%7CInt%2Cvalue%3AString%29-instance-method" class="tooltip">
+      <span>zadd(key : String, score : String | Float | Int, value : String)<br/>zadd(key : String, values : Enumerable)</span>
     zadd</a>, 
     
   
@@ -996,8 +1084,8 @@ object, which must be an <code>Enumerable</code>.</p>
     zrange</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Clow%3AString%7CFloat%2Chigh%3AString%7CFloat%2Climit%3AEnumerable%28String%29%3F%3Dnil%29-instance-method" class="tooltip">
-      <span>zrangebyscore(key : String, low : String | Float, high : String | Float, limit : Enumerable(String)? = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Clow%3AString%7CFloat%2Chigh%3AString%7CFloat%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>zrangebyscore(key : String, low : String | Float, high : String | Float, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
     zrangebyscore</a>, 
     
   
@@ -1104,8 +1192,13 @@ object, which must be an <code>Enumerable</code>.</p>
     llen</a>, 
     
   
-    <a href="../Redis/Commands/List.html#lpop%28key%3AString%2Ccount%3AString%3F%3Dnil%29-instance-method" class="tooltip">
-      <span>lpop(key : String, count : String? = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/List.html#lmove%28fromsource%3AString%2Ctodestination%3AString%2Cfrom_sidesource_side%3ASide%2Cto_sidedestination_side%3ASide%29-instance-method" class="tooltip">
+      <span>lmove(from source : String, to destination : String, from_side source_side : Side, to_side destination_side : Side)</span>
+    lmove</a>, 
+    
+  
+    <a href="../Redis/Commands/List.html#lpop%28key%3AString%2Ccount%3AString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>lpop(key : String, count : String | Nil = <span class="n">nil</span>)</span>
     lpop</a>, 
     
   
@@ -1227,7 +1320,7 @@ redis.decr <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; -1
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L104" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1251,7 +1344,7 @@ redis.decrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L126" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1275,7 +1368,7 @@ redis.del [<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&quo
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L148" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L148" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1299,7 +1392,143 @@ redis.del <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L137" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="eval(script:String,keys:Enumerable(String)=EmptyEnumerable.new,args:Enumerable(String)=EmptyEnumerable.new)-instance-method">
+      <div class="signature">
+        
+        def <strong>eval</strong>(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)
+
+        <a class="method-permalink" href="#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code>
+or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code> only for very trivial scripts and <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> for larger
+or frequently executed scripts to amortize parse/compile time as well as
+send fewer bytes along the wire.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval_ro</a></code> and <code><a href="../Redis/Commands.html#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha_ro</a></code> in a clustered environment to
+evaluate the scripts on read-only replicas.</p>
+<pre><code class="language-crystal">script <span class="o">=</span> <span class="s">&lt;&lt;-LUA</span>
+<span class="s">  return &quot;this script was &quot; + ARGV[1]
+LUA</span>
+
+sha <span class="o">=</span> redis.script_load(script)
+redis.eval(script, args: [<span class="s">&quot;evaluated on the fly&quot;</span>]
+redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L277" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="eval_ro(script:String,keys:Enumerable(String)=EmptyEnumerable.new,args:Enumerable(String)=EmptyEnumerable.new)-instance-method">
+      <div class="signature">
+        
+        def <strong>eval_ro</strong>(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)
+
+        <a class="method-permalink" href="#eval_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code>
+or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code> only for very trivial scripts and <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> for larger
+or frequently executed scripts to amortize parse/compile time as well as
+send fewer bytes along the wire.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval_ro</a></code> and <code><a href="../Redis/Commands.html#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha_ro</a></code> in a clustered environment to
+evaluate the scripts on read-only replicas.</p>
+<pre><code class="language-crystal">script <span class="o">=</span> <span class="s">&lt;&lt;-LUA</span>
+<span class="s">  return &quot;this script was &quot; + ARGV[1]
+LUA</span>
+
+sha <span class="o">=</span> redis.script_load(script)
+redis.eval(script, args: [<span class="s">&quot;evaluated on the fly&quot;</span>]
+redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L278" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="evalsha(sha:String,keys:Enumerable(String)=EmptyEnumerable.new,args:Enumerable(String)=EmptyEnumerable.new)-instance-method">
+      <div class="signature">
+        
+        def <strong>evalsha</strong>(sha : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)
+
+        <a class="method-permalink" href="#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code>
+or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code> only for very trivial scripts and <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> for larger
+or frequently executed scripts to amortize parse/compile time as well as
+send fewer bytes along the wire.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval_ro</a></code> and <code><a href="../Redis/Commands.html#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha_ro</a></code> in a clustered environment to
+evaluate the scripts on read-only replicas.</p>
+<pre><code class="language-crystal">script <span class="o">=</span> <span class="s">&lt;&lt;-LUA</span>
+<span class="s">  return &quot;this script was &quot; + ARGV[1]
+LUA</span>
+
+sha <span class="o">=</span> redis.script_load(script)
+redis.eval(script, args: [<span class="s">&quot;evaluated on the fly&quot;</span>]
+redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L275" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="evalsha_ro(script:String,keys:Enumerable(String)=EmptyEnumerable.new,args:Enumerable(String)=EmptyEnumerable.new)-instance-method">
+      <div class="signature">
+        
+        def <strong>evalsha_ro</strong>(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)
+
+        <a class="method-permalink" href="#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Evaluate the given Lua script, either referenced by SHA with <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code>
+or directly with <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code>.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code> only for very trivial scripts and <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code> for larger
+or frequently executed scripts to amortize parse/compile time as well as
+send fewer bytes along the wire.</p>
+<p><span class="flag purple">NOTE</span>  Use <code><a href="../Redis/Commands.html#eval_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval_ro</a></code> and <code><a href="../Redis/Commands.html#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha_ro</a></code> in a clustered environment to
+evaluate the scripts on read-only replicas.</p>
+<pre><code class="language-crystal">script <span class="o">=</span> <span class="s">&lt;&lt;-LUA</span>
+<span class="s">  return &quot;this script was &quot; + ARGV[1]
+LUA</span>
+
+sha <span class="o">=</span> redis.script_load(script)
+redis.eval(script, args: [<span class="s">&quot;evaluated on the fly&quot;</span>]
+redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L276" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1325,7 +1554,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L177" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L177" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1341,7 +1570,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L195" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L292" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1357,7 +1586,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L199" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L296" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1373,7 +1602,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L211" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L308" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1395,7 +1624,7 @@ not just the currently selected one.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L256" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L353" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1416,7 +1645,7 @@ not just the currently selected one.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L250" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L347" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1437,7 +1666,7 @@ not just the currently selected one.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/search.cr#L314" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/search.cr#L337" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1460,7 +1689,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; &quot;
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1481,7 +1710,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; &quot;
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/graph.cr#L495" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/graph.cr#L495" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1505,7 +1734,7 @@ redis.incr <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; 1<
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1529,7 +1758,7 @@ redis.incrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1545,7 +1774,7 @@ redis.incrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L260" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L357" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1568,7 +1797,7 @@ redis.incrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/json.cr#L337" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/json.cr#L345" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1595,7 +1824,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1611,7 +1840,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L231" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L328" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1627,7 +1856,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L239" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L336" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1643,7 +1872,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L203" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L300" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1659,7 +1888,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L207" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L304" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1675,7 +1904,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L215" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L312" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1691,7 +1920,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L223" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L320" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1707,7 +1936,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L191" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L191" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1730,33 +1959,148 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="scan(cursor:String=&quot;0&quot;,match:String?=nil,count:String|Int|Nil=nil,type:String?=nil)-instance-method">
+    <div class="entry-detail" id="scan(cursor:String=&quot;0&quot;,match:String|Nil=nil,count:String|Int|Nil=nil,type:String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>scan</strong>(cursor : String = <span class="s">&quot;0&quot;</span>, match : String? = <span class="n">nil</span>, count : String | Int | Nil = <span class="n">nil</span>, type : String? = <span class="n">nil</span>)
+        def <strong>scan</strong>(cursor : String = <span class="s">&quot;0&quot;</span>, match : String | Nil = <span class="n">nil</span>, count : String | Int | Nil = <span class="n">nil</span>, type : String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#scan%28cursor%3AString%3D%220%22%2Cmatch%3AString%3F%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2Ctype%3AString%3F%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#scan%28cursor%3AString%3D%220%22%2Cmatch%3AString%7CNil%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2Ctype%3AString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L181" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L181" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="set(key:String,value:String,ex:String|Int?=nil,px:String|Int|Nil=nil,nx=false,xx=false,keepttl=false)-instance-method">
+    <div class="entry-detail" id="script_exists(shas:Enumerable(String))-instance-method">
       <div class="signature">
         
-        def <strong>set</strong>(key : String, value : String, ex : String | Int? = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)
+        def <strong>script_exists</strong>(shas : Enumerable(String))
 
-        <a class="method-permalink" href="#set%28key%3AString%2Cvalue%3AString%2Cex%3AString%7CInt%3F%3Dnil%2Cpx%3AString%7CInt%7CNil%3Dnil%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%29-instance-method">#</a>
+        <a class="method-permalink" href="#script_exists%28shas%3AEnumerable%28String%29%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Return an array where each entry is <code>1</code> if the corresponding entry in the
+list of <code>shas</code> exists or <code>0</code> if it does not.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L229" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="script_exists(*shas:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>script_exists</strong>(*shas : String)
+
+        <a class="method-permalink" href="#script_exists%28%2Ashas%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Return an array where each entry is <code>1</code> if the corresponding entry in the
+list of <code>shas</code> exists or <code>0</code> if it does not.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L224" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="script_flush(mode:ScriptFlushMode)-instance-method">
+      <div class="signature">
+        
+        def <strong>script_flush</strong>(mode : <a href="../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>)
+
+        <a class="method-permalink" href="#script_flush%28mode%3AScriptFlushMode%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Flush the Lua scripts cache, see <a href="https://redis.io/commands/script-flush/">the official docs</a>.</p>
+<pre><code class="language-crystal">redis.script_flush <span class="n">:async</span> <span class="c"># Flush scripts asynchronously</span>
+redis.script_flush <span class="n">:sync</span>  <span class="c"># Flush scripts immediately</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L213" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="script_kill-instance-method">
+      <div class="signature">
+        
+        def <strong>script_kill</strong>
+
+        <a class="method-permalink" href="#script_kill-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Kill the currently executing <code><a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#eval</a></code> script, assuming no write operation
+was yet performed by the script.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L239" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="script_load(script:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>script_load</strong>(script : String)
+
+        <a class="method-permalink" href="#script_load%28script%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Preload a Lua script, returning the SHA of the script to pass to <code><a href="../Redis/Commands.html#evalsha%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method">#evalsha</a></code>.</p>
+<pre><code class="language-crystal">sha <span class="o">=</span> redis.script_load(<span class="s">&lt;&lt;-LUA</span>)
+<span class="s">  return &quot;Hello &quot; + ARGV[1]
+LUA</span>
+
+redis.evalsha(sha, args: [<span class="s">&quot;world&quot;</span>]) <span class="c"># =&gt; &quot;Hello world&quot;</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L203" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="set(key:String,value:String,ex:String|Int|Nil=nil,px:String|Int|Nil=nil,nx=false,xx=false,keepttl=false)-instance-method">
+      <div class="signature">
+        
+        def <strong>set</strong>(key : String, value : String, ex : String | Int | Nil = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)
+
+        <a class="method-permalink" href="#set%28key%3AString%2Cvalue%3AString%2Cex%3AString%7CInt%7CNil%3Dnil%2Cpx%3AString%7CInt%7CNil%3Dnil%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1778,7 +2122,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L57" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1794,7 +2138,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1810,7 +2154,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1832,7 +2176,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/time_series.cr#L387" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/time_series.cr#L405" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1848,7 +2192,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L219" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L316" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1864,7 +2208,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L227" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L324" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1880,7 +2224,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L160" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L160" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1896,7 +2240,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/commands.cr#L156" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/commands.cr#L156" target="_blank">View source</a>]
         
       </div>
     </div>

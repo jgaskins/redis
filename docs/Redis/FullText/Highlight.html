@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.6.1">
+<meta name="crystal_docs.project_version" content="0.7.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::FullText::Highlight - redis 0.6.1</title>
+  <title>Redis::FullText::Highlight - redis 0.7.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.6.1
+        0.7.0
       </span>
     </div>
   </div>
@@ -101,13 +101,33 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
+      <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+  <li class="parent " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
       <a href="../../Redis/Commands/List.html">List</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/List/Side" data-name="redis::commands::list::side">
+      <a href="../../Redis/Commands/List/Side.html">Side</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/ScriptFlushMode" data-name="redis::commands::scriptflushmode">
+      <a href="../../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>
       
     </li>
   
@@ -436,6 +456,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/TimeSeries/Alignment" data-name="redis::timeseries::alignment">
+      <a href="../../Redis/TimeSeries/Alignment.html">Alignment</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
       <a href="../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
       
@@ -568,7 +593,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/search.cr#L272" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/search.cr#L296" target="_blank">
         search.cr
       </a>
     
@@ -590,7 +615,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28fields%3AArray%28String%29%3F%3Dnil%2Ctags%3ATuple%28String%2CString%29%3F%3Dnil%29-class-method" class="signature"><strong>.new</strong>(fields : Array(String)? = <span class="n">nil</span>, tags : Tuple(String, String)? = <span class="n">nil</span>)</a>
+        <a href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Ctags%3ATuple%28String%2CString%29%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, tags : Tuple(String, String) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -621,12 +646,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#fields%3AArray%28String%29%3F-instance-method" class="signature"><strong>#fields</strong> : Array(String)?</a>
+        <a href="#fields%3AArray%28String%29%7CNil-instance-method" class="signature"><strong>#fields</strong> : Array(String) | Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#tags%3ATuple%28String%2CString%29%3F-instance-method" class="signature"><strong>#tags</strong> : Tuple(String, String)?</a>
+        <a href="#tags%3ATuple%28String%2CString%29%7CNil-instance-method" class="signature"><strong>#tags</strong> : Tuple(String, String) | Nil</a>
         
       </li>
     
@@ -680,18 +705,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(fields:Array(String)?=nil,tags:Tuple(String,String)?=nil)-class-method">
+    <div class="entry-detail" id="new(fields:Array(String)|Nil=nil,tags:Tuple(String,String)|Nil=nil)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(fields : Array(String)? = <span class="n">nil</span>, tags : Tuple(String, String)? = <span class="n">nil</span>)
+        def self.<strong>new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, tags : Tuple(String, String) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#new%28fields%3AArray%28String%29%3F%3Dnil%2Ctags%3ATuple%28String%2CString%29%3F%3Dnil%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Ctags%3ATuple%28String%2CString%29%7CNil%3Dnil%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/search.cr#L272" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/search.cr#L296" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -721,7 +746,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/search.cr#L272" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/search.cr#L296" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -737,17 +762,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.6.1/src/search.cr#L272" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.7.0/src/search.cr#L296" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="fields:Array(String)?-instance-method">
+    <div class="entry-detail" id="fields:Array(String)|Nil-instance-method">
       <div class="signature">
         
-        def <strong>fields</strong> : Array(String)?
+        def <strong>fields</strong> : Array(String) | Nil
 
-        <a class="method-permalink" href="#fields%3AArray%28String%29%3F-instance-method">#</a>
+        <a class="method-permalink" href="#fields%3AArray%28String%29%7CNil-instance-method">#</a>
       </div>
       
       <br/>
@@ -756,12 +781,12 @@
       </div>
     </div>
   
-    <div class="entry-detail" id="tags:Tuple(String,String)?-instance-method">
+    <div class="entry-detail" id="tags:Tuple(String,String)|Nil-instance-method">
       <div class="signature">
         
-        def <strong>tags</strong> : Tuple(String, String)?
+        def <strong>tags</strong> : Tuple(String, String) | Nil
 
-        <a class="method-permalink" href="#tags%3ATuple%28String%2CString%29%3F-instance-method">#</a>
+        <a class="method-permalink" href="#tags%3ATuple%28String%2CString%29%7CNil-instance-method">#</a>
       </div>
       
       <br/>
