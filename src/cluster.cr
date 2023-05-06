@@ -143,7 +143,9 @@ module Redis
       end
 
       @read_nodes.each_value do |node|
-        node.replica_of = @write_nodes[replica_map[node.id]]
+        unless node.flags.fail?
+          node.replica_of = @write_nodes[replica_map[node.id]]
+        end
       end
 
       @write_pools = @write_nodes.map do |_id, node|
