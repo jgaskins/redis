@@ -116,5 +116,18 @@ module Redis
         ),
       ]
     end
+
+    it "gets the index names for a given filter" do
+      included_key = UUID.random.to_s
+      excluded_key = UUID.random.to_s
+      name_label = UUID.random.to_s
+      redis.ts.create included_key, labels: { "name" => name_label, }
+      redis.ts.create excluded_key, labels: { "name" => UUID.random.to_s, }
+
+      names = redis.ts.queryindex("name=#{name_label}").as(Array)
+
+      names.should contain included_key
+      names.should_not contain excluded_key
+    end
   end
 end

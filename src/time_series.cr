@@ -146,6 +146,10 @@ module Redis
       @redis.run({"ts.info", key})
     end
 
+    def queryindex(filter : String)
+      @redis.run({"ts.queryindex", filter})
+    end
+
     def aggregation(
       aggregator : AggregationType,
       bucket_duration : Time::Span,
