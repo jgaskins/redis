@@ -190,6 +190,32 @@ module Redis
       groupby : String? = nil,
       reduce : String? = nil
     )
+      mrange(
+        time_range: time_range,
+        filter: [filter],
+        filter_by_ts: filter_by_ts,
+        filter_by_value: filter_by_value,
+        withlabels: withlabels,
+        selected_labels: selected_labels,
+        count: count,
+        aggregation: aggregation,
+        groupby: groupby,
+        reduce: reduce,
+      )
+    end
+
+    def mrange(
+      time_range : ::Range(Time, Time?),
+      filter : Array(String),
+      filter_by_ts : Enumerable(Time)? = nil,
+      filter_by_value : ::Range(Float64, Float64)? = nil,
+      withlabels : Bool? = nil,
+      selected_labels : Enumerable(String)? = nil,
+      count : Int? = nil,
+      aggregation : Aggregation? = nil,
+      groupby : String? = nil,
+      reduce : String? = nil
+    )
       from = time_range.begin
       # Default to the maximum 32-bit Unix timestamp
       # TODO: Fix this before the year 2038
@@ -217,29 +243,35 @@ module Redis
                      1 + (selected_labels.try(&.size) || 0) + # SELECTED_LABELS
                      2 +                                      # COUNT
                      8 +                                      # ALIGN value AGGREGATION agg bucketDuration BUCKETTIMESTAMP bt EMPTY
-                     2 +                                      # FILTER expr
+                     1 + filter.size +                        # FILTER expr
                      4                                        # GROUPBY label REDUCE reducer
       command = Array(String).new(initial_capacity: command_size)
       command << "ts.mrange" << from.to_unix_ms.to_s << to.to_unix_ms.to_s
+
       if filter_by_ts
         command << "filter_by_ts"
         filter_by_ts.each do |ts|
           command << ts.to_unix_ms.to_s
         end
       end
+
       if filter_by_value
         command << "filter_by_value"
         command << filter_by_value.begin.to_s
         command << filter_by_value.end.to_s
       end
+
       command << "withlabels" if withlabels
+
       if selected_labels
         command << "selected_labels"
         selected_labels.each { |label| command << label }
       end
+
       if count
         command << "count" << count.to_s
       end
+
       if aggregation
         # [[ALIGN value] AGGREGATION aggregator bucketDuration [BUCKETTIMESTAMP bt] [EMPTY]]
         # TODO: Implement this
@@ -260,7 +292,10 @@ module Redis
           command << "empty"
         end
       end
-      command << "filter" << filter
+
+      command << "filter"
+      filter.each { |filter_expr| command << filter_expr }
+
       if groupby && reduce
         command << "groupby" << groupby << "reduce" << reduce
       end
