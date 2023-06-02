@@ -52,6 +52,10 @@ module Redis
 
     Connection.set_return_types!
 
+    def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil) : Nil
+      @pool.checkout(&.scan_each(match: pattern, count: count, type: type) { |key| yield key })
+    end
+
     # All Redis commands invoked on the client check out a connection from the
     # connection pool, invoke the command on that connection, and then check the
     # connection back into the pool.
