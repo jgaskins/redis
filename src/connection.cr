@@ -355,7 +355,7 @@ module Redis
         @writer.encode command
         flush
         result = read
-        LOG.debug &.emit "redis", command: command.to_a, duration_ms: (Time.monotonic - start).total_milliseconds
+        LOG.debug &.emit "redis", command: command[0...2].join(' '), duration_ms: (Time.monotonic - start).total_milliseconds
         return result
       rescue ex : IO::Error
         if retries > 0
