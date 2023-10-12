@@ -498,7 +498,7 @@ module Redis
 
     # :nodoc:
     def pmessage!(channel : String, message : String, pattern : String)
-      @on_message.call channel, message, channel
+      @on_message.call channel, message, pattern
     end
 
     # :nodoc:
