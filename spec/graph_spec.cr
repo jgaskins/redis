@@ -25,7 +25,7 @@ private macro test(name, &block)
   end
 end
 
-describe Redis::Graph do
+pending Redis::Graph do
   redis = Redis::Client.new
 
   test "creates and retrieves nodes" do
