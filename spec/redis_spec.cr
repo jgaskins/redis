@@ -207,11 +207,49 @@ describe Redis::Client do
   end
 
   describe "hash" do
+    test "hset returns the number of new fields set on the given key" do
+      redis.hset(key, one: "", two: "").should eq 2
+
+      # Only "three" is added, the others already existed
+      redis.hset(key, {"one" => "", "two" => "", "three" => ""}).should eq 1
+
+      # "four" and "five" are both new
+      redis.hset(key, %w[one yes two yes three yes four yes five yes]).should eq 2
+    end
+
+    test "hmget returns the given fields for the given key" do
+      redis.hset key, one: "first", two: "second"
+
+      redis.hget(key, "one").should eq "first"
+      redis.hget(key, "nonexistent").should eq nil
+      redis.hmget(key, "one", "nonexistent").should eq ["first", nil]
+      redis.hmget(key, %w[one nonexistent]).should eq ["first", nil]
+      redis.hmget(key, "nope", "lol").should eq [nil, nil]
+      redis.hmget(key, %w[nope lol]).should eq [nil, nil]
+    end
+
     test "hincrby increments the number stored at field in the hash" do
       redis.hset(key, {"field" => "5"})
-      redis.hincrby(key, "field", 1).should eq(6)
-      redis.hincrby(key, "field", -1).should eq(5)
-      redis.hincrby(key, "field", -10).should eq(-5)
+      redis.hincrby(key, "field", 1).should eq 6
+      redis.hincrby(key, "field", -1).should eq 5
+      redis.hincrby(key, "field", -10).should eq -5
+    end
+
+    test "hdel deletes fields from hashes" do
+      redis.hset key,
+        name: "foo",
+        splat_arg: "yes",
+        array_arg: "also yes",
+        array_arg2: "still yes"
+
+      redis.hdel(key, "splat_arg", "nonexistent-field").should eq 1
+      redis.hdel(key, %w[array_arg array_arg2 nonexistent-field]).should eq 2
+    end
+
+    test "hsetnx sets fields on a key only if they do not exist" do
+      redis.hsetnx(key, "first", "lol").should eq 1
+      redis.hsetnx(key, "first", "omg").should eq 0
+      redis.hsetnx(key, "second", "lol").should eq 1
     end
   end
 
