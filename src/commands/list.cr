@@ -107,6 +107,33 @@ module Redis::Commands::List
   # `nil`.
   #
   # ```
+  # keys = %w[foo bar]
+  # redis.rpush "foo", "first"
+  # spawn do
+  #   sleep 100.milliseconds
+  #   redis.rpush "foo", "second"
+  # end
+  # redis.blpop keys, 1.second # => "first"
+  # redis.blpop keys, 1.second # => "second" (after 100 milliseconds)
+  # redis.blpop keys, 1.second # => nil (after 1 second)
+  # ```
+  def blpop(keys : Enumerable(String), timeout : Time::Span)
+    command = Array(String).new(2 + keys.size)
+    command << "blpop"
+    command.concat keys
+    command << timeout.total_seconds.to_i.to_s
+
+    run command
+  end
+
+  # Remove and return an element from the end of the given list. If the list
+  # is empty or the key does not exist, this method waits the specified amount
+  # of time for an element to be added to it by another connection. If the
+  # element *is* added by another connection within that amount of time, this
+  # method will return it immediately. If it *is not*, then this method returns
+  # `nil`.
+  #
+  # ```
   # redis.rpush "foo", "first"
   # spawn do
   #   sleep 100.milliseconds
