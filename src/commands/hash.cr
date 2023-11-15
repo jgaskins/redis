@@ -1,4 +1,16 @@
 module Redis::Commands::Hash
+  def hdel(key : String, *fields : String)
+    run({"hdel"} + fields)
+  end
+
+  def hdel(key : String, fields : Enumerable(String))
+    command = Array(String).new(initial_capacity: 2 + fields.size)
+    command << "hdel" << key
+    fields.each { |key| command << key }
+
+    run command
+  end
+
   def hget(key : String, field : String)
     run({"hget", key, field})
   end
@@ -31,6 +43,36 @@ module Redis::Commands::Hash
     data.each do |key, value|
       command << key << value
     end
+
+    run command
+  end
+
+  def hsetnx(key : String, **fields : String)
+    command = Array(String).new(initial_capacity: 2 + 2 * fields.size)
+    command << "hsetnx" << key
+    fields.each do |key, value|
+      command << key.to_s << value
+    end
+
+    run command
+  end
+
+  def hsetnx(key : String, fields : Hash(String, String))
+    command = Array(String).new(initial_capacity: 2 + 2 * fields.size)
+    command << "hsetnx" << key
+    fields.each { |key, value| command << key << value }
+
+    run command
+  end
+
+  def hsetnx(key : String, fields : Enumerable(String))
+    if fields.size.even?
+      raise ArgumentError.new("fields must have an even number of elements")
+    end
+
+    command = Array(String).new(initial_capacity: 2 + fields.size)
+    command << "hsetnx" << key
+    fields.each { |value| command << key }
 
     run command
   end
