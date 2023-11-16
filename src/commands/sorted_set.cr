@@ -12,7 +12,7 @@ module Redis::Commands::SortedSet
     run command
   end
 
-  def zrange(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = false)
+  def zrange(key : String, starting : String | Float64, ending : String | Float64, with_scores : Bool = false)
     command = {"zrange", key, starting.to_s, ending.to_s}
     if with_scores
       command += {"withscores"}
@@ -21,7 +21,7 @@ module Redis::Commands::SortedSet
     run command
   end
 
-  def zrangebyscore(key : String, low : String | Float, high : String | Float, limit : Enumerable(String)? = nil)
+  def zrangebyscore(key : String, low : String | Float64, high : String | Float64, limit : Enumerable(String)? = nil)
     command = {"zrangebyscore", key, low.to_s, high.to_s}
 
     if limit
