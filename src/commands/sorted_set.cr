@@ -55,6 +55,18 @@ module Redis::Commands::SortedSet
     run({"zrem", key, value})
   end
 
+  def zrem(key : String, *values : String)
+    run({"zrem", key} + values)
+  end
+
+  def zrem(key : String, values : Enumerable(String))
+    command = Array(String).new(initial_capacity: 2 + values.size)
+    command << "zrem" << key
+    values.each { |value| command << value.as(String) }
+
+    run command
+  end
+
   def zcount(key : String, min : String, max : String)
     run({"zcount", key, min, max})
   end
