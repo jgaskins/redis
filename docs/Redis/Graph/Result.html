@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.7.1">
+<meta name="crystal_docs.project_version" content="0.8.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Result - redis 0.7.1</title>
+  <title>Redis::Graph::Result - redis 0.8.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.7.1
+        0.8.0
       </span>
     </div>
   </div>
@@ -601,7 +601,7 @@
   </h2>
   <ul class="other-types-list">
     
-      <li class="other-type">Enumerable(Array(Array(Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil) | Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil))</li>
+      <li class="other-type">Enumerable(Array(Array(Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Error.html">Redis::Error</a> | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil) | Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Error.html">Redis::Error</a> | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil))</li>
     
   </ul>
 
@@ -624,7 +624,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L344" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L344" target="_blank">
         graph.cr
       </a>
     
@@ -651,7 +651,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28%2A%2Cfields%3AArray%28String%29%2Crows%3AArray%28Array%28Array%28Array%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%7CArray%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%29%2Ccached_execution%3ABool%2Cduration%3ATime%3A%3ASpan%2Clabels_added%3AInt64%2Cnodes_created%3AInt64%2Crelationships_created%3AInt64%2Cproperties_set%3AInt64%29-class-method" class="signature"><strong>.new</strong>(*, fields : Array(String), rows : Array(Array(Array(Array(Redis::Value) | Int64 | Redis::Graph::Node | Redis::Graph::Relationship | String | Nil) | Array(Redis::Value) | Int64 | Redis::Graph::Node | Redis::Graph::Relationship | String | Nil)), cached_execution : Bool, duration : Time::Span, labels_added : Int64, nodes_created : Int64, relationships_created : Int64, properties_set : Int64)</a>
+        <a href="#new%28%2A%2Cfields%3AArray%28String%29%2Crows%3AArray%28Array%28Array%28Array%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AError%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%7CArray%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AError%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%29%2Ccached_execution%3ABool%2Cduration%3ATime%3A%3ASpan%2Clabels_added%3AInt64%2Cnodes_created%3AInt64%2Crelationships_created%3AInt64%2Cproperties_set%3AInt64%29-class-method" class="signature"><strong>.new</strong>(*, fields : Array(String), rows : Array(Array(Array(Array(Redis::Value) | Int64 | Redis::Error | Redis::Graph::Node | Redis::Graph::Relationship | String | Nil) | Array(Redis::Value) | Int64 | Redis::Error | Redis::Graph::Node | Redis::Graph::Relationship | String | Nil)), cached_execution : Bool, duration : Time::Span, labels_added : Int64, nodes_created : Int64, relationships_created : Int64, properties_set : Int64)</a>
         
       </li>
     
@@ -805,23 +805,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L371" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L371" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(*,fields:Array(String),rows:Array(Array(Array(Array(Redis::Value)|Int64|Redis::Graph::Node|Redis::Graph::Relationship|String|Nil)|Array(Redis::Value)|Int64|Redis::Graph::Node|Redis::Graph::Relationship|String|Nil)),cached_execution:Bool,duration:Time::Span,labels_added:Int64,nodes_created:Int64,relationships_created:Int64,properties_set:Int64)-class-method">
+    <div class="entry-detail" id="new(*,fields:Array(String),rows:Array(Array(Array(Array(Redis::Value)|Int64|Redis::Error|Redis::Graph::Node|Redis::Graph::Relationship|String|Nil)|Array(Redis::Value)|Int64|Redis::Error|Redis::Graph::Node|Redis::Graph::Relationship|String|Nil)),cached_execution:Bool,duration:Time::Span,labels_added:Int64,nodes_created:Int64,relationships_created:Int64,properties_set:Int64)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(*, fields : Array(String), rows : Array(Array(Array(Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil) | Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil)), cached_execution : Bool, duration : Time::Span, labels_added : Int64, nodes_created : Int64, relationships_created : Int64, properties_set : Int64)
+        def self.<strong>new</strong>(*, fields : Array(String), rows : Array(Array(Array(Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Error.html">Redis::Error</a> | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil) | Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Error.html">Redis::Error</a> | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil)), cached_execution : Bool, duration : Time::Span, labels_added : Int64, nodes_created : Int64, relationships_created : Int64, properties_set : Int64)
 
-        <a class="method-permalink" href="#new%28%2A%2Cfields%3AArray%28String%29%2Crows%3AArray%28Array%28Array%28Array%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%7CArray%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%29%2Ccached_execution%3ABool%2Cduration%3ATime%3A%3ASpan%2Clabels_added%3AInt64%2Cnodes_created%3AInt64%2Crelationships_created%3AInt64%2Cproperties_set%3AInt64%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28%2A%2Cfields%3AArray%28String%29%2Crows%3AArray%28Array%28Array%28Array%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AError%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%7CArray%28Redis%3A%3AValue%29%7CInt64%7CRedis%3A%3AError%7CRedis%3A%3AGraph%3A%3ANode%7CRedis%3A%3AGraph%3A%3ARelationship%7CString%7CNil%29%29%2Ccached_execution%3ABool%2Cduration%3ATime%3A%3ASpan%2Clabels_added%3AInt64%2Cnodes_created%3AInt64%2Crelationships_created%3AInt64%2Cproperties_set%3AInt64%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L431" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L433" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -856,7 +856,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L354" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L354" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -877,7 +877,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L357" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L357" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -893,7 +893,7 @@
         <div class="doc">
           
             <div class="doc-inherited">
-              Description copied from module Enumerable(Array(Array(Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil) | Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil))
+              Description copied from module Enumerable(Array(Array(Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Error.html">Redis::Error</a> | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil) | Array(<a href="../../Redis/Value.html">Redis::Value</a>) | Int64 | <a href="../../Redis/Error.html">Redis::Error</a> | <a href="../../Redis/Graph/Node.html">Redis::Graph::Node</a> | <a href="../../Redis/Graph/Relationship.html">Redis::Graph::Relationship</a> | String | Nil))
             </div>
           
           <p>Must yield this collection's elements to the block.</p>
@@ -902,7 +902,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L434" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L436" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -923,7 +923,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L348" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L348" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -944,7 +944,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L360" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L360" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -965,7 +965,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L363" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L363" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -986,7 +986,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L369" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L369" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1007,7 +1007,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L366" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L366" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1028,7 +1028,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.7.1/src/graph.cr#L351" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L351" target="_blank">View source</a>]
         
       </div>
     </div>
