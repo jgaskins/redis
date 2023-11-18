@@ -403,13 +403,23 @@ module Redis
 
     # Read the next value from the server
     def read
-      @parser.read
+      case value = @parser.read
+      when Error
+        raise value
+      else
+        value
+      end
     end
 
     # Read the next value from the server, returning `nil` if the connection is
     # closed.
     def read?
-      @parser.read?
+      case value = @parser.read?
+      when Error
+        raise value
+      else
+        value
+      end
     end
 
     # The URI

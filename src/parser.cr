@@ -37,7 +37,7 @@ module Redis
         length = parse_int
         @io.skip 2
         if length >= 0
-          Array.new(length) { read }
+          Array(Value).new(length) { read }
         end
       when '$'
         length = parse_int
@@ -51,7 +51,7 @@ module Redis
         @io.read_line
       when '-'
         type, message = @io.read_line.split(' ', 2)
-        raise ERROR_MAP[type].new("#{type} #{message}")
+        ERROR_MAP[type].new("#{type} #{message}")
       when nil
         yield
       else

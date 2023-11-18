@@ -415,6 +415,8 @@ module Redis
                 list << item
               in Array
                 list << (Node.from?(item) || Relationship.from?(item) || item)
+              in Redis::Error
+                raise item
               end.as(ResultValue | List)
             end
             list

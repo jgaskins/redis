@@ -43,6 +43,16 @@ module Redis
       Parser.new(io.rewind).read.should eq ["foo!", 12345, nil]
     end
 
+    it "reads arrays that contain errors" do
+      io = IO::Memory.new
+      io << "*3\r\n"
+      io << "$3\r\n" << "foo\r\n"
+      io << "-OOPS The thing broke\r\n"
+      io << ":1234\r\n"
+
+      Parser.new(io.rewind).read.should eq ["foo", Error.new("OOPS The thing broke"), 1234]
+    end
+
     it "can read without failing if the IO is closed" do
       reader, writer = IO.pipe
       begin
