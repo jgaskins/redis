@@ -385,6 +385,19 @@ module Redis
       end
     end
 
+    def hscan_each(key : String, match pattern : String? = nil, count : String | Int | Nil = nil) : Nil
+      # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
+      cursor = ""
+      until cursor == "0"
+        response = hscan(key, cursor, match: pattern, count: count)
+        cursor, results = response.as(Array)
+        cursor = cursor.as(String)
+        results.as(Array).each do |key|
+          yield key.as(String)
+        end
+      end
+    end
+
     # Close the connection to the server.
     def close
       @socket.close

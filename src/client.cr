@@ -56,6 +56,10 @@ module Redis
       @pool.checkout(&.scan_each(match: pattern, count: count, type: type) { |key| yield key })
     end
 
+    def hscan_each(key : String, *, match pattern : String? = nil, count : String | Int | Nil = nil) : Nil
+      @pool.checkout(&.hscan_each(key: key, match: pattern, count: count) { |key| yield key })
+    end
+
     # All Redis commands invoked on the client check out a connection from the
     # connection pool, invoke the command on that connection, and then check the
     # connection back into the pool.

@@ -32,7 +32,7 @@ module Redis::Commands::Hash
   #
   # ```
   # redis.hset "person:jamie", email: "jamie@example.com"
-  # redis.hget "person:jamie", "email" # => "jamie@example.com"
+  # redis.hget "person:jamie", "email"    # => "jamie@example.com"
   # redis.hget "person:jamie", "password" # => nil
   # ```
   def hget(key : String, field : String)
@@ -54,7 +54,7 @@ module Redis::Commands::Hash
   #
   # ```
   # redis.hset "person:jamie", email: "jamie@example.com", name: "Jamie"
-  # redis.hmget "person:jamie", "email", "name" # => ["jamie@example.com", "Jamie"]
+  # redis.hmget "person:jamie", "email", "name"             # => ["jamie@example.com", "Jamie"]
   # redis.hmget "person:jamie", "nonexistent", "fake-field" # => [nil, nil]
   # ```
   def hmget(key : String, *fields : String)
@@ -65,7 +65,7 @@ module Redis::Commands::Hash
   #
   # ```
   # redis.hset "person:jamie", email: "jamie@example.com", name: "Jamie"
-  # redis.hmget "person:jamie", %w[email name] # => ["jamie@example.com", "Jamie"]
+  # redis.hmget "person:jamie", %w[email name]             # => ["jamie@example.com", "Jamie"]
   # redis.hmget "person:jamie", %w[nonexistent fake-field] # => [nil, nil]
   # ```
   def hmget(key : String, fields : Enumerable(String))
@@ -82,7 +82,7 @@ module Redis::Commands::Hash
   # ```
   # redis.hset "person:jamie", email: "jamie@example.com", name: "Jamie" # => 2
   # redis.hset "person:jamie", email: "jamie@example.dev", admin: "true" # => 1
-  # redis.hset "person:jamie", admin: "false" # => 0
+  # redis.hset "person:jamie", admin: "false"                            # => 0
   # ```
   def hset(key : String, **fields : String)
     hash = ::Hash(String, String).new(initial_capacity: fields.size)
@@ -101,7 +101,7 @@ module Redis::Commands::Hash
   # ```
   # redis.hset "person:jamie", "email", "jamie@example.com", "name", "Jamie" # => 2
   # redis.hset "person:jamie", "email", "jamie@example.dev", "admin", "true" # => 1
-  # redis.hset "person:jamie", "admin", "false" # => 0
+  # redis.hset "person:jamie", "admin", "false"                              # => 0
   # ```
   def hset(key : String, *fields : String)
     run({"hset", key} + fields)
@@ -115,7 +115,7 @@ module Redis::Commands::Hash
   # ```
   # redis.hset "person:jamie", %w[email jamie@example.com name Jamie] # => 2
   # redis.hset "person:jamie", %w[email jamie@example.dev admin true] # => 1
-  # redis.hset "person:jamie", %w[admin false] # => 0
+  # redis.hset "person:jamie", %w[admin false]                        # => 0
   # ```
   def hset(key : String, fields : Enumerable(String))
     command = Array(String).new(initial_capacity: 2 + fields.size)
@@ -130,9 +130,9 @@ module Redis::Commands::Hash
   # number of fields created (not updated)
   #
   # ```
-  # redis.hset "person:jamie", {"email" =>  "jamie@example.com", "name" =>  "Jamie"} # => 2
-  # redis.hset "person:jamie", {"email" => "jamie@example.dev", "admin" =>  "true"} # => 1
-  # redis.hset "person:jamie", {"admin" => "false"} # => 0
+  # redis.hset "person:jamie", {"email" => "jamie@example.com", "name" => "Jamie"} # => 2
+  # redis.hset "person:jamie", {"email" => "jamie@example.dev", "admin" => "true"} # => 1
+  # redis.hset "person:jamie", {"admin" => "false"}                                # => 0
   # ```
   def hset(key : String, fields : ::Hash(String, String))
     command = Array(String).new(initial_capacity: 2 + 2 * fields.size)
@@ -168,6 +168,33 @@ module Redis::Commands::Hash
   # ```
   def hincrby(key : String, field : String, increment : Int | String)
     run({"hincrby", key, field, increment.to_s})
+  end
+
+  # Execute the `HSCAN` command to return a subset of keys in the hash stored at
+  # `key`, allowing you to iterate through the keys in the hash without blocking
+  # the Redis server for too long at a time.
+  #
+  # NOTE: You probably want to use `Redis::Client#hscan_each` instead of using
+  # this method directly.
+  #
+  # ```
+  # cursor = ""
+  # until cursor == "0"
+  #   response = redis.hscan(key, cursor)
+  #   cursor, fields = response.as(Array)
+  #   cursor = cursor.as(String)
+  #   fields.as(Array).each do |field|
+  #     # Do something with that hash field...
+  #   end
+  # end
+  # ```
+  def hscan(key : String, cursor : String, *, match pattern : String? = nil, count : String | Int | Nil = nil)
+    command = Array(String).new(initial_capacity: 7)
+    command << "hscan" << key << cursor.to_s
+    command << "match" << pattern if pattern
+    command << "count" << count.to_s if count
+
+    run command
   end
 
   @[Deprecated("The Redis HMSET command is deprecated. Use HSET instead. This method will be removed in v1.0.0 of this shard. See https://redis.io/commands/hmset/")]
