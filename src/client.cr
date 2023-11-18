@@ -38,14 +38,14 @@ module Redis
       # default is 1, but we want to be able to use 25 minimum
       max_idle_pool_size = uri.query_params.fetch("max_idle_pool_size", 25).to_i
 
-      @pool = DB::Pool.new(
+      @pool = DB::Pool.new(DB::Pool::Options.new(
         initial_pool_size: initial_pool_size,
         max_pool_size: max_pool_size,
         max_idle_pool_size: max_idle_pool_size,
         checkout_timeout: checkout_timeout,
         retry_attempts: retry_attempts,
         retry_delay: retry_delay,
-      ) do
+      )) do
         Connection.new(uri)
       end
     end

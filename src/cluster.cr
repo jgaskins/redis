@@ -35,7 +35,8 @@ module Redis
     LOG = ::Log.for(self)
 
     # :nodoc:
-    alias Pool = DB::Pool(Connection)
+    private alias Pool = DB::Pool(Connection)
+    private alias PoolOptions = DB::Pool::Options
 
     # :nodoc:
     alias Slots = Range(Int32, Int32)
@@ -151,7 +152,7 @@ module Redis
       @write_pools = @write_nodes.map do |_id, node|
         {
           node.slots,
-          Pool.new(max_idle_pool_size: 25, initial_pool_size: 0) do
+          Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
             connection_uri = uri.dup
             connection_uri.host = node.ip
             connection_uri.port = node.port
@@ -162,7 +163,7 @@ module Redis
       @read_pools = @read_nodes.map do |_id, node|
         {
           node.slots,
-          Pool.new(max_idle_pool_size: 25, initial_pool_size: 0) do
+          Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
             connection_uri = uri.dup
             connection_uri.host = node.ip
             connection_uri.port = node.port
