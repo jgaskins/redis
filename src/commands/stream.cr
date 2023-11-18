@@ -11,7 +11,7 @@ module Redis::Commands::Stream
   # redis.xadd "my-stream", "*", name: "foo", id: UUID.random.to_s
   # ```
   def xadd(key : String, id : String, maxlen = nil, **data)
-    command = Array(Value).new(initial_capacity: data.size * 2 + 6)
+    command = Array(String).new(initial_capacity: data.size * 2 + 6)
     command << "xadd" << key
     if maxlen
       command << "maxlen"
@@ -57,7 +57,7 @@ module Redis::Commands::Stream
   # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
   # ```
   def xadd(key : String, id : String, maxlen, data : Hash(String, String))
-    command = Array(Value).new(initial_capacity: data.size * 2 + 3)
+    command = Array(String).new(initial_capacity: data.size * 2 + 3)
     command << "xadd" << key
     command << "maxlen" << maxlen if maxlen
     command << id
@@ -73,7 +73,7 @@ module Redis::Commands::Stream
   end
 
   def xdel(key : String, ids : Enumerable(String))
-    command = Array(Value).new(initial_capacity: 2 + ids.size)
+    command = Array(String).new(initial_capacity: 2 + ids.size)
     command << "xdel" << key
     ids.each { |id| command << id }
 
@@ -157,7 +157,7 @@ module Redis::Commands::Stream
     no_ack = false,
     streams : ::Hash(String, String) = {} of String => String
   )
-    command = Array(Value).new(initial_capacity: 9 + streams.size * 2)
+    command = Array(String).new(initial_capacity: 9 + streams.size * 2)
     command << "xreadgroup" << "group" << group << consumer
     command << "count" << count.to_s if count
     case block
@@ -200,7 +200,7 @@ module Redis::Commands::Stream
     no_ack = false,
     streams : NamedTuple = NamedTuple.new
   )
-    command = Array(Value).new(initial_capacity: 9 + streams.size * 2)
+    command = Array(String).new(initial_capacity: 9 + streams.size * 2)
     command << "xreadgroup" << "group" << group << consumer
     command << "count" << count.to_s if count
     case block
