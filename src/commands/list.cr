@@ -99,6 +99,14 @@ module Redis::Commands::List
     run({"rpush", key} + values)
   end
 
+  def rpush(key : String, values : Enumerable(String))
+    command = Array(String).new(initial_capacity: 2 + values.size)
+    command << "rpush" << key
+    values.each { |value| command << value }
+
+    run command
+  end
+
   # Remove and return an element from the end of the given list. If the list
   # is empty or the key does not exist, this method waits the specified amount
   # of time for an element to be added to it by another connection. If the
@@ -260,6 +268,49 @@ module Redis::Commands::List
 
   def lrem(key : String, count : Int, value : String)
     run({"lrem", key, count.to_s, value})
+  end
+
+  # Trim the list contained in `key` so that it contains only the values at the
+  # indices in the given range.
+  #
+  # ```
+  # redis.rpush "ids", %w[0 1 2 3 4 5 6 7 8 9]
+  # start, stop = "1,2".split(',')
+  # redis.ltrim "ids", start..stop
+  # ```
+  def ltrim(key : String, range : Range(String, String))
+    if range.excludes_end?
+      ltrim key, range.begin.to_i, range.end.to_i
+    else
+      ltrim key, range.begin, range.end
+    end
+  end
+
+  # Trim the list contained in `key` so that it contains only the values at the
+  # indices in the given range.
+  #
+  # ```
+  # redis.rpush "ids", %w[0 1 2 3 4 5 6 7 8 9]
+  # redis.ltrim "ids", 1..2
+  # ```
+  def ltrim(key : String, range : Range(Int32, Int32))
+    range_end = range.end
+    if range.excludes_end?
+      range_end -= 1
+    end
+
+    ltrim key, range.begin, range_end
+  end
+
+  # Trim the list contained in `key` so that it contains only the values at the
+  # indices in the given range.
+  #
+  # ```
+  # redis.rpush "ids", %w[0 1 2 3 4 5 6 7 8 9]
+  # redis.ltrim "ids", 1, 2
+  # ```
+  def ltrim(key : String, start : String | Int, stop : String | Int)
+    run({"ltrim", key, start.to_s, stop.to_s})
   end
 
   def brpop(keys : Enumerable(String), timeout : Int)

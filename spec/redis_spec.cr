@@ -119,6 +119,34 @@ describe Redis::Client do
       redis.lrange(key, 0, 0).should eq %w[one]
       redis.lrange(key, "-3", "2").should eq %w[one two three]
     end
+
+    test "can trim lists" do
+      redis.rpush key, %w[0 1 2 3 4 5 6 7 8 9]
+
+      # String indices
+      redis.ltrim key, "0", "8"
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5 6 7 8]
+
+      # Int indices
+      redis.ltrim key, 0, 7
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5 6 7]
+
+      # String range with inclusive end
+      redis.ltrim key, "0".."6"
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5 6]
+
+      # String range with exclusive end
+      redis.ltrim key, "0"..."5"
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5]
+
+      # Range with inclusive end
+      redis.ltrim key, 0..4
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4]
+
+      # Range with exclusive end
+      redis.ltrim key, 0...3
+      redis.lrange(key, 0, -1).should eq %w[0 1 2]
+    end
   end
 
   describe "sets" do
