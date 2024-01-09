@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.8.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.8.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Cluster - redis 0.8.0</title>
+  <title>Redis::Cluster - redis 0.8.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.8.0
+        0.8.1
       </span>
     </div>
   </div>
@@ -641,14 +641,14 @@ for example usage.</p>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L31" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L31" target="_blank">
         cluster.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/errors.cr#L19" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/errors.cr#L19" target="_blank">
         errors.cr
       </a>
     
@@ -708,6 +708,8 @@ for example usage.</p>
 
 
 
+
+
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -761,8 +763,6 @@ for example usage.</p>
       </li>
     
   </ul>
-
-
 
 
 
@@ -966,6 +966,9 @@ for example usage.</p>
     
 
 
+    
+
+
   
     
 
@@ -1027,6 +1030,9 @@ for example usage.</p>
     xreadgroup</a>
     
   
+
+
+    
 
 
     
@@ -1099,6 +1105,9 @@ for example usage.</p>
     
 
 
+    
+
+
   
     
 
@@ -1140,6 +1149,9 @@ for example usage.</p>
     srem</a>
     
   
+
+
+    
 
 
     
@@ -1194,6 +1206,11 @@ for example usage.</p>
     lrem</a>, 
     
   
+    <a href="../Redis/Commands/List.html#ltrim%28key%3AString%2Cstart%3AString%7CInt%2Cstop%3AString%7CInt%29-instance-method" class="tooltip">
+      <span>ltrim(key : String, start : String | Int, stop : String | Int)<br/>ltrim(key : String, range : Range(String, String))<br/>ltrim(key : String, range : Range(Int32, Int32))</span>
+    ltrim</a>, 
+    
+  
     <a href="../Redis/Commands/List.html#rpop%28key%3AString%29-instance-method" class="tooltip">
       <span>rpop(key : String)</span>
     rpop</a>, 
@@ -1204,11 +1221,14 @@ for example usage.</p>
     rpoplpush</a>, 
     
   
-    <a href="../Redis/Commands/List.html#rpush%28key%2C%2Avalues%3AString%29-instance-method" class="tooltip">
-      <span>rpush(key, *values : String)</span>
+    <a href="../Redis/Commands/List.html#rpush%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>rpush(key : String, values : Enumerable(String))<br/>rpush(key, *values : String)</span>
     rpush</a>
     
   
+
+
+    
 
 
     
@@ -1276,17 +1296,26 @@ for example usage.</p>
     
 
 
-  
-    
-
-
-    
-
-
     
 
 
   
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
     
 
 
@@ -1327,7 +1356,7 @@ server in the cluster and <code><a href="../Redis/Cluster.html">Redis::Cluster</
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L73" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1362,7 +1391,7 @@ read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L66" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1388,11 +1417,13 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L56" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
+
 
 
 
@@ -1421,7 +1452,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L308" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L308" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1442,7 +1473,7 @@ routed to read-only replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L213" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L213" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1471,7 +1502,7 @@ method. See the example above.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L203" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L203" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1498,7 +1529,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L273" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L273" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1519,7 +1550,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L208" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L208" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1541,13 +1572,11 @@ which shard your command will be routed to.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/cluster.cr#L351" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/cluster.cr#L351" target="_blank">View source</a>]
         
       </div>
     </div>
   
-
-
 
 
 </div>

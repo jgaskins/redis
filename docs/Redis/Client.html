@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.8.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.8.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Client - redis 0.8.0</title>
+  <title>Redis::Client - redis 0.8.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.8.0
+        0.8.1
       </span>
     </div>
   </div>
@@ -633,7 +633,7 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L19" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L19" target="_blank">
         client.cr
       </a>
     
@@ -681,6 +681,8 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
       </li>
     
   </ul>
+
+
 
 
 
@@ -737,8 +739,6 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
       </li>
     
   </ul>
-
-
 
 
 
@@ -942,6 +942,9 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     
 
 
+    
+
+
   
     
 
@@ -1003,6 +1006,9 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     xreadgroup</a>
     
   
+
+
+    
 
 
     
@@ -1075,6 +1081,9 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     
 
 
+    
+
+
   
     
 
@@ -1116,6 +1125,9 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     srem</a>
     
   
+
+
+    
 
 
     
@@ -1170,6 +1182,11 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     lrem</a>, 
     
   
+    <a href="../Redis/Commands/List.html#ltrim%28key%3AString%2Cstart%3AString%7CInt%2Cstop%3AString%7CInt%29-instance-method" class="tooltip">
+      <span>ltrim(key : String, start : String | Int, stop : String | Int)<br/>ltrim(key : String, range : Range(String, String))<br/>ltrim(key : String, range : Range(Int32, Int32))</span>
+    ltrim</a>, 
+    
+  
     <a href="../Redis/Commands/List.html#rpop%28key%3AString%29-instance-method" class="tooltip">
       <span>rpop(key : String)</span>
     rpop</a>, 
@@ -1180,11 +1197,14 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     rpoplpush</a>, 
     
   
-    <a href="../Redis/Commands/List.html#rpush%28key%2C%2Avalues%3AString%29-instance-method" class="tooltip">
-      <span>rpush(key, *values : String)</span>
+    <a href="../Redis/Commands/List.html#rpush%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>rpush(key : String, values : Enumerable(String))<br/>rpush(key, *values : String)</span>
     rpush</a>
     
   
+
+
+    
 
 
     
@@ -1252,17 +1272,26 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     
 
 
-  
-    
-
-
-    
-
-
     
 
 
   
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
     
 
 
@@ -1302,7 +1331,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1330,11 +1359,13 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
+
 
 
 
@@ -1358,7 +1389,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L90" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L90" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1374,7 +1405,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1390,7 +1421,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1406,7 +1437,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1422,7 +1453,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L86" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1446,7 +1477,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L70" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L70" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1462,7 +1493,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L55" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L55" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1478,13 +1509,11 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/client.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/client.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
   
-
-
 
 
 </div>

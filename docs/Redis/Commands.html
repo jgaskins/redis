@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.8.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.8.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands - redis 0.8.0</title>
+  <title>Redis::Commands - redis 0.8.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.8.0
+        0.8.1
       </span>
     </div>
   </div>
@@ -655,47 +655,49 @@ object, which must be an <code>Enumerable</code>.</p>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L14" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L14" target="_blank">
         commands.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands/hash.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands/hash.cr#L1" target="_blank">
         commands/hash.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L495" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/graph.cr#L495" target="_blank">
         graph.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/json.cr#L341" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/json.cr#L341" target="_blank">
         json.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/search.cr#L335" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/search.cr#L335" target="_blank">
         search.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/time_series.cr#L441" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/time_series.cr#L441" target="_blank">
         time_series.cr
       </a>
     
     <br/>
   
+
+
 
 
 
@@ -992,8 +994,6 @@ object, which must be an <code>Enumerable</code>.</p>
 
 
 
-
-
 <div class="methods-inherited">
   
     
@@ -1056,6 +1056,9 @@ object, which must be an <code>Enumerable</code>.</p>
     xreadgroup</a>
     
   
+
+
+    
 
 
     
@@ -1128,6 +1131,9 @@ object, which must be an <code>Enumerable</code>.</p>
     
 
 
+    
+
+
   
     
 
@@ -1169,6 +1175,9 @@ object, which must be an <code>Enumerable</code>.</p>
     srem</a>
     
   
+
+
+    
 
 
     
@@ -1223,6 +1232,11 @@ object, which must be an <code>Enumerable</code>.</p>
     lrem</a>, 
     
   
+    <a href="../Redis/Commands/List.html#ltrim%28key%3AString%2Cstart%3AString%7CInt%2Cstop%3AString%7CInt%29-instance-method" class="tooltip">
+      <span>ltrim(key : String, start : String | Int, stop : String | Int)<br/>ltrim(key : String, range : Range(String, String))<br/>ltrim(key : String, range : Range(Int32, Int32))</span>
+    ltrim</a>, 
+    
+  
     <a href="../Redis/Commands/List.html#rpop%28key%3AString%29-instance-method" class="tooltip">
       <span>rpop(key : String)</span>
     rpop</a>, 
@@ -1233,11 +1247,14 @@ object, which must be an <code>Enumerable</code>.</p>
     rpoplpush</a>, 
     
   
-    <a href="../Redis/Commands/List.html#rpush%28key%2C%2Avalues%3AString%29-instance-method" class="tooltip">
-      <span>rpush(key, *values : String)</span>
+    <a href="../Redis/Commands/List.html#rpush%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>rpush(key : String, values : Enumerable(String))<br/>rpush(key, *values : String)</span>
     rpush</a>
     
   
+
+
+    
 
 
     
@@ -1305,8 +1322,13 @@ object, which must be an <code>Enumerable</code>.</p>
     
 
 
+    
+
+
   
 </div>
+
+
 
 
 
@@ -1341,7 +1363,7 @@ redis.decr <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; -1
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L104" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1365,7 +1387,7 @@ redis.decrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L126" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1389,7 +1411,7 @@ redis.del [<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&quo
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L148" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L148" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1413,7 +1435,7 @@ redis.del <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L137" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L137" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1447,7 +1469,7 @@ redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L277" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L277" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1481,7 +1503,7 @@ redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L278" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L278" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1515,7 +1537,7 @@ redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L275" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L275" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1549,7 +1571,7 @@ redis.evalsha(sha, args: [<span class="s">&quot;precompiled&quot;</span>])</code
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L276" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L276" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1575,7 +1597,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L177" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L177" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1591,7 +1613,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L292" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L292" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1607,7 +1629,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L296" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L296" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1623,7 +1645,7 @@ redis.exists(<span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&q
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L308" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L308" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1645,7 +1667,7 @@ not just the currently selected one.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L353" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L353" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1666,7 +1688,7 @@ not just the currently selected one.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L347" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L347" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1687,7 +1709,7 @@ not just the currently selected one.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/search.cr#L337" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/search.cr#L337" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1710,7 +1732,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; &quot;
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L82" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1731,7 +1753,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; &quot;
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L497" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/graph.cr#L497" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1755,7 +1777,7 @@ redis.incr <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; 1<
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L93" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L93" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1779,7 +1801,7 @@ redis.incrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1795,7 +1817,7 @@ redis.incrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L357" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L357" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1818,7 +1840,7 @@ redis.incrby <span class="s">&quot;counter&quot;</span>, <span class="n">2</span
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/json.cr#L345" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/json.cr#L345" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1845,7 +1867,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1861,7 +1883,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L328" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L328" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1877,7 +1899,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L336" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L336" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1893,7 +1915,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L300" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L300" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1909,7 +1931,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L304" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L304" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1925,7 +1947,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L312" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L312" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1941,7 +1963,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L320" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L320" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1957,7 +1979,7 @@ redis.keys(<span class="s">&quot;b*&quot;</span>) <span class="c"># =&gt; [&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L191" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L191" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1980,7 +2002,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1996,7 +2018,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L181" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L181" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2018,7 +2040,7 @@ list of <code>shas</code> exists or <code>0</code> if it does not.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L229" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L229" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2040,7 +2062,7 @@ list of <code>shas</code> exists or <code>0</code> if it does not.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L224" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L224" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2063,7 +2085,7 @@ redis.script_flush <span class="n">:sync</span>  <span class="c"># Flush scripts
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L213" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L213" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2085,7 +2107,7 @@ was yet performed by the script.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L239" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L239" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2111,7 +2133,7 @@ redis.evalsha(sha, args: [<span class="s">&quot;world&quot;</span>]) <span class
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L203" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L203" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2143,7 +2165,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L57" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2159,7 +2181,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L68" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2175,7 +2197,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2197,7 +2219,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/time_series.cr#L444" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/time_series.cr#L444" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2213,7 +2235,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L316" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L316" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2229,7 +2251,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L324" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L324" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2245,7 +2267,7 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L160" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L160" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2261,13 +2283,11 @@ redis.get(<span class="s">&quot;foo&quot;</span>) <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/commands.cr#L156" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/commands.cr#L156" target="_blank">View source</a>]
         
       </div>
     </div>
   
-
-
 
 
 </div>

@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.8.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.8.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Transaction - redis 0.8.0</title>
+  <title>Redis::Transaction - redis 0.8.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.8.0
+        0.8.1
       </span>
     </div>
   </div>
@@ -613,7 +613,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L5" target="_blank">
         transaction.cr
       </a>
     
@@ -640,6 +640,8 @@
       </li>
     
   </ul>
+
+
 
 
 
@@ -683,8 +685,6 @@
       </li>
     
   </ul>
-
-
 
 
 
@@ -888,6 +888,9 @@
     
 
 
+    
+
+
   
     
 
@@ -949,6 +952,9 @@
     xreadgroup</a>
     
   
+
+
+    
 
 
     
@@ -1021,6 +1027,9 @@
     
 
 
+    
+
+
   
     
 
@@ -1062,6 +1071,9 @@
     srem</a>
     
   
+
+
+    
 
 
     
@@ -1116,6 +1128,11 @@
     lrem</a>, 
     
   
+    <a href="../Redis/Commands/List.html#ltrim%28key%3AString%2Cstart%3AString%7CInt%2Cstop%3AString%7CInt%29-instance-method" class="tooltip">
+      <span>ltrim(key : String, start : String | Int, stop : String | Int)<br/>ltrim(key : String, range : Range(String, String))<br/>ltrim(key : String, range : Range(Int32, Int32))</span>
+    ltrim</a>, 
+    
+  
     <a href="../Redis/Commands/List.html#rpop%28key%3AString%29-instance-method" class="tooltip">
       <span>rpop(key : String)</span>
     rpop</a>, 
@@ -1126,11 +1143,14 @@
     rpoplpush</a>, 
     
   
-    <a href="../Redis/Commands/List.html#rpush%28key%2C%2Avalues%3AString%29-instance-method" class="tooltip">
-      <span>rpush(key, *values : String)</span>
+    <a href="../Redis/Commands/List.html#rpush%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>rpush(key : String, values : Enumerable(String))<br/>rpush(key, *values : String)</span>
     rpush</a>
     
   
+
+
+    
 
 
     
@@ -1198,17 +1218,26 @@
     
 
 
-  
-    
-
-
-    
-
-
     
 
 
   
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
     
 
 
@@ -1242,11 +1271,13 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
+
 
 
 
@@ -1272,7 +1303,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1288,7 +1319,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1304,7 +1335,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1331,7 +1362,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1347,13 +1378,11 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/transaction.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/transaction.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
   
-
-
 
 
 </div>

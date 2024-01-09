@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.5.1">
-<meta name="crystal_docs.project_version" content="0.8.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.8.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Connection - redis 0.8.0</title>
+  <title>Redis::Connection - redis 0.8.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.8.0
+        0.8.1
       </span>
     </div>
   </div>
@@ -624,14 +624,14 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L14" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L14" target="_blank">
         connection.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/graph.cr#L502" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/graph.cr#L502" target="_blank">
         graph.cr
       </a>
     
@@ -662,6 +662,25 @@
   </ul>
 
 
+
+
+
+  <h2>
+    <a id="macro-summary" class="anchor" href="#macro-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#set_return_types%21-macro" class="signature"><strong>set_return_types!</strong></a>
+        
+      </li>
+    
+  </ul>
 
 
 
@@ -794,25 +813,6 @@
         <a href="#url-instance-method" class="signature"><strong>#url</strong></a>
         
           <div class="summary"><p>The URI</p></div>
-        
-      </li>
-    
-  </ul>
-
-
-
-  <h2>
-    <a id="macro-summary" class="anchor" href="#macro-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#set_return_types%21-macro" class="signature"><strong>set_return_types!</strong></a>
         
       </li>
     
@@ -1020,6 +1020,9 @@
     
 
 
+    
+
+
   
     
 
@@ -1081,6 +1084,9 @@
     xreadgroup</a>
     
   
+
+
+    
 
 
     
@@ -1153,6 +1159,9 @@
     
 
 
+    
+
+
   
     
 
@@ -1194,6 +1203,9 @@
     srem</a>
     
   
+
+
+    
 
 
     
@@ -1248,6 +1260,11 @@
     lrem</a>, 
     
   
+    <a href="../Redis/Commands/List.html#ltrim%28key%3AString%2Cstart%3AString%7CInt%2Cstop%3AString%7CInt%29-instance-method" class="tooltip">
+      <span>ltrim(key : String, start : String | Int, stop : String | Int)<br/>ltrim(key : String, range : Range(String, String))<br/>ltrim(key : String, range : Range(Int32, Int32))</span>
+    ltrim</a>, 
+    
+  
     <a href="../Redis/Commands/List.html#rpop%28key%3AString%29-instance-method" class="tooltip">
       <span>rpop(key : String)</span>
     rpop</a>, 
@@ -1258,11 +1275,14 @@
     rpoplpush</a>, 
     
   
-    <a href="../Redis/Commands/List.html#rpush%28key%2C%2Avalues%3AString%29-instance-method" class="tooltip">
-      <span>rpush(key, *values : String)</span>
+    <a href="../Redis/Commands/List.html#rpush%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>rpush(key : String, values : Enumerable(String))<br/>rpush(key, *values : String)</span>
     rpush</a>
     
   
+
+
+    
 
 
     
@@ -1330,17 +1350,26 @@
     
 
 
-  
-    
-
-
-    
-
-
     
 
 
   
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
     
 
 
@@ -1382,13 +1411,41 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
 
+
+
+
+  <h2>
+    <a id="macro-detail" class="anchor" href="#macro-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Macro Detail
+  </h2>
+  
+    <div class="entry-detail" id="set_return_types!-macro">
+      <div class="signature">
+        
+        macro <strong>set_return_types!</strong>
+
+        <a class="method-permalink" href="#set_return_types%21-macro">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L232" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
 
 
 
@@ -1417,7 +1474,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L402" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L402" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1442,7 +1499,7 @@ useful if a command like this has not been implemented yet.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L449" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L449" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1464,7 +1521,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L413" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L413" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1480,7 +1537,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L388" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L388" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1512,7 +1569,7 @@ redis.get <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; nil
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1538,7 +1595,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L81" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1585,7 +1642,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1601,7 +1658,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L202" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L202" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1622,7 +1679,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L418" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L418" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1644,7 +1701,7 @@ closed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L429" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L429" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1667,7 +1724,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L210" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L210" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1689,7 +1746,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L351" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L351" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1714,7 +1771,7 @@ generates the array of all those keys.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L375" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L375" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1761,7 +1818,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1784,7 +1841,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L185" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L185" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1805,7 +1862,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L191" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L191" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1826,7 +1883,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L197" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L197" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1847,35 +1904,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L439" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
-
-
-  <h2>
-    <a id="macro-detail" class="anchor" href="#macro-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Macro Detail
-  </h2>
-  
-    <div class="entry-detail" id="set_return_types!-macro">
-      <div class="signature">
-        
-        macro <strong>set_return_types!</strong>
-
-        <a class="method-permalink" href="#set_return_types%21-macro">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.0/src/connection.cr#L232" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L439" target="_blank">View source</a>]
         
       </div>
     </div>
