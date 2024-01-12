@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.8.1">
+<meta name="crystal_docs.project_version" content="0.9.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Connection - redis 0.8.1</title>
+  <title>Redis::Connection - redis 0.9.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.8.1
+        0.9.0
       </span>
     </div>
   </div>
@@ -624,14 +624,14 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L14" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L14" target="_blank">
         connection.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/graph.cr#L502" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/graph.cr#L502" target="_blank">
         graph.cr
       </a>
     
@@ -1101,8 +1101,8 @@
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/SortedSet.html">Redis::Commands::SortedSet</a></code></h3>
   
   
-    <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CFloat%7CInt%2Cvalue%3AString%29-instance-method" class="tooltip">
-      <span>zadd(key : String, score : String | Float | Int, value : String)<br/>zadd(key : String, values : Enumerable)</span>
+    <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CInt64%2Cvalue%3AString%29-instance-method" class="tooltip">
+      <span>zadd(key : String, score : String | Int64, value : String)<br/>zadd(key : String, values : Enumerable(String))</span>
     zadd</a>, 
     
   
@@ -1116,13 +1116,13 @@
     zcount</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrange%28key%3AString%2Cstarting%3AString%7CFloat64%2Cending%3AString%7CFloat64%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
-      <span>zrange(key : String, starting : String | Float64, ending : String | Float64, with_scores : Bool = <span class="n">false</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrange%28key%3AString%2Cstarting%3AString%7CInt64%2Cending%3AString%7CInt64%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
+      <span>zrange(key : String, starting : String | Int64, ending : String | Int64, with_scores : Bool = <span class="n">false</span>)</span>
     zrange</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Clow%3AString%7CFloat64%2Chigh%3AString%7CFloat64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>zrangebyscore(key : String, low : String | Float64, high : String | Float64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>zrangebyscore(key : String, low : String | Int64, high : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
     zrangebyscore</a>, 
     
   
@@ -1131,18 +1131,18 @@
     zrem</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zremrangebyrank%28key%3AString%2Clow%3AInt%2Chigh%3AInt%29-instance-method" class="tooltip">
-      <span>zremrangebyrank(key : String, low : Int, high : Int)</span>
+    <a href="../Redis/Commands/SortedSet.html#zremrangebyrank%28key%3AString%2Clow%3AInt64%2Chigh%3AInt64%29-instance-method" class="tooltip">
+      <span>zremrangebyrank(key : String, low : Int64, high : Int64)</span>
     zremrangebyrank</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zremrangebyscore%28key%3AString%2Clow%3AString%7CFloat%2Chigh%3AString%7CFloat%29-instance-method" class="tooltip">
-      <span>zremrangebyscore(key : String, low : String | Float, high : String | Float)</span>
+    <a href="../Redis/Commands/SortedSet.html#zremrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%29-instance-method" class="tooltip">
+      <span>zremrangebyscore(key : String, low : String | Int64, high : String | Int64)</span>
     zremrangebyscore</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrevrange%28key%3AString%2Cstarting%3AString%7CInt%2Cending%3AString%7CInt%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
-      <span>zrevrange(key : String, starting : String | Int, ending : String | Int, with_scores : Bool = <span class="n">false</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrevrange%28key%3AString%2Cstarting%3AString%7CInt64%2Cending%3AString%7CInt64%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
+      <span>zrevrange(key : String, starting : String | Int64, ending : String | Int64, with_scores : Bool = <span class="n">false</span>)</span>
     zrevrange</a>, 
     
   
@@ -1411,7 +1411,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L27" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1441,7 +1441,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L232" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1474,7 +1474,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L402" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L402" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1499,7 +1499,7 @@ useful if a command like this has not been implemented yet.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L449" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L449" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1521,7 +1521,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L413" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L413" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1537,7 +1537,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L388" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L388" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1569,7 +1569,7 @@ redis.get <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; nil
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L115" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1595,7 +1595,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L81" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1642,7 +1642,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1658,7 +1658,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L202" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L202" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1679,7 +1679,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L418" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L418" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1701,7 +1701,7 @@ closed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L429" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L429" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1724,7 +1724,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L210" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L210" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1746,7 +1746,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L351" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L351" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1771,7 +1771,7 @@ generates the array of all those keys.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L375" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L375" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1818,7 +1818,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L141" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1841,7 +1841,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L185" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L185" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1862,7 +1862,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L191" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L191" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1883,7 +1883,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L197" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L197" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1904,7 +1904,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.8.1/src/connection.cr#L439" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.9.0/src/connection.cr#L439" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -5,7 +5,7 @@ require "./client"
 require "./value"
 
 module Redis
-  VERSION = "0.8.1"
+  VERSION = "0.9.0"
 
   protected def self.to_hash(array : Array)
     unless array.size.even?
