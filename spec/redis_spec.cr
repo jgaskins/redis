@@ -217,7 +217,7 @@ describe Redis::Client do
 
       redis.zrem key, "a"
       redis.zrange(key, "0", "-1").as(Array).should_not contain "a"
-      redis.zrange(key, "0", "-1").as(Array).should contain "b"
+      redis.zrange(key, 0, -1).as(Array).should contain "b"
     end
 
     test "counts the number of elements set at the key" do
