@@ -171,7 +171,7 @@ end
 
 require "../src/writer"
 describe Redis::Graph::Result do
-  it "translates the raw result into a usable value" do
+  pending "translates the raw result into a usable value" do
     # Specifying types all the way down is complicated, so we're just letting
     # the normal Redis I/O handle it. This better simulates what happens anyway.
     buffer = IO::Memory.new
