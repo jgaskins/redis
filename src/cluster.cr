@@ -1,6 +1,7 @@
 # require "./client"
 require "./connection"
 require "./commands"
+require "./read_only_commands"
 require "db/pool"
 require "set"
 
@@ -213,62 +214,6 @@ module Redis
     def flushdb
       each_master(&.run({"flushdb"}))
     end
-
-    # Add commands here to route them to read-only replicas.
-    private READ_ONLY_COMMANDS = %w[
-      dump
-      echo
-      eval_ro
-      evalsha_ro
-      exists
-      expiretime
-      get
-      getbit
-      getrange
-      hexists
-      hget
-      hgetall
-      hkeys
-      hlen
-      hmget
-      hstrlen
-      hvals
-      keys
-      lcs
-      lindex
-      llen
-      lpos
-      lrange
-      mget
-      pttl
-      randomkey
-      scard
-      sdiff
-      sinter
-      sintercard
-      sismember
-      smembers
-      smismember
-      srandmember
-      strlen
-      sunion
-      ttl
-      type
-      xlen
-      xrange
-      xrevrange
-      zcard
-      zcount
-      zdiff
-      zinter
-      zlexcount
-      zrandmember
-      zrange
-      zrangebylex
-      zrangebyscore
-      zrank
-      zrevrangebylex
-    ].to_set
 
     def run(command full_command)
       if full_command.empty?

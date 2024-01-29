@@ -8,14 +8,12 @@ require "./pipeline"
 require "./value"
 require "./transaction"
 require "./writer"
+require "./log"
 
 module Redis
   # The connection wraps the TCP connection to the Redis server.
   class Connection
     include Commands
-
-    # :nodoc:
-    LOG = ::Log.for(self)
 
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
 
@@ -24,7 +22,7 @@ module Redis
     # SSL connections require specifying the `rediss://` scheme.
     # Password authentication uses the URI password.
     # DB selection uses the URI path.
-    def initialize(@uri : URI = URI.parse("redis:///"))
+    def initialize(@uri : URI = URI.parse("redis:///"), @log = Log)
       host = uri.host.presence || "localhost"
       port = uri.port || 6379
       socket = TCPSocket.new(host, port)
@@ -355,7 +353,7 @@ module Redis
         @writer.encode command
         flush
         result = read
-        LOG.debug &.emit "redis", command: command[0...2].join(' '), duration_ms: (Time.monotonic - start).total_milliseconds
+        @log.debug &.emit "redis", command: command[0...2].join(' '), duration_ms: (Time.monotonic - start).total_milliseconds
         return result
       rescue ex : IO::Error
         if retries > 0
