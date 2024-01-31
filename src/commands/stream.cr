@@ -41,7 +41,7 @@ module Redis::Commands::Stream
   # ```
   # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
   # ```
-  def xadd(key : String, id : String, data : Hash(String, String))
+  def xadd(key : String, id : String, data : ::Hash(String, String))
     xadd key, id, maxlen: nil, data: data
   end
 
@@ -56,7 +56,7 @@ module Redis::Commands::Stream
   # ```
   # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
   # ```
-  def xadd(key : String, id : String, maxlen, data : Hash(String, String))
+  def xadd(key : String, id : String, maxlen, data : ::Hash(String, String))
     command = Array(String).new(initial_capacity: data.size * 2 + 3)
     command << "xadd" << key
     command << "maxlen" << maxlen if maxlen
