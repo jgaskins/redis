@@ -1,6 +1,8 @@
 require "db/pool"
+require "log"
 
 require "./connection"
+require "./log"
 
 module Redis
   # The Redis client is the expected entrypoint for this shard. By default, it will connect to localhost:6379, but you can also supply a `URI` to connect to an arbitrary Redis server. SSL, password authentication, and DB selection are all supported.
@@ -27,7 +29,7 @@ module Redis
 
     # The client holds a pool of connections that expands and contracts as
     # needed.
-    def initialize(uri : URI = URI.parse(ENV.fetch("REDIS_URL", "redis:///")))
+    def initialize(uri : URI = URI.parse(ENV.fetch("REDIS_URL", "redis:///")), @log = Log)
       # defaults as per https://github.com/crystal-lang/crystal-db/blob/v0.11.0/src/db/pool.cr
       initial_pool_size = uri.query_params.fetch("initial_pool_size", 1).to_i
       max_pool_size = uri.query_params.fetch("max_pool_size", 0).to_i
@@ -46,7 +48,7 @@ module Redis
         retry_attempts: retry_attempts,
         retry_delay: retry_delay,
       )) do
-        Connection.new(uri)
+        Connection.new(uri, log: log)
       end
     end
 
