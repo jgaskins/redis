@@ -87,10 +87,10 @@ module Redis::Commands::Stream
 
   # Return the entries in the given stream between the `start` and `end` ids.
   # If `count` is provided, Redis will return only that number of entries.
-  def xrange(key : String, start min, end max, count = nil)
+  def xrange(key : String, start min, end max, count : String | Int | Nil = nil)
     command = {"xrange", key, min, max}
     if count
-      command += {"count", count}
+      command += {"count", count.to_s}
     end
 
     run command
