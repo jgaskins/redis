@@ -47,6 +47,7 @@ module Redis
           body TEXT
           location GEO
           post_count NUMERIC SORTABLE
+          section TEXT NOSTEM
       INDEX
 
       # Please leave the FILTER clause in there, it ensures we send the quoted
@@ -60,6 +61,7 @@ module Redis
           $.body AS body TEXT
           $.location AS location GEO
           $.post_count AS post_count NUMERIC SORTABLE
+          $.section AS section TEXT NOSTEM
       INDEX
 
       wait_for_indexing_complete hash_index
@@ -164,24 +166,28 @@ module Redis
 
       it "can return a limited subset of keys" do
         redis.hset "#{hash_prefix}:return:hello",
-          "name", "match",
-          "who", "cares"
+          name: "match",
+          who: "cares",
+          section: "keysubset"
 
-        results = redis.ft.search(hash_index, "match", return: %w[name])
+        results = redis.ft.search hash_index,
+          %{match @section:(keysubset)},
+          return: %w[name]
         count, key, result = results
 
+        key.should eq "#{hash_prefix}:return:hello"
         result.should eq %w[name match]
       end
 
       describe "FILTER" do
         it "can filter results based on numeric ranges" do
-          redis.hset "#{hash_prefix}:filter:match:too-high  ", name: "match", post_count: "51"
-          redis.hset "#{hash_prefix}:filter:match:goldilocks", name: "match", post_count: "50"
-          redis.hset "#{hash_prefix}:filter:match:too-low   ", name: "match", post_count: "49"
-          redis.hset "#{hash_prefix}:filter:no-match        ", name: "nope!", post_count: "50"
+          redis.hset "#{hash_prefix}:filter:match:too-high  ", name: "match", post_count: "51", section: "numeric_range"
+          redis.hset "#{hash_prefix}:filter:match:goldilocks", name: "match", post_count: "50", section: "numeric_range"
+          redis.hset "#{hash_prefix}:filter:match:too-low   ", name: "match", post_count: "49", section: "numeric_range"
+          redis.hset "#{hash_prefix}:filter:no-match        ", name: "nope!", post_count: "50", section: "numeric_range"
 
           # Testing multiple FILTER clauses in a single query
-          results = redis.ft.search(hash_index, "match", filter: [
+          results = redis.ft.search(hash_index, "match @section:(numeric_range)", filter: [
             Redis::FullText::Filter.new("post_count", 0..50),
             Redis::FullText::Filter.new("post_count", 50..100),
           ])
