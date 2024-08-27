@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Crystal Docs 1.10.1">
+<meta name="crystal_docs.project_version" content="0.10.0">
+<meta name="crystal_docs.project_name" content="redis">
+
+
+
+<link href="../../../css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../../../js/doc.js"></script>
+
+  <meta name="repository-name" content="redis">
+  <title>Redis::Graph::Constraints::Constraint - redis 0.10.0</title>
+  <script type="text/javascript">
+    CrystalDocs.base_path = "../../../";
+  </script>
+</head>
+<body>
+
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill="currentColor" fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+<input type="checkbox" id="sidebar-btn">
+<label for="sidebar-btn" id="sidebar-btn-label">
+  <svg class="open" xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" viewBox="0 0 512 512"><title>Open Sidebar</title><path fill="currentColor" d="M80 96v64h352V96H80zm0 112v64h352v-64H80zm0 112v64h352v-64H80z"></path></svg>
+  <svg class="close" xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 512 512"><title>Close Sidebar</title><path fill="currentColor" d="m118.6 73.4-45.2 45.2L210.7 256 73.4 393.4l45.2 45.2L256 301.3l137.4 137.3 45.2-45.2L301.3 256l137.3-137.4-45.2-45.2L256 210.7Z"></path></svg>
+</label>
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="../../../index.html">
+          redis
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.10.0
+      </span>
+    </div>
+  </div>
+
+  <div class="search-results hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="redis/Redis" data-name="redis">
+      <a href="../../../Redis.html">Redis</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
+      <a href="../../../Redis/BusyGroup.html">BusyGroup</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+      <a href="../../../Redis/Client.html">Client</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Cluster" data-name="redis::cluster">
+      <a href="../../../Redis/Cluster.html">Cluster</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Ask" data-name="redis::cluster::ask">
+      <a href="../../../Redis/Cluster/Ask.html">Ask</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/CrossSlot" data-name="redis::cluster::crossslot">
+      <a href="../../../Redis/Cluster/CrossSlot.html">CrossSlot</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Error" data-name="redis::cluster::error">
+      <a href="../../../Redis/Cluster/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Cluster/Moved" data-name="redis::cluster::moved">
+      <a href="../../../Redis/Cluster/Moved.html">Moved</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Commands" data-name="redis::commands">
+      <a href="../../../Redis/Commands.html">Commands</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
+      <a href="../../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
+      <a href="../../../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Commands/List" data-name="redis::commands::list">
+      <a href="../../../Redis/Commands/List.html">List</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/List/Side" data-name="redis::commands::list::side">
+      <a href="../../../Redis/Commands/List/Side.html">Side</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/ScriptFlushMode" data-name="redis::commands::scriptflushmode">
+      <a href="../../../Redis/Commands/ScriptFlushMode.html">ScriptFlushMode</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Set" data-name="redis::commands::set">
+      <a href="../../../Redis/Commands/Set.html">Set</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+      <a href="../../../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Commands/Stream" data-name="redis::commands::stream">
+      <a href="../../../Redis/Commands/Stream.html">Stream</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/Stream/XGroup" data-name="redis::commands::stream::xgroup">
+      <a href="../../../Redis/Commands/Stream/XGroup.html">XGroup</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Connection" data-name="redis::connection">
+      <a href="../../../Redis/Connection.html">Connection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Error" data-name="redis::error">
+      <a href="../../../Redis/Error.html">Error</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+      <a href="../../../Redis/FullText.html">FullText</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/FullText/Filter" data-name="redis::fulltext::filter">
+      <a href="../../../Redis/FullText/Filter.html">Filter</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoFilter" data-name="redis::fulltext::geofilter">
+      <a href="../../../Redis/FullText/GeoFilter.html">GeoFilter</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/GeoUnit" data-name="redis::fulltext::geounit">
+      <a href="../../../Redis/FullText/GeoUnit.html">GeoUnit</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Highlight" data-name="redis::fulltext::highlight">
+      <a href="../../../Redis/FullText/Highlight.html">Highlight</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/SortBy" data-name="redis::fulltext::sortby">
+      <a href="../../../Redis/FullText/SortBy.html">SortBy</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/SortDirection" data-name="redis::fulltext::sortdirection">
+      <a href="../../../Redis/FullText/SortDirection.html">SortDirection</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+      <a href="../../../Redis/FullText/Summarize.html">Summarize</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Future" data-name="redis::future">
+      <a href="../../../Redis/Future.html">Future</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Future/NotResolved" data-name="redis::future::notresolved">
+      <a href="../../../Redis/Future/NotResolved.html">NotResolved</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent open current" data-id="redis/Redis/Graph" data-name="redis::graph">
+      <a href="../../../Redis/Graph.html">Graph</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Cache" data-name="redis::graph::cache">
+      <a href="../../../Redis/Graph/Cache.html">Cache</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Client" data-name="redis::graph::client(runnable)">
+      <a href="../../../Redis/Graph/Client.html">Client</a>
+      
+    </li>
+  
+  <li class="parent open current" data-id="redis/Redis/Graph/Constraints" data-name="redis::graph::constraints(t)">
+      <a href="../../../Redis/Graph/Constraints.html">Constraints</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="redis/Redis/Graph/Constraints/Constraint" data-name="redis::graph::constraints::constraint">
+      <a href="../../../Redis/Graph/Constraints/Constraint.html">Constraint</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Constraints/EntityType" data-name="redis::graph::constraints::entitytype">
+      <a href="../../../Redis/Graph/Constraints/EntityType.html">EntityType</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Constraints/Status" data-name="redis::graph::constraints::status">
+      <a href="../../../Redis/Graph/Constraints/Status.html">Status</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Constraints/Type" data-name="redis::graph::constraints::type">
+      <a href="../../../Redis/Graph/Constraints/Type.html">Type</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/ConstraintViolation" data-name="redis::graph::constraintviolation">
+      <a href="../../../Redis/Graph/ConstraintViolation.html">ConstraintViolation</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Error" data-name="redis::graph::error">
+      <a href="../../../Redis/Graph/Error.html">Error</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Field" data-name="redis::graph::field">
+      <a href="../../../Redis/Graph/Field.html">Field</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph/Indices" data-name="redis::graph::indices(t)">
+      <a href="../../../Redis/Graph/Indices.html">Indices</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Indices/IndexAlreadyExists" data-name="redis::graph::indices::indexalreadyexists">
+      <a href="../../../Redis/Graph/Indices/IndexAlreadyExists.html">IndexAlreadyExists</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/List" data-name="redis::graph::list">
+      <a href="../../../Redis/Graph/List.html">List</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Map" data-name="redis::graph::map">
+      <a href="../../../Redis/Graph/Map.html">Map</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Node" data-name="redis::graph::node">
+      <a href="../../../Redis/Graph/Node.html">Node</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Relationship" data-name="redis::graph::relationship">
+      <a href="../../../Redis/Graph/Relationship.html">Relationship</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph/ResultSet" data-name="redis::graph::resultset(t)">
+      <a href="../../../Redis/Graph/ResultSet.html">ResultSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/ResultSet/Row" data-name="redis::graph::resultset::row(t)">
+      <a href="../../../Redis/Graph/ResultSet/Row.html">Row</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Graph/Serializable" data-name="redis::graph::serializable">
+      <a href="../../../Redis/Graph/Serializable.html">Serializable</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="redis/Redis/Graph/Serializable/Node" data-name="redis::graph::serializable::node">
+      <a href="../../../Redis/Graph/Serializable/Node.html">Node</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Graph/Serializable/Node/Metadata" data-name="redis::graph::serializable::node::metadata">
+      <a href="../../../Redis/Graph/Serializable/Node/Metadata.html">Metadata</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Serializable/Node/PropertyMissing" data-name="redis::graph::serializable::node::propertymissing">
+      <a href="../../../Redis/Graph/Serializable/Node/PropertyMissing.html">PropertyMissing</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Serializable/Property" data-name="redis::graph::serializable::property">
+      <a href="../../../Redis/Graph/Serializable/Property.html">Property</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/UnexpectedValue" data-name="redis::graph::unexpectedvalue">
+      <a href="../../../Redis/Graph/UnexpectedValue.html">UnexpectedValue</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/Value" data-name="redis::graph::value">
+      <a href="../../../Redis/Graph/Value.html">Value</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Graph/ValueType" data-name="redis::graph::valuetype">
+      <a href="../../../Redis/Graph/ValueType.html">ValueType</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/JSON" data-name="redis::json(runnable)">
+      <a href="../../../Redis/JSON.html">JSON</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/NoGroup" data-name="redis::nogroup">
+      <a href="../../../Redis/NoGroup.html">NoGroup</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Parser" data-name="redis::parser">
+      <a href="../../../Redis/Parser.html">Parser</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Pipeline" data-name="redis::pipeline">
+      <a href="../../../Redis/Pipeline.html">Pipeline</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/ReplicationClient" data-name="redis::replicationclient">
+      <a href="../../../Redis/ReplicationClient.html">ReplicationClient</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="redis/Redis/ReplicationClient/Info" data-name="redis::replicationclient::info">
+      <a href="../../../Redis/ReplicationClient/Info.html">Info</a>
+      
+        <ul>
+  
+  <li class="parent " data-id="redis/Redis/ReplicationClient/Info/Replica" data-name="redis::replicationclient::info::replica">
+      <a href="../../../Redis/ReplicationClient/Info/Replica.html">Replica</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/ReplicationClient/Info/Replica/State" data-name="redis::replicationclient::info::replica::state">
+      <a href="../../../Redis/ReplicationClient/Info/Replica/State.html">State</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/ReplicationClient/Info/Replication" data-name="redis::replicationclient::info::replication">
+      <a href="../../../Redis/ReplicationClient/Info/Replication.html">Replication</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/ReplicationClient/Info/Replication/Role" data-name="redis::replicationclient::info::replication::role">
+      <a href="../../../Redis/ReplicationClient/Info/Replication/Role.html">Role</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming" data-name="redis::streaming">
+      <a href="../../../Redis/Streaming.html">Streaming</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/Message" data-name="redis::streaming::message">
+      <a href="../../../Redis/Streaming/Message.html">Message</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XAutoClaimResponse" data-name="redis::streaming::xautoclaimresponse">
+      <a href="../../../Redis/Streaming/XAutoClaimResponse.html">XAutoClaimResponse</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+      <a href="../../../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
+      <a href="../../../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingExtendedResponse" data-name="redis::streaming::xpendingextendedresponse">
+      <a href="../../../Redis/Streaming/XPendingExtendedResponse.html">XPendingExtendedResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingExtendedResponse/MessageData" data-name="redis::streaming::xpendingextendedresponse::messagedata">
+      <a href="../../../Redis/Streaming/XPendingExtendedResponse/MessageData.html">MessageData</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XReadGroupResponse" data-name="redis::streaming::xreadgroupresponse">
+      <a href="../../../Redis/Streaming/XReadGroupResponse.html">XReadGroupResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XReadGroupResponse/Result" data-name="redis::streaming::xreadgroupresponse::result">
+      <a href="../../../Redis/Streaming/XReadGroupResponse/Result.html">Result</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Subscription" data-name="redis::subscription">
+      <a href="../../../Redis/Subscription.html">Subscription</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Subscription/InvalidMessage" data-name="redis::subscription::invalidmessage">
+      <a href="../../../Redis/Subscription/InvalidMessage.html">InvalidMessage</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
+      <a href="../../../Redis/TimeSeries.html">TimeSeries</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Aggregation" data-name="redis::timeseries::aggregation">
+      <a href="../../../Redis/TimeSeries/Aggregation.html">Aggregation</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/AggregationType" data-name="redis::timeseries::aggregationtype">
+      <a href="../../../Redis/TimeSeries/AggregationType.html">AggregationType</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Alignment" data-name="redis::timeseries::alignment">
+      <a href="../../../Redis/TimeSeries/Alignment.html">Alignment</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/BucketTimestamp" data-name="redis::timeseries::buckettimestamp">
+      <a href="../../../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Datapoint" data-name="redis::timeseries::datapoint">
+      <a href="../../../Redis/TimeSeries/Datapoint.html">Datapoint</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Datapoints" data-name="redis::timeseries::datapoints">
+      <a href="../../../Redis/TimeSeries/Datapoints.html">Datapoints</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/DuplicatePolicy" data-name="redis::timeseries::duplicatepolicy">
+      <a href="../../../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Encoding" data-name="redis::timeseries::encoding">
+      <a href="../../../Redis/TimeSeries/Encoding.html">Encoding</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Labels" data-name="redis::timeseries::labels">
+      <a href="../../../Redis/TimeSeries/Labels.html">Labels</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries/MRangeResponse" data-name="redis::timeseries::mrangeresponse">
+      <a href="../../../Redis/TimeSeries/MRangeResponse.html">MRangeResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/MRangeResponse/DatapointMap" data-name="redis::timeseries::mrangeresponse::datapointmap">
+      <a href="../../../Redis/TimeSeries/MRangeResponse/DatapointMap.html">DatapointMap</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/Range" data-name="redis::timeseries::range">
+      <a href="../../../Redis/TimeSeries/Range.html">Range</a>
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/TimeSeries/RangeOptions" data-name="redis::timeseries::rangeoptions">
+      <a href="../../../Redis/TimeSeries/RangeOptions.html">RangeOptions</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/TimeSeries/RangeOptions/Aggregation" data-name="redis::timeseries::rangeoptions::aggregation">
+      <a href="../../../Redis/TimeSeries/RangeOptions/Aggregation.html">Aggregation</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+      <a href="../../../Redis/Transaction.html">Transaction</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Value" data-name="redis::value">
+      <a href="../../../Redis/Value.html">Value</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Writer" data-name="redis::writer">
+      <a href="../../../Redis/Writer.html">Writer</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">struct</span> Redis::<wbr>Graph::<wbr>Constraints::<wbr>Constraint
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../../Redis/Graph/Constraints/Constraint.html">Redis::Graph::Constraints::Constraint</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2>
+    <a id="defined-in" class="anchor" href="#defined-in">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Defined in:
+  </h2>
+  
+    
+      <a href="https://github.com/jgaskins/redis/blob/v0.10.0/src/graph/constraints.cr#L77" target="_blank">
+        graph/constraints.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+
+
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28type%3AType%2Clabel%3AString%2Cproperties%3AArray%28String%29%2Centity_type%3AEntityType%2Cstatus%3AStatus%29-class-method" class="signature"><strong>.new</strong>(type : Type, label : String, properties : Array(String), entity_type : EntityType, status : Status)</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#copy_with%28type_type%3D%40type%2Clabel_label%3D%40label%2Cproperties_properties%3D%40properties%2Centity_type_entity_type%3D%40entity_type%2Cstatus_status%3D%40status%29-instance-method" class="signature"><strong>#copy_with</strong>(type _type = @type, label _label = @label, properties _properties = @properties, entity_type _entity_type = @entity_type, status _status = @status)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#entity_type%3AEntityType-instance-method" class="signature"><strong>#entity_type</strong> : EntityType</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#label%3AString-instance-method" class="signature"><strong>#label</strong> : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#properties%3AArray%28String%29-instance-method" class="signature"><strong>#properties</strong> : Array(String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#status%3AStatus-instance-method" class="signature"><strong>#status</strong> : Status</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#type%3AType-instance-method" class="signature"><strong>#type</strong> : Type</a>
+        
+      </li>
+    
+  </ul>
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(type:Type,label:String,properties:Array(String),entity_type:EntityType,status:Status)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(type : <a href="../../../Redis/Graph/Constraints/Type.html">Type</a>, label : String, properties : Array(String), entity_type : <a href="../../../Redis/Graph/Constraints/EntityType.html">EntityType</a>, status : <a href="../../../Redis/Graph/Constraints/Status.html">Status</a>)
+
+        <a class="method-permalink" href="#new%28type%3AType%2Clabel%3AString%2Cproperties%3AArray%28String%29%2Centity_type%3AEntityType%2Cstatus%3AStatus%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.10.0/src/graph/constraints.cr#L77" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="clone-instance-method">
+      <div class="signature">
+        
+        def <strong>clone</strong>
+
+        <a class="method-permalink" href="#clone-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.10.0/src/graph/constraints.cr#L77" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="copy_with(type_type=@type,label_label=@label,properties_properties=@properties,entity_type_entity_type=@entity_type,status_status=@status)-instance-method">
+      <div class="signature">
+        
+        def <strong>copy_with</strong>(type _type = @type, label _label = @label, properties _properties = @properties, entity_type _entity_type = @entity_type, status _status = @status)
+
+        <a class="method-permalink" href="#copy_with%28type_type%3D%40type%2Clabel_label%3D%40label%2Cproperties_properties%3D%40properties%2Centity_type_entity_type%3D%40entity_type%2Cstatus_status%3D%40status%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.10.0/src/graph/constraints.cr#L77" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="entity_type:EntityType-instance-method">
+      <div class="signature">
+        
+        def <strong>entity_type</strong> : <a href="../../../Redis/Graph/Constraints/EntityType.html">EntityType</a>
+
+        <a class="method-permalink" href="#entity_type%3AEntityType-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="label:String-instance-method">
+      <div class="signature">
+        
+        def <strong>label</strong> : String
+
+        <a class="method-permalink" href="#label%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="properties:Array(String)-instance-method">
+      <div class="signature">
+        
+        def <strong>properties</strong> : Array(String)
+
+        <a class="method-permalink" href="#properties%3AArray%28String%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="status:Status-instance-method">
+      <div class="signature">
+        
+        def <strong>status</strong> : <a href="../../../Redis/Graph/Constraints/Status.html">Status</a>
+
+        <a class="method-permalink" href="#status%3AStatus-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="type:Type-instance-method">
+      <div class="signature">
+        
+        def <strong>type</strong> : <a href="../../../Redis/Graph/Constraints/Type.html">Type</a>
+
+        <a class="method-permalink" href="#type%3AType-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+
+
+</div>
+
+</body>
+</html>
