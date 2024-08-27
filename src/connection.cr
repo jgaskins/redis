@@ -372,8 +372,10 @@ module Redis
     # generates the array of all those keys.
     def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil) : Nil
       # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
-      cursor = ""
-      until cursor == "0"
+      has_scanned = false
+      cursor = "0"
+      until has_scanned && cursor == "0"
+        has_scanned = true
         response = scan(cursor, match: pattern, count: count, type: type)
         cursor, results = response.as(Array)
         cursor = cursor.as(String)
