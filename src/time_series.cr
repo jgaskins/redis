@@ -405,9 +405,9 @@ module Redis
     end
 
     enum BucketTimestamp
-      HIGH
+      START
       MID
-      LOW
+      END
     end
 
     enum Encoding
