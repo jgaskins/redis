@@ -362,5 +362,13 @@ module Redis
         .map(&.split(':', 2))
         .to_h
     end
+
+    def wait(numreplicas replica_count : Int | String, timeout : Time::Span)
+      wait replica_count, timeout.total_seconds.ceil.to_i
+    end
+
+    def wait(numreplicas replica_count : Int | String, timeout : Int | String)
+      run({"wait", replica_count.to_s, timeout.to_s})
+    end
   end
 end
