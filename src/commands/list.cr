@@ -324,4 +324,12 @@ module Redis::Commands::List
 
     run command
   end
+
+  def brpoplpush(source : String, destination : String, timeout : Time::Span)
+    brpoplpush source, destination, timeout.total_seconds.to_i
+  end
+
+  def brpoplpush(source : String, destination : String, timeout : Int | String)
+    run({"brpoplpush", source, destination, timeout.to_s})
+  end
 end
