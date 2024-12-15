@@ -149,6 +149,7 @@ module Redis
       # Pre-allocate the command buffer based on args so it performs as few
       # heap allocations as possible.
       command = Array(String).new(
+        1 + # ft.search
         1 + # index
         1 + # query
         1 + # nocontent
