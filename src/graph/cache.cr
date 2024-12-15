@@ -38,13 +38,19 @@ module Redis::Graph
       end
     end
 
+    def relationship_type(type_id : Int) : String
+      @relationship_mutex.synchronize do
+        @relationship_types.fetch type_id do
+          refresh_relationships
+
+          @relationship_types[type_id]
+        end
+      end
+    end
+
     def relationship_types
       @relationship_mutex.synchronize do
-        if @relationship_types.empty?
-          fetch_new("relationshipTypes", "relationshipType", @relationship_types.size) do |row|
-            @relationship_types << row.as(Array)[0].as(Array)[1].as(String)
-          end
-        end
+        refresh_relationships if @relationship_types.empty?
 
         @relationship_types
       end
@@ -65,6 +71,12 @@ module Redis::Graph
 
           @properties[property_id]
         end
+      end
+    end
+
+    private def refresh_relationships : Nil
+      fetch_new("relationshipTypes", "relationshipType", @relationship_types.size) do |row|
+        @relationship_types << row.as(Array)[0].as(Array)[1].as(String)
       end
     end
 

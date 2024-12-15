@@ -8,6 +8,9 @@ require "./graph/serializable"
 require "./graph/cache"
 require "./graph/constraints"
 require "./graph/indices"
+require "./graph/node"
+require "./graph/relationship"
+require "./graph/point"
 
 module Redis
   # [RedisGraph](https://redis.io/docs/stack/graph/) is a graph database built
@@ -300,6 +303,10 @@ module Redis
         io << '}'
       end
 
+      private def encode_param(point : Redis::Graph::Point, io : IO) : Nil
+        io << "{latitude: " << point.latitude << ",longitude: " << point.longitude << "}"
+      end
+
       private def encode_param(value, io : IO) : Nil
         value.to_json io
       end
@@ -407,8 +414,8 @@ module Redis
             cached = item.ends_with? "1"
           when /Query internal execution time: (\d+\.\d+) milliseconds/
             query_time = $1.to_f64.milliseconds
-          else
-            puts "UNHANDLED METADATA: #{item}"
+          # else
+          #   puts "UNHANDLED METADATA: #{item}"
           end
         end
 
@@ -576,6 +583,22 @@ def Array.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache)
   end
 end
 
+def Tuple.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache)
+  {% begin %}
+    array = value.as(Array)
+    {
+      {% for type, index in T %}
+        begin
+          item = array[{{index}}]
+          t, v = item.as Array
+          t = Redis::Graph::ValueType.new(t.as(Int).to_i)
+          T.from_redis_graph_value(t, v, cache).as(T)
+        end,
+      {% end %}
+    }
+  {% end %}
+end
+
 def Hash.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache)
   hash = new(initial_capacity: value.as(Array).size // 2)
   value.as(Array).each_slice(2, reuse: true) do |(key, value)|
@@ -608,10 +631,14 @@ def Union.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache) :
     end
   {% end %}
 
-  raise Redis::Graph::UnexpectedValue.new("Expected #{value.inspect} (#{type}) to be a a #{self}")
+  raise Redis::Graph::UnexpectedValue.new("Expected #{value.inspect} (#{type}) to be a #{self}")
 end
 
 def Array.matches_redis_graph_type?(type : Redis::Graph::ValueType) : Bool
+  type.array?
+end
+
+def Tuple.matches_redis_graph_type?(type : Redis::Graph::ValueType) : Bool
   type.array?
 end
 

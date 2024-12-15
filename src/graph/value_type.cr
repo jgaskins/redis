@@ -54,7 +54,8 @@ module Redis::Graph
         end
         hash
       in .point?
-        raise ArgumentError.new("Points not supported yet")
+        latitude, longitude = value.as(Array)
+        Point.new(latitude.as(String).to_f, longitude.as(String).to_f)
       in .unknown?
         raise ArgumentError.new("Unknown value type #{type}. Value: #{value.inspect}")
       end.as(Value)
