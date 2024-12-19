@@ -212,7 +212,7 @@ module Redis
     # :nodoc:
     macro override_return_types(methods)
       {% for method, return_type in methods %}
-        {% for methods in [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream].map(&.methods.select { |m| m.name == method }).reject(&.nil?) %}
+        {% for methods in [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream, Commands::Geo].map(&.methods.select { |m| m.name == method }).reject(&.nil?) %}
           {% for m in methods %}
             # :nodoc:
             def {{method.id}}(
@@ -336,6 +336,9 @@ module Redis
         xreadgroup: Array(Value)?,
         xrevrange:  Array,
         xtrim:      Int64,
+
+        geopos:    Array,
+        geosearch: Array,
       })
     end
 

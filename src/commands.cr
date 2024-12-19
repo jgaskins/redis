@@ -4,6 +4,7 @@ require "./commands/list"
 require "./commands/set"
 require "./commands/sorted_set"
 require "./commands/stream"
+require "./commands/geo"
 
 module Redis
   # All Redis commands are defined in this module. Any paradigm that needs to
@@ -17,6 +18,7 @@ module Redis
     include Commands::Set
     include Commands::SortedSet
     include Commands::Stream
+    include Commands::Geo
 
     # Execute the given command and return the result from the server. Commands
     # must be an `Enumerable` and its `size` method must be re-entrant.
