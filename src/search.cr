@@ -149,34 +149,31 @@ module Redis
       # Pre-allocate the command buffer based on args so it performs as few
       # heap allocations as possible.
       command = Array(String).new(
-        1 + # ft.search
-        1 + # index
-        1 + # query
-        1 + # nocontent
-        1 + # verbatim
-        1 + # nostopwords
-        1 + # withscores
-        1 + # withpayloads
-        4 + # filter
-        6 + # geofilter
+        3 + # ft.search index query
+        (nocontent ? 1 : 0) +
+        (verbatim ? 1 : 0) +
+        (nostopwords ? 1 : 0) +
+        (withscores ? 1 : 0) +
+        (withpayloads ? 1 : 0) +
+        (filter ? 4 : 0) +
+        (geofilter ? 6 : 0) +
         (inkeys.try(&.size) || 0) + 1 +
         (infields.try(&.size) || 0) + 1 +
         (return_value.try(&.size) || 0) + 1 +
         (summarize.try(&.fields).try(&.size) || 0) + 8 +
         (highlight.try(&.fields).try(&.size) || 0) + 6 +
-        2 + # slop
-        2 + # timeout
-        1 + # inorder
-        2 + # language
-        2 + # expander
-        2 + # scorer
-        1 + # explainscore
-        2 + # payload
-        3 + # sortby
-        3 + # limit
-        1 + (params.try { |params| params.size * 2 } || 0) +
-        2 + # dialect
-        0   # end
+        (slop ? 2 : 0) +
+        (timeout ? 2 : 0) +
+        (inorder ? 1 : 0) +
+        (language ? 2 : 0) +
+        (expander ? 2 : 0) +
+        (scorer ? 2 : 0) +
+        (explainscore ? 1 : 0) +
+        (payload ? 2 : 0) +
+        (sortby ? 3 : 0) +
+        (limit ? 3 : 0) +
+        (params ? (1 + (params.try { |params| params.size * 2 } || 0)) : 0) +
+        2 # dialect
       )
       command << "ft.search" << index << query
 

@@ -6,27 +6,18 @@ require "../src/search"
 require "../src/json"
 
 private macro get_info(index)
-  redis.ft.info({{index}}).as(Array)
 end
 
-private macro wait_for_indexing_complete(index)
-  %key_index = 40
-  %failures_index = 38
+private def wait_for_indexing_complete(redis, index)
+  while info = redis.ft.info(index).as(Array).in_slices_of(2).to_h
+    break if info["indexing"] != "0"
 
-  while (%info = get_info({{index}})) && %info[%key_index + 1] != "0"
-    unless %info[%key_index] == "indexing"
-      raise "wrong array index: #{%info[%key_index].inspect}"
-    end
-    unless %info[%failures_index] == "hash_indexing_failures"
-      raise %{#{%info[%failures_index]} != "hash_indexing_failures"}
-    end
-
-    unless %info[%failures_index + 1] == "0"
-      raise "Hash indexing failures: #{%info[%failures_index]}"
+    unless info["hash_indexing_failures"] == "0"
+      raise "Hash indexing failures: #{info["hash_indexing_failures"]}"
     end
   end
 
-  %info
+  info
 end
 
 redis = Redis::Client.new
@@ -64,8 +55,8 @@ module Redis
           $.section AS section TEXT NOSTEM
       INDEX
 
-      wait_for_indexing_complete hash_index
-      wait_for_indexing_complete json_index
+      wait_for_indexing_complete redis, hash_index
+      wait_for_indexing_complete redis, json_index
     end
 
     after_all do # you're my wonderwall
@@ -73,62 +64,6 @@ module Redis
       redis.ft.dropindex json_index
       keys = redis.keys("#{hash_prefix}:*") + redis.keys("#{json_prefix}:*")
       redis.unlink keys.map(&.as(String))
-    end
-
-    pending "gets index metadata" do
-      expected = [
-        "index_name", hash_index,
-        "index_options", [] of String,
-        "index_definition", [
-          "key_type", "HASH",
-          "prefixes", ["#{hash_prefix}:"],
-          "default_score", "1",
-        ],
-        "attributes", [
-          [
-            "identifier", "name",
-            "attribute", "name",
-            "type", "TEXT",
-            "WEIGHT", "1",
-            "SORTABLE", "NOSTEM",
-          ],
-        ],
-        "num_docs", "0",
-        "max_doc_id", "0",
-        "num_terms", "0",
-        "num_records", "0",
-        "inverted_sz_mb", "0",
-        "vector_index_sz_mb", "0",
-        "total_inverted_index_blocks", "4",
-        "offset_vectors_sz_mb", "0",
-        "doc_table_size_mb", "0",
-        "sortable_values_size_mb", "0",
-        "key_table_size_mb", "0",
-        "records_per_doc_avg", "nan",
-        "bytes_per_record_avg", "nan",
-        "offsets_per_term_avg", "nan",
-        "offset_bits_per_record_avg", "nan",
-        "hash_indexing_failures", "0",
-        "indexing", "0",
-        "percent_indexed", "1",
-        "gc_stats", [
-          "bytes_collected", "0",
-          "total_ms_run", "0",
-          "total_cycles", "0",
-          "average_cycle_time_ms", "nan",
-          "last_run_time_ms", "0",
-          "gc_numeric_trees_missed", "0",
-          "gc_blocks_denied", "0",
-        ],
-        "cursor_stats", [
-          "global_idle", 0,
-          "global_total", 0,
-          "index_capacity", 128,
-          "index_total", 0,
-        ],
-      ]
-
-      redis.ft.info(hash_index).should eq expected
     end
 
     describe "hashes" do
