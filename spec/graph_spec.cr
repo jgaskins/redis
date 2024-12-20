@@ -8,8 +8,30 @@ struct Person
 
   getter id : UUID
   getter name : String
-  getter value : Int32?
+  getter optional_value : Int32?
+  getter coordinates : Redis::Graph::Point?
   getter created_at : Time
+end
+
+struct Group
+  include Redis::Graph::Serializable::Node
+
+  getter id : UUID
+  getter name : String
+  getter created_at : Time
+end
+
+struct GroupMembership
+  include Redis::Graph::Serializable::Relationship
+
+  getter role : Role
+  getter created_at : Time
+
+  enum Role
+    Member
+    Admin
+    Owner
+  end
 end
 
 private macro test(name, **kwargs, &block)
@@ -148,12 +170,75 @@ describe Redis::Graph do
     count.should eq 1
   end
 
+  test "runs queries on a multiple custom types" do
+    result = graph.read_query "RETURN $one, $two", {one: 1, two: 2}, return: {Int32, Int64}
+    result.size.should eq 1
+    result.first.should eq({1, 2})
+
+    person_id = UUID.v4
+    group_id = UUID.v4
+    created_at = Time.utc
+    params = {
+      person_id:         person_id,
+      person_name:       "Jamie",
+      person_created_at: created_at.to_unix_ms,
+      group_id:          group_id,
+      group_name:        "My Group",
+      membership_role:   GroupMembership::Role::Owner,
+    }
+    result = graph.write_query <<-CYPHER, params, return: {Person, GroupMembership, Group}
+      CREATE (user:Person {
+        id: $person_id,
+        name: $person_name,
+        created_at: $person_created_at
+      })
+      CREATE (group:Group {
+        id: $group_id,
+        name: $group_name,
+        created_at: timestamp()
+      })
+      CREATE (user)-[membership:MEMBER_OF{role: $membership_role, created_at: timestamp()}]->(group)
+      RETURN user, membership, group
+    CYPHER
+
+    result.size.should eq 1
+    result.first.should be_a({Person, GroupMembership, Group})
+    person, membership, group = result.first
+    person.id.should eq person_id
+    person.name.should eq "Jamie"
+    person.created_at.should be_within 1.millisecond, of: created_at
+    group.id.should eq group_id
+    group.name.should eq "My Group"
+    membership.role.owner?.should eq true
+    membership.created_at.should be_within 5.milliseconds, of: Time.utc
+  end
+
+  test "can deserialize Points" do
+    results = graph.write_query <<-CYPHER
+      RETURN point({latitude: 1.0, longitude: 2.0}) AS p
+      CYPHER
+
+    results.first.first.should eq Redis::Graph::Point.new(1.0, 2.0)
+
+    results = graph.write_query(<<-CYPHER, {name: "Jamie", coordinates: Redis::Graph::Point.new(3.0, 4.0)}, return: Person)
+      CREATE (p:Person{
+        id: randomUUID(),
+        name: $name,
+        coordinates: $coordinates,
+        created_at: timestamp()
+      })
+      RETURN p
+      CYPHER
+
+    results.first.coordinates.should eq Redis::Graph::Point.new(3.0, 4.0)
+  end
+
   test "can explain a query" do
     graph.write_query "CREATE INDEX FOR (user:User) ON (user.email)"
     graph.write_query "CREATE INDEX FOR (c:Credential) ON (c.value)"
     graph.write_query "CREATE INDEX FOR (r:Release) ON (r.version)"
 
-    pp graph.write_query <<-CYPHER
+    graph.write_query <<-CYPHER
       CREATE (jamie:User{id: "jgaskins", name: "Jamie", email: "jgaskins@example.com"})
 
       CREATE (db:Facet{name: "db"})
