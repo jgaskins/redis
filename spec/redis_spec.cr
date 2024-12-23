@@ -27,7 +27,7 @@ end
 describe Redis::Client do
   test "can set, get, and delete keys" do
     redis.get(random_key).should eq nil
-    redis.set(key, "hello")
+    redis.set(key, "hello").should eq "OK"
     redis.get(key).should eq "hello"
     redis.del(key).should eq 1
     redis.del(key).should eq 0

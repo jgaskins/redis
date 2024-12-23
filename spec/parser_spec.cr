@@ -12,8 +12,13 @@ module Redis
     end
 
     it "reads simple strings" do
-      io = IO::Memory.new("+OK\r\n")
-      Parser.new(io).read.should eq "OK"
+      io = IO::Memory.new("+OK\r\n+QUEUED\r\n+OK\r\n+QUEUED\r\n")
+      parser = Parser.new(io)
+
+      2.times do
+        parser.read.should eq "OK"
+        parser.read.should eq "QUEUED"
+      end
     end
 
     it "reads bulk strings" do

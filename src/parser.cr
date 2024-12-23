@@ -48,7 +48,22 @@ module Redis
           value
         end
       when '+'
-        @io.read_line
+        # Most of the time, RESP simple strings are just "OK", so we can
+        # optimize for that case to avoid heap allocations. If it is *not* the
+        # "OK" string, this does an extra heap allocation, but that seems like
+        # a decent tradeoff considering the vast majority of times a simple
+        # string will be returned from the server is from a SET call.
+        buffer = uninitialized UInt8[4] # "OK\r\n"
+        slice = buffer.to_slice
+        read = @io.read slice
+        result = if read == 4 && slice == "OK\r\n".to_slice
+          "OK"
+        else
+          String.build do |str|
+            str.write slice[0...read]
+            str << @io.read_line
+          end
+        end
       when '-'
         type, message = @io.read_line.split(' ', 2)
         ERROR_MAP[type].new("#{type} #{message}")
