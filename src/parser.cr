@@ -55,14 +55,16 @@ module Redis
         # string will be returned from the server is from a SET call.
         buffer = uninitialized UInt8[4] # "OK\r\n"
         slice = buffer.to_slice
-        read = @io.read slice
-        result = if read == 4 && slice == "OK\r\n".to_slice
+        read = @io.read slice[0, 2] # Just trying to check whether we got "OK"
+        if read == 2 && slice[0, 2] == "OK".to_slice && (second_read = @io.read(slice + 2)) && slice == "OK\r\n".to_slice
           "OK"
+        elsif read == 2 && slice[0, 2] == "\r\n".to_slice
+          ""
         else
           String.build do |str|
-            str.write slice[0...read]
+            str.write slice[0...read + (second_read || 0)]
             str << @io.read_line
-          end
+          end.chomp
         end
       when '-'
         type, message = @io.read_line.split(' ', 2)

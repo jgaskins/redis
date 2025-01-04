@@ -12,12 +12,16 @@ module Redis
     end
 
     it "reads simple strings" do
-      io = IO::Memory.new("+OK\r\n+QUEUED\r\n+OK\r\n+QUEUED\r\n")
+      io = IO::Memory.new("+OK\r\n+QUEUED\r\n+.\r\n+\r\n" * 2)
       parser = Parser.new(io)
 
       2.times do
         parser.read.should eq "OK"
         parser.read.should eq "QUEUED"
+        # With the optimization made in aafe485, we need to ensure we can read
+        # simple strings with a size of less than 2 bytes.
+        parser.read.should eq "."
+        parser.read.should eq ""
       end
     end
 
