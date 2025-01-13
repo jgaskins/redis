@@ -305,13 +305,13 @@ module Redis
     # Drop the specified `index`.
     @[Deprecated("Redis has removed the `FT.DROP` command. It will soon be removed from this client.")]
     def drop(index : String, keepdocs = false)
-      dropindex index, keepdocs
+      dropindex index, !keepdocs
     end
 
     # Drop the specified `index` and, if `dd: true` is passed, deletes the
     # indexed documents from Redis.
     def dropindex(index : String, dd = false)
-      command = ["ft.dropindex", key]
+      command = ["ft.dropindex", index]
       command << "dd" if dd
 
       @redis.run command
