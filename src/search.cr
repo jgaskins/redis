@@ -303,7 +303,7 @@ module Redis
     end
 
     # Drop the specified `index`.
-    @[Deprecated("Redis has removed the `FT.DROP` command. It will soon be removed from this client.")
+    @[Deprecated("Redis has removed the `FT.DROP` command. It will soon be removed from this client.")]
     def drop(index : String, keepdocs = false)
       dropindex index, keepdocs
     end
