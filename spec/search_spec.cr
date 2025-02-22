@@ -284,11 +284,6 @@ module Redis
         matched_hash.should eq %w[name hash-params post_count 1024]
       end
 
-      # name TEXT NOSTEM SORTABLE
-      # body TEXT
-      # location GEO
-      # post_count NUMERIC SORTABLE
-      # section TEXT NOSTEM
       it "can aggregate" do
         longitude = -94.484831
         latitude = 39.050882

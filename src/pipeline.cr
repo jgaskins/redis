@@ -1,6 +1,7 @@
 require "./commands"
 require "./connection"
 require "./value"
+require "./errors"
 
 module Redis
   class Pipeline
@@ -24,7 +25,14 @@ module Redis
     # Read all of the return values from all of the commands we've sent to Redis
     # and resolve all `Redis::Future`s with them in the order they were sent.
     def commit
-      @futures.map(&.resolve(@connection.read))
+      @futures.map_with_index do |future, index|
+        future.resolve(@connection.read)
+      rescue ex
+        raise ResolutionError.new("Failed reading pipeline item #{index}: #{ex.message.inspect}", cause: ex)
+      end
+    end
+
+    class ResolutionError < Error
     end
   end
 

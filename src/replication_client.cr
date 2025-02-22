@@ -310,6 +310,7 @@ class Redis::ReplicationClient
 
       enum State
         StableSync
+        Online
       end
 
       private enum ParseState
