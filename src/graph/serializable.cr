@@ -1,3 +1,5 @@
+require "./error"
+
 module Redis::Graph
   annotation Field
   end

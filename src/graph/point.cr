@@ -1,6 +1,8 @@
+require "json"
+
 module Redis::Graph
   struct Point
-    include JSON::Serializable
+    include ::JSON::Serializable
 
     getter latitude : Float64
     getter longitude : Float64

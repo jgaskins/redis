@@ -2,6 +2,7 @@ require "json"
 require "uuid/json"
 
 require "./redis"
+require "./graph/error"
 require "./graph/value"
 require "./graph/value_type"
 require "./graph/serializable"
@@ -58,9 +59,6 @@ module Redis
   # also support `Bool`, `UUID`, and `Time`.
   @[Experimental("The `Redis::Graph` API is experimental and may be subject to change.")]
   module Graph
-    class Error < ::Redis::Error
-    end
-
     struct Client(Runnable)
       getter cache : Cache
 
@@ -414,8 +412,8 @@ module Redis
             cached = item.ends_with? "1"
           when /Query internal execution time: (\d+\.\d+) milliseconds/
             query_time = $1.to_f64.milliseconds
-          # else
-          #   puts "UNHANDLED METADATA: #{item}"
+            # else
+            #   puts "UNHANDLED METADATA: #{item}"
           end
         end
 
