@@ -68,6 +68,13 @@ module Redis
 
     describe "hashes" do
       it "does a simple search" do
+        redis.pipeline do |pipe|
+          {"#{hash_prefix}:*", "#{json_prefix}:*"}.each do |pattern|
+            redis.scan_each match: pattern, count: 1_000 do |key|
+              pipe.unlink key
+            end
+          end
+        end
         redis.hset "#{hash_prefix}:simple:match", "name", "included"
         redis.hset "#{hash_prefix}:simple:no-match", "name", "excluded"
 
@@ -275,6 +282,130 @@ module Redis
         count.should eq 1
         matched_key.should eq key2
         matched_hash.should eq %w[name hash-params post_count 1024]
+      end
+
+      # name TEXT NOSTEM SORTABLE
+      # body TEXT
+      # location GEO
+      # post_count NUMERIC SORTABLE
+      # section TEXT NOSTEM
+      it "can aggregate" do
+        longitude = -94.484831
+        latitude = 39.050882
+        prefix = "#{hash_prefix}:aggregate"
+        section = "included geo aggregation"
+        redis.pipeline do |redis|
+          redis.hset "#{prefix}:#{UUID.v7}", name: "Gates BBQ", location: "-94.4574691,39.053421", section: section
+          redis.hset "#{prefix}:#{UUID.v7}", name: "Kauffman Center", location: "-94.5900884,39.0941843", section: section
+          redis.hset "#{prefix}:#{UUID.v7}", name: "Kansas City International Airport", location: "-94.7104536,39.3014091", section: section
+        end
+
+        response = redis.ft.aggregate! hash_index, "@section:(#{section}) @location:[$longitude $latitude 20 mi]",
+          # load the name attribute for the assertions below
+          # load the location to apply an attribute derived from it
+          load: %w[name location],
+          # Add distance calculation
+          apply: Redis::FullText::Apply.new("geodistance(@location, #{longitude}, #{latitude})/1609", as: "distance_in_miles"),
+          # Sort by that distance
+          sortby: Redis::FullText::SortByAggregate.new("@distance_in_miles", :asc),
+          params: {
+            # Arrowhead Stadium
+            longitude: longitude,
+            latitude:  latitude,
+          }
+
+        response.size.should eq 3 # count + 2 results
+        count, *results = response
+        count.should eq 2
+        results.size.should eq 2
+        results = results.map { |result| Redis.to_hash(result.as(Array)) }
+        # We can rely on ordering here because we're sorting by distance_in_miles
+        results.map { |result| result["name"] }.should eq [
+          "Gates BBQ",
+          "Kauffman Center",
+        ]
+      end
+
+      it "can aggregate with reducers" do
+        prefix = "#{hash_prefix}:aggregate-reduce"
+        included_key = "#{prefix}:included"
+        included_key2 = "#{prefix}:included2"
+        included_key3 = "#{prefix}:included3"
+        excluded_key = "#{prefix}:excluded"
+        name = "included aggregate reduce"
+        redis.hset included_key, name: name, post_count: "10", section: "first"
+        redis.hset included_key2, name: name, post_count: "20", section: "second"
+        redis.hset included_key3, name: name, post_count: "15", section: "third"
+        redis.hset excluded_key, name: "excluded aggregate reduce", post_count: "1000"
+
+        response = redis.ft.aggregate! hash_index, "@name:(included aggregate reduce)",
+          load: %w[@name post_count],
+          groupby: Redis::FullText::GroupBy.new("@name")
+            .reduce(&.count)
+            .reduce(&.count(as: "count"))
+            .reduce(&.sum("@post_count"))
+            .reduce(&.sum("@post_count", as: "post_count"))
+            .reduce(&.count_distinct("@name"))
+            .reduce(&.count_distinct("@name", as: "distinct_names"))
+            .reduce(&.count_distinctish("@name"))
+            .reduce(&.count_distinctish("@name", as: "distinctish_names"))
+            .reduce(&.min("@post_count"))
+            .reduce(&.min("@post_count", as: "min_post_count"))
+            .reduce(&.max("@post_count"))
+            .reduce(&.max("@post_count", as: "max_post_count"))
+            .reduce(&.avg("@post_count"))
+            .reduce(&.avg("@post_count", as: "avg_post_count"))
+            .reduce(&.stddev("@post_count"))
+            .reduce(&.stddev("@post_count", as: "stddev_post_count"))
+            .reduce(&.quantile("@post_count", "0.5"))
+            .reduce(&.quantile("@post_count", "0.5", as: "median_post_count"))
+            .reduce(&.tolist("@section"))
+            .reduce(&.tolist("@section", as: "section_values"))
+            .reduce(&.first_value("@post_count"))
+            .reduce(&.first_value("@post_count", as: "first_post_count"))
+            .reduce(&.first_value("@section", by: "@post_count", order: :asc))
+            .reduce(&.first_value("@section", by: "@post_count", order: :asc, as: "first_section_by_post_count_asc"))
+            .reduce(&.first_value("@section", by: "@post_count", order: :desc))
+            .reduce(&.first_value("@section", by: "@post_count", order: :desc, as: "first_section_by_post_count_desc"))
+            .reduce(&.random_sample("@section", 2))
+            .reduce(&.random_sample("@section", 2, as: "random_sections"))
+
+        response.size.should eq 2 # 1 for the count, one for the lone result
+        count, result = response
+        count.should eq 1
+        result = Redis.to_hash(result.as(Array))
+        result["name"].should eq "included aggregate reduce"
+        result["count"].should eq "3"
+        result["__generated_aliassumpost_count"].should eq "45"
+        result["post_count"].should eq "45"
+        result["__generated_aliascount_distinctname"].should eq "1"
+        result["distinct_names"].should eq "1"
+        result["__generated_aliascount_distinctishname"].should eq "1"
+        result["distinctish_names"].should eq "1"
+        result["__generated_aliasminpost_count"].should eq "10"
+        result["min_post_count"].should eq "10"
+        result["__generated_aliasmaxpost_count"].should eq "20"
+        result["max_post_count"].should eq "20"
+        result["__generated_aliasavgpost_count"].should eq "15"
+        result["avg_post_count"].should eq "15"
+        result["__generated_aliasstddevpost_count"].should eq "5"
+        result["stddev_post_count"].should eq "5"
+        result["__generated_aliasquantilepost_count,0.5"].should eq "15"
+        result["median_post_count"].should eq "15"
+        %w[first second third].each do |value|
+          result["__generated_aliastolistsection"].as(Array).should contain value
+          result["section_values"].as(Array).should contain value
+        end
+        # We aren't ordering on these, so it could match any of them. I'm not sure
+        # how useful that is, but we'll assume Redis supports it for a reason.
+        %w[10 15 20].should contain result["__generated_aliasfirst_valuepost_count"]
+        %w[10 15 20].should contain result["first_post_count"]
+        result["__generated_aliasfirst_valuesection,by,post_count,asc"].should eq "first"
+        result["first_section_by_post_count_asc"].should eq "first"
+        result["__generated_aliasfirst_valuesection,by,post_count,desc"].should eq "second"
+        result["first_section_by_post_count_desc"].should eq "second"
+        result["__generated_aliasrandom_samplesection,2"].as(Array).size.should eq 2
+        result["random_sections"].as(Array).size.should eq 2
       end
     end
 

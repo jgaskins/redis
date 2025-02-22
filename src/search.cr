@@ -1,5 +1,7 @@
 require "./redis"
 
+require "./search/aggregate"
+
 module Redis
   # `Redis::FullText` wraps a `Redis::Client` or `Redis::Cluster` to execute
   # commands against a fulltext search index located on a given server.
@@ -272,7 +274,6 @@ module Redis
         in Hash
           params.each { |(key, value)| command << key << value }
         in Nil
-          # This should never happen
         end
         dialect ||= 2
       end
@@ -303,7 +304,7 @@ module Redis
     end
 
     # Drop the specified `index`.
-    @[Deprecated("Redis has removed the `FT.DROP` command. It will soon be removed from this client.")]
+    @[Deprecated("Redis has removed the `FT.DROP` command and it will soon be removed from this client. Please use `dropindex` instead.")]
     def drop(index : String, keepdocs = false)
       dropindex index, !keepdocs
     end
