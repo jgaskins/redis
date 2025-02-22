@@ -8,7 +8,7 @@ module Redis
     end
 
     # :nodoc:
-    def encode(values : Enumerable(String))
+    def encode(values : Enumerable(String) | Enumerable(Bytes) | Enumerable(String | Bytes))
       io << '*' << values.size << CRLF
       values.each do |part|
         encode part
@@ -19,6 +19,12 @@ module Redis
     def encode(string : String)
       io << '$' << string.bytesize << CRLF
       io << string << CRLF
+    end
+
+    def encode(bytes : Slice)
+      io << '$' << bytes.size << CRLF
+      io.write bytes
+      io << CRLF
     end
   end
 end
