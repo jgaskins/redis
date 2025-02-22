@@ -97,6 +97,27 @@ describe Redis::JSON do
     end
   end
 
+  it "gets many values and deserializes them as the given type" do
+    included = UUID.v7.to_s
+    empty = UUID.v7.to_s
+
+    redis.json.set included, ".", {
+      customer: {
+        name:    "Jamie",
+        address: "123 Main St",
+      },
+      products: [
+        {product_id: UUID.random, name: "Shirt", quantity: 1, price_cents: 123_45},
+        {product_id: UUID.random, name: "Pants", quantity: 1, price_cents: 123_45},
+        {product_id: UUID.random, name: "Socks", quantity: 2, price_cents: 123_45},
+      ],
+    }
+
+    results = redis.json.mget [included, empty], ".", as: Order
+
+    results.should be_a Array(Order?)
+  end
+
   test "increments numbers" do
     redis.json.set key, ".", {
       customer: {

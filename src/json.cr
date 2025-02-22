@@ -152,7 +152,7 @@ module Redis
     # `{}` around the same part of the name) to ensure all keys are on the same
     # shard.
     def mget(keys : Array(String), path : String, as type : T.class) : Array(T?) forall T
-      return [] of T if keys.empty?
+      return [] of T? if keys.empty?
 
       if result = @redis.run(["json.mget"] + keys + [path])
         result.as(Array).map do |value|
