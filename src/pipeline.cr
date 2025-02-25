@@ -43,8 +43,9 @@ module Redis
     getter? resolved = false
 
     # Resolves a Future with the supplied Redis::Value
-    def resolve(@value : Value)
+    def resolve(value : Value)
       @resolved = true
+      @value = value
     end
 
     # Read the value contained in this Future after it is resolved. If this
