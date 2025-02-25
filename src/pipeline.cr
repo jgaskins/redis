@@ -26,7 +26,7 @@ module Redis
     # and resolve all `Redis::Future`s with them in the order they were sent.
     def commit
       @futures.map_with_index do |future, index|
-        future.resolve(@connection.read)
+        future.resolve(@connection.parser.read)
       rescue ex
         raise ResolutionError.new("Failed reading pipeline item #{index}: #{ex.message.inspect}", cause: ex)
       end

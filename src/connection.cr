@@ -16,6 +16,7 @@ module Redis
     include Commands
 
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
+    protected getter parser : Parser
 
     # We receive all connection information in the URI.
     #
