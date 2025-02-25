@@ -12,8 +12,8 @@ private def random_key
   UUID.random.to_s
 end
 
-private macro test(msg, &block)
-  it {{msg}} do
+private macro test(msg, **options, &block)
+  it({{msg}}, {{options.double_splat}}) do
     key = random_key
 
     begin
