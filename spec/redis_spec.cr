@@ -301,6 +301,18 @@ describe Redis::Client do
     second_decr.value.should eq 0
   end
 
+  test "does not raise on pipeline errors, returns them instead" do
+    set_result, error_result, get_result = redis.pipeline do |redis|
+      redis.set key, "lol"
+      redis.set key, "", ex: -1.second
+      redis.get key
+    end
+
+    set_result.should eq "OK"
+    error_result.should be_a Redis::Error
+    get_result.should eq "lol" # Still set to the original value we set it to
+  end
+
   test "checking for existence of keys" do
     redis.exists(key).should eq 0
 
