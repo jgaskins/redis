@@ -352,7 +352,7 @@ describe Redis::Client do
   describe "streams" do
     test "can use streams" do
       # entry_id = redis.xadd key, "*", {"foo" => "bar"}
-      entry_id = redis.xadd key, "*", foo: "bar"
+      entry_id = redis.xadd key, "*", {foo: "bar"}
       range = redis.xrange(key, "-", "+")
       range.size.should eq 1
       range.each do |result|
@@ -362,9 +362,30 @@ describe Redis::Client do
       end
     end
 
-    test "can cap streams" do
+    test "can cap streams by event count" do
       redis.pipeline do |pipe|
-        11.times { pipe.xadd key, "*", maxlen: "10", foo: "bar" }
+        11.times do
+          pipe.xadd key, "*",
+            maxlen: {"=", "10"},
+            fields: {foo: "bar"}
+        end
+      end
+
+      redis.xlen(key).should eq 10
+    end
+
+    test "can cap streams by id" do
+      results = redis.pipeline do |pipe|
+        minid = 10.seconds.ago.to_unix_ms.to_s
+
+        10.times do |i|
+          pipe.xadd key,
+            "#{(11 - i).seconds.ago.to_unix_ms.to_s}-#{i}",
+            {foo: "bar"}
+        end
+        pipe.xadd key, "*",
+          minid: {"=", minid},
+          fields: {foo: "bar"}
       end
 
       redis.xlen(key).should eq 10
@@ -372,7 +393,7 @@ describe Redis::Client do
 
     test "can approximately cap streams" do
       redis.pipeline do |pipe|
-        2_000.times { pipe.xadd key, "*", maxlen: {"~", "10"}, foo: "bar" }
+        2_000.times { pipe.xadd key, "*", maxlen: {"~", "10"}, fields: {foo: "bar"} }
       end
 
       redis.xlen(key).should be <= 100
@@ -383,7 +404,7 @@ describe Redis::Client do
       group = "my-group"
 
       begin
-        entry_id = redis.xadd key, "*", foo: "bar"
+        entry_id = redis.xadd key, "*", {foo: "bar"}
         # Create a group to consume this stream starting at the beginning
         redis.xgroup "create", key, group, "0"
         consumer_id = UUID.random.to_s

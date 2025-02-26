@@ -8,61 +8,89 @@ module Redis::Commands::Stream
   # efficiently. This method returns the `id` that Redis stores.
   #
   # ```
-  # redis.xadd "my-stream", "*", name: "foo", id: UUID.random.to_s
+  # redis.xadd "my-stream", "*", {name: "foo", id: UUID.random.to_s}
   # ```
-  def xadd(key : String, id : String, maxlen = nil, **data)
-    command = Array(String).new(initial_capacity: data.size * 2 + 6)
+  @[Deprecated(%{Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional `maxlen` and `minid` when passed as string values. Use the `fields: {foo: "bar"}` overload instead.})]
+  def xadd(key : String, id : String, **fields : String)
+    xadd key, id, fields
+  end
+
+  @[Deprecated(%{Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional `maxlen` and `minid` when passed as string values. Use the `fields: {foo: "bar"}` overload instead.})]
+  def xadd(key : String, id : String, *, maxlen, **fields : String)
+    xadd key, id, maxlen: maxlen, fields: fields
+  end
+
+  @[Deprecated(%{Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional `maxlen` and `minid` when passed as string values. Use the `fields: {foo: "bar"}` overload instead.})]
+  def xadd(key : String, id : String, *, minid, **fields : String)
+    xadd key, id, minid: minid, fields: fields
+  end
+
+  # Append an entry with the specified data to the stream with the given `key`
+  # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
+  # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
+  # If `maxlen` is provided, Redis will trim the stream to the specified
+  # length. If `maxlen` is of the form `~ 1000`, Redis will trim it to
+  # *approximately* that length, removing entries when it can do so
+  # efficiently. This method returns the `id` that Redis stores.
+  #
+  # ```
+  # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
+  # ```
+  def xadd(key : String, id : String, fields : NamedTuple | ::Hash(String, String))
+    xadd key, id, maxlen: nil, minid: nil, fields: fields
+  end
+
+  # Append an entry with the specified data to the stream with the given `key`
+  # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
+  # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
+  # If `maxlen` is provided, Redis will trim the stream to the specified
+  # length. If `maxlen` is of the form `~ 1000`, Redis will trim it to
+  # *approximately* that length, removing entries when it can do so
+  # efficiently. This method returns the `id` that Redis stores.
+  #
+  # ```
+  # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
+  # ```
+  def xadd(key : String, id : String, *, maxlen, fields : NamedTuple | ::Hash(String, String))
+    xadd key, id, maxlen: maxlen, minid: nil, fields: fields
+  end
+
+  def xadd(key : String, id : String, *, minid, fields : NamedTuple | ::Hash(String, String))
+    xadd key, id, maxlen: nil, minid: minid, fields: fields
+  end
+
+  def xadd(
+    key : String,
+    id : String,
+    *,
+    maxlen : {String, String}?,
+    minid : {String, String}?,
+    fields : NamedTuple | Hash(String, String),
+  )
+    command = Array(String).new(initial_capacity: 3 + fields.size * 2)
     command << "xadd" << key
     if maxlen
       command << "maxlen"
       case maxlen
-      when Tuple
-        maxlen.each { |entry| command << entry }
-      when String
+      in String
         command << maxlen
+      in Tuple(String, String)
+        command << maxlen[0] << maxlen[1]
+      in Nil
+      end
+    elsif minid
+      command << "minid"
+      case minid
+      in String
+        command << minid
+      in Tuple(String, String)
+        command << minid[0] << minid[1]
+      in Nil
       end
     end
     command << id
-    data.each do |key, value|
-      command << key.to_s << value
-    end
-
-    run command
-  end
-
-  # Append an entry with the specified data to the stream with the given `key`
-  # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
-  # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
-  # If `maxlen` is provided, Redis will trim the stream to the specified
-  # length. If `maxlen` is of the form `~ 1000`, Redis will trim it to
-  # *approximately* that length, removing entries when it can do so
-  # efficiently. This method returns the `id` that Redis stores.
-  #
-  # ```
-  # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
-  # ```
-  def xadd(key : String, id : String, data : ::Hash(String, String))
-    xadd key, id, maxlen: nil, data: data
-  end
-
-  # Append an entry with the specified data to the stream with the given `key`
-  # and gives it the specified `id`. If the id is `"*"`, Redis will assign it
-  # an id of the form `"#{Time.utc.to_unix_ms}-#{autoincrementing_index}"`.
-  # If `maxlen` is provided, Redis will trim the stream to the specified
-  # length. If `maxlen` is of the form `~ 1000`, Redis will trim it to
-  # *approximately* that length, removing entries when it can do so
-  # efficiently. This method returns the `id` that Redis stores.
-  #
-  # ```
-  # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
-  # ```
-  def xadd(key : String, id : String, maxlen, data : ::Hash(String, String))
-    command = Array(String).new(initial_capacity: data.size * 2 + 3)
-    command << "xadd" << key
-    command << "maxlen" << maxlen if maxlen
-    command << id
-    data.each do |key, value|
-      command << key << value
+    fields.each do |field, value|
+      command << field.to_s << value
     end
 
     run command
@@ -89,9 +117,7 @@ module Redis::Commands::Stream
   # If `count` is provided, Redis will return only that number of entries.
   def xrange(key : String, start min : String, end max : String, count : String | Int | Nil = nil)
     command = {"xrange", key, min, max}
-    if count
-      command += {"count", count.to_s}
-    end
+    command += {"count", count.to_s} if count
 
     run command
   end
@@ -155,7 +181,7 @@ module Redis::Commands::Stream
     count : String | Int | Nil = nil,
     block : Time::Span | String | Int | Nil = nil,
     no_ack = false,
-    streams : ::Hash(String, String) = {} of String => String
+    streams : ::Hash(String, String) = {} of String => String,
   )
     command = Array(String).new(initial_capacity: 9 + streams.size * 2)
     command << "xreadgroup" << "group" << group << consumer
@@ -198,7 +224,7 @@ module Redis::Commands::Stream
     count : String | Int | Nil = nil,
     block : Time::Span | String | Int | Nil = nil,
     no_ack = false,
-    streams : NamedTuple = NamedTuple.new
+    streams : NamedTuple = NamedTuple.new,
   )
     command = Array(String).new(initial_capacity: 9 + streams.size * 2)
     command << "xreadgroup" << "group" << group << consumer
@@ -232,7 +258,7 @@ module Redis::Commands::Stream
     start : String,
     end finish : String,
     count : String | Int,
-    idle : String | Time::Span | Nil = nil
+    idle : String | Time::Span | Nil = nil,
   )
     command = {"xpending", key, group}
     case idle
@@ -264,7 +290,7 @@ module Redis::Commands::Stream
     consumer : String,
     min_idle_time : Time::Span,
     start : String,
-    count : Int | String | Nil = nil
+    count : Int | String | Nil = nil,
   )
     min_idle_time = min_idle_time.total_milliseconds.to_i.to_s
     command = {"xautoclaim", key, group, consumer, min_idle_time, start}
