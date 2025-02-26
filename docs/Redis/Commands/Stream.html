@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.2">
+<meta name="crystal_docs.project_version" content="0.11.3">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::Stream - redis 0.11.2</title>
+  <title>Redis::Commands::Stream - redis 0.11.3</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.2
+        0.11.3
       </span>
     </div>
   </div>
@@ -846,7 +846,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L1" target="_blank">
         commands/stream.cr
       </a>
     
@@ -884,23 +884,48 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#xadd%28key%3AString%2Cid%3AString%2Cmaxlen%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, maxlen, data : ::Hash(String, String))</a>
+        <a href="#xadd%28key%3AString%2Cid%3AString%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, fields : NamedTuple | ::Hash(String, String))</a>
         
           <div class="summary"><p>Append an entry with the specified data to the stream with the given <code>key</code> and gives it the specified <code>id</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#xadd%28key%3AString%2Cid%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, data : ::Hash(String, String))</a>
+        <a href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cmaxlen%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, *, maxlen, fields : NamedTuple | ::Hash(String, String))</a>
         
           <div class="summary"><p>Append an entry with the specified data to the stream with the given <code>key</code> and gives it the specified <code>id</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#xadd%28key%3AString%2Cid%3AString%2Cmaxlen%3Dnil%2C%2A%2Adata%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, maxlen = <span class="n">nil</span>, **data)</a>
+        <a href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cminid%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, *, minid, fields : NamedTuple | ::Hash(String, String))</a>
         
-          <div class="summary"><p>Append an entry with the specified data to the stream with the given <code>key</code> and gives it the specified <code>id</code>.</p></div>
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cmaxlen%3ATuple%28String%2CString%29%7CNil%2Cminid%3ATuple%28String%2CString%29%7CNil%2Cfields%3ANamedTuple%7CHash%28String%2CString%29%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, *, maxlen : Tuple(String, String) | Nil, minid : Tuple(String, String) | Nil, fields : NamedTuple | Hash(String, String))</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Afields%3AString%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, **fields : String)</a>
+        
+          <div class="summary"><p>Append an entry with the specified data to the stream with the given <code>key</code> and gives it the specified <code>id</code>.</p>
+<p><span class="flag red">DEPRECATED</span>  Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional <code>maxlen</code> and <code>minid</code> when passed as string values. Use the <code>fields: {foo: &quot;bar&quot;}</code> overload instead.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cmaxlen%2C%2A%2Afields%3AString%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, *, maxlen, **fields : String)</a>
+        
+          <div class="summary"><p><span class="flag red">DEPRECATED</span>  Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional <code>maxlen</code> and <code>minid</code> when passed as string values. Use the <code>fields: {foo: &quot;bar&quot;}</code> overload instead.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cminid%2C%2A%2Afields%3AString%29-instance-method" class="signature"><strong>#xadd</strong>(key : String, id : String, *, minid, **fields : String)</a>
+        
+          <div class="summary"><p><span class="flag red">DEPRECATED</span>  Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional <code>maxlen</code> and <code>minid</code> when passed as string values. Use the <code>fields: {foo: &quot;bar&quot;}</code> overload instead.</p></div>
         
       </li>
     
@@ -1027,7 +1052,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L249" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L275" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1043,17 +1068,17 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L253" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L279" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xadd(key:String,id:String,maxlen,data:::Hash(String,String))-instance-method">
+    <div class="entry-detail" id="xadd(key:String,id:String,fields:NamedTuple|::Hash(String,String))-instance-method">
       <div class="signature">
         
-        def <strong>xadd</strong>(key : String, id : String, maxlen, data : ::Hash(String, String))
+        def <strong>xadd</strong>(key : String, id : String, fields : NamedTuple | ::Hash(String, String))
 
-        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2Cmaxlen%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1071,17 +1096,17 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xadd(key:String,id:String,data:::Hash(String,String))-instance-method">
+    <div class="entry-detail" id="xadd(key:String,id:String,*,maxlen,fields:NamedTuple|::Hash(String,String))-instance-method">
       <div class="signature">
         
-        def <strong>xadd</strong>(key : String, id : String, data : ::Hash(String, String))
+        def <strong>xadd</strong>(key : String, id : String, *, maxlen, fields : NamedTuple | ::Hash(String, String))
 
-        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cmaxlen%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1099,17 +1124,49 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L44" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xadd(key:String,id:String,maxlen=nil,**data)-instance-method">
+    <div class="entry-detail" id="xadd(key:String,id:String,*,minid,fields:NamedTuple|::Hash(String,String))-instance-method">
       <div class="signature">
         
-        def <strong>xadd</strong>(key : String, id : String, maxlen = <span class="n">nil</span>, **data)
+        def <strong>xadd</strong>(key : String, id : String, *, minid, fields : NamedTuple | ::Hash(String, String))
 
-        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2Cmaxlen%3Dnil%2C%2A%2Adata%29-instance-method">#</a>
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cminid%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L58" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xadd(key:String,id:String,*,maxlen:Tuple(String,String)|Nil,minid:Tuple(String,String)|Nil,fields:NamedTuple|Hash(String,String))-instance-method">
+      <div class="signature">
+        
+        def <strong>xadd</strong>(key : String, id : String, *, maxlen : Tuple(String, String) | Nil, minid : Tuple(String, String) | Nil, fields : NamedTuple | <a href="../../Redis/Commands/Hash.html">Hash</a>(String, String))
+
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cmaxlen%3ATuple%28String%2CString%29%7CNil%2Cminid%3ATuple%28String%2CString%29%7CNil%2Cfields%3ANamedTuple%7CHash%28String%2CString%29%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L62" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xadd(key:String,id:String,**fields:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>xadd</strong>(key : String, id : String, **fields : String)
+
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Afields%3AString%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1121,13 +1178,56 @@ If <code>maxlen</code> is provided, Redis will trim the stream to the specified
 length. If <code>maxlen</code> is of the form <code>~ 1000</code>, Redis will trim it to
 <em>approximately</em> that length, removing entries when it can do so
 efficiently. This method returns the <code>id</code> that Redis stores.</p>
-<pre><code class="language-crystal">redis.xadd <span class="s">&quot;my-stream&quot;</span>, <span class="s">&quot;*&quot;</span>, name: <span class="s">&quot;foo&quot;</span>, id: <span class="t">UUID</span>.random.to_s</code></pre>
+<pre><code class="language-crystal">redis.xadd <span class="s">&quot;my-stream&quot;</span>, <span class="s">&quot;*&quot;</span>, {name: <span class="s">&quot;foo&quot;</span>, id: <span class="t">UUID</span>.random.to_s}</code></pre>
+<p><span class="flag red">DEPRECATED</span>  Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional <code>maxlen</code> and <code>minid</code> when passed as string values. Use the <code>fields: {foo: &quot;bar&quot;}</code> overload instead.</p>
         </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xadd(key:String,id:String,*,maxlen,**fields:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>xadd</strong>(key : String, id : String, *, maxlen, **fields : String)
+
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cmaxlen%2C%2A%2Afields%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag red">DEPRECATED</span>  Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional <code>maxlen</code> and <code>minid</code> when passed as string values. Use the <code>fields: {foo: &quot;bar&quot;}</code> overload instead.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L19" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xadd(key:String,id:String,*,minid,**fields:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>xadd</strong>(key : String, id : String, *, minid, **fields : String)
+
+        <a class="method-permalink" href="#xadd%28key%3AString%2Cid%3AString%2C%2A%2Cminid%2C%2A%2Afields%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p><span class="flag red">DEPRECATED</span>  Using keyword arguments for stream event fields is deprecated and will be removed in a future release. It causes conflicts with optional <code>maxlen</code> and <code>minid</code> when passed as string values. Use the <code>fields: {foo: &quot;bar&quot;}</code> overload instead.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1143,7 +1243,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L287" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1159,7 +1259,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L75" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L103" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1175,7 +1275,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1197,7 +1297,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L135" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L161" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1219,7 +1319,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L113" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1241,7 +1341,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L144" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L170" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1257,7 +1357,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L125" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1278,7 +1378,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L104" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1299,7 +1399,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1315,7 +1415,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L229" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L255" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1336,7 +1436,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L225" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L251" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1358,7 +1458,7 @@ If <code>count</code> is provided, Redis will return only that number of entries
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L90" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L118" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1381,7 +1481,7 @@ If <code>count</code> is provided, Redis will return only that number of entries
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L152" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L178" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1411,7 +1511,7 @@ response <span class="o">=</span> <span class="t">Redis</span><span class="t">::
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/commands/stream.cr#L195" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/stream.cr#L221" target="_blank">View source</a>]
         
       </div>
     </div>

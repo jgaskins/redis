@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.2">
+<meta name="crystal_docs.project_version" content="0.11.3">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Client - redis 0.11.2</title>
+  <title>Redis::Client - redis 0.11.3</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.2
+        0.11.3
       </span>
     </div>
   </div>
@@ -868,7 +868,7 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L21" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L21" target="_blank">
         client.cr
       </a>
     
@@ -1228,8 +1228,8 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     xack</a>, 
     
   
-    <a href="../Redis/Commands/Stream.html#xadd%28key%3AString%2Cid%3AString%2Cmaxlen%2Cdata%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
-      <span>xadd(key : String, id : String, maxlen, data : ::Hash(String, String))<br/>xadd(key : String, id : String, data : ::Hash(String, String))<br/>xadd(key : String, id : String, maxlen = <span class="n">nil</span>, **data)</span>
+    <a href="../Redis/Commands/Stream.html#xadd%28key%3AString%2Cid%3AString%2Cfields%3ANamedTuple%7C%3A%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
+      <span>xadd(key : String, id : String, fields : NamedTuple | ::Hash(String, String))<br/>xadd(key : String, id : String, *, maxlen, fields : NamedTuple | ::Hash(String, String))<br/>xadd(key : String, id : String, *, minid, fields : NamedTuple | ::Hash(String, String))<br/>xadd(key : String, id : String, *, maxlen : Tuple(String, String) | Nil, minid : Tuple(String, String) | Nil, fields : NamedTuple | Hash(String, String))<br/>xadd(key : String, id : String, **fields : String)<br/>xadd(key : String, id : String, *, maxlen, **fields : String)<br/>xadd(key : String, id : String, *, minid, **fields : String)</span>
     xadd</a>, 
     
   
@@ -1608,7 +1608,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L32" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1636,7 +1636,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L26" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1666,7 +1666,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L92" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1682,7 +1682,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L61" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L61" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1698,7 +1698,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L80" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L80" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1714,7 +1714,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L76" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L76" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1730,7 +1730,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L88" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1754,7 +1754,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L72" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L72" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1770,7 +1770,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L57" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L57" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1786,7 +1786,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.2/src/client.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/client.cr#L84" target="_blank">View source</a>]
         
       </div>
     </div>
