@@ -180,6 +180,23 @@ module Redis
       run({"exists"} + keys)
     end
 
+    # Return the number of specified keys that exist
+    #
+    # ```
+    # redis.exists(%w[foo bar]) # => 0
+    # redis.set "foo", "exists now"
+    # redis.exists(%w[foo bar]) # => 1
+    # redis.set "bar", "also exists now"
+    # redis.exists(%w[foo bar]) # => 2
+    # ```
+    def exists(keys : Enumerable(String))
+      command = Array(String).new(initial_capacity: 1 + keys.size)
+      command << "exists"
+      command.concat keys
+
+      run command
+    end
+
     def scan(cursor : String = "0", match : String? = nil, count : String | Int | Nil = nil, type : String? = nil)
       # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
       command = {"scan", cursor}
