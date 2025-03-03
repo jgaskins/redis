@@ -122,6 +122,20 @@ module Redis::Commands::Stream
     run command
   end
 
+  def xtrim(key : String, maxlen : {String, String}, limit : String | Int | Nil = nil)
+    command = {"xtrim", key, "maxlen"} + maxlen
+    command += {"limit", limit.to_s} if limit
+
+    run command
+  end
+
+  def xtrim(key : String, minid : {String, String}, limit : String | Int | Nil = nil)
+    command = {"xtrim", key, "minid"} + minid
+    command += {"limit", limit.to_s} if limit
+
+    run command
+  end
+
   def xgroup_create(key : String, groupname : String, *, id : String = "$", mkstream = false)
     xgroup XGroup::CREATE, key, groupname, id: id, mkstream: mkstream
   end
