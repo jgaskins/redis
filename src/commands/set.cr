@@ -33,6 +33,14 @@ module Redis::Commands::Set
     run({"sinter", first} + others)
   end
 
+  def sinter(keys : Enumerable(String))
+    command = Array(String).new(initial_capacity: 1 + keys.size)
+    command << "sinter"
+    command.concat keys
+
+    run command
+  end
+
   def scard(key : String)
     run({"scard", key})
   end
