@@ -420,45 +420,67 @@ describe Redis::Client do
     end
   end
 
-  test "can use transactions" do
-    redis.multi do |redis|
-      redis.set key, "yep"
-      redis.discard
-
-      redis.get "fuck"
-    end.should be_empty
-
-    redis.get(key).should eq nil
-
-    _, nope, _, yep = redis.multi do |redis|
-      redis.set key, "nope"
-      redis.get key
-      redis.set key, "yep"
-      redis.get key
-    end
-
-    nope.should eq "nope"
-    yep.should eq "yep"
-
-    redis.get(key).should eq "yep"
-    redis.del key
-
-    begin
+  context "transactions" do
+    test "returns the results of the commands, like pipelines do" do
+      # Returns
       redis.multi do |redis|
-        redis.set key, "lol"
-
-        raise "oops"
-      ensure
-        redis.get(key).should eq nil
-      end
-    rescue
+        redis.set key, "value"
+        redis.get key
+      end.should eq %w[OK value]
     end
 
-    # Ensure we're still in the same state
-    redis.get(key).should eq nil
-    # Ensure we can still set the key
-    redis.set key, "yep"
-    redis.get(key).should eq "yep"
+    test "returns an empty array when the transaction is discarded" do
+      redis.multi do |redis|
+        redis.set key, "this gets discarded"
+        redis.discard
+        redis.get "this never actually does anything anyway"
+      end.should be_empty
+    end
+
+    test "returns command errors, but does not raise" do
+      redis.multi do |redis|
+        redis.set key, "foo"
+        redis.lpush key, "bar" # error, performing list operation on a string
+        redis.get key
+      end.should eq [
+        "OK",
+        Redis::Error.new("WRONGTYPE Operation against a key holding the wrong kind of value"),
+        "foo",
+      ]
+    end
+
+    test "does more transaction stuff" do
+      redis.get(key).should eq nil
+
+      _, nope, _, yep = redis.multi do |redis|
+        redis.set key, "nope"
+        redis.get key
+        redis.set key, "yep"
+        redis.get key
+      end
+
+      nope.should eq "nope"
+      yep.should eq "yep"
+
+      redis.get(key).should eq "yep"
+      redis.del key
+
+      expect_raises Exception do
+        redis.multi do |redis|
+          redis.set key, "lol"
+
+          raise "oops"
+        ensure
+          redis.get(key).should eq nil
+        end
+
+        # Ensure we're still in the same state
+        redis.get(key).should eq nil
+        # Ensure we can still set the key
+        redis.set key, "yep"
+        redis.get(key).should eq "yep"
+      end
+    end
   end
 
   test "works with lists" do

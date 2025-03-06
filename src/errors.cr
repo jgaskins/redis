@@ -10,7 +10,7 @@ module Redis
       end
     end
 
-    def_equals_and_hash
+    def_equals_and_hash message
   end
 
   Error.define NoGroup
