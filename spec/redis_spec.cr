@@ -203,6 +203,17 @@ describe Redis::Client do
       redis.sadd key, "b", "c"
       redis.scard(key).should eq 3
     end
+
+    test "can scan a set" do
+      values = Array.new(1_000, &.to_s).to_set
+
+      redis.sadd key, values
+      redis.sscan_each key do |key|
+        values.delete key
+      end
+
+      values.should be_empty
+    end
   end
 
   describe "sorted sets" do
@@ -231,6 +242,22 @@ describe Redis::Client do
     test "returns the score of a member in a sorted set at key" do
       redis.zadd(key, "1", "one")
       redis.zscore(key, "one").should eq("1")
+    end
+
+    test "can scan a sorted set", focus: true do
+      values = Array.new(1_000, &.to_s).to_set
+      scores = values.flat_map { |value| [value, rand.to_s] }
+
+      redis.zadd key, scores
+      redis.zscan_each key do |score, member|
+        if values.includes? member
+          values.delete member
+        else
+          raise "Yielded a member that does not exist: #{member}"
+        end
+      end
+
+      values.should be_empty
     end
   end
 
@@ -278,6 +305,25 @@ describe Redis::Client do
       redis.hsetnx(key, "first", "lol").should eq 1
       redis.hsetnx(key, "first", "omg").should eq 0
       redis.hsetnx(key, "second", "lol").should eq 1
+    end
+
+    test "hscan yields each field/value pair" do
+      values = Array
+        .new(1_000) do |i|
+          {i.to_s, rand.to_s}
+        end
+        .to_h
+
+      redis.hset key, values
+      redis.hscan_each key do |field, value|
+        if values[field] == value
+          values.delete field
+        else
+          raise "Yielded a field/value pair that does not exist: #{field.inspect} => #{value.inspect}"
+        end
+      end
+
+      values.should be_empty
     end
   end
 

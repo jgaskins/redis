@@ -74,4 +74,12 @@ module Redis::Commands::SortedSet
   def zscore(key : String, value : String)
     run({"zscore", key, value})
   end
+
+  def zscan(key : String, cursor : String, match pattern : String? = nil, count : String? = nil)
+    command = {"zscan", key, cursor}
+    command += {"match", pattern} if pattern
+    command += {"count", count} if count
+
+    run command
+  end
 end

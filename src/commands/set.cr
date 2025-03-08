@@ -3,6 +3,14 @@ module Redis::Commands::Set
     run({"sadd", key} + values)
   end
 
+  def sadd(key : String, values : Enumerable(String))
+    command = Array(String).new(initial_capacity: 2 + values.size)
+    command << "sadd" << key
+    command.concat values
+
+    run command
+  end
+
   def sismember(key : String, value : String)
     run({"sismember", key, value})
   end
@@ -43,5 +51,13 @@ module Redis::Commands::Set
 
   def scard(key : String)
     run({"scard", key})
+  end
+
+  def sscan(key : String, cursor : String, match pattern : String? = nil, count : String? = nil)
+    command = {"sscan", key, cursor}
+    command += {"match", pattern} if pattern
+    command += {"count", count} if count
+
+    run command
   end
 end

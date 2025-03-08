@@ -189,10 +189,9 @@ module Redis::Commands::Hash
   # end
   # ```
   def hscan(key : String, cursor : String, *, match pattern : String? = nil, count : String | Int | Nil = nil)
-    command = Array(String).new(initial_capacity: 7)
-    command << "hscan" << key << cursor.to_s
-    command << "match" << pattern if pattern
-    command << "count" << count.to_s if count
+    command = {"hscan", key, cursor}
+    command += {"match", pattern} if pattern
+    command += {"count", count.to_s} if count
 
     run command
   end

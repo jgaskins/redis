@@ -374,13 +374,13 @@ module Redis
     # way to iterate over keys than `keys.each` — it avoids loading every key in
     # memory at the same time and also doesn't block the Redis server while it
     # generates the array of all those keys.
-    def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil) : Nil
+    def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil, &) : Nil
       # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
       has_scanned = false
       cursor = "0"
       until has_scanned && cursor == "0"
         has_scanned = true
-        response = scan(cursor, match: pattern, count: count, type: type)
+        response = scan(cursor, match: pattern, count: count.to_s.presence, type: type)
         cursor, results = response.as(Array)
         cursor = cursor.as(String)
         results.as(Array).each do |key|
@@ -389,15 +389,47 @@ module Redis
       end
     end
 
-    def hscan_each(key : String, match pattern : String? = nil, count : String | Int | Nil = nil) : Nil
-      # SCAN cursor [MATCH pattern] [COUNT count] [TYPE type]
-      cursor = ""
-      until cursor == "0"
-        response = hscan(key, cursor, match: pattern, count: count)
+    def hscan_each(key : String, match pattern : String? = nil, count : String | Int | Nil = nil, &) : Nil
+      # HSCAN key cursor [MATCH pattern] [COUNT count]
+      cursor = "0"
+      has_scanned = false
+      until has_scanned && cursor == "0"
+        has_scanned = true
+        response = hscan(key, cursor, match: pattern, count: count.to_s.presence)
+        cursor, results = response.as(Array)
+        cursor = cursor.as(String)
+        results.as(Array).each_slice(2, reuse: true) do |(field, value)|
+          yield field.as(String), value.as(String)
+        end
+      end
+    end
+
+    def sscan_each(key : String, match pattern : String? = nil, count : String | Int | Nil = nil, &) : Nil
+      # SSCAN key cursor [MATCH pattern] [COUNT count]
+      cursor = "0"
+      has_scanned = false
+      until has_scanned && cursor == "0"
+        has_scanned = true
+        response = sscan(key, cursor, match: pattern, count: count.to_s.presence)
         cursor, results = response.as(Array)
         cursor = cursor.as(String)
         results.as(Array).each do |key|
           yield key.as(String)
+        end
+      end
+    end
+
+    def zscan_each(key : String, match pattern : String? = nil, count : String | Int | Nil = nil, & : String, String ->) : Nil
+      # ZSCAN key cursor [MATCH pattern] [COUNT count]
+      cursor = "0"
+      has_scanned = false
+      until has_scanned && cursor == "0"
+        has_scanned = true
+        response = zscan(key, cursor, match: pattern, count: count.to_s.presence)
+        cursor, results = response.as(Array)
+        cursor = cursor.as(String)
+        results.as(Array).each_slice(2, reuse: true) do |(member, score)|
+          yield member.as(String), score.as(String)
         end
       end
     end
