@@ -341,6 +341,17 @@ module Redis
         geopos:    Array,
         geosearch: Array,
       })
+
+
+      # Get the value for the specified key
+      #
+      # ```
+      # redis.set "foo", "bar"
+      # redis.get("foo", as: Bytes) # => "bar"
+      # ```
+      def get_bytes(key : String)
+        get(key).try(&.to_slice)
+      end
     end
 
     set_return_types!
