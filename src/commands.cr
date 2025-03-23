@@ -104,6 +104,11 @@ module Redis
       run({"get", key})
     end
 
+    # Delete `key` and return its value, similar to `Hash#delete` in Crystal.
+    def getdel(key : String)
+      run({"getdel", key})
+    end
+
     # Atomically increment and return the integer value for the specified key,
     # creating it if it does not exist
     #

@@ -34,6 +34,13 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  test "deletes a key and returns its value" do
+    redis.getdel(key).should eq nil
+    redis.set key, "value"
+    redis.getdel(key).should eq "value"
+    redis.get(key).should eq nil
+  end
+
   test "sets a value and returns the previous value" do
     redis.set key, "value"
     redis.set(key, "new value", get: true).should eq "value"
