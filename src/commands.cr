@@ -292,7 +292,7 @@ module Redis
     end
 
     define_eval evalsha, sha
-    define_eval evalsha_ro, script
+    define_eval evalsha_ro, sha
     define_eval eval, script
     define_eval eval_ro, script
 
