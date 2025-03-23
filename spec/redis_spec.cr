@@ -244,7 +244,7 @@ describe Redis::Client do
       redis.zscore(key, "one").should eq("1")
     end
 
-    test "can scan a sorted set", focus: true do
+    test "can scan a sorted set" do
       values = Array.new(1_000, &.to_s).to_set
       scores = values.flat_map { |value| [value, rand.to_s] }
 
