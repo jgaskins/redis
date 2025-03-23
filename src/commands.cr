@@ -42,12 +42,14 @@ module Redis
       run({"keys", pattern})
     end
 
-    def set(key, value, ex : Time, nx = false, xx = false, keepttl = false)
-      set key, value, ex: ex - Time.utc, nx: nx, xx: xx, keepttl: keepttl
+    # Sets the value stored at `key` to `value`, expiring at the given `Time` with millisecond precision.
+    def set(key, value, *, ex : Time, nx = false, xx = false, keepttl = false, get = false)
+      set key, value, ex: ex - Time.utc, nx: nx, xx: xx, keepttl: keepttl, get: get
     end
 
-    def set(key, value, ex : Time::Span, nx = false, xx = false, keepttl = false)
-      set key, value, px: ex.total_milliseconds.to_i64, nx: nx, xx: xx, keepttl: keepttl
+    # Sets the value stored at `key` to `value`, expiring after the given `Time::Span` with millisecond precision.
+    def set(key, value, *, ex : Time::Span, nx = false, xx = false, keepttl = false, get = false)
+      set key, value, px: ex.total_milliseconds.to_i64, nx: nx, xx: xx, keepttl: keepttl, get: get
     end
 
     # Set the value stored at `key` to `value`, optionally specifying expiration.
@@ -64,8 +66,23 @@ module Redis
     # redis.get("foo") # => "bar"
     # sleep 1.second
     # redis.get("foo") # => nil
+    #
+    # # Does not overwrite when `nx` is truthy
+    # redis.set "foo", "value", nx: true       # => "OK"
+    # redis.set "foo", "other-value", nx: true # => nil
+    #
+    # # Does not create a key when `xx` is truthy
+    # redis.del "update-only"
+    # redis.set "update-only", "this will not be set", xx: true # => nil
+    #
+    # # Returns the previous value when `get` is truthy
+    # redis.set "key", "value"                # => "OK"
+    # redis.set "key", "new-value", get: true # => "value"
+    # redis.get "key"                         # => "new-value"
     # ```
-    def set(key : String, value : String, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false, get = false)
+    #
+    # NOTE: `nx` and `xx` are mutually exclusive, as are `ex` and `px`. They exist in the same method signature only to avoid an explosion of `set` implementations.
+    def set(key : String, value : String, *, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false, get = false)
       command = {"set", key, value}
       command += {"nx"} if nx
       command += {"xx"} if xx
