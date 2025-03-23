@@ -129,7 +129,7 @@ module Redis::Commands::List
     command = Array(String).new(2 + keys.size)
     command << "blpop"
     command.concat keys
-    command << timeout.total_seconds.to_i.to_s
+    command << timeout.total_seconds.to_f.to_s
 
     run command
   end
