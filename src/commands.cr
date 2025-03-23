@@ -50,12 +50,13 @@ module Redis
       set key, value, px: ex.total_milliseconds.to_i64, nx: nx, xx: xx, keepttl: keepttl
     end
 
-    # Set a given key to a given value, optionally specifying time-to-live (TTL).
+    # Set the value stored at `key` to `value`, optionally specifying expiration.
     #
-    # - `ex`: TTL in seconds (mnemonic: "ex" = "expiration")
-    # - `px`: TTL in milliseconds
     # - `nx`: Only set this key if it does not exist (mnemonic: "nx" = it does "not exist")
     # - `xx`: only set this key if it does exist (mnemonic: "xx" = it "exists exists" — look, I don't make the rules)
+    # - `get`: Return the previous value stored in `key`, providing the functionality in [`GETSET`](https://redis.io/docs/latest/commands/getset/)
+    # - `ex`: TTL in seconds (mnemonic: "ex" = "expiration")
+    # - `px`: TTL in milliseconds
     # - `keepttl`: If there is a TTL already set on the key, retain that TTL instead of overwriting it
     #
     # ```
@@ -64,10 +65,11 @@ module Redis
     # sleep 1.second
     # redis.get("foo") # => nil
     # ```
-    def set(key : String, value : String, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false)
+    def set(key : String, value : String, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false, get = false)
       command = {"set", key, value}
       command += {"nx"} if nx
       command += {"xx"} if xx
+      command += {"get"} if get
       command += {"ex", ex.to_s} if ex
       command += {"px", px.to_s} if px
       command += {"keepttl"} if keepttl

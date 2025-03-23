@@ -34,6 +34,12 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  test "sets a value and returns the previous value" do
+    redis.set key, "value"
+    redis.set(key, "new value", get: true).should eq "value"
+    redis.get(key).should eq "new value"
+  end
+
   test "can set expiration timestamps on keys" do
     redis.set key, "foo", ex: 10.milliseconds.from_now
     redis.get(key).should eq "foo"
