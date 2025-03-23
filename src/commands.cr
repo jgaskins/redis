@@ -58,10 +58,10 @@ module Redis
     # ```
     def set(key : String, value : String, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false)
       command = {"set", key, value}
-      command += {"ex", ex.to_s} if ex
-      command += {"px", px.to_s} if px
       command += {"nx"} if nx
       command += {"xx"} if xx
+      command += {"ex", ex.to_s} if ex
+      command += {"px", px.to_s} if px
       command += {"keepttl"} if keepttl
 
       run command
