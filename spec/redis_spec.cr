@@ -623,52 +623,59 @@ describe Redis::Client do
     end
   end
 
-  it "can publish and subscribe" do
-    ready = false
-    spawn do
-      until ready
-        Fiber.yield
+  # FIXME: These specs don't assert, which is confusing. The reason they still
+  # validate that pubsub works is that they publish messages on a channel, which
+  # unsubscribes. `redis.subscribe` and `redis.unsubscribe` both block the fiber
+  # while those subscriptions are active, so if pubsub didn't work for any
+  # reason these specs would simply stall which is not a good spec failure mode.
+  context "pubsub" do
+    it "can publish and subscribe" do
+      ready = false
+      spawn do
+        until ready
+          Fiber.yield
+        end
+        # Publishes happen on other connections
+        spawn redis.publish "foo", "unsub"
+        spawn redis.publish "bar", "unsub"
       end
-      # Publishes happen on other connections
-      spawn redis.publish "foo", "unsub"
-      spawn redis.publish "bar", "unsub"
-    end
 
-    redis.subscribe "foo", "bar" do |subscription, conn|
-      subscription.on_message do |channel, message|
-        if message == "unsub"
-          conn.unsubscribe channel
+      redis.subscribe "foo", "bar" do |subscription, conn|
+        subscription.on_message do |channel, message|
+          if message == "unsub"
+            conn.unsubscribe channel
+          end
+        end
+
+        subscription.on_subscribe do |channel, count|
+          # Only set ready if *both* subscriptions have gone through
+          ready = true if count == 2
         end
       end
-
-      subscription.on_subscribe do |channel, count|
-        # Only set ready if *both* subscriptions have gone through
-        ready = true if count == 2
-      end
-    end
-  end
-
-  it "can publish and subscribe to patterns" do
-    ready = false
-    spawn do
-      until ready
-        Fiber.yield
-      end
-      # Publishes happen on other connections
-      spawn redis.publish "foo", "unsub"
-      spawn redis.publish "bar", "unsub"
     end
 
-    redis.psubscribe "f*", "b??" do |subscription, conn|
-      subscription.on_message do |channel, message, pattern|
-        if message == "unsub"
-          conn.punsubscribe pattern
+    it "can publish and subscribe to patterns" do
+      ready = false
+      spawn do
+        until ready
+          Fiber.yield
         end
+        # Publishes happen on other connections
+        spawn redis.publish "foo", "unsub"
+        spawn redis.publish "bar", "unsub"
       end
 
-      subscription.on_subscribe do |channel, count|
-        # Only set ready if *both* subscriptions have gone through
-        ready = true if count == 2
+      redis.psubscribe "f*", "b??" do |subscription, conn|
+        subscription.on_message do |channel, message, pattern|
+          if message == "unsub"
+            conn.punsubscribe pattern
+          end
+        end
+
+        subscription.on_subscribe do |channel, count|
+          # Only set ready if *both* subscriptions have gone through
+          ready = true if count == 2
+        end
       end
     end
   end
