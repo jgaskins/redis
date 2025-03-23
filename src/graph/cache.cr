@@ -90,7 +90,7 @@ module Redis::Graph
       initialize @redis, @key
     end
 
-    private def fetch_new(function, column, current_size)
+    private def fetch_new(function, column, current_size, &)
       cypher = <<-CYPHER
         CALL db.#{function}() YIELD #{column}
         RETURN #{column}

@@ -233,7 +233,7 @@ module Redis
       # end
       # ```
       @[Experimental("This method may be difficult to use, since it relies primarily on `Redis::Client#multi`, which is not graph-aware. It is currently intended primarily to roll back previous writes if others do not succeed when a single query is not feasible. This may be iterated on in the future.")]
-      def multi
+      def multi(&)
         @redis.multi do |txn|
           yield Client.new(txn.@connection, @key)
         end
@@ -450,13 +450,13 @@ module Redis
         @properties_set,
         @properties_removed,
         @indices_created,
-        @indices_deleted
+        @indices_deleted,
       )
       end
 
       # Iterate over each of the results, yielding a tuple containing instances
       # of the types in `T`.
-      def each_row
+      def each_row(&)
         field_map = Hash(String, Int32).new(initial_capacity: @fields.size)
         @fields.each_with_index do |field, index|
           field_map[field] = index
@@ -469,7 +469,7 @@ module Redis
         end
       end
 
-      def each
+      def each(&)
         @rows.each do |row|
           yield row
         end

@@ -146,7 +146,7 @@ module Redis
       sortby : SortBy? = nil,
       limit : {Int, Int}? = nil,
       params : NamedTuple | Hash(String, String) | Nil = nil,
-      dialect : Int? = nil
+      dialect : Int? = nil,
     )
       # Pre-allocate the command buffer based on args so it performs as few
       # heap allocations as possible.

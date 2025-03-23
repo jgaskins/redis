@@ -21,7 +21,7 @@ module Redis
       encoding : Encoding? = nil,
       chunk_size : Int64? = nil,
       duplicate_policy : DuplicatePolicy? = nil,
-      labels : Hash(String, String | Int32 | Int64)? = nil
+      labels : Hash(String, String | Int32 | Int64)? = nil,
     )
       command = Array(String).new(initial_capacity: 11 + (labels.try(&.size) || 0) * 2)
       command << "ts.create" << key
@@ -58,7 +58,7 @@ module Redis
       encoding : Encoding? = nil,
       chunk_size : Int64? = nil,
       on_duplicate duplicate_policy : DuplicatePolicy? = nil,
-      labels : Hash(String, String | Int32 | Int64)? = nil
+      labels : Hash(String, String | Int32 | Int64)? = nil,
     )
       command = Array(String).new(initial_capacity: 12 + (labels.try(&.size) || 0) * 2)
       command << "ts.add" << key << "*" << value.to_s
@@ -96,7 +96,7 @@ module Redis
       encoding : Encoding? = nil,
       chunk_size : Int64? = nil,
       on_duplicate duplicate_policy : DuplicatePolicy? = nil,
-      labels : Hash(String, String | Int32 | Int64)? = nil
+      labels : Hash(String, String | Int32 | Int64)? = nil,
     )
       command = Array(String).new(initial_capacity: 13 + (labels.try(&.size) || 0) * 2)
       command << "ts.add" << key << timestamp.to_unix_ms.to_s << value.to_s
@@ -155,7 +155,7 @@ module Redis
       bucket_duration : Time::Span,
       align : Alignment | Time | Nil = nil,
       buckettimestamp : BucketTimestamp? = nil,
-      empty : Bool? = nil
+      empty : Bool? = nil,
     )
       Aggregation.new(
         aggregator: aggregator,
@@ -188,7 +188,7 @@ module Redis
       count : Int? = nil,
       aggregation : Aggregation? = nil,
       groupby : String? = nil,
-      reduce : String? = nil
+      reduce : String? = nil,
     )
       mrange(
         time_range: time_range,
@@ -214,7 +214,7 @@ module Redis
       count : Int? = nil,
       aggregation : Aggregation? = nil,
       groupby : String? = nil,
-      reduce : String? = nil
+      reduce : String? = nil,
     )
       from = time_range.begin
       # Default to the maximum 32-bit Unix timestamp
@@ -310,7 +310,7 @@ module Redis
     record Datapoints, labels : Labels, datapoints : Array(Datapoint) do
       include Enumerable(Datapoint)
 
-      def each
+      def each(&)
         datapoints.each { |datapoint| yield datapoint }
       end
 
@@ -356,7 +356,7 @@ module Redis
         end
       end
 
-      def each
+      def each(&)
         data.each { |i| yield i }
       end
 

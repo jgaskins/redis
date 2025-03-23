@@ -13,7 +13,7 @@ module Redis
       apply : Apply? = nil,
       sortby : SortByAggregate | String | Nil = nil,
       params : NamedTuple | Hash(String, String) | Nil = nil,
-      dialect : Int? = nil
+      dialect : Int? = nil,
     )
       command = Array(String).new
       command << "ft.aggregate" << index << query
@@ -120,7 +120,7 @@ module Redis
       def initialize(@properties)
       end
 
-      def reduce
+      def reduce(&)
         @reducers << yield Reducer.new
         self
       end

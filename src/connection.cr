@@ -77,7 +77,7 @@ module Redis
     #   redis.incr "counter"
     # end
     # ```
-    def pipeline
+    def pipeline(&)
       pipeline = Pipeline.new(self)
       error = nil
       begin
@@ -111,7 +111,7 @@ module Redis
     # redis.get "foo"     # => nil
     # redis.get "counter" # => nil
     # ```
-    def multi(retries = 5)
+    def multi(retries = 5, &)
       loop do
         txn = Transaction.new(self)
 

@@ -81,19 +81,19 @@ module Redis
       @pool.checkout(&.run(command))
     end
 
-    def pipeline
+    def pipeline(&)
       @pool.checkout(&.pipeline { |pipe| yield pipe })
     end
 
-    def multi
+    def multi(&)
       @pool.checkout(&.multi { |txn| yield txn })
     end
 
-    def subscribe(*channels)
+    def subscribe(*channels, &)
       @pool.checkout(&.subscribe(*channels) { |subscription, conn| yield subscription, conn })
     end
 
-    def psubscribe(*channels)
+    def psubscribe(*channels, &)
       @pool.checkout(&.psubscribe(*channels) { |subscription, conn| yield subscription, conn })
     end
 

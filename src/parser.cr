@@ -29,7 +29,7 @@ module Redis
       read { nil }
     end
 
-    private def read
+    private def read(&)
       case byte_marker = @io.read_byte
       when ':'
         parse_int.tap { @io.skip 2 }

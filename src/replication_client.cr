@@ -341,7 +341,7 @@ class Redis::ReplicationClient
   # `Redis::READ_ONLY_COMMANDS`) this may be necessary. Alternatively, you can
   # shovel additional commands into `Redis::READ_ONLY_COMMANDS` to avoid having to
   # perform this explicit routing.
-  def on_replica
+  def on_replica(&)
     if @replicas.empty?
       yield @master
     else
@@ -398,12 +398,12 @@ class Redis::ReplicationClient
   # to use it outside the block you may run into errors because the replication
   # topology could change, in which case this `Redis::Client` might not be the
   # primary anymore.
-  def on_primary
+  def on_primary(&)
     on_master { |redis| yield redis }
   end
 
   # Alias of `on_primary`.
-  def on_master
+  def on_master(&)
     yield @master
   end
 end

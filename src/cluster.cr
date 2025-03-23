@@ -201,12 +201,12 @@ module Redis
     # WARNING: All keys that this pipeline operates on _MUST_ reside on the same
     # shard. It's best to pass a pre-hashed key (one containing `{}`) to this
     # method. See the example above.
-    def pipeline(key : String)
+    def pipeline(key : String, &)
       write_pool_for(key).checkout(&.pipeline { |pipe| yield pipe })
     end
 
     # Execute `Commands#scan_each` on each shard, yielding any matching keys.
-    def scan_each(*args, **kwargs) : Nil
+    def scan_each(*args, **kwargs, &) : Nil
       each_unique_replica(&.scan_each(*args, **kwargs) { |key| yield key })
     end
 
@@ -302,13 +302,13 @@ module Redis
       CRC16.checksum(key) % 16384
     end
 
-    private def each_master : Nil
+    private def each_master(&) : Nil
       @write_pools.each do |(_, pool)|
         pool.checkout { |conn| yield conn }
       end
     end
 
-    private def each_unique_replica : Nil
+    private def each_unique_replica(&) : Nil
       # Set to the write-pool size because that's the maximum size we'll need
       # for this data structure. The number of hash-slot ranges is based on
       # what *they* use.
