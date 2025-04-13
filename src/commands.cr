@@ -155,6 +155,21 @@ module Redis
       run({"decrby", key, amount.to_s})
     end
 
+    # Atomically increment and return the floating-point value for `key`
+    # by `amount`, creating it as if it were `0` if it does not exist.
+    #
+    # ```
+    # redis.del "metric"
+    # redis.incrbyfloat "metric", 4.2 # => "4.2"
+    # redis.incrbyfloat "metric", 6.9 # => "11.1"
+    # ```
+    #
+    # NOTE: The RESP2 protocol used by Redis does not support encoding floating-
+    # point numbers, so the server will return this value as a string.
+    def incrbyfloat(key : String, amount : Float | String)
+      run({"incrbyfloat", key, amount.to_s})
+    end
+
     # Delete all specified keys and return the number of keys deleted.
     #
     # ```

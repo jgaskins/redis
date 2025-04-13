@@ -127,6 +127,11 @@ describe Redis::Client do
     redis.incrby(key, 3).should eq 5
     redis.decrby(key, 2).should eq 3
     redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
+
+    redis.del key
+    redis.incrbyfloat(key, 0.1).to_f.should be_within 0.000001, of: 0.1
+    redis.incrbyfloat(key, 0.2).to_f.should be_within 0.000001, of: 0.3
+    redis.get(key).not_nil!.to_f.should be_within 0.000001, of: 0.3
   end
 
   describe "lists" do
