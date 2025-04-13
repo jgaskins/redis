@@ -439,8 +439,8 @@ module Redis
   end
 
   module Commands
-    # Return a `Redis::TimeSeries` that wraps the current `Redis::Client` or
-    # `Redis::Cluster`.
+    # Return a `Redis::TimeSeries` that wraps the current `Redis::Client`,
+    # `Redis::Cluster`, or other `Commands`-based object.
     def ts
       TimeSeries.new(self)
     end
