@@ -388,6 +388,14 @@ module Redis
       run command
     end
 
+    # Send a `PING` command to the server, returning `message` if it is provided
+    # or `"PONG"` otherwise.
+    def ping(message : String? = nil)
+      command = {"ping"}
+      command += {message} if message
+      run command
+    end
+
     # Delete all the keys of the currently selected DB
     def flushdb
       run({"flushdb"})

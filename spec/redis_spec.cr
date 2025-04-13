@@ -25,6 +25,11 @@ private macro test(msg, **options, &block)
 end
 
 describe Redis::Client do
+  it "can ping the server" do
+    redis.ping.should eq "PONG"
+    redis.ping("message").should eq "message"
+  end
+
   test "can set, get, and delete keys" do
     redis.get(random_key).should eq nil
     redis.set(key, "hello").should eq "OK"
