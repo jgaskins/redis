@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.3">
+<meta name="crystal_docs.project_version" content="0.12.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries::DuplicatePolicy - redis 0.11.3</title>
+  <title>Redis::TimeSeries::DuplicatePolicy - redis 0.12.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.3
+        0.12.0
       </span>
     </div>
   </div>
@@ -119,6 +119,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
+      <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
       
     </li>
   
@@ -801,9 +806,13 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">enum</span> Redis::<wbr>TimeSeries::<wbr>DuplicatePolicy
+  <span class="kind">
+    enum
+  </span> Redis::<wbr>TimeSeries::<wbr>DuplicatePolicy
 
 </h1>
+
+
 
 
 
@@ -832,7 +841,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L418" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L418" target="_blank">
         time_series.cr
       </a>
     
@@ -913,12 +922,13 @@ exists, set the updated value equal to the new value.</p>
 
 
 
+  
 
+  
 
+  
 
-
-
-
+  
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -932,30 +942,42 @@ exists, set the updated value equal to the new value.</p>
       <li class="entry-summary">
         <a href="#block%3F-instance-method" class="signature"><strong>#block?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#BLOCK">BLOCK</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#first%3F-instance-method" class="signature"><strong>#first?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#FIRST">FIRST</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#last%3F-instance-method" class="signature"><strong>#last?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#LAST">LAST</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#max%3F-instance-method" class="signature"><strong>#max?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#MAX">MAX</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#min%3F-instance-method" class="signature"><strong>#min?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#MIN">MIN</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#sum%3F-instance-method" class="signature"><strong>#sum?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#SUM">SUM</a></code></p></div>
         
       </li>
     
@@ -963,15 +985,15 @@ exists, set the updated value equal to the new value.</p>
 
 
 
-<div class="methods-inherited">
-  
+  <div class="methods-inherited">
     
+      
 
 
-    
+      
 
 
-    
+      
 
   <h3>Class methods inherited from struct <code>Enum</code></h3>
   
@@ -988,58 +1010,58 @@ exists, set the updated value equal to the new value.</p>
   
 
 
-    
+      
 
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-</div>
-
-
-
-
-
-
-
-
   <h2>
     <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -1057,10 +1079,15 @@ exists, set the updated value equal to the new value.</p>
         <a class="method-permalink" href="#block%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#BLOCK">BLOCK</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L420" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L420" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1073,10 +1100,15 @@ exists, set the updated value equal to the new value.</p>
         <a class="method-permalink" href="#first%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#FIRST">FIRST</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L423" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L423" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1089,10 +1121,15 @@ exists, set the updated value equal to the new value.</p>
         <a class="method-permalink" href="#last%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#LAST">LAST</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L426" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L426" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1105,10 +1142,15 @@ exists, set the updated value equal to the new value.</p>
         <a class="method-permalink" href="#max%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#MAX">MAX</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L432" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L432" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1121,10 +1163,15 @@ exists, set the updated value equal to the new value.</p>
         <a class="method-permalink" href="#min%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#MIN">MIN</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L429" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L429" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1137,14 +1184,20 @@ exists, set the updated value equal to the new value.</p>
         <a class="method-permalink" href="#sum%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/DuplicatePolicy.html#SUM">SUM</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L437" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L437" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
 
 
 </div>

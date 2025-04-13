@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.3">
+<meta name="crystal_docs.project_version" content="0.12.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Transaction - redis 0.11.3</title>
+  <title>Redis::Transaction - redis 0.12.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.3
+        0.12.0
       </span>
     </div>
   </div>
@@ -119,6 +119,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
+      <a href="../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
       
     </li>
   
@@ -801,12 +806,16 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">class</span> Redis::<wbr>Transaction
+  <span class="kind">
+    class
+  </span> Redis::<wbr>Transaction
 
 </h1>
 
 
   <ul class="superclass-hierarchy"><li class="superclass"><a href="../Redis/Transaction.html">Redis::Transaction</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
 
 
 
@@ -848,7 +857,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L5" target="_blank">
         transaction.cr
       </a>
     
@@ -859,6 +868,7 @@
 
 
 
+  
   <h2>
     <a id="constructors" class="anchor" href="#constructors">
   <svg class="octicon-link" aria-hidden="true">
@@ -877,11 +887,11 @@
   </ul>
 
 
+  
 
+  
 
-
-
-
+  
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -923,9 +933,9 @@
 
 
 
-<div class="methods-inherited">
-  
+  <div class="methods-inherited">
     
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands.html">Redis::Commands</a></code></h3>
   
@@ -960,13 +970,13 @@
     evalsha</a>, 
     
   
-    <a href="../Redis/Commands.html#evalsha_ro%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="tooltip">
-      <span>evalsha_ro(script : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)</span>
+    <a href="../Redis/Commands.html#evalsha_ro%28sha%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="tooltip">
+      <span>evalsha_ro(sha : String, keys : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new, args : Enumerable(String) = <span class="t">EmptyEnumerable</span>.new)</span>
     evalsha_ro</a>, 
     
   
-    <a href="../Redis/Commands.html#exists%28%2Akeys%3AString%29-instance-method" class="tooltip">
-      <span>exists(*keys : String)</span>
+    <a href="../Redis/Commands.html#exists%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>exists(keys : Enumerable(String))<br/>exists(*keys : String)</span>
     exists</a>, 
     
   
@@ -1000,6 +1010,11 @@
     get</a>, 
     
   
+    <a href="../Redis/Commands.html#getdel%28key%3AString%29-instance-method" class="tooltip">
+      <span>getdel(key : String)</span>
+    getdel</a>, 
+    
+  
     <a href="../Redis/Commands.html#graph%28key%3AString%29-instance-method" class="tooltip">
       <span>graph(key : String)</span>
     graph</a>, 
@@ -1013,6 +1028,11 @@
     <a href="../Redis/Commands.html#incrby%28key%3AString%2Camount%3AInt%7CString%29-instance-method" class="tooltip">
       <span>incrby(key : String, amount : Int | String)</span>
     incrby</a>, 
+    
+  
+    <a href="../Redis/Commands.html#incrbyfloat%28key%3AString%2Camount%3AFloat%7CString%29-instance-method" class="tooltip">
+      <span>incrbyfloat(key : String, amount : Float | String)</span>
+    incrbyfloat</a>, 
     
   
     <a href="../Redis/Commands.html#info-instance-method" class="tooltip">
@@ -1048,6 +1068,11 @@
     <a href="../Redis/Commands.html#pexpireat%28key%3AString%2Cat%3ATime%29-instance-method" class="tooltip">
       <span>pexpireat(key : String, at : Time)</span>
     pexpireat</a>, 
+    
+  
+    <a href="../Redis/Commands.html#ping%28message%3AString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>ping(message : String | Nil = <span class="n">nil</span>)</span>
+    ping</a>, 
     
   
     <a href="../Redis/Commands.html#pttl%28key%3AString%29-instance-method" class="tooltip">
@@ -1090,8 +1115,8 @@
     script_load</a>, 
     
   
-    <a href="../Redis/Commands.html#set%28key%3AString%2Cvalue%3AString%2Cex%3AString%7CInt%7CNil%3Dnil%2Cpx%3AString%7CInt%7CNil%3Dnil%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%29-instance-method" class="tooltip">
-      <span>set(key : String, value : String, ex : String | Int | Nil = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)<br/>set(key, value, ex : Time, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)<br/>set(key, value, ex : Time::Span, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>)</span>
+    <a href="../Redis/Commands.html#set%28key%2Cvalue%2C%2A%2Cex%3ATime%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%2Cget%3Dfalse%29-instance-method" class="tooltip">
+      <span>set(key, value, *, ex : Time, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)<br/>set(key, value, *, ex : Time::Span, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)<br/>set(key : String, value : String, *, ex : String | Int | Nil = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)</span>
     set</a>, 
     
   
@@ -1122,17 +1147,49 @@
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
+      
 
-
-    
-
-
+  <h3>Instance methods inherited from module <code><a href="../Redis/Commands/HyperLogLog.html">Redis::Commands::HyperLogLog</a></code></h3>
   
+  
+    <a href="../Redis/Commands/HyperLogLog.html#pfadd%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>pfadd(key : String, values : Enumerable(String))<br/>pfadd(key : String, *values : String)</span>
+    pfadd</a>, 
     
+  
+    <a href="../Redis/Commands/HyperLogLog.html#pfcount%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>pfcount(keys : Enumerable(String))<br/>pfcount(*keys : String)</span>
+    pfcount</a>, 
+    
+  
+    <a href="../Redis/Commands/HyperLogLog.html#pfmerge%28destination_keytarget%3AString%2Csource_keyssources%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>pfmerge(destination_key target : String, source_keys sources : Enumerable(String))<br/>pfmerge(destination_key target : String, *source_keys : String)</span>
+    pfmerge</a>
+    
+  
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/Geo.html">Redis::Commands::Geo</a></code></h3>
   
@@ -1154,17 +1211,17 @@
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
-
-
-    
-
-
-  
-    
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/Stream.html">Redis::Commands::Stream</a></code></h3>
   
@@ -1221,22 +1278,27 @@
   
     <a href="../Redis/Commands/Stream.html#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="tooltip">
       <span>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)<br/>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</span>
-    xreadgroup</a>
+    xreadgroup</a>, 
+    
+  
+    <a href="../Redis/Commands/Stream.html#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>xtrim(key : String, minid : Tuple(String, String), limit : String | Int | Nil = <span class="n">nil</span>)</span>
+    xtrim</a>
     
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
-
-
-    
-
-
-  
-    
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/SortedSet.html">Redis::Commands::SortedSet</a></code></h3>
   
@@ -1286,6 +1348,11 @@
     zrevrange</a>, 
     
   
+    <a href="../Redis/Commands/SortedSet.html#zscan%28key%3AString%2Ccursor%3AString%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>zscan(key : String, cursor : String, match pattern : String | Nil = <span class="n">nil</span>, count : String | Nil = <span class="n">nil</span>)</span>
+    zscan</a>, 
+    
+  
     <a href="../Redis/Commands/SortedSet.html#zscore%28key%3AString%2Cvalue%3AString%29-instance-method" class="tooltip">
       <span>zscore(key : String, value : String)</span>
     zscore</a>
@@ -1293,23 +1360,23 @@
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
-
-
-    
-
-
-  
-    
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/Set.html">Redis::Commands::Set</a></code></h3>
   
   
-    <a href="../Redis/Commands/Set.html#sadd%28key%3AString%2C%2Avalues%3AString%29-instance-method" class="tooltip">
-      <span>sadd(key : String, *values : String)</span>
+    <a href="../Redis/Commands/Set.html#sadd%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>sadd(key : String, values : Enumerable(String))<br/>sadd(key : String, *values : String)</span>
     sadd</a>, 
     
   
@@ -1323,8 +1390,8 @@
     sdiff</a>, 
     
   
-    <a href="../Redis/Commands/Set.html#sinter%28first%3AString%2C%2Aothers%3AString%29-instance-method" class="tooltip">
-      <span>sinter(first : String, *others : String)</span>
+    <a href="../Redis/Commands/Set.html#sinter%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
+      <span>sinter(keys : Enumerable(String))<br/>sinter(first : String, *others : String)</span>
     sinter</a>, 
     
   
@@ -1340,22 +1407,27 @@
   
     <a href="../Redis/Commands/Set.html#srem%28key%3AString%2Cmembers%3AEnumerable%28String%29%29-instance-method" class="tooltip">
       <span>srem(key : String, members : Enumerable(String))<br/>srem(key : String, *values : String)</span>
-    srem</a>
+    srem</a>, 
+    
+  
+    <a href="../Redis/Commands/Set.html#sscan%28key%3AString%2Ccursor%3AString%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>sscan(key : String, cursor : String, match pattern : String | Nil = <span class="n">nil</span>, count : String | Nil = <span class="n">nil</span>)</span>
+    sscan</a>
     
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
-
-
-    
-
-
-  
-    
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/List.html">Redis::Commands::List</a></code></h3>
   
@@ -1427,17 +1499,17 @@
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
-
-
-    
-
-
-  
-    
+      
 
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/Hash.html">Redis::Commands::Hash</a></code></h3>
   
@@ -1489,45 +1561,45 @@
   
 
 
-    
+      
+
+
+      
+
+
+      
 
 
     
+      
+
+
+      
+
+
+      
+
+
+      
 
 
     
+      
 
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-    
-
-
-  
-</div>
-
-
   <h2>
     <a id="constructor-detail" class="anchor" href="#constructor-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -1548,18 +1620,18 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
 
+  
 
+  
 
-
-
-
+  
   <h2>
     <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -1580,7 +1652,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1596,7 +1668,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1612,7 +1684,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L25" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1639,7 +1711,7 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1655,11 +1727,12 @@ must be an <code>Enumerable</code> and its <code>size</code> method must be re-e
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/transaction.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/transaction.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
 
 
 </div>

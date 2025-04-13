@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.3">
+<meta name="crystal_docs.project_version" content="0.12.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::ValueType - redis 0.11.3</title>
+  <title>Redis::Graph::ValueType - redis 0.12.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.3
+        0.12.0
       </span>
     </div>
   </div>
@@ -119,6 +119,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
+      <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
       
     </li>
   
@@ -801,9 +806,13 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">enum</span> Redis::<wbr>Graph::<wbr>ValueType
+  <span class="kind">
+    enum
+  </span> Redis::<wbr>Graph::<wbr>ValueType
 
 </h1>
+
+
 
 
 
@@ -832,7 +841,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L7" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L7" target="_blank">
         graph/value_type.cr
       </a>
     
@@ -917,8 +926,9 @@
 
 
 
+  
 
-
+  
   <h2>
     <a id="class-method-summary" class="anchor" href="#class-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -937,9 +947,9 @@
   </ul>
 
 
+  
 
-
-
+  
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -953,60 +963,84 @@
       <li class="entry-summary">
         <a href="#array%3F-instance-method" class="signature"><strong>#array?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#ARRAY">ARRAY</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#boolean%3F-instance-method" class="signature"><strong>#boolean?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#BOOLEAN">BOOLEAN</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#double%3F-instance-method" class="signature"><strong>#double?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#DOUBLE">DOUBLE</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#edge%3F-instance-method" class="signature"><strong>#edge?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#EDGE">EDGE</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#integer%3F-instance-method" class="signature"><strong>#integer?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#INTEGER">INTEGER</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#map%3F-instance-method" class="signature"><strong>#map?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#MAP">MAP</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#node%3F-instance-method" class="signature"><strong>#node?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#NODE">NODE</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#null%3F-instance-method" class="signature"><strong>#null?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#NULL">NULL</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#path%3F-instance-method" class="signature"><strong>#path?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#PATH">PATH</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#point%3F-instance-method" class="signature"><strong>#point?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#POINT">POINT</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#string%3F-instance-method" class="signature"><strong>#string?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#STRING">STRING</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#unknown%3F-instance-method" class="signature"><strong>#unknown?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#UNKNOWN">UNKNOWN</a></code></p></div>
         
       </li>
     
@@ -1014,15 +1048,15 @@
 
 
 
-<div class="methods-inherited">
-  
+  <div class="methods-inherited">
     
+      
 
 
-    
+      
 
 
-    
+      
 
   <h3>Class methods inherited from struct <code>Enum</code></h3>
   
@@ -1039,54 +1073,54 @@
   
 
 
-    
+      
 
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
-
-  
-    
-
-
-    
-
-
-    
-
-
-    
-
-
-  
-</div>
-
-
-
-
   <h2>
     <a id="class-method-detail" class="anchor" href="#class-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -1107,16 +1141,16 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L21" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L21" target="_blank">View source</a>]
         
       </div>
     </div>
   
 
 
+  
 
-
-
+  
   <h2>
     <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -1134,10 +1168,15 @@
         <a class="method-permalink" href="#array%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#ARRAY">ARRAY</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1150,10 +1189,15 @@
         <a class="method-permalink" href="#boolean%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#BOOLEAN">BOOLEAN</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L12" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L12" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1166,10 +1210,15 @@
         <a class="method-permalink" href="#double%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#DOUBLE">DOUBLE</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L13" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1182,10 +1231,15 @@
         <a class="method-permalink" href="#edge%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#EDGE">EDGE</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1198,10 +1252,15 @@
         <a class="method-permalink" href="#integer%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#INTEGER">INTEGER</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1214,10 +1273,15 @@
         <a class="method-permalink" href="#map%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#MAP">MAP</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1230,10 +1294,15 @@
         <a class="method-permalink" href="#node%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#NODE">NODE</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L16" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L16" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1246,10 +1315,15 @@
         <a class="method-permalink" href="#null%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#NULL">NULL</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L9" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1262,10 +1336,15 @@
         <a class="method-permalink" href="#path%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#PATH">PATH</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L17" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1278,10 +1357,15 @@
         <a class="method-permalink" href="#point%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#POINT">POINT</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1294,10 +1378,15 @@
         <a class="method-permalink" href="#string%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#STRING">STRING</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1310,14 +1399,20 @@
         <a class="method-permalink" href="#unknown%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Graph/ValueType.html#UNKNOWN">UNKNOWN</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/graph/value_type.cr#L8" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/graph/value_type.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
 
 
 </div>

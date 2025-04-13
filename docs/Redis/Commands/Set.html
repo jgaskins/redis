@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.3">
+<meta name="crystal_docs.project_version" content="0.12.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::Set - redis 0.11.3</title>
+  <title>Redis::Commands::Set - redis 0.12.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.3
+        0.12.0
       </span>
     </div>
   </div>
@@ -119,6 +119,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
+      <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
       
     </li>
   
@@ -801,9 +806,13 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">module</span> Redis::<wbr>Commands::<wbr>Set
+  <span class="kind">
+    module
+  </span> Redis::<wbr>Commands::<wbr>Set
 
 </h1>
+
+
 
 
 
@@ -846,7 +855,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L1" target="_blank">
         commands/set.cr
       </a>
     
@@ -857,12 +866,13 @@
 
 
 
+  
 
+  
 
+  
 
-
-
-
+  
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -872,6 +882,11 @@
     Instance Method Summary
   </h2>
   <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#sadd%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method" class="signature"><strong>#sadd</strong>(key : String, values : Enumerable(String))</a>
+        
+      </li>
     
       <li class="entry-summary">
         <a href="#sadd%28key%3AString%2C%2Avalues%3AString%29-instance-method" class="signature"><strong>#sadd</strong>(key : String, *values : String)</a>
@@ -885,6 +900,11 @@
     
       <li class="entry-summary">
         <a href="#sdiff%28first%3AString%2Csecond%3AString%29-instance-method" class="signature"><strong>#sdiff</strong>(first : String, second : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#sinter%28keys%3AEnumerable%28String%29%29-instance-method" class="signature"><strong>#sinter</strong>(keys : Enumerable(String))</a>
         
       </li>
     
@@ -913,21 +933,26 @@
         
       </li>
     
+      <li class="entry-summary">
+        <a href="#sscan%28key%3AString%2Ccursor%3AString%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#sscan</strong>(key : String, cursor : String, match pattern : String | Nil = <span class="n">nil</span>, count : String | Nil = <span class="n">nil</span>)</a>
+        
+      </li>
+    
   </ul>
 
 
 
-<div class="methods-inherited">
+  <div class="methods-inherited">
+    
+  </div>
+
   
-</div>
 
+  
 
+  
 
-
-
-
-
-
+  
   <h2>
     <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -936,6 +961,22 @@
 </a>
     Instance Method Detail
   </h2>
+  
+    <div class="entry-detail" id="sadd(key:String,values:Enumerable(String))-instance-method">
+      <div class="signature">
+        
+        def <strong>sadd</strong>(key : String, values : Enumerable(String))
+
+        <a class="method-permalink" href="#sadd%28key%3AString%2Cvalues%3AEnumerable%28String%29%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L6" target="_blank">View source</a>]
+        
+      </div>
+    </div>
   
     <div class="entry-detail" id="sadd(key:String,*values:String)-instance-method">
       <div class="signature">
@@ -948,7 +989,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -964,7 +1005,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L52" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -980,7 +1021,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L28" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L36" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="sinter(keys:Enumerable(String))-instance-method">
+      <div class="signature">
+        
+        def <strong>sinter</strong>(keys : Enumerable(String))
+
+        <a class="method-permalink" href="#sinter%28keys%3AEnumerable%28String%29%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -996,7 +1053,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L32" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1012,7 +1069,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1028,7 +1085,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L18" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1044,7 +1101,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1060,11 +1117,28 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/set.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L22" target="_blank">View source</a>]
         
       </div>
     </div>
   
+    <div class="entry-detail" id="sscan(key:String,cursor:String,matchpattern:String|Nil=nil,count:String|Nil=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>sscan</strong>(key : String, cursor : String, match pattern : String | Nil = <span class="n">nil</span>, count : String | Nil = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#sscan%28key%3AString%2Ccursor%3AString%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CNil%3Dnil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/set.cr#L56" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
 
 
 </div>

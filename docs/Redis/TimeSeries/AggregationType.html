@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.3">
+<meta name="crystal_docs.project_version" content="0.12.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries::AggregationType - redis 0.11.3</title>
+  <title>Redis::TimeSeries::AggregationType - redis 0.12.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.3
+        0.12.0
       </span>
     </div>
   </div>
@@ -119,6 +119,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
+      <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
       
     </li>
   
@@ -801,9 +806,13 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">enum</span> Redis::<wbr>TimeSeries::<wbr>AggregationType
+  <span class="kind">
+    enum
+  </span> Redis::<wbr>TimeSeries::<wbr>AggregationType
 
 </h1>
+
+
 
 
 
@@ -832,7 +841,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L392" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L392" target="_blank">
         time_series.cr
       </a>
     
@@ -917,12 +926,13 @@
 
 
 
+  
 
+  
 
+  
 
-
-
-
+  
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -936,60 +946,84 @@
       <li class="entry-summary">
         <a href="#avg%3F-instance-method" class="signature"><strong>#avg?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#AVG">AVG</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#count%3F-instance-method" class="signature"><strong>#count?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#COUNT">COUNT</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#first%3F-instance-method" class="signature"><strong>#first?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#FIRST">FIRST</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#last%3F-instance-method" class="signature"><strong>#last?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#LAST">LAST</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#max%3F-instance-method" class="signature"><strong>#max?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#MAX">MAX</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#min%3F-instance-method" class="signature"><strong>#min?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#MIN">MIN</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#range%3F-instance-method" class="signature"><strong>#range?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#RANGE">RANGE</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#std_p%3F-instance-method" class="signature"><strong>#std_p?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#STD_P">STD_P</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#std_s%3F-instance-method" class="signature"><strong>#std_s?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#STD_S">STD_S</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#sum%3F-instance-method" class="signature"><strong>#sum?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#SUM">SUM</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#var_p%3F-instance-method" class="signature"><strong>#var_p?</strong></a>
         
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#VAR_P">VAR_P</a></code></p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#var_s%3F-instance-method" class="signature"><strong>#var_s?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#VAR_S">VAR_S</a></code></p></div>
         
       </li>
     
@@ -997,15 +1031,15 @@
 
 
 
-<div class="methods-inherited">
-  
+  <div class="methods-inherited">
     
+      
 
 
-    
+      
 
 
-    
+      
 
   <h3>Class methods inherited from struct <code>Enum</code></h3>
   
@@ -1022,58 +1056,58 @@
   
 
 
-    
+      
 
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+  </div>
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-    
-
-
-    
-
-
-    
-
-
-    
-
 
   
-</div>
-
-
-
-
-
-
-
-
   <h2>
     <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -1091,10 +1125,15 @@
         <a class="method-permalink" href="#avg%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#AVG">AVG</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L393" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L393" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1107,10 +1146,15 @@
         <a class="method-permalink" href="#count%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#COUNT">COUNT</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L398" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L398" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1123,10 +1167,15 @@
         <a class="method-permalink" href="#first%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#FIRST">FIRST</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L399" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L399" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1139,10 +1188,15 @@
         <a class="method-permalink" href="#last%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#LAST">LAST</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L400" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L400" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1155,10 +1209,15 @@
         <a class="method-permalink" href="#max%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#MAX">MAX</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L396" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L396" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1171,10 +1230,15 @@
         <a class="method-permalink" href="#min%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#MIN">MIN</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L395" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L395" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1187,10 +1251,15 @@
         <a class="method-permalink" href="#range%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#RANGE">RANGE</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L397" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L397" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1203,10 +1272,15 @@
         <a class="method-permalink" href="#std_p%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#STD_P">STD_P</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L401" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L401" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1219,10 +1293,15 @@
         <a class="method-permalink" href="#std_s%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#STD_S">STD_S</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L402" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L402" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1235,10 +1314,15 @@
         <a class="method-permalink" href="#sum%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#SUM">SUM</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L394" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L394" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1251,10 +1335,15 @@
         <a class="method-permalink" href="#var_p%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#VAR_P">VAR_P</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L403" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L403" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1267,14 +1356,20 @@
         <a class="method-permalink" href="#var_s%3F-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/TimeSeries/AggregationType.html#VAR_S">VAR_S</a></code></p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/time_series.cr#L404" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/time_series.cr#L404" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
 
 
 </div>

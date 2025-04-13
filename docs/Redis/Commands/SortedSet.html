@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.11.3">
+<meta name="crystal_docs.project_version" content="0.12.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::SortedSet - redis 0.11.3</title>
+  <title>Redis::Commands::SortedSet - redis 0.12.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.11.3
+        0.12.0
       </span>
     </div>
   </div>
@@ -119,6 +119,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/Hash" data-name="redis::commands::hash">
       <a href="../../Redis/Commands/Hash.html">Hash</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
+      <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
       
     </li>
   
@@ -801,9 +806,13 @@
 <div class="main-content">
 <h1 class="type-name">
 
-  <span class="kind">module</span> Redis::<wbr>Commands::<wbr>SortedSet
+  <span class="kind">
+    module
+  </span> Redis::<wbr>Commands::<wbr>SortedSet
 
 </h1>
+
+
 
 
 
@@ -846,7 +855,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L1" target="_blank">
         commands/sorted_set.cr
       </a>
     
@@ -857,12 +866,13 @@
 
 
 
+  
 
+  
 
+  
 
-
-
-
+  
   <h2>
     <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
   <svg class="octicon-link" aria-hidden="true">
@@ -934,6 +944,11 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#zscan%28key%3AString%2Ccursor%3AString%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#zscan</strong>(key : String, cursor : String, match pattern : String | Nil = <span class="n">nil</span>, count : String | Nil = <span class="n">nil</span>)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#zscore%28key%3AString%2Cvalue%3AString%29-instance-method" class="signature"><strong>#zscore</strong>(key : String, value : String)</a>
         
       </li>
@@ -942,17 +957,17 @@
 
 
 
-<div class="methods-inherited">
+  <div class="methods-inherited">
+    
+  </div>
+
   
-</div>
 
+  
 
+  
 
-
-
-
-
-
+  
   <h2>
     <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
   <svg class="octicon-link" aria-hidden="true">
@@ -973,7 +988,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L42" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -989,7 +1004,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1005,7 +1020,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1021,7 +1036,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L70" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L70" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1037,7 +1052,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1053,7 +1068,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1069,7 +1084,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1085,7 +1100,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L62" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1101,7 +1116,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1117,7 +1132,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L38" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1133,7 +1148,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L34" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1149,7 +1164,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="zscan(key:String,cursor:String,matchpattern:String|Nil=nil,count:String|Nil=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>zscan</strong>(key : String, cursor : String, match pattern : String | Nil = <span class="n">nil</span>, count : String | Nil = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#zscan%28key%3AString%2Ccursor%3AString%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CNil%3Dnil%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L78" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1165,11 +1196,12 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.11.3/src/commands/sorted_set.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.12.0/src/commands/sorted_set.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
   
+
 
 
 </div>
