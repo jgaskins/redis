@@ -17,6 +17,7 @@ module Redis
 
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
     protected getter parser : Parser
+    getter? closed = false
 
     # We receive all connection information in the URI.
     #
@@ -364,6 +365,15 @@ module Redis
         else
           raise ex
         end
+      rescue ex : Redis::ReadOnly
+        @socket.close
+        if retries > 0
+          retries -= 1
+          initialize @uri
+        else
+          close
+          raise ex
+        end
       ensure
         @log.debug &.emit "redis", command: command.join(' '), duration_ms: (Time.monotonic - start).total_milliseconds
       end
@@ -437,11 +447,12 @@ module Redis
     # Close the connection to the server.
     def close
       @socket.close
+      @closed = true
     end
 
     # :nodoc:
     def finalize
-      close
+      close rescue nil
     end
 
     # Flush the connection buffer and make sure we've sent everything to the

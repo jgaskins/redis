@@ -15,6 +15,7 @@ module Redis
 
   Error.define NoGroup
   Error.define BusyGroup
+  Error.define ReadOnly
 
   class Cluster
     Error.define Error, nil
