@@ -74,7 +74,7 @@ module Redis::Graph
 
       new(
         id.as(Int64),
-        cache.property(type_id.as(Int)),
+        cache.relationship_type(type_id.as(Int)),
         src_node.as(Int64),
         dest_node.as(Int64),
         properties
