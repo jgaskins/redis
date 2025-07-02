@@ -624,8 +624,17 @@ end
 
 def Union.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache) : self
   {% for type in T %}
-    if {{type}}.matches_redis_graph_type? type
-      return {{type}}.from_redis_graph_value(type, value, cache)
+    if {{type}}.matches_redis_graph_type?(type)
+      # Nodes and Relationships don't just check type. They also need to check
+      # metadata to see whether the raw data can be transformed into an instance
+      # of this type.
+      {% if type < Redis::Graph::Serializable::Node || type < Redis::Graph::Serializable::Relationship %}
+        if {{type}}.can_transform_graph_result?(value, cache)
+          return {{type}}.from_redis_graph_value(type, value, cache)
+        end
+      {% else %}
+        return {{type}}.from_redis_graph_value(type, value, cache)
+      {% end %}
     end
   {% end %}
 

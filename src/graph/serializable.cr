@@ -4,6 +4,12 @@ module Redis::Graph
   annotation Field
   end
 
+  annotation NodeLabel
+  end
+
+  annotation RelationshipType
+  end
+
   # The `Redis::Graph::Serializable::*` mixins tell `Redis::Graph::Client` how
   # to deserialize nodes and relationships as your own Crystal object types,
   # similar to [`DB::Serializable`](http://crystal-lang.github.io/crystal-db/api/0.11.0/DB/Serializable.html).
@@ -75,6 +81,28 @@ module Redis::Graph
         def self.matches_redis_graph_type?(type : ::Redis::Graph::ValueType) : Bool
           type.node?
         end
+
+        def self.can_transform_graph_result?(value : Int64 | String | Nil | Redis::Error, cache) : Bool
+          false
+        end
+
+        def self.can_transform_graph_result?(value : Array, cache) : Bool
+          id, label_ids, properties = value.as(Array)
+          labels = label_ids.as(Array).any? do |label_id|
+            label = cache.label label_id.as(Int64)
+
+            {% if (ann = @type.annotation(::Redis::Graph::NodeLabel)) && ann[0] %}
+              label == {{ann[0]}}
+            {% else %}
+              # Use the type name if there is no label specified for the type
+              label == name
+            {% end %}
+          end
+        end
+
+        def self.can_transform_graph_result?(value : Redis::Value) : Bool
+          false
+        end
       end
 
       def initialize(metadata : ::Redis::Graph::Serializable::Node::Metadata, properties : Array, cache)
@@ -92,7 +120,7 @@ module Redis::Graph
                 when "{{ivar.name}}"
                   %found{ivar.name} = true
                   %value{ivar.name} = 
-                  {% if ann = ivar.annotation(::Redis::Graph::Field) && ann[:converter] %}
+                  {% if (ann = ivar.annotation(::Redis::Graph::Field)) && ann[:converter] %}
                     {{ann[:converter]}}.from_redis_graph_value(
                      {{ivar.type}}.from_redis_graph_value(::Redis::Graph::ValueType.new(type.as(Int).to_i), value, cache)
                     )
@@ -327,7 +355,7 @@ class String
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value | Redis::Value)
     false
   end
 
@@ -350,7 +378,7 @@ struct Nil
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value | Redis::Value)
     false
   end
 
@@ -485,15 +513,11 @@ end
 
 # :nodoc:
 def Union.from_graph_result(result : Redis::Graph::Value)
-  {% begin %}
-  if false
-    raise "lolwut"
   {% for type in T %}
-    elsif {{type}}.can_transform_graph_result?(result)
-      {{type}}.from_graph_result(result)
+    if {{type}}.can_transform_graph_result?(result)
+      return {{type}}.from_graph_result(result)
+    end
   {% end %}
-  else
-    raise ArgumentError.new("Cannot create a #{self} from #{result.inspect} (#{result.class})")
-  end
-  {% end %}
+
+  raise ArgumentError.new("Cannot create a #{self} from #{result.inspect} (#{result.class})")
 end
