@@ -402,13 +402,15 @@ describe Redis::Client do
 
   describe "streams" do
     test "can use streams" do
-      # entry_id = redis.xadd key, "*", {"foo" => "bar"}
-      entry_id = redis.xadd key, "*", {foo: "bar"}
+      entry_ids = [
+        redis.xadd(key, "*", {"foo" => "bar"}),
+        redis.xadd(key, "*", {foo: "bar"}),
+      ]
       range = redis.xrange(key, "-", "+")
-      range.size.should eq 1
-      range.each do |result|
+      range.size.should eq 2
+      range.each_with_index do |result, index|
         id, data = result.as(Array)
-        id.as(String).should eq entry_id
+        id.should eq entry_ids[index]
         data.should eq %w[foo bar]
       end
     end

@@ -49,7 +49,7 @@ module Redis::Commands::Stream
   # efficiently. This method returns the `id` that Redis stores.
   #
   # ```
-  # redis.xadd "my-stream", "*", {"name" => "foo", "id" => UUID.random.to_s}
+  # redis.xadd "my-stream", "*", maxlen: {"~", "1000"}, fields: {"name" => "foo", "id" => UUID.random.to_s}
   # ```
   def xadd(key : String, id : String, *, maxlen, fields : NamedTuple | ::Hash(String, String))
     xadd key, id, maxlen: maxlen, minid: nil, fields: fields
@@ -59,15 +59,15 @@ module Redis::Commands::Stream
     xadd key, id, maxlen: nil, minid: minid, fields: fields
   end
 
-  def xadd(
+  private def xadd(
     key : String,
     id : String,
     *,
     maxlen : {String, String}?,
     minid : {String, String}?,
-    fields : NamedTuple | Hash(String, String),
+    fields : NamedTuple | ::Hash(String, String),
   )
-    command = Array(String).new(initial_capacity: 3 + fields.size * 2)
+    command = Array(String).new(initial_capacity: 6 + fields.size * 2)
     command << "xadd" << key
     if maxlen
       command << "maxlen"
