@@ -387,7 +387,7 @@ describe Redis::Client do
   end
 
   test "can use different Redis DBs" do
-    secondary_uri = redis_uri.dup
+    secondary_uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///"))
     secondary_uri.path = "/15"
     secondary_db = Redis::Client.new(uri: secondary_uri)
 
