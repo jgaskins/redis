@@ -340,6 +340,7 @@ module Redis
         xtrim:      Int64,
 
         geopos:    Array,
+        geodist:   String,
         geosearch: Array,
       })
     end
