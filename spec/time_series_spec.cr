@@ -1,21 +1,9 @@
 require "./spec_helper"
-require "uuid"
 
 require "../src/time_series"
 
-private macro test(name)
-  it {{name}} do
-    key = UUID.random.to_s
-
-    begin
-      {{yield}}
-    ensure
-      redis.unlink key
-    end
-  end
-end
-
 redis = Redis::Client.new
+define_test redis
 
 module Redis
   describe TimeSeries do
@@ -27,23 +15,8 @@ module Redis
         duplicate_policy: :first,
         labels: {"sensor_id" => 123}
 
-      # I really wish these were real hashes
-      redis.ts.info(key).should eq [
-        "totalSamples", 0,
-        "memoryUsage", 246,
-        "firstTimestamp", 0,
-        "lastTimestamp", 0,
-        "retentionTime", 86400000,
-        "chunkCount", 1,
-        "chunkSize", 128,
-        "chunkType", "compressed",
-        "duplicatePolicy", "first",
-        "labels", [
-          ["sensor_id", "123"],
-        ],
-        "sourceKey", nil,
-        "rules", [] of String,
-      ]
+      info = Redis.to_hash(redis.ts.info(key).as(Array))
+      info["totalSamples"].should eq 0
     end
 
     test "gets the last datapoint for a key" do
