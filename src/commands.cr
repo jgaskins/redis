@@ -432,7 +432,7 @@ module Redis
     end
 
     def wait(numreplicas replica_count : Int | String, timeout : Time::Span)
-      wait replica_count, timeout.total_seconds.ceil.to_i
+      wait replica_count, timeout.total_milliseconds.ceil.to_i
     end
 
     def wait(numreplicas replica_count : Int | String, timeout : Int | String)
