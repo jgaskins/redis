@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::FullText::Summarize - redis 0.13.0</title>
+  <title>Redis::Geo::Unit - redis 0.13.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -187,7 +187,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
       <a href="../../Redis/FullText.html">FullText</a>
       
         <ul>
@@ -272,7 +272,7 @@
       
     </li>
   
-  <li class=" current" data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
       <a href="../../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
@@ -297,7 +297,7 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Geo" data-name="redis::geo">
+  <li class="parent open current" data-id="redis/Redis/Geo" data-name="redis::geo">
       <a href="../../Redis/Geo.html">Geo</a>
       
         <ul>
@@ -322,7 +322,7 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Geo/Unit" data-name="redis::geo::unit">
+  <li class=" current" data-id="redis/Redis/Geo/Unit" data-name="redis::geo::unit">
       <a href="../../Redis/Geo/Unit.html">Unit</a>
       
     </li>
@@ -827,13 +827,11 @@
 <h1 class="type-name">
 
   <span class="kind">
-    struct
-  </span> Redis::<wbr>FullText::<wbr>Summarize
+    enum
+  </span> Redis::<wbr>Geo::<wbr>Unit
 
 </h1>
 
-
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/FullText/Summarize.html">Redis::FullText::Summarize</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
 
 
 
@@ -863,8 +861,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">
-        search.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L27" target="_blank">
+        commands/geo.cr
       </a>
     
     <br/>
@@ -872,26 +870,43 @@
 
 
 
-
-
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
+    <h2>
+      <a id="enum-members" class="anchor" href="#enum-members">
   <svg class="octicon-link" aria-hidden="true">
     <use href="#octicon-link"/>
   </svg>
 </a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
+      Enum Members
+    </h2>
+  
+  <dl>
     
-      <li class="entry-summary">
-        <a href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Cfrags%3AInt32%7CNil%3Dnil%2Clen%3AInt32%7CNil%3Dnil%2Cseparator%3AString%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, frags : Int32 | Nil = <span class="n">nil</span>, len : Int32 | Nil = <span class="n">nil</span>, separator : String | Nil = <span class="n">nil</span>)</a>
-        
-      </li>
+      <dt class="entry-const" id="M">
+        <strong>M</strong> = <code><span class="n">0</span></code>
+      </dt>
+      
     
-  </ul>
+      <dt class="entry-const" id="KM">
+        <strong>KM</strong> = <code><span class="n">1</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="FT">
+        <strong>FT</strong> = <code><span class="n">2</span></code>
+      </dt>
+      
+    
+      <dt class="entry-const" id="MI">
+        <strong>MI</strong> = <code><span class="n">3</span></code>
+      </dt>
+      
+    
+  </dl>
 
+
+
+  
 
   
 
@@ -909,27 +924,30 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
+        <a href="#ft%3F-instance-method" class="signature"><strong>#ft?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#FT">FT</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#copy_with%28fields_fields%3D%40fields%2Cfrags_frags%3D%40frags%2Clen_len%3D%40len%2Cseparator_separator%3D%40separator%29-instance-method" class="signature"><strong>#copy_with</strong>(fields _fields = @fields, frags _frags = @frags, len _len = @len, separator _separator = @separator)</a>
+        <a href="#km%3F-instance-method" class="signature"><strong>#km?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#KM">KM</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#frags%3AInt32%7CNil-instance-method" class="signature"><strong>#frags</strong> : Int32 | Nil</a>
+        <a href="#m%3F-instance-method" class="signature"><strong>#m?</strong></a>
+        
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#M">M</a></code></p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#len%3AInt32%7CNil-instance-method" class="signature"><strong>#len</strong> : Int32 | Nil</a>
+        <a href="#mi%3F-instance-method" class="signature"><strong>#mi?</strong></a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#separator%3AString%7CNil-instance-method" class="signature"><strong>#separator</strong> : String | Nil</a>
+          <div class="summary"><p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#MI">MI</a></code></p></div>
         
       </li>
     
@@ -938,6 +956,33 @@
 
 
   <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+  <h3>Class methods inherited from struct <code>Enum</code></h3>
+  
+  
+    <a href="../../Enum.html#from_graph_result%28result%3AInt64%29-class-method" class="tooltip">
+      <span>from_graph_result(result : Int64)<br/>from_graph_result(result : String)<br/>from_graph_result(result : Redis::Graph::Value)</span>
+    from_graph_result</a>, 
+    
+  
+    <a href="../../Enum.html#from_redis_graph_value%28type%3ARedis%3A%3AGraph%3A%3AValueType%2Cvalue%2Ccache%29-class-method" class="tooltip">
+      <span>from_redis_graph_value(type : Redis::Graph::ValueType, value, cache)</span>
+    from_redis_graph_value</a>
+    
+  
+
+
+      
+
+
     
       
 
@@ -981,32 +1026,6 @@
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(fields:Array(String)|Nil=nil,frags:Int32|Nil=nil,len:Int32|Nil=nil,separator:String|Nil=nil)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, frags : Int32 | Nil = <span class="n">nil</span>, len : Int32 | Nil = <span class="n">nil</span>, separator : String | Nil = <span class="n">nil</span>)
-
-        <a class="method-permalink" href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Cfrags%3AInt32%7CNil%3Dnil%2Clen%3AInt32%7CNil%3Dnil%2Cseparator%3AString%7CNil%3Dnil%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
@@ -1022,76 +1041,86 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="clone-instance-method">
+    <div class="entry-detail" id="ft?-instance-method">
       <div class="signature">
         
-        def <strong>clone</strong>
+        def <strong>ft?</strong>
 
-        <a class="method-permalink" href="#clone-instance-method">#</a>
+        <a class="method-permalink" href="#ft%3F-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#FT">FT</a></code></p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="copy_with(fields_fields=@fields,frags_frags=@frags,len_len=@len,separator_separator=@separator)-instance-method">
+    <div class="entry-detail" id="km?-instance-method">
       <div class="signature">
         
-        def <strong>copy_with</strong>(fields _fields = @fields, frags _frags = @frags, len _len = @len, separator _separator = @separator)
+        def <strong>km?</strong>
 
-        <a class="method-permalink" href="#copy_with%28fields_fields%3D%40fields%2Cfrags_frags%3D%40frags%2Clen_len%3D%40len%2Cseparator_separator%3D%40separator%29-instance-method">#</a>
+        <a class="method-permalink" href="#km%3F-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#KM">KM</a></code></p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="frags:Int32|Nil-instance-method">
+    <div class="entry-detail" id="m?-instance-method">
       <div class="signature">
         
-        def <strong>frags</strong> : Int32 | Nil
+        def <strong>m?</strong>
 
-        <a class="method-permalink" href="#frags%3AInt32%7CNil-instance-method">#</a>
+        <a class="method-permalink" href="#m%3F-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#M">M</a></code></p>
+        </div>
       
       <br/>
       <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="len:Int32|Nil-instance-method">
+    <div class="entry-detail" id="mi?-instance-method">
       <div class="signature">
         
-        def <strong>len</strong> : Int32 | Nil
+        def <strong>mi?</strong>
 
-        <a class="method-permalink" href="#len%3AInt32%7CNil-instance-method">#</a>
+        <a class="method-permalink" href="#mi%3F-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>true</code> if this enum value equals <code><a href="../../Redis/Geo/Unit.html#MI">MI</a></code></p>
+        </div>
       
       <br/>
       <div>
         
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="separator:String|Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>separator</strong> : String | Nil
-
-        <a class="method-permalink" href="#separator%3AString%7CNil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>

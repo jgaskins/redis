@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::FullText::Summarize - redis 0.13.0</title>
+  <title>Redis::Geo::Box - redis 0.13.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -187,7 +187,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
       <a href="../../Redis/FullText.html">FullText</a>
       
         <ul>
@@ -272,7 +272,7 @@
       
     </li>
   
-  <li class=" current" data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
       <a href="../../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
@@ -297,12 +297,12 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Geo" data-name="redis::geo">
+  <li class="parent open current" data-id="redis/Redis/Geo" data-name="redis::geo">
       <a href="../../Redis/Geo.html">Geo</a>
       
         <ul>
   
-  <li class=" " data-id="redis/Redis/Geo/Box" data-name="redis::geo::box">
+  <li class=" current" data-id="redis/Redis/Geo/Box" data-name="redis::geo::box">
       <a href="../../Redis/Geo/Box.html">Box</a>
       
     </li>
@@ -828,12 +828,12 @@
 
   <span class="kind">
     struct
-  </span> Redis::<wbr>FullText::<wbr>Summarize
+  </span> Redis::<wbr>Geo::<wbr>Box
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/FullText/Summarize.html">Redis::FullText::Summarize</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Geo/Box.html">Redis::Geo::Box</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
 
 
 
@@ -863,8 +863,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">
-        search.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L14" target="_blank">
+        commands/geo.cr
       </a>
     
     <br/>
@@ -886,7 +886,12 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Cfrags%3AInt32%7CNil%3Dnil%2Clen%3AInt32%7CNil%3Dnil%2Cseparator%3AString%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, frags : Int32 | Nil = <span class="n">nil</span>, len : Int32 | Nil = <span class="n">nil</span>, separator : String | Nil = <span class="n">nil</span>)</a>
+        <a href="#new%28width%3AString%2Cheight%3AString%2Cunit%3AUnit%29-class-method" class="signature"><strong>.new</strong>(width : String, height : String, unit : Unit)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28width%3ANumber%2Cheight%3ANumber%2Cunit%3AUnit%29-class-method" class="signature"><strong>.new</strong>(width : Number, height : Number, unit : Unit)</a>
         
       </li>
     
@@ -914,22 +919,22 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#copy_with%28fields_fields%3D%40fields%2Cfrags_frags%3D%40frags%2Clen_len%3D%40len%2Cseparator_separator%3D%40separator%29-instance-method" class="signature"><strong>#copy_with</strong>(fields _fields = @fields, frags _frags = @frags, len _len = @len, separator _separator = @separator)</a>
+        <a href="#copy_with%28width_width%3D%40width%2Cheight_height%3D%40height%2Cunit_unit%3D%40unit%29-instance-method" class="signature"><strong>#copy_with</strong>(width _width = @width, height _height = @height, unit _unit = @unit)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#frags%3AInt32%7CNil-instance-method" class="signature"><strong>#frags</strong> : Int32 | Nil</a>
+        <a href="#height%3AString-instance-method" class="signature"><strong>#height</strong> : String</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#len%3AInt32%7CNil-instance-method" class="signature"><strong>#len</strong> : Int32 | Nil</a>
+        <a href="#unit%3AUnit-instance-method" class="signature"><strong>#unit</strong> : Unit</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#separator%3AString%7CNil-instance-method" class="signature"><strong>#separator</strong> : String | Nil</a>
+        <a href="#width%3AString-instance-method" class="signature"><strong>#width</strong> : String</a>
         
       </li>
     
@@ -990,18 +995,34 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(fields:Array(String)|Nil=nil,frags:Int32|Nil=nil,len:Int32|Nil=nil,separator:String|Nil=nil)-class-method">
+    <div class="entry-detail" id="new(width:String,height:String,unit:Unit)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, frags : Int32 | Nil = <span class="n">nil</span>, len : Int32 | Nil = <span class="n">nil</span>, separator : String | Nil = <span class="n">nil</span>)
+        def self.<strong>new</strong>(width : String, height : String, unit : <a href="../../Redis/Geo/Unit.html">Unit</a>)
 
-        <a class="method-permalink" href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Cfrags%3AInt32%7CNil%3Dnil%2Clen%3AInt32%7CNil%3Dnil%2Cseparator%3AString%7CNil%3Dnil%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28width%3AString%2Cheight%3AString%2Cunit%3AUnit%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(width:Number,height:Number,unit:Unit)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(width : Number, height : Number, unit : <a href="../../Redis/Geo/Unit.html">Unit</a>)
+
+        <a class="method-permalink" href="#new%28width%3ANumber%2Cheight%3ANumber%2Cunit%3AUnit%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1033,47 +1054,33 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="copy_with(fields_fields=@fields,frags_frags=@frags,len_len=@len,separator_separator=@separator)-instance-method">
+    <div class="entry-detail" id="copy_with(width_width=@width,height_height=@height,unit_unit=@unit)-instance-method">
       <div class="signature">
         
-        def <strong>copy_with</strong>(fields _fields = @fields, frags _frags = @frags, len _len = @len, separator _separator = @separator)
+        def <strong>copy_with</strong>(width _width = @width, height _height = @height, unit _unit = @unit)
 
-        <a class="method-permalink" href="#copy_with%28fields_fields%3D%40fields%2Cfrags_frags%3D%40frags%2Clen_len%3D%40len%2Cseparator_separator%3D%40separator%29-instance-method">#</a>
+        <a class="method-permalink" href="#copy_with%28width_width%3D%40width%2Cheight_height%3D%40height%2Cunit_unit%3D%40unit%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/geo.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="frags:Int32|Nil-instance-method">
+    <div class="entry-detail" id="height:String-instance-method">
       <div class="signature">
         
-        def <strong>frags</strong> : Int32 | Nil
+        def <strong>height</strong> : String
 
-        <a class="method-permalink" href="#frags%3AInt32%7CNil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="len:Int32|Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>len</strong> : Int32 | Nil
-
-        <a class="method-permalink" href="#len%3AInt32%7CNil-instance-method">#</a>
+        <a class="method-permalink" href="#height%3AString-instance-method">#</a>
       </div>
       
       <br/>
@@ -1082,12 +1089,26 @@
       </div>
     </div>
   
-    <div class="entry-detail" id="separator:String|Nil-instance-method">
+    <div class="entry-detail" id="unit:Unit-instance-method">
       <div class="signature">
         
-        def <strong>separator</strong> : String | Nil
+        def <strong>unit</strong> : <a href="../../Redis/Geo/Unit.html">Unit</a>
 
-        <a class="method-permalink" href="#separator%3AString%7CNil-instance-method">#</a>
+        <a class="method-permalink" href="#unit%3AUnit-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="width:String-instance-method">
+      <div class="signature">
+        
+        def <strong>width</strong> : String
+
+        <a class="method-permalink" href="#width%3AString-instance-method">#</a>
       </div>
       
       <br/>

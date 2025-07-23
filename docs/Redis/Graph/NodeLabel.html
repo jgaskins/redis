@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::FullText::Summarize - redis 0.13.0</title>
+  <title>Redis::Graph::NodeLabel - redis 0.13.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -187,7 +187,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
+  <li class="parent " data-id="redis/Redis/FullText" data-name="redis::fulltext(runnable)">
       <a href="../../Redis/FullText.html">FullText</a>
       
         <ul>
@@ -272,7 +272,7 @@
       
     </li>
   
-  <li class=" current" data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
+  <li class=" " data-id="redis/Redis/FullText/Summarize" data-name="redis::fulltext::summarize">
       <a href="../../Redis/FullText/Summarize.html">Summarize</a>
       
     </li>
@@ -332,7 +332,7 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Graph" data-name="redis::graph">
+  <li class="parent open current" data-id="redis/Redis/Graph" data-name="redis::graph">
       <a href="../../Redis/Graph.html">Graph</a>
       
         <ul>
@@ -422,7 +422,7 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Graph/NodeLabel" data-name="redis::graph::nodelabel">
+  <li class=" current" data-id="redis/Redis/Graph/NodeLabel" data-name="redis::graph::nodelabel">
       <a href="../../Redis/Graph/NodeLabel.html">NodeLabel</a>
       
     </li>
@@ -827,13 +827,11 @@
 <h1 class="type-name">
 
   <span class="kind">
-    struct
-  </span> Redis::<wbr>FullText::<wbr>Summarize
+    annotation
+  </span> Redis::<wbr>Graph::<wbr>NodeLabel
 
 </h1>
 
-
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/FullText/Summarize.html">Redis::FullText::Summarize</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
 
 
 
@@ -863,8 +861,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">
-        search.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/graph/serializable.cr#L7" target="_blank">
+        graph/serializable.cr
       </a>
     
     <br/>
@@ -875,228 +873,25 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Cfrags%3AInt32%7CNil%3Dnil%2Clen%3AInt32%7CNil%3Dnil%2Cseparator%3AString%7CNil%3Dnil%29-class-method" class="signature"><strong>.new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, frags : Int32 | Nil = <span class="n">nil</span>, len : Int32 | Nil = <span class="n">nil</span>, separator : String | Nil = <span class="n">nil</span>)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#clone-instance-method" class="signature"><strong>#clone</strong></a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#copy_with%28fields_fields%3D%40fields%2Cfrags_frags%3D%40frags%2Clen_len%3D%40len%2Cseparator_separator%3D%40separator%29-instance-method" class="signature"><strong>#copy_with</strong>(fields _fields = @fields, frags _frags = @frags, len _len = @len, separator _separator = @separator)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#frags%3AInt32%7CNil-instance-method" class="signature"><strong>#frags</strong> : Int32 | Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#len%3AInt32%7CNil-instance-method" class="signature"><strong>#len</strong> : Int32 | Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#separator%3AString%7CNil-instance-method" class="signature"><strong>#separator</strong> : String | Nil</a>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
     
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(fields:Array(String)|Nil=nil,frags:Int32|Nil=nil,len:Int32|Nil=nil,separator:String|Nil=nil)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(fields : Array(String) | Nil = <span class="n">nil</span>, frags : Int32 | Nil = <span class="n">nil</span>, len : Int32 | Nil = <span class="n">nil</span>, separator : String | Nil = <span class="n">nil</span>)
-
-        <a class="method-permalink" href="#new%28fields%3AArray%28String%29%7CNil%3Dnil%2Cfrags%3AInt32%7CNil%3Dnil%2Clen%3AInt32%7CNil%3Dnil%2Cseparator%3AString%7CNil%3Dnil%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="clone-instance-method">
-      <div class="signature">
-        
-        def <strong>clone</strong>
-
-        <a class="method-permalink" href="#clone-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="copy_with(fields_fields=@fields,frags_frags=@frags,len_len=@len,separator_separator=@separator)-instance-method">
-      <div class="signature">
-        
-        def <strong>copy_with</strong>(fields _fields = @fields, frags _frags = @frags, len _len = @len, separator _separator = @separator)
-
-        <a class="method-permalink" href="#copy_with%28fields_fields%3D%40fields%2Cfrags_frags%3D%40frags%2Clen_len%3D%40len%2Cseparator_separator%3D%40separator%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L288" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="frags:Int32|Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>frags</strong> : Int32 | Nil
-
-        <a class="method-permalink" href="#frags%3AInt32%7CNil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="len:Int32|Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>len</strong> : Int32 | Nil
-
-        <a class="method-permalink" href="#len%3AInt32%7CNil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="separator:String|Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>separator</strong> : String | Nil
-
-        <a class="method-permalink" href="#separator%3AString%7CNil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-      </div>
-    </div>
-  
-
 
 
 </div>
