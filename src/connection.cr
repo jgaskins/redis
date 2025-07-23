@@ -447,7 +447,7 @@ module Redis
 
     # Close the connection to the server.
     def close
-      @socket.close
+      @socket.close rescue nil
       @closed = true
     end
 

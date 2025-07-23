@@ -55,19 +55,19 @@ module Redis
     Connection.set_return_types!
 
     def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil, &) : Nil
-      @pool.checkout(&.scan_each(match: pattern, count: count, type: type) { |key| yield key })
+      checkout(&.scan_each(match: pattern, count: count, type: type) { |key| yield key })
     end
 
     def hscan_each(key : String, *, match pattern : String? = nil, count : String | Int | Nil = nil, &) : Nil
-      @pool.checkout(&.hscan_each(key: key, match: pattern, count: count) { |field, value| yield field, value })
+      checkout(&.hscan_each(key: key, match: pattern, count: count) { |field, value| yield field, value })
     end
 
     def sscan_each(key : String, *, match pattern : String? = nil, count : String | Int | Nil = nil, &) : Nil
-      @pool.checkout(&.sscan_each(key: key, match: pattern, count: count) { |member| yield member })
+      checkout(&.sscan_each(key: key, match: pattern, count: count) { |member| yield member })
     end
 
     def zscan_each(key : String, *, match pattern : String? = nil, count : String | Int | Nil = nil, &) : Nil
-      @pool.checkout(&.zscan_each(key: key, match: pattern, count: count) { |member, score| yield member, score })
+      checkout(&.zscan_each(key: key, match: pattern, count: count) { |member, score| yield member, score })
     end
 
     # All Redis commands invoked on the client check out a connection from the
@@ -78,27 +78,36 @@ module Redis
     # redis = Redis::Client.new
     # ```
     def run(command)
-      @pool.checkout(&.run(command))
+      checkout(&.run(command))
     end
 
     def pipeline(&)
-      @pool.checkout(&.pipeline { |pipe| yield pipe })
+      checkout(&.pipeline { |pipe| yield pipe })
     end
 
     def multi(&)
-      @pool.checkout(&.multi { |txn| yield txn })
+      checkout(&.multi { |txn| yield txn })
     end
 
     def subscribe(*channels, &)
-      @pool.checkout(&.subscribe(*channels) { |subscription, conn| yield subscription, conn })
+      checkout(&.subscribe(*channels) { |subscription, conn| yield subscription, conn })
     end
 
     def psubscribe(*channels, &)
-      @pool.checkout(&.psubscribe(*channels) { |subscription, conn| yield subscription, conn })
+      checkout(&.psubscribe(*channels) { |subscription, conn| yield subscription, conn })
     end
 
     def close
       @pool.close
+    end
+
+    private def checkout
+      @pool.checkout do |connection|
+        yield connection
+      rescue ex : IO::Error
+        connection.close
+        raise ex
+      end
     end
   end
 end
