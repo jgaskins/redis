@@ -2,30 +2,25 @@ module Redis
   ERROR_MAP = Hash(String, Error.class).new(default_value: Error)
 
   class Error < ::Exception
+    macro define(type, code = name.gsub(/\A.*::/, "").upcase)
+      class {{type}} < {{@type}}
+        {% if code != nil %}
+          ERROR_MAP[{{code}}] = self
+        {% end %}
+      end
+    end
+
+    def_equals_and_hash message
   end
 
-  class NoGroup < Error
-    ERROR_MAP["NOGROUP"] = self
-  end
-
-  class BusyGroup < Error
-    ERROR_MAP["BUSYGROUP"] = self
-  end
+  Error.define NoGroup
+  Error.define BusyGroup
+  Error.define ReadOnly
 
   class Cluster
-    class Error < ::Redis::Error
-    end
-
-    class Moved < Error
-      ERROR_MAP["MOVED"] = self
-    end
-
-    class Ask < Error
-      ERROR_MAP["ASK"] = self
-    end
-
-    class CrossSlot < Error
-      ERROR_MAP["CROSSSLOT"] = self
-    end
+    Error.define Error, nil
+    Error.define Moved
+    Error.define Ask
+    Error.define CrossSlot
   end
 end

@@ -97,6 +97,27 @@ describe Redis::JSON do
     end
   end
 
+  it "gets many values and deserializes them as the given type" do
+    included = UUID.v7.to_s
+    empty = UUID.v7.to_s
+
+    redis.json.set included, ".", {
+      customer: {
+        name:    "Jamie",
+        address: "123 Main St",
+      },
+      products: [
+        {product_id: UUID.random, name: "Shirt", quantity: 1, price_cents: 123_45},
+        {product_id: UUID.random, name: "Pants", quantity: 1, price_cents: 123_45},
+        {product_id: UUID.random, name: "Socks", quantity: 2, price_cents: 123_45},
+      ],
+    }
+
+    results = redis.json.mget [included, empty], ".", as: Order
+
+    results.should be_a Array(Order?)
+  end
+
   test "increments numbers" do
     redis.json.set key, ".", {
       customer: {
@@ -130,8 +151,17 @@ describe Redis::JSON do
     redis.json.set key, ".", {values: [1], count: 1234}
 
     redis.json.del key, ".values"
-    redis.json.get(key, "$.values", as: Array(Array(Int64))).not_nil!.should be_empty
-    redis.json.get(key, ".count", as: Int64).should eq 1234
+    redis.json.get(key, ".").should eq({count: 1234}.to_json)
+  end
+
+  test "toggles a key in a JSON object" do
+    json = redis.json
+    json.set key, ".", {bool: true}
+
+    json.toggle(key, "$.bool").should eq [0]
+    json.get(key).should eq({bool: false}.to_json)
+    json.toggle(key, "$.bool").should eq [1]
+    json.get(key).should eq({bool: true}.to_json)
   end
 
   test "appends a value to an array" do

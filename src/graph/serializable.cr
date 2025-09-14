@@ -1,4 +1,15 @@
+require "./error"
+
 module Redis::Graph
+  annotation Field
+  end
+
+  annotation NodeLabel
+  end
+
+  annotation RelationshipType
+  end
+
   # The `Redis::Graph::Serializable::*` mixins tell `Redis::Graph::Client` how
   # to deserialize nodes and relationships as your own Crystal object types,
   # similar to [`DB::Serializable`](http://crystal-lang.github.io/crystal-db/api/0.11.0/DB/Serializable.html).
@@ -47,127 +58,198 @@ module Redis::Graph
   # CYPHER
   # ```
   module Serializable
-    annotation Property
-    end
-
     module Node
       record Metadata, id : Int64, labels : Array(String)
 
-      macro included
-        @[Redis::Graph::Serializable::Property(ignore: true)]
-        getter node : Metadata = Metadata.new(0i64, %w[])
+      def self.from_redis_graph_value(node_type : T.class, value_type : Redis::Graph::ValueType, value, cache) : T forall T
+        id, label_ids, properties = value.as(Array)
 
-        def self.can_transform_graph_result?(value : ::Redis::Graph::Node)
-          true
+        id = id.as Int64
+        labels = label_ids.as(Array).map do |label_id|
+          cache.label(label_id.as(Int64))
+        end
+        metadata = Metadata.new(id: id, labels: labels)
+
+        T.new(metadata, properties.as(Array), cache)
+      end
+
+      macro included
+        def self.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache)
+          ::Redis::Graph::Serializable::Node.from_redis_graph_value(self, type, value, cache)
         end
 
-        def self.can_transform_graph_result?(value)
+        def self.matches_redis_graph_type?(type : ::Redis::Graph::ValueType) : Bool
+          type.node?
+        end
+
+        def self.can_transform_graph_result?(value : Int64 | String | Nil | Redis::Error, cache) : Bool
           false
         end
 
-        def self.from_graph_result(array : Array)
-          if array.is_a?(Array(Redis::Graph::List)) && (node = Redis::Graph::Node.from?(array))
-            new node
-          else
-            raise Redis::Graph::Error.new("Cannot build a {{@type.id}} from Node representation: #{array.inspect}")
+        def self.can_transform_graph_result?(value : Array, cache) : Bool
+          id, label_ids, properties = value.as(Array)
+          labels = label_ids.as(Array).any? do |label_id|
+            label = cache.label label_id.as(Int64)
+
+            {% if (ann = @type.annotation(::Redis::Graph::NodeLabel)) && ann[0] %}
+              label == {{ann[0]}}
+            {% else %}
+              # Use the type name if there is no label specified for the type
+              label == name
+            {% end %}
           end
         end
 
-        def self.from_graph_result(result : Redis::Value | Redis::Graph::Relationship)
-          raise ArgumentError.new("Cannot create a {{@type.id}} from #{result.inspect}")
+        def self.can_transform_graph_result?(value : Redis::Value) : Bool
+          false
         end
+      end
 
-        def self.from_graph_result(result : Redis::Graph::Node)
-          new result
-        end
+      def initialize(metadata : ::Redis::Graph::Serializable::Node::Metadata, properties : Array, cache)
+        {% begin %}
+          {% for ivar in @type.instance_vars %}
+            %found{ivar.name} = false
+            %value{ivar.name} = uninitialized {{ivar.type}}
+          {% end %}
 
-        def initialize(node : Redis::Graph::Node)
-          {% verbatim do %}
-            {% begin %}
+          properties.as(Array).each do |property|
+            property_id, type, value = property.as(Array)
+            key = cache.property(property_id.as(Int64))
+            case key
               {% for ivar in @type.instance_vars %}
-                {% ann = ivar.annotation(::Redis::Graph::Serializable::Property) %}
-
-                {% if !ann || !ann[:ignore] %}
-                  {% if ann && ann[:converter] %}
-                    @{{ivar.name}} = {{ann[:converter]}}.from_graph_result(node.properties[{{ivar.name.stringify}}]?)
+                when "{{ivar.name}}"
+                  %found{ivar.name} = true
+                  %value{ivar.name} = 
+                  {% if (ann = ivar.annotation(::Redis::Graph::Field)) && ann[:converter] %}
+                    {{ann[:converter]}}.from_redis_graph_value(
+                     {{ivar.type}}.from_redis_graph_value(::Redis::Graph::ValueType.new(type.as(Int).to_i), value, cache)
+                    )
                   {% else %}
-                    @{{ivar.name}} = {{ivar.type}}.from_graph_result(node.properties[{{ivar.name.stringify}}]?)
+                    {{ivar.type}}.from_redis_graph_value(::Redis::Graph::ValueType.new(type.as(Int).to_i), value, cache)
                   {% end %}
-                {% end %}
               {% end %}
+            else
+              unknown_redis_graph_node_property key, value
+            end
+          end
+
+          {% for ivar in @type.instance_vars %}
+            if %found{ivar.name}
+              @{{ivar}} = %value{ivar.name}
+            {% unless ivar.type.nilable? %}
+            else
+              raise PropertyMissing.new("Node did not contain the property `{{ivar.name}}`")
             {% end %}
-            @node = ::Redis::Graph::Serializable::Node::Metadata.new(
-              id: node.id,
-              labels: node.labels,
-            )
+            end
           {% end %}
-        end
+        {% end %}
+      end
 
-        def to_redis_graph_param(io : IO)
-          {% verbatim do %}
-            io << '{'
-            {% for ivar, index in @type.instance_vars %}
-              {% ann = ivar.annotation(::Redis::Graph::Serializable::Property) %}
+      def unknown_redis_graph_node_property(key, value)
+      end
 
-              {% if !ann || !ann[:ignore] %}
-                # We don't need to serialize nil values
-                if @{{ivar}}
-                  io << "{{ivar}}: "
-                  @{{ivar}}.to_redis_graph_param io
-
-                  {% if index < @type.instance_vars.size - 1 %}
-                    io << ", "
-                  {% end %}
-                end
-              {% end %}
-            {% end %}
-            io << '}'
-          {% end %}
-        end
+      class PropertyMissing < Error
       end
     end
 
     module Relationship
-      record Metadata, id : Int64, type : String, source_node : Int64, destination_node : Int64
+      record Metadata,
+        id : Int64,
+        type : String,
+        source_node : Int64,
+        destination_node : Int64
+
+      def self.from_redis_graph_value(node_type : T.class, value_type : Redis::Graph::ValueType, value, cache) : T forall T
+        id, type, source_node, destination_node, properties = value.as(Array)
+
+        metadata = Metadata.new(
+          id: id.as(Int64),
+          type: cache.relationship_type(type.as(Int64)),
+          source_node: source_node.as(Int64),
+          destination_node: destination_node.as(Int64),
+        )
+
+        T.new(metadata, properties.as(Array), cache)
+      end
 
       macro included
-        @[Redis::Graph::Serializable::Property(ignore: true)]
-        getter relationship : Metadata
-
-        def self.from_graph_result(array : Array)
-          if node = Redis::Graph::Relationship.from?(array)
-            new node
-          else
-            raise Redis::Graph::Error.new("Cannot build a {{@type.id}} from Relationship representation: #{array.inspect}")
-          end
+        def self.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache)
+          ::Redis::Graph::Serializable::Relationship.from_redis_graph_value(self, type, value, cache)
         end
 
-        def self.from_graph_result(result : Redis::Value | Redis::Graph::Node)
-          raise ArgumentError.new("Cannot create a {{@type.id}} from #{result.inspect}")
+        def self.matches_redis_graph_type?(type : ::Redis::Graph::ValueType) : Bool
+          type.relationship?
         end
+      end
 
-        def self.from_graph_result(result : Redis::Graph::Relationship)
-          new result
-        end
-
-        def initialize(relationship : Redis::Graph::Relationship)
-          {% verbatim do %}
-            {% begin %}
-              {% for ivar in @type.instance_vars %}
-                {% ann = ivar.annotation(::Redis::Graph::Serializable::Property) %}
-                {% if !ann || !ann[:ignore] %}
-                  @{{ivar.name}} = {{ivar.type}}.from_graph_result(relationship.properties[{{ivar.name.stringify}}]?)
-                {% end %}
-              {% end %}
-            {% end %}
-            @relationship = ::Redis::Graph::Serializable::Relationship::Metadata.new(
-              id: relationship.id,
-              type: relationship.type,
-              source_node: relationship.src_node,
-              destination_node: relationship.dest_node,
-            )
+      def initialize(metadata : ::Redis::Graph::Serializable::Relationship::Metadata, properties : Array, cache)
+        {% begin %}
+          {% for ivar in @type.instance_vars %}
+            %found{ivar.name} = false
+            %value{ivar.name} = uninitialized {{ivar.type}}
           {% end %}
+
+          properties.as(Array).each do |property|
+            property_id, type, value = property.as(Array)
+            key = cache.property(property_id.as(Int64))
+            case key
+              {% for ivar in @type.instance_vars %}
+                when "{{ivar.name}}"
+                  %found{ivar.name} = true
+                  %value{ivar.name} = 
+                  {% if ann = ivar.annotation(::Redis::Graph::Field) && ann[:converter] %}
+                    {{ann[:converter]}}.from_redis_graph_value(
+                     {{ivar.type}}.from_redis_graph_value(::Redis::Graph::ValueType.new(type.as(Int).to_i), value, cache)
+                    )
+                  {% else %}
+                    {{ivar.type}}.from_redis_graph_value(::Redis::Graph::ValueType.new(type.as(Int).to_i), value, cache)
+                  {% end %}
+              {% end %}
+            else
+              unknown_redis_graph_node_property key, value
+            end
+          end
+
+          {% for ivar in @type.instance_vars %}
+            if %found{ivar.name}
+              @{{ivar}} = %value{ivar.name}
+            {% unless ivar.type.nilable? %}
+            else
+              raise PropertyMissing.new("Relationship did not contain the property `{{ivar.name}}`")
+            {% end %}
+            end
+          {% end %}
+        {% end %}
+      end
+
+      def unknown_redis_graph_node_property(key, value)
+      end
+
+      class PropertyMissing < Error
+      end
+    end
+
+    module Property
+      macro included
+        include JSON::Serializable
+
+        def self.from_redis_graph_value(type : Redis::Graph::ValueType, value, cache) : self
+          new type, value, cache
         end
+      end
+
+      def initialize(type : Redis::Graph::ValueType, value, cache)
+        unless type.map?
+          raise InvalidType.new("Expected {{@type}}, received #{value.inspect}")
+        end
+
+        {% for ivar in @type.instance_vars %}
+          %type{ivar.name}, %value{ivar.name} = 
+          @{{ivar.name}} = {{ivar.type}}.from_redis_graph_value
+        {% end %}
+      end
+
+      class InvalidType < Exception
       end
     end
   end
@@ -197,6 +279,21 @@ struct Tuple
 
   def self.can_transform_graph_result?(result : Array)
     true
+  end
+end
+
+# :nodoc:
+struct Enum
+  def self.from_graph_result(result : Int64)
+    from_value result
+  end
+
+  def self.from_graph_result(result : String)
+    parse result
+  end
+
+  def self.from_graph_result(result : Redis::Graph::Value)
+    raise ArgumentError.new("Cannot create a #{self} from #{result.inspect} (#{result.class})")
   end
 end
 
@@ -258,7 +355,7 @@ class String
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value | Redis::Value)
     false
   end
 
@@ -281,7 +378,7 @@ struct Nil
     raise ArgumentError.new("Cannot create a #{self} from #{result.inspect}")
   end
 
-  def self.can_transform_graph_result?(result : Redis::Graph::Value)
+  def self.can_transform_graph_result?(result : Redis::Graph::Value | Redis::Value)
     false
   end
 
@@ -393,16 +490,34 @@ class Array
 end
 
 # :nodoc:
-def Union.from_graph_result(result : Redis::Graph::Value)
-  {% begin %}
-  if false
-    raise "lolwut"
-  {% for type in T %}
-    elsif {{type}}.can_transform_graph_result?(result)
-      {{type}}.from_graph_result(result)
-  {% end %}
-  else
-    raise ArgumentError.new("Cannot create a #{self} from #{result.inspect} (#{result.class})")
+struct Tuple
+  def self.from_graph_result(array : Array)
+    {% begin %}
+      {
+        {% for type, index in T %}
+          {{type}}.from_graph_result(array[{{index}}]),
+        {% end %},
+      }
+    {% end %}
   end
+
+  def self.can_transform_graph_result?(array : Array)
+    return false unless array.size == size
+    {% for type, index in T %}
+      return false unless {{type}}.can_transform_graph_result?(array[{{index}}])
+    {% end %}
+
+    true
+  end
+end
+
+# :nodoc:
+def Union.from_graph_result(result : Redis::Graph::Value)
+  {% for type in T %}
+    if {{type}}.can_transform_graph_result?(result)
+      return {{type}}.from_graph_result(result)
+    end
   {% end %}
+
+  raise ArgumentError.new("Cannot create a #{self} from #{result.inspect} (#{result.class})")
 end

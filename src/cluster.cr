@@ -1,6 +1,7 @@
 # require "./client"
 require "./connection"
 require "./commands"
+require "./read_only_commands"
 require "db/pool"
 require "set"
 
@@ -35,7 +36,8 @@ module Redis
     LOG = ::Log.for(self)
 
     # :nodoc:
-    alias Pool = DB::Pool(Connection)
+    private alias Pool = DB::Pool(Connection)
+    private alias PoolOptions = DB::Pool::Options
 
     # :nodoc:
     alias Slots = Range(Int32, Int32)
@@ -143,13 +145,15 @@ module Redis
       end
 
       @read_nodes.each_value do |node|
-        node.replica_of = @write_nodes[replica_map[node.id]]
+        unless node.flags.fail?
+          node.replica_of = @write_nodes[replica_map[node.id]]
+        end
       end
 
       @write_pools = @write_nodes.map do |_id, node|
         {
           node.slots,
-          Pool.new(max_idle_pool_size: 25, initial_pool_size: 0) do
+          Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
             connection_uri = uri.dup
             connection_uri.host = node.ip
             connection_uri.port = node.port
@@ -160,7 +164,7 @@ module Redis
       @read_pools = @read_nodes.map do |_id, node|
         {
           node.slots,
-          Pool.new(max_idle_pool_size: 25, initial_pool_size: 0) do
+          Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
             connection_uri = uri.dup
             connection_uri.host = node.ip
             connection_uri.port = node.port
@@ -197,12 +201,12 @@ module Redis
     # WARNING: All keys that this pipeline operates on _MUST_ reside on the same
     # shard. It's best to pass a pre-hashed key (one containing `{}`) to this
     # method. See the example above.
-    def pipeline(key : String)
+    def pipeline(key : String, &)
       write_pool_for(key).checkout(&.pipeline { |pipe| yield pipe })
     end
 
     # Execute `Commands#scan_each` on each shard, yielding any matching keys.
-    def scan_each(*args, **kwargs) : Nil
+    def scan_each(*args, **kwargs, &) : Nil
       each_unique_replica(&.scan_each(*args, **kwargs) { |key| yield key })
     end
 
@@ -210,60 +214,6 @@ module Redis
     def flushdb
       each_master(&.run({"flushdb"}))
     end
-
-    # Add commands here to route them to read-only replicas.
-    private READ_ONLY_COMMANDS = %w[
-      dump
-      echo
-      exists
-      expiretime
-      get
-      getbit
-      getrange
-      hexists
-      hget
-      hgetall
-      hkeys
-      hlen
-      hmget
-      hstrlen
-      hvals
-      keys
-      lcs
-      lindex
-      llen
-      lpos
-      lrange
-      mget
-      pttl
-      randomkey
-      scard
-      sdiff
-      sinter
-      sintercard
-      sismember
-      smembers
-      smismember
-      srandmember
-      strlen
-      sunion
-      ttl
-      type
-      xlen
-      xrange
-      xrevrange
-      zcard
-      zcount
-      zdiff
-      zinter
-      zlexcount
-      zrandmember
-      zrange
-      zrangebylex
-      zrangebyscore
-      zrank
-      zrevrangebylex
-    ].to_set
 
     def run(command full_command)
       if full_command.empty?
@@ -297,42 +247,7 @@ module Redis
       end
     end
 
-    # :nodoc:
-    macro override_return_types(methods)
-      {% for method, return_type in methods %}
-        # :nodoc:
-        def {{method.id}}(*args, **kwargs) : {{return_type}}
-          super(*args, **kwargs){{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
-        end
-      {% end %}
-    end
-
-    # When new commands are added to the Commands mixin, add an entry here to
-    # make sure the return type is set when run directly on the connection.
-    override_return_types({
-      keys:   Array,
-      get:    String?,
-      incr:   Int64,
-      decr:   Int64,
-      incrby: Int64,
-      decrby: Int64,
-      del:    Int64,
-
-      lrange: Array,
-      lpop:   String?,
-      rpop:   String?,
-      lpush:  Int64,
-      rpush:  Int64,
-
-      smembers:   Array,
-      ttl:        Int64,
-      xlen:       Int64,
-      xgroup:     Nil,
-      xrange:     Array,
-      xpending:   Array,
-      xreadgroup: Array(Value)?,
-      xautoclaim: Array,
-    })
+    Connection.set_return_types!
 
     # Close all connections to this Redis cluster
     def close
@@ -387,13 +302,13 @@ module Redis
       CRC16.checksum(key) % 16384
     end
 
-    private def each_master : Nil
+    private def each_master(&) : Nil
       @write_pools.each do |(_, pool)|
         pool.checkout { |conn| yield conn }
       end
     end
 
-    private def each_unique_replica : Nil
+    private def each_unique_replica(&) : Nil
       # Set to the write-pool size because that's the maximum size we'll need
       # for this data structure. The number of hash-slot ranges is based on
       # what *they* use.

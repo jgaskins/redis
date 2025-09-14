@@ -33,7 +33,7 @@ describe Redis::Cluster do
 
       begin
         cluster.lpush source, "value"
-        cluster.rpoplpush source, target
+        cluster.lmove source, target, :left, :right
       ensure
         cluster.del source
         cluster.del target

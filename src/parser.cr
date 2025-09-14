@@ -29,7 +29,7 @@ module Redis
       read { nil }
     end
 
-    private def read
+    private def read(&)
       case byte_marker = @io.read_byte
       when ':'
         parse_int.tap { @io.skip 2 }
@@ -37,7 +37,7 @@ module Redis
         length = parse_int
         @io.skip 2
         if length >= 0
-          Array.new(length) { read }
+          Array(Value).new(length) { read }
         end
       when '$'
         length = parse_int
@@ -48,10 +48,27 @@ module Redis
           value
         end
       when '+'
-        @io.read_line
+        # Most of the time, RESP simple strings are just "OK", so we can
+        # optimize for that case to avoid heap allocations. If it is *not* the
+        # "OK" string, this does an extra heap allocation, but that seems like
+        # a decent tradeoff considering the vast majority of times a simple
+        # string will be returned from the server is from a SET call.
+        buffer = uninitialized UInt8[4] # "OK\r\n"
+        slice = buffer.to_slice
+        read = @io.read_fully slice[0, 2] # Just trying to check whether we got "OK"
+        if read == 2 && slice[0, 2] == "OK".to_slice && (second_read = @io.read_fully(slice + 2)) && slice == "OK\r\n".to_slice
+          "OK"
+        elsif read == 2 && slice[0, 2] == "\r\n".to_slice
+          ""
+        else
+          String.build do |str|
+            str.write slice[0...read + (second_read || 0)]
+            str << @io.read_line
+          end.chomp
+        end
       when '-'
         type, message = @io.read_line.split(' ', 2)
-        raise ERROR_MAP[type].new("#{type} #{message}")
+        ERROR_MAP[type].new("#{type} #{message}")
       when nil
         yield
       else

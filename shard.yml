@@ -1,5 +1,5 @@
 name: redis
-version: 0.5.4
+version: 0.13.0
 
 authors:
   - Jamie Gaskins <jgaskins@hey.com>
@@ -7,7 +7,7 @@ authors:
 dependencies:
   db:
     github: crystal-lang/crystal-db
-    version: ~> 0.10
+    version: ~> 0.12
 
 crystal: 1.0.0
 

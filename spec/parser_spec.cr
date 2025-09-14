@@ -12,8 +12,17 @@ module Redis
     end
 
     it "reads simple strings" do
-      io = IO::Memory.new("+OK\r\n")
-      Parser.new(io).read.should eq "OK"
+      io = IO::Memory.new("+OK\r\n+QUEUED\r\n+.\r\n+\r\n" * 2)
+      parser = Parser.new(io)
+
+      2.times do
+        parser.read.should eq "OK"
+        parser.read.should eq "QUEUED"
+        # With the optimization made in aafe485, we need to ensure we can read
+        # simple strings with a size of less than 2 bytes.
+        parser.read.should eq "."
+        parser.read.should eq ""
+      end
     end
 
     it "reads bulk strings" do
@@ -41,6 +50,16 @@ module Redis
       io << "$-1\r\n"    # nil
 
       Parser.new(io.rewind).read.should eq ["foo!", 12345, nil]
+    end
+
+    it "reads arrays that contain errors" do
+      io = IO::Memory.new
+      io << "*3\r\n"
+      io << "$3\r\n" << "foo\r\n"
+      io << "-OOPS The thing broke\r\n"
+      io << ":1234\r\n"
+
+      Parser.new(io.rewind).read.should eq ["foo", Error.new("OOPS The thing broke"), 1234]
     end
 
     it "can read without failing if the IO is closed" do

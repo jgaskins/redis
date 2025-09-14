@@ -21,7 +21,7 @@ module Redis
       encoding : Encoding? = nil,
       chunk_size : Int64? = nil,
       duplicate_policy : DuplicatePolicy? = nil,
-      labels : Hash(String, String | Int32 | Int64)? = nil
+      labels : Hash(String, String | Int32 | Int64)? = nil,
     )
       command = Array(String).new(initial_capacity: 11 + (labels.try(&.size) || 0) * 2)
       command << "ts.create" << key
@@ -58,7 +58,7 @@ module Redis
       encoding : Encoding? = nil,
       chunk_size : Int64? = nil,
       on_duplicate duplicate_policy : DuplicatePolicy? = nil,
-      labels : Hash(String, String | Int32 | Int64)? = nil
+      labels : Hash(String, String | Int32 | Int64)? = nil,
     )
       command = Array(String).new(initial_capacity: 12 + (labels.try(&.size) || 0) * 2)
       command << "ts.add" << key << "*" << value.to_s
@@ -96,7 +96,7 @@ module Redis
       encoding : Encoding? = nil,
       chunk_size : Int64? = nil,
       on_duplicate duplicate_policy : DuplicatePolicy? = nil,
-      labels : Hash(String, String | Int32 | Int64)? = nil
+      labels : Hash(String, String | Int32 | Int64)? = nil,
     )
       command = Array(String).new(initial_capacity: 13 + (labels.try(&.size) || 0) * 2)
       command << "ts.add" << key << timestamp.to_unix_ms.to_s << value.to_s
@@ -146,20 +146,37 @@ module Redis
       @redis.run({"ts.info", key})
     end
 
+    def queryindex(filter : String)
+      @redis.run({"ts.queryindex", filter})
+    end
+
     def aggregation(
       aggregator : AggregationType,
       bucket_duration : Time::Span,
+      align : Alignment | Time | Nil = nil,
       buckettimestamp : BucketTimestamp? = nil,
-      empty : Bool? = nil
+      empty : Bool? = nil,
     )
-      Aggregation.new(aggregator, bucket_duration, buckettimestamp, empty)
+      Aggregation.new(
+        aggregator: aggregator,
+        bucket_duration: bucket_duration,
+        alignment: align,
+        buckettimestamp: buckettimestamp,
+        empty: empty,
+      )
     end
 
     record Aggregation,
       aggregator : AggregationType,
       bucket_duration : Time::Span,
+      alignment : Alignment | Time | Nil = nil,
       buckettimestamp : BucketTimestamp? = nil,
       empty : Bool? = nil
+
+    enum Alignment
+      Start
+      End
+    end
 
     def mrange(
       time_range : ::Range(Time, Time?),
@@ -171,7 +188,33 @@ module Redis
       count : Int? = nil,
       aggregation : Aggregation? = nil,
       groupby : String? = nil,
-      reduce : String? = nil
+      reduce : String? = nil,
+    )
+      mrange(
+        time_range: time_range,
+        filter: [filter],
+        filter_by_ts: filter_by_ts,
+        filter_by_value: filter_by_value,
+        withlabels: withlabels,
+        selected_labels: selected_labels,
+        count: count,
+        aggregation: aggregation,
+        groupby: groupby,
+        reduce: reduce,
+      )
+    end
+
+    def mrange(
+      time_range : ::Range(Time, Time?),
+      filter : Array(String),
+      filter_by_ts : Enumerable(Time)? = nil,
+      filter_by_value : ::Range(Float64, Float64)? = nil,
+      withlabels : Bool? = nil,
+      selected_labels : Enumerable(String)? = nil,
+      count : Int? = nil,
+      aggregation : Aggregation? = nil,
+      groupby : String? = nil,
+      reduce : String? = nil,
     )
       from = time_range.begin
       # Default to the maximum 32-bit Unix timestamp
@@ -200,35 +243,46 @@ module Redis
                      1 + (selected_labels.try(&.size) || 0) + # SELECTED_LABELS
                      2 +                                      # COUNT
                      8 +                                      # ALIGN value AGGREGATION agg bucketDuration BUCKETTIMESTAMP bt EMPTY
-                     2 +                                      # FILTER expr
+                     1 + filter.size +                        # FILTER expr
                      4                                        # GROUPBY label REDUCE reducer
       command = Array(String).new(initial_capacity: command_size)
       command << "ts.mrange" << from.to_unix_ms.to_s << to.to_unix_ms.to_s
+
       if filter_by_ts
         command << "filter_by_ts"
         filter_by_ts.each do |ts|
           command << ts.to_unix_ms.to_s
         end
       end
+
       if filter_by_value
         command << "filter_by_value"
         command << filter_by_value.begin.to_s
         command << filter_by_value.end.to_s
       end
+
       command << "withlabels" if withlabels
+
       if selected_labels
         command << "selected_labels"
         selected_labels.each { |label| command << label }
       end
+
       if count
         command << "count" << count.to_s
       end
+
       if aggregation
         # [[ALIGN value] AGGREGATION aggregator bucketDuration [BUCKETTIMESTAMP bt] [EMPTY]]
         # TODO: Implement this
-        # if alignment = aggregation.align
-        #   command << "align" << alignment
-        # end
+        case alignment = aggregation.alignment
+        in Alignment
+          command << "align" << alignment.to_s.downcase
+        in Time
+          command << "align" << alignment.to_unix_ms.to_s
+        in Nil
+          # Do nothing
+        end
 
         command << "aggregation" << aggregation.aggregator.to_s << aggregation.bucket_duration.total_milliseconds.to_i64.to_s
         if bucket_ts = aggregation.buckettimestamp
@@ -238,7 +292,10 @@ module Redis
           command << "empty"
         end
       end
-      command << "filter" << filter
+
+      command << "filter"
+      filter.each { |filter_expr| command << filter_expr }
+
       if groupby && reduce
         command << "groupby" << groupby << "reduce" << reduce
       end
@@ -253,7 +310,7 @@ module Redis
     record Datapoints, labels : Labels, datapoints : Array(Datapoint) do
       include Enumerable(Datapoint)
 
-      def each
+      def each(&)
         datapoints.each { |datapoint| yield datapoint }
       end
 
@@ -299,7 +356,7 @@ module Redis
         end
       end
 
-      def each
+      def each(&)
         data.each { |i| yield i }
       end
 
@@ -348,9 +405,9 @@ module Redis
     end
 
     enum BucketTimestamp
-      HIGH
+      START
       MID
-      LOW
+      END
     end
 
     enum Encoding
@@ -382,8 +439,8 @@ module Redis
   end
 
   module Commands
-    # Return a `Redis::TimeSeries` that wraps the current `Redis::Client` or
-    # `Redis::Cluster`.
+    # Return a `Redis::TimeSeries` that wraps the current `Redis::Client`,
+    # `Redis::Cluster`, or other `Commands`-based object.
     def ts
       TimeSeries.new(self)
     end

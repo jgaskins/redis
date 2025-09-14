@@ -1,5 +1,7 @@
 require "./redis"
 
+require "./search/aggregate"
+
 module Redis
   # `Redis::FullText` wraps a `Redis::Client` or `Redis::Cluster` to execute
   # commands against a fulltext search index located on a given server.
@@ -142,34 +144,38 @@ module Redis
       explainscore : Bool? = nil,
       payload : String | Bytes | Nil = nil,
       sortby : SortBy? = nil,
-      limit : {Int, Int}? = nil
+      limit : {Int, Int}? = nil,
+      params : NamedTuple | Hash(String, String) | Nil = nil,
+      dialect : Int? = nil,
     )
+      # Pre-allocate the command buffer based on args so it performs as few
+      # heap allocations as possible.
       command = Array(String).new(
-        1 + # index
-        1 + # query
-        1 + # nocontent
-        1 + # verbatim
-        1 + # nostopwords
-        1 + # withscores
-        1 + # withpayloads
-        4 + # filter
-        6 + # geofilter
+        3 + # ft.search index query
+        (nocontent ? 1 : 0) +
+        (verbatim ? 1 : 0) +
+        (nostopwords ? 1 : 0) +
+        (withscores ? 1 : 0) +
+        (withpayloads ? 1 : 0) +
+        (filter ? 4 : 0) +
+        (geofilter ? 6 : 0) +
         (inkeys.try(&.size) || 0) + 1 +
         (infields.try(&.size) || 0) + 1 +
         (return_value.try(&.size) || 0) + 1 +
         (summarize.try(&.fields).try(&.size) || 0) + 8 +
         (highlight.try(&.fields).try(&.size) || 0) + 6 +
-        2 + # slop
-        2 + # timeout
-        1 + # inorder
-        2 + # language
-        2 + # expander
-        2 + # scorer
-        1 + # explainscore
-        2 + # payload
-        3 + # sortby
-        3 + # limit
-        0 # end
+        (slop ? 2 : 0) +
+        (timeout ? 2 : 0) +
+        (inorder ? 1 : 0) +
+        (language ? 2 : 0) +
+        (expander ? 2 : 0) +
+        (scorer ? 2 : 0) +
+        (explainscore ? 1 : 0) +
+        (payload ? 2 : 0) +
+        (sortby ? 3 : 0) +
+        (limit ? 3 : 0) +
+        (params ? (1 + (params.try { |params| params.size * 2 } || 0)) : 0) +
+        2 # dialect
       )
       command << "ft.search" << index << query
 
@@ -181,8 +187,7 @@ module Redis
       command << "withsortkeys" if withsortkeys
       if filter
         filter.each do |f|
-          command << "filter"
-          command << f.field << f.min << f.max
+          command << "filter" << f.field << f.min << f.max
         end
       end
       if geofilter
@@ -259,6 +264,24 @@ module Redis
         command.concat limit.map(&.to_s).to_a
       end
 
+      if params
+        command << "params" << (params.size * 2).to_s
+        case params
+        in NamedTuple
+          # I understand *why* NamedTuple#each has a different block signature,
+          # but I don't love it.
+          params.each { |key, value| command << key.to_s << value.to_s }
+        in Hash
+          params.each { |(key, value)| command << key << value }
+        in Nil
+        end
+        dialect ||= 2
+      end
+
+      if dialect
+        command << "dialect" << dialect.to_s
+      end
+
       @redis.run(command).as Array
     end
 
@@ -274,7 +297,6 @@ module Redis
       fields : Array(String)? = nil,
       tags : {String, String}? = nil
 
-
     # Profile the given search. For further details, see [the `FT.PROFILE`
     # documentation](https://oss.redis.com/redisearch/Commands/#ftprofile).
     def profile(index : String, query : String)
@@ -282,14 +304,16 @@ module Redis
     end
 
     # Drop the specified `index`.
+    @[Deprecated("Redis has removed the `FT.DROP` command and it will soon be removed from this client. Please use `dropindex` instead.")]
     def drop(index : String, keepdocs = false)
-      dropindex index, keepdocs
+      dropindex index, !keepdocs
     end
 
-    # :ditto:
-    def dropindex(key : String, keepdocs = false)
-      command = ["ft.dropindex", key]
-      command << "keepdocs" if keepdocs
+    # Drop the specified `index` and, if `dd: true` is passed, deletes the
+    # indexed documents from Redis.
+    def dropindex(index : String, dd = false)
+      command = ["ft.dropindex", index]
+      command << "dd" if dd
 
       @redis.run command
     end
@@ -297,8 +321,8 @@ module Redis
     record Filter, field : String, min : String, max : String do
       def self.new(field : String, range : Range(B, E)) forall B, E
         new field,
-          min: range.begin.to_s,
-          max: range.end.to_s
+          min: (range.begin || "-inf").to_s,
+          max: (range.end || "+inf").to_s
       end
     end
     record GeoFilter,

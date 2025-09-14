@@ -152,6 +152,8 @@ module Redis
     # `{}` around the same part of the name) to ensure all keys are on the same
     # shard.
     def mget(keys : Array(String), path : String, as type : T.class) : Array(T?) forall T
+      return [] of T? if keys.empty?
+
       if result = @redis.run(["json.mget"] + keys + [path])
         result.as(Array).map do |value|
           if value
@@ -159,7 +161,7 @@ module Redis
           end
         end
       else
-        raise "lolwut?"
+        raise Error.new("Unexpected nil result from JSON.MGET")
       end
     end
 
@@ -199,8 +201,16 @@ module Redis
     # returns a value of type `T`. If the JSONPath resolves to multiple values
     # (for example, it begins with "$" or is recursive), you will need to
     # specify that it can be an `Array` of that type.
+    #
+    # NOTE: This method cannot be used on deferred command runners like
+    # `Redis::Pipeline` or `Redis::Transaction`. It eagerly consumes the
+    # result from the server, so the result must not be deferred.
     def numincrby(key : String, path : String, count : String | Int, as type : T.class) : T forall T
       T.from_json(numincrby(key, path, count).as(String))
+    end
+
+    def toggle(key : String, path : String)
+      @redis.run({"json.toggle", key, path})
     end
 
     # Append `value` as JSON to the array located at the JSONPath in `key`
@@ -327,15 +337,6 @@ module Redis
       if result = arrpop(key, path, index: index)
         T.from_json(result.as(String))
       end
-    end
-  end
-
-  class Client
-    # Return a `Redis::JSON` instance that wraps the current `Redis::Client` or
-    # `Redis::Cluster`.
-    @[Experimental("Support for the RedisJSON module is still under development and subject to change.")]
-    def json
-      JSON.new(self)
     end
   end
 

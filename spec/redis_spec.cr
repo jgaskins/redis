@@ -3,35 +3,35 @@ require "./spec_helper"
 
 require "../src/redis"
 
-# Do not use DB slot 15. That's used as the secondary DB for testing the ability
-# to use DBs other than 0.
-redis_uri = URI.parse("redis:///")
-redis = Redis::Client.new(uri: redis_uri)
-
-private def random_key
-  UUID.random.to_s
-end
-
-private macro test(msg, &block)
-  it {{msg}} do
-    key = random_key
-
-    begin
-      {{yield}}
-    ensure
-      redis.del key
-    end
-  end
-end
+redis = Redis::Client.new
+define_test redis
 
 describe Redis::Client do
+  it "can ping the server" do
+    redis.ping.should eq "PONG"
+    redis.ping("message").should eq "message"
+  end
+
   test "can set, get, and delete keys" do
     redis.get(random_key).should eq nil
-    redis.set(key, "hello")
+    redis.set(key, "hello").should eq "OK"
     redis.get(key).should eq "hello"
     redis.del(key).should eq 1
     redis.del(key).should eq 0
     redis.get(key).should eq nil
+  end
+
+  test "deletes a key and returns its value" do
+    redis.getdel(key).should eq nil
+    redis.set key, "value"
+    redis.getdel(key).should eq "value"
+    redis.get(key).should eq nil
+  end
+
+  test "sets a value and returns the previous value" do
+    redis.set key, "value"
+    redis.set(key, "new value", get: true).should eq "value"
+    redis.get(key).should eq "new value"
   end
 
   test "can set expiration timestamps on keys" do
@@ -109,6 +109,11 @@ describe Redis::Client do
     redis.incrby(key, 3).should eq 5
     redis.decrby(key, 2).should eq 3
     redis.incrby(key, 1234567812345678).should eq 1234567812345678 + 3
+
+    redis.del key
+    redis.incrbyfloat(key, 0.1).to_f.should be_within 0.000001, of: 0.1
+    redis.incrbyfloat(key, 0.2).to_f.should be_within 0.000001, of: 0.3
+    redis.get(key).not_nil!.to_f.should be_within 0.000001, of: 0.3
   end
 
   describe "lists" do
@@ -118,6 +123,34 @@ describe Redis::Client do
       redis.rpush key, "three"
       redis.lrange(key, 0, 0).should eq %w[one]
       redis.lrange(key, "-3", "2").should eq %w[one two three]
+    end
+
+    test "can trim lists" do
+      redis.rpush key, %w[0 1 2 3 4 5 6 7 8 9]
+
+      # String indices
+      redis.ltrim key, "0", "8"
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5 6 7 8]
+
+      # Int indices
+      redis.ltrim key, 0, 7
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5 6 7]
+
+      # String range with inclusive end
+      redis.ltrim key, "0".."6"
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5 6]
+
+      # String range with exclusive end
+      redis.ltrim key, "0"..."5"
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4 5]
+
+      # Range with inclusive end
+      redis.ltrim key, 0..4
+      redis.lrange(key, 0, -1).should eq %w[0 1 2 3 4]
+
+      # Range with exclusive end
+      redis.ltrim key, 0...3
+      redis.lrange(key, 0, -1).should eq %w[0 1 2]
     end
   end
 
@@ -175,6 +208,17 @@ describe Redis::Client do
       redis.sadd key, "b", "c"
       redis.scard(key).should eq 3
     end
+
+    test "can scan a set" do
+      values = Array.new(1_000, &.to_s).to_set
+
+      redis.sadd key, values
+      redis.sscan_each key do |key|
+        values.delete key
+      end
+
+      values.should be_empty
+    end
   end
 
   describe "sorted sets" do
@@ -189,7 +233,7 @@ describe Redis::Client do
 
       redis.zrem key, "a"
       redis.zrange(key, "0", "-1").as(Array).should_not contain "a"
-      redis.zrange(key, "0", "-1").as(Array).should contain "b"
+      redis.zrange(key, 0, -1).as(Array).should contain "b"
     end
 
     test "counts the number of elements set at the key" do
@@ -204,14 +248,87 @@ describe Redis::Client do
       redis.zadd(key, "1", "one")
       redis.zscore(key, "one").should eq("1")
     end
+
+    test "can scan a sorted set" do
+      values = Array.new(1_000, &.to_s).to_set
+      scores = values.flat_map { |value| [value, rand.to_s] }
+
+      redis.zadd key, scores
+      redis.zscan_each key do |score, member|
+        if values.includes? member
+          values.delete member
+        else
+          raise "Yielded a member that does not exist: #{member}"
+        end
+      end
+
+      values.should be_empty
+    end
   end
 
   describe "hash" do
+    test "hset returns the number of new fields set on the given key" do
+      redis.hset(key, one: "", two: "").should eq 2
+
+      # Only "three" is added, the others already existed
+      redis.hset(key, {"one" => "", "two" => "", "three" => ""}).should eq 1
+
+      # "four" and "five" are both new
+      redis.hset(key, %w[one yes two yes three yes four yes five yes]).should eq 2
+    end
+
+    test "hmget returns the given fields for the given key" do
+      redis.hset key, one: "first", two: "second"
+
+      redis.hget(key, "one").should eq "first"
+      redis.hget(key, "nonexistent").should eq nil
+      redis.hmget(key, "one", "nonexistent").should eq ["first", nil]
+      redis.hmget(key, %w[one nonexistent]).should eq ["first", nil]
+      redis.hmget(key, "nope", "lol").should eq [nil, nil]
+      redis.hmget(key, %w[nope lol]).should eq [nil, nil]
+    end
+
     test "hincrby increments the number stored at field in the hash" do
       redis.hset(key, {"field" => "5"})
-      redis.hincrby(key, "field", 1).should eq(6)
-      redis.hincrby(key, "field", -1).should eq(5)
-      redis.hincrby(key, "field", -10).should eq(-5)
+      redis.hincrby(key, "field", 1).should eq 6
+      redis.hincrby(key, "field", -1).should eq 5
+      redis.hincrby(key, "field", -10).should eq -5
+    end
+
+    test "hdel deletes fields from hashes" do
+      redis.hset key,
+        name: "foo",
+        splat_arg: "yes",
+        array_arg: "also yes",
+        array_arg2: "still yes"
+
+      redis.hdel(key, "splat_arg", "nonexistent-field").should eq 1
+      redis.hdel(key, %w[array_arg array_arg2 nonexistent-field]).should eq 2
+    end
+
+    test "hsetnx sets fields on a key only if they do not exist" do
+      redis.hsetnx(key, "first", "lol").should eq 1
+      redis.hsetnx(key, "first", "omg").should eq 0
+      redis.hsetnx(key, "second", "lol").should eq 1
+    end
+
+    test "hscan yields each field/value pair" do
+      values = Array
+        .new(1_000) do |i|
+          {i.to_s, rand.to_s}
+        end
+        .to_h
+
+      redis.hset key, values
+      redis.hscan_each key do |field, value|
+        if values[field] == value
+          values.delete field
+        else
+          raise "Yielded a field/value pair that does not exist: #{field.inspect} => #{value.inspect}"
+        end
+      end
+
+      values.should be_empty
     end
   end
 
@@ -233,6 +350,18 @@ describe Redis::Client do
     second_incr.value.should eq 2
     first_decr.value.should eq 1
     second_decr.value.should eq 0
+  end
+
+  test "does not raise on pipeline errors, returns them instead" do
+    set_result, error_result, get_result = redis.pipeline do |redis|
+      redis.set key, "lol"
+      redis.set key, "", ex: -1.second
+      redis.get key
+    end
+
+    set_result.should eq "OK"
+    error_result.should be_a Redis::Error
+    get_result.should eq "lol" # Still set to the original value we set it to
   end
 
   test "checking for existence of keys" do
@@ -258,7 +387,7 @@ describe Redis::Client do
   end
 
   test "can use different Redis DBs" do
-    secondary_uri = redis_uri.dup
+    secondary_uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///"))
     secondary_uri.path = "/15"
     secondary_db = Redis::Client.new(uri: secondary_uri)
 
@@ -273,20 +402,43 @@ describe Redis::Client do
 
   describe "streams" do
     test "can use streams" do
-      # entry_id = redis.xadd key, "*", {"foo" => "bar"}
-      entry_id = redis.xadd key, "*", foo: "bar"
+      entry_ids = [
+        redis.xadd(key, "*", {"foo" => "bar"}),
+        redis.xadd(key, "*", {foo: "bar"}),
+      ]
       range = redis.xrange(key, "-", "+")
-      range.size.should eq 1
-      range.each do |result|
+      range.size.should eq 2
+      range.each_with_index do |result, index|
         id, data = result.as(Array)
-        id.as(String).should eq entry_id
+        id.should eq entry_ids[index]
         data.should eq %w[foo bar]
       end
     end
 
-    test "can cap streams" do
+    test "can cap streams by event count" do
       redis.pipeline do |pipe|
-        11.times { pipe.xadd key, "*", maxlen: "10", foo: "bar" }
+        11.times do
+          pipe.xadd key, "*",
+            maxlen: {"=", "10"},
+            fields: {foo: "bar"}
+        end
+      end
+
+      redis.xlen(key).should eq 10
+    end
+
+    test "can cap streams by id" do
+      results = redis.pipeline do |pipe|
+        minid = 10.seconds.ago.to_unix_ms.to_s
+
+        10.times do |i|
+          pipe.xadd key,
+            "#{(11 - i).seconds.ago.to_unix_ms.to_s}-#{i}",
+            {foo: "bar"}
+        end
+        pipe.xadd key, "*",
+          minid: {"=", minid},
+          fields: {foo: "bar"}
       end
 
       redis.xlen(key).should eq 10
@@ -294,7 +446,7 @@ describe Redis::Client do
 
     test "can approximately cap streams" do
       redis.pipeline do |pipe|
-        2_000.times { pipe.xadd key, "*", maxlen: {"~", "10"}, foo: "bar" }
+        2_000.times { pipe.xadd key, "*", maxlen: {"~", "10"}, fields: {foo: "bar"} }
       end
 
       redis.xlen(key).should be <= 100
@@ -305,7 +457,7 @@ describe Redis::Client do
       group = "my-group"
 
       begin
-        entry_id = redis.xadd key, "*", foo: "bar"
+        entry_id = redis.xadd key, "*", {foo: "bar"}
         # Create a group to consume this stream starting at the beginning
         redis.xgroup "create", key, group, "0"
         consumer_id = UUID.random.to_s
@@ -321,45 +473,67 @@ describe Redis::Client do
     end
   end
 
-  test "can use transactions" do
-    redis.multi do |redis|
-      redis.set key, "yep"
-      redis.discard
-
-      redis.get "fuck"
-    end.should be_empty
-
-    redis.get(key).should eq nil
-
-    _, nope, _, yep = redis.multi do |redis|
-      redis.set key, "nope"
-      redis.get key
-      redis.set key, "yep"
-      redis.get key
-    end
-
-    nope.should eq "nope"
-    yep.should eq "yep"
-
-    redis.get(key).should eq "yep"
-    redis.del key
-
-    begin
+  context "transactions" do
+    test "returns the results of the commands, like pipelines do" do
+      # Returns
       redis.multi do |redis|
-        redis.set key, "lol"
-
-        raise "oops"
-      ensure
-        redis.get(key).should eq nil
-      end
-    rescue
+        redis.set key, "value"
+        redis.get key
+      end.should eq %w[OK value]
     end
 
-    # Ensure we're still in the same state
-    redis.get(key).should eq nil
-    # Ensure we can still set the key
-    redis.set key, "yep"
-    redis.get(key).should eq "yep"
+    test "returns an empty array when the transaction is discarded" do
+      redis.multi do |redis|
+        redis.set key, "this gets discarded"
+        redis.discard
+        redis.get "this never actually does anything anyway"
+      end.should be_empty
+    end
+
+    test "returns command errors, but does not raise" do
+      redis.multi do |redis|
+        redis.set key, "foo"
+        redis.lpush key, "bar" # error, performing list operation on a string
+        redis.get key
+      end.should eq [
+        "OK",
+        Redis::Error.new("WRONGTYPE Operation against a key holding the wrong kind of value"),
+        "foo",
+      ]
+    end
+
+    test "does more transaction stuff" do
+      redis.get(key).should eq nil
+
+      _, nope, _, yep = redis.multi do |redis|
+        redis.set key, "nope"
+        redis.get key
+        redis.set key, "yep"
+        redis.get key
+      end
+
+      nope.should eq "nope"
+      yep.should eq "yep"
+
+      redis.get(key).should eq "yep"
+      redis.del key
+
+      expect_raises Exception do
+        redis.multi do |redis|
+          redis.set key, "lol"
+
+          raise "oops"
+        ensure
+          redis.get(key).should eq nil
+        end
+
+        # Ensure we're still in the same state
+        redis.get(key).should eq nil
+        # Ensure we can still set the key
+        redis.set key, "yep"
+        redis.get(key).should eq "yep"
+      end
+    end
   end
 
   test "works with lists" do
@@ -372,40 +546,201 @@ describe Redis::Client do
     redis.brpop(key, timeout: 1.second).should eq [key, "wtf"]
     redis.brpop(key, timeout: 1.0).should eq [key, "bbq"]
 
-
     left = random_key
     right = random_key
 
     begin
       redis.lpush left, "foo"
-      redis.rpoplpush left, right
+      redis.lmove left, right, :left, :right
       redis.rpop(right).should eq "foo"
     ensure
       redis.del left, right
     end
   end
 
-  it "can publish and subscribe" do
-    ready = false
-    spawn do
-      until ready
-        Fiber.yield
+  describe "hyperloglog" do
+    test "can add members and count them" do
+      redis.pipeline do |redis|
+        3.times { |i| redis.pfadd key, i.to_s }
       end
-      # Publishes happen on other connections
-      spawn redis.publish "foo", "unsub"
-      spawn redis.publish "bar", "unsub"
+
+      redis.pfcount(key).should eq 3
     end
 
-    redis.subscribe "foo", "bar" do |subscription, conn|
-      subscription.on_message do |channel, message|
-        if message == "unsub"
-          conn.unsubscribe channel
+    test "can add multiple members at a time through both variadic args and enumerables" do
+      redis.pfadd key, "one", "two", "three"
+      redis.pfadd key, %w[four five six]
+
+      redis.pfcount(key).should eq 6
+    end
+
+    it "can count multiple hyperloglogs using variadic args or enumerables of keys" do
+      a = UUID.v4.to_s
+      b = UUID.v4.to_s
+
+      begin
+        redis.pipeline do |redis|
+          redis.pfadd a, %w[one two three]
+          redis.pfadd b, %w[four five six]
         end
+
+        redis.pfcount(a, b).should eq 6
+        redis.pfcount([a, b]).should eq 6
+      ensure
+        redis.unlink a, b
+      end
+    end
+
+    it "can merge multiple hyperloglogs using variadic args" do
+      a = UUID.v4.to_s
+      b = UUID.v4.to_s
+      merged = UUID.v4.to_s
+
+      begin
+        redis.pipeline do |redis|
+          redis.pfadd a, %w[one two three]
+          redis.pfadd b, %w[four five six]
+          redis.pfmerge merged, a, b
+        end
+
+        redis.pfcount(merged).should eq 6
+      ensure
+        redis.unlink a, b, merged
+      end
+    end
+
+    it "can merge multiple hyperloglogs using enumerables of source keys" do
+      a = UUID.v4.to_s
+      b = UUID.v4.to_s
+      merged = UUID.v4.to_s
+
+      begin
+        redis.pipeline do |redis|
+          redis.pfadd a, %w[one two three]
+          redis.pfadd b, %w[four five six]
+          redis.pfmerge merged, [a, b]
+        end
+
+        redis.pfcount(merged).should eq 6
+      ensure
+        # Clean up the keys we just created
+        redis.unlink a, b, merged
+      end
+    end
+  end
+
+  describe "scripts" do
+    test "can load and evaluate scripts" do
+      script = <<-LUA
+      return {KEYS[1] or 1337, ARGV[1] or 42}
+    LUA
+      sha = redis.script_load script
+      key_arg = UUID.random.to_s
+      redis.set key_arg, "this is the key arg"
+
+      begin
+        # # EVALSHA
+        redis.evalsha(sha, keys: [key_arg], args: %w[hi])
+          .should eq [key_arg, "hi"]
+
+        # Can we run it without providing args?
+        redis.evalsha(sha, keys: [key_arg])
+          .should eq [key_arg, 42]
+
+        # Can we run it without providing keys?
+        redis.evalsha(sha, args: %w[hi])
+          .should eq [1337, "hi"]
+
+        # Can we run it without providing anything?
+        redis.evalsha(sha)
+          .should eq [1337, 42]
+
+        # # EVAL
+        redis.eval(script, keys: [key_arg], args: %w[hi])
+          .should eq [key_arg, "hi"]
+
+        # Can we run it without providing args?
+        redis.eval(script, keys: [key_arg])
+          .should eq [key_arg, 42]
+
+        # Can we run it without providing keys?
+        redis.eval(script, args: %w[hi])
+          .should eq [1337, "hi"]
+
+        # Can we run it without providing anything?
+        redis.eval(script)
+          .should eq [1337, 42]
+      ensure
+        redis.unlink key_arg
+      end
+    end
+
+    test "can manage scripts" do
+      sha = redis.script_load "return 42"
+      redis.script_exists(sha, "123").should eq [1, 0]
+
+      # Check with an Enumerable
+      redis.script_exists([sha, "123"]).should eq [1, 0]
+
+      # Delete the scripts
+      redis.script_flush :sync
+      redis.script_exists(sha, "123").should eq [0, 0]
+    end
+  end
+
+  # FIXME: These specs don't assert, which is confusing. The reason they still
+  # validate that pubsub works is that they publish messages on a channel, which
+  # unsubscribes. `redis.subscribe` and `redis.unsubscribe` both block the fiber
+  # while those subscriptions are active, so if pubsub didn't work for any
+  # reason these specs would simply stall which is not a good spec failure mode.
+  context "pubsub" do
+    it "can publish and subscribe" do
+      ready = false
+      spawn do
+        until ready
+          Fiber.yield
+        end
+        # Publishes happen on other connections
+        spawn redis.publish "foo", "unsub"
+        spawn redis.publish "bar", "unsub"
       end
 
-      subscription.on_subscribe do |channel, count|
-        # Only set ready if *both* subscriptions have gone through
-        ready = true if count == 2
+      redis.subscribe "foo", "bar" do |subscription, conn|
+        subscription.on_message do |channel, message|
+          if message == "unsub"
+            conn.unsubscribe channel
+          end
+        end
+
+        subscription.on_subscribe do |channel, count|
+          # Only set ready if *both* subscriptions have gone through
+          ready = true if count == 2
+        end
+      end
+    end
+
+    it "can publish and subscribe to patterns" do
+      ready = false
+      spawn do
+        until ready
+          Fiber.yield
+        end
+        # Publishes happen on other connections
+        spawn redis.publish "foo", "unsub"
+        spawn redis.publish "bar", "unsub"
+      end
+
+      redis.psubscribe "f*", "b??" do |subscription, conn|
+        subscription.on_message do |channel, message, pattern|
+          if message == "unsub"
+            conn.punsubscribe pattern
+          end
+        end
+
+        subscription.on_subscribe do |channel, count|
+          # Only set ready if *both* subscriptions have gone through
+          ready = true if count == 2
+        end
       end
     end
   end
