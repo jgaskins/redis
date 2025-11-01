@@ -1,9 +1,11 @@
 require "./commands"
+require "./commands/deferred"
 require "./connection"
 
 module Redis
   class Transaction
     include Commands
+    include Commands::Deferred
 
     getter? discarded
 

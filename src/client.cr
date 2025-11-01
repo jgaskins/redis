@@ -2,6 +2,8 @@ require "db/pool"
 require "log"
 
 require "./connection"
+require "./commands"
+require "./commands/immediate"
 require "./log"
 
 module Redis
@@ -20,6 +22,7 @@ module Redis
   # ```
   class Client
     include Commands
+    include Commands::Immediate
 
     @pool : DB::Pool(Connection)
 
@@ -51,8 +54,6 @@ module Redis
         Connection.new(uri, log: log)
       end
     end
-
-    Connection.set_return_types!
 
     def scan_each(match pattern : String? = nil, count : String | Int | Nil = nil, type : String? = nil, &) : Nil
       checkout(&.scan_each(match: pattern, count: count, type: type) { |key| yield key })

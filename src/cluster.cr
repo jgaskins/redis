@@ -1,6 +1,7 @@
 # require "./client"
 require "./connection"
 require "./commands"
+require "./commands/immediate"
 require "./read_only_commands"
 require "db/pool"
 require "set"
@@ -31,6 +32,7 @@ module Redis
   @[Experimental("Cluster support is still under development. Some APIs may change while details are discovered and highly customized clusters (for example, servers handling individual hash slots or multiple hash-slot ranges) are not yet supported.")]
   class Cluster
     include Commands
+    include Commands::Immediate
 
     # :nodoc:
     LOG = ::Log.for(self)
@@ -246,8 +248,6 @@ module Redis
         raise Error.new("No key was specified for this command, so the cluster driver cannot route it to an appropriate Redis shard. A cluster-specific method must be added to handle cases like these until a generalized solution is added.")
       end
     end
-
-    Connection.set_return_types!
 
     # Close all connections to this Redis cluster
     def close

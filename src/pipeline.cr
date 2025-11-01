@@ -1,4 +1,5 @@
 require "./commands"
+require "./commands/deferred"
 require "./connection"
 require "./value"
 require "./errors"
@@ -6,6 +7,7 @@ require "./errors"
 module Redis
   class Pipeline
     include Commands
+    include Commands::Deferred
 
     @futures = [] of Future
 

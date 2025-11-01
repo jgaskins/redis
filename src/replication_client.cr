@@ -3,6 +3,8 @@ require "set"
 
 require "./client"
 require "./connection"
+require "./commands"
+require "./commands/immediate"
 require "./read_only_commands"
 
 # If you're using Redis replication, you can use `ReplicationClient` to send
@@ -50,6 +52,7 @@ require "./read_only_commands"
 @[Experimental("`ReplicationClient` is currently in alpha testing. There may be rough edges.")]
 class Redis::ReplicationClient
   include Commands
+  include Commands::Immediate
 
   Log = ::Log.for(self)
 
@@ -141,8 +144,6 @@ class Redis::ReplicationClient
       end
     end
   end
-
-  Connection.set_return_types!
 
   # :nodoc:
   def finalize
