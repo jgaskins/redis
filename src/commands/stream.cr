@@ -115,21 +115,21 @@ module Redis::Commands::Stream
 
   # Return the entries in the given stream between the `start` and `end` ids.
   # If `count` is provided, Redis will return only that number of entries.
-  def xrange(key : String, start min : String, end max : String, count : String | Int | Nil = nil)
+  def xrange(key : String, start min : String, end max : String, count : String | Int32 | Nil = nil)
     command = {"xrange", key, min, max}
     command += {"count", count.to_s} if count
 
     run command
   end
 
-  def xtrim(key : String, maxlen : {String, String}, limit : String | Int | Nil = nil)
+  def xtrim(key : String, maxlen : {String, String}, limit : String | Int32 | Nil = nil)
     command = {"xtrim", key, "maxlen"} + maxlen
     command += {"limit", limit.to_s} if limit
 
     run command
   end
 
-  def xtrim(key : String, minid : {String, String}, limit : String | Int | Nil = nil)
+  def xtrim(key : String, minid : {String, String}, limit : String | Int32 | Nil = nil)
     command = {"xtrim", key, "minid"} + minid
     command += {"limit", limit.to_s} if limit
 
@@ -192,8 +192,8 @@ module Redis::Commands::Stream
   def xreadgroup(
     group : String,
     consumer : String,
-    count : String | Int | Nil = nil,
-    block : Time::Span | String | Int | Nil = nil,
+    count : String | Int32 | Nil = nil,
+    block : Time::Span | String | Int32 | Nil = nil,
     no_ack = false,
     streams : ::Hash(String, String) = {} of String => String,
   )
@@ -235,8 +235,8 @@ module Redis::Commands::Stream
   def xreadgroup(
     group : String,
     consumer : String,
-    count : String | Int | Nil = nil,
-    block : Time::Span | String | Int | Nil = nil,
+    count : String | Int32 | Nil = nil,
+    block : Time::Span | String | Int32 | Nil = nil,
     no_ack = false,
     streams : NamedTuple = NamedTuple.new,
   )
@@ -271,7 +271,7 @@ module Redis::Commands::Stream
     group : String,
     start : String,
     end finish : String,
-    count : String | Int,
+    count : String | Int32,
     idle : String | Time::Span | Nil = nil,
   )
     command = {"xpending", key, group}
@@ -304,7 +304,7 @@ module Redis::Commands::Stream
     consumer : String,
     min_idle_time : Time::Span,
     start : String,
-    count : Int | String | Nil = nil,
+    count : Int32 | String | Nil = nil,
   )
     min_idle_time = min_idle_time.total_milliseconds.to_i.to_s
     command = {"xautoclaim", key, group, consumer, min_idle_time, start}

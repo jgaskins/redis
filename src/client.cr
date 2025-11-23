@@ -102,7 +102,7 @@ module Redis
       @pool.close
     end
 
-    private def checkout
+    private def checkout(&)
       @pool.checkout do |connection|
         yield connection
       rescue ex : IO::Error
