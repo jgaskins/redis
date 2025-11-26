@@ -25,7 +25,7 @@ describe Redis::Client do
     redis.del([] of String).should eq 0
   end
 
-  it "can get multiple keys", focus: true do
+  it "can get multiple keys" do
     a = random_key
     b = random_key
 
