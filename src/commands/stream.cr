@@ -121,6 +121,14 @@ module Redis::Commands::Stream
 
     run command
   end
+  # Return the entries in the given stream between the `start` and `end` ids.
+  # If `count` is provided, Redis will return only that number of entries.
+  def xrevrange(key : String, end max : String, start min : String, count : String | Int32 | Nil = nil)
+    command = {"xrevrange", key, max, min}
+    command += {"count", count.to_s} if count
+
+    run command
+  end
 
   def xtrim(key : String, maxlen : {String, String}, limit : String | Int32 | Nil = nil)
     command = {"xtrim", key, "maxlen"} + maxlen

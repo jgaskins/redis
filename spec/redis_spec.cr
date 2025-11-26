@@ -446,6 +446,20 @@ describe Redis::Client do
       end
     end
 
+    test "can traverse streams in reverse" do
+      entry_ids = [
+        redis.xadd(key, "*", {"foo" => "bar"}),
+        redis.xadd(key, "*", {foo: "bar"}),
+      ].reverse
+      range = redis.xrevrange(key, "+", "-")
+      range.size.should eq 2
+      range.each_with_index do |result, index|
+        id, data = result.as(Array)
+        id.should eq entry_ids[index]
+        data.should eq %w[foo bar]
+      end
+    end
+
     test "can cap streams by event count" do
       redis.pipeline do |pipe|
         11.times do
