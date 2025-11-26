@@ -239,6 +239,17 @@ describe Redis::Client do
 
       values.should be_empty
     end
+
+    test "can scan a set as an iterator" do
+      values = Array.new(1000) { Random::Secure.hex }.to_set
+
+      redis.sadd key, values
+      redis.sscan_each(key, count: 10).each do |key|
+        values.delete key
+      end
+
+      values.should be_empty
+    end
   end
 
   describe "sorted sets" do

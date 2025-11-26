@@ -67,6 +67,55 @@ module Redis
       checkout(&.sscan_each(key: key, match: pattern, count: count) { |member| yield member })
     end
 
+    def sscan_each(key : String, *, match pattern : String? = nil, count : String | Int | Nil = nil)
+      SScanIterator.new(self, key, match: pattern, count: count.try(&.to_s))
+    end
+
+    class SScanIterator
+      include Iterator(String)
+      getter redis : Redis::Client
+      getter key : String
+      getter pattern : String?
+      getter count : String?
+      getter cursor = "0"
+      getter keys : Array(Value)?
+      getter keys_index = -1
+      @fetched_last_batch = false
+
+      def initialize(@redis, @key, match @pattern, @count)
+      end
+
+      def next : String | Stop
+        if keys = self.keys
+          if key = keys[keys_index]?
+            @keys_index += 1
+            key.as(String)
+          elsif @fetched_last_batch
+            return stop
+          else
+            fetch_batch
+            self.next
+          end
+        else
+          fetch_batch
+          self.next
+        end
+      end
+
+      def fetch_batch
+        cursor, keys = redis.sscan key,
+          cursor: cursor,
+          match: pattern,
+          count: count
+        if cursor == "0"
+          @fetched_last_batch = true
+        end
+        @keys_index = 0
+        @cursor = cursor.as(String)
+        @keys = keys.as(Array)
+      end
+    end
+
     def zscan_each(key : String, *, match pattern : String? = nil, count : String | Int | Nil = nil, &) : Nil
       checkout(&.zscan_each(key: key, match: pattern, count: count) { |member, score| yield member, score })
     end
