@@ -178,8 +178,6 @@ module Redis
     # redis.del "foo", "bar" # => 0
     # ```
     def del(*keys : String)
-      return 0_i64 if keys.empty?
-
       run({"del"} + keys)
     end
 
