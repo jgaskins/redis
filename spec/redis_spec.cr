@@ -267,6 +267,26 @@ describe Redis::Client do
       redis.zrange(key, 0, -1).as(Array).should contain "b"
     end
 
+    test "can run ZRANGE BYLEX" do
+      redis.zadd key,
+        "0", "c",
+        "0", "b",
+        "0", "a"
+
+      redis.zrange(key, "-", "+", by: :lex, limit: {0, 2}).should eq %w[a b]
+    end
+
+    test "can run ZRANGE BYSCORE" do
+      redis.zadd key,
+        "1", "one",
+        "2", "two",
+        "3", "three"
+
+      redis.zrange(key, "+inf", "-inf", by: :score, rev: true, with_scores: true)
+        .should eq %w[three 3 two 2 one 1]
+
+    end
+
     test "counts the number of elements set at the key" do
       redis.zadd(key, "1", "one")
       redis.zadd(key, "2", "two")
