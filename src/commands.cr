@@ -178,6 +178,8 @@ module Redis
     # redis.del "foo", "bar" # => 0
     # ```
     def del(*keys : String)
+      return 0_i64 if keys.empty?
+
       run({"del"} + keys)
     end
 
@@ -189,7 +191,10 @@ module Redis
     # redis.del ["foo", "bar"] # => 0
     # ```
     def del(keys : Enumerable(String))
-      command = Array(String).new(initial_capacity: 1 + keys.size)
+      size = keys.size
+      return 0_i64 if size == 0
+
+      command = Array(String).new(initial_capacity: 1 + size)
       command << "del"
       command.concat keys
 

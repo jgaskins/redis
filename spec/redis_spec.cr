@@ -21,6 +21,10 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  test "it returns 0 when passed no keys to delete" do
+    redis.del([] of String).should eq 0
+  end
+
   it "can get multiple keys", focus: true do
     a = random_key
     b = random_key
