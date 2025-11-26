@@ -21,6 +21,22 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  it "can get multiple keys", focus: true do
+    a = random_key
+    b = random_key
+
+    begin
+      redis.set a, "a"
+      redis.set b, "b"
+
+      redis.mget(a, b, random_key).should eq ["a", "b", nil]
+      redis.mget([a, b, random_key]).should eq ["a", "b", nil]
+      redis.mget([] of String).should eq [] of Redis::Value
+    ensure
+      redis.del a, b
+    end
+  end
+
   test "deletes a key and returns its value" do
     redis.getdel(key).should eq nil
     redis.set key, "value"

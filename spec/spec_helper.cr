@@ -2,7 +2,7 @@ require "spec"
 require "uuid"
 
 macro define_test(redis)
-  private def random_key
+  private macro random_key
     UUID.random.to_s
   end
 

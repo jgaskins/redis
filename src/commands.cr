@@ -385,7 +385,13 @@ module Redis
       run({"type", key})
     end
 
+    def mget(*keys : String)
+      run({"mget"} + keys)
+    end
+
     def mget(keys : Enumerable(String))
+      return [] of Redis::Value if keys.empty?
+
       command = Array(String).new(initial_capacity: 1 + keys.size)
       command << "mget"
       keys.each { |key| command << key }
