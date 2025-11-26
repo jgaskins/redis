@@ -2,7 +2,39 @@ require "./value"
 
 module Redis
   module Streaming
-    struct XPendingBaseResponse
+    struct Message
+      getter id : String
+      getter values : Hash(String, String)
+
+      def initialize(message : Array)
+        id, values = message
+        values = values.as(Array)
+        @id = id.as(String)
+        @values = Hash(String, String).new(initial_capacity: values.size // 2)
+        (values.size // 2).times do |index|
+          @values[values[index].as(String)] = values[index + 1].as(String)
+        end
+      end
+
+      def initialize(@id, @values)
+      end
+    end
+
+    struct XRangeResponse
+      include Enumerable(Message)
+
+      getter messages : Array(Message)
+
+      def initialize(messages : Array(Redis::Value))
+        @messages = messages.map do |message|
+          Message.new(message.as(Array))
+        end
+      end
+
+      delegate each, to: messages
+    end
+
+    class XPendingResponse
       getter count, earliest, latest, data : Array(Data)
 
       def initialize(response : Array)
@@ -19,6 +51,10 @@ module Redis
       end
 
       record Data, consumer : String, pending_count : Int64
+    end
+
+    @[Deprecated("Please use `Redis::Streaming::XPendingResponse`")]
+    class XPendingBaseResponse < XPendingResponse
     end
 
     struct XPendingExtendedResponse
@@ -52,6 +88,7 @@ module Redis
       end
     end
 
+    # Transform the `XREADGROUP` result into a more friendly object.
     struct XReadGroupResponse
       getter results
 
@@ -85,20 +122,6 @@ module Redis
         messages.compact!
         @messages = messages.map do |message_data|
           Message.new(message_data.as(Array))
-        end
-      end
-    end
-
-    struct Message
-      getter id, values
-
-      def initialize(message : Array)
-        id, values = message
-        values = values.as(Array)
-        @id = id.as(String)
-        @values = Hash(String, String).new(initial_capacity: values.size // 2)
-        (values.size // 2).times do |index|
-          @values[values[index].as(String)] = values[index + 1].as(String)
         end
       end
     end
