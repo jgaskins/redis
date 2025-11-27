@@ -567,6 +567,16 @@ describe Redis::Client do
       ]
     end
 
+    test "allows the block to return/break" do
+      value = redis.multi do |redis|
+        redis.set key, "value"
+        break 1
+      end
+
+      value.should eq 1
+      redis.get(key).should eq "value"
+    end
+
     test "does more transaction stuff" do
       redis.get(key).should eq nil
 

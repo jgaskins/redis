@@ -121,11 +121,6 @@ module Redis
         begin
           txn.start!
           yield txn
-          if txn.discarded?
-            return [] of Value
-          else
-            return txn.exec.as(Array)
-          end
         rescue ex
           txn.discard
           raise ex
@@ -136,6 +131,16 @@ module Redis
           initialize @uri
         else
           raise ex
+        end
+      else
+        if txn.discarded?
+          return [] of Value
+        else
+          return txn.exec.as(Array)
+        end
+      ensure
+        if txn && txn.status.queued?
+          txn.exec.as(Array)
         end
       end
     end
