@@ -26,8 +26,11 @@ module Redis
     end
 
     def exec
-      finish("exec").as(Array)
-      @status = :committed
+      begin
+        finish("exec").as(Array)
+      ensure
+        @status = :committed
+      end
     end
 
     def start!
