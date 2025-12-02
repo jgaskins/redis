@@ -248,7 +248,9 @@ module Redis
           raise ex
         end
       ensure
-        @log.debug &.emit "redis", command: command.join(' '), duration_ms: (Time.monotonic - start).total_milliseconds
+        @log.debug &.emit "redis",
+          command: command.join(' '),
+          duration_ms: (Time.monotonic - start).total_milliseconds
       end
     end
 
