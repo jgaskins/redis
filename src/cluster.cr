@@ -29,7 +29,6 @@ module Redis
   # and they will automatically be routed to replicas. See
   # [`redis/cluster/json.cr`](https://github.com/jgaskins/redis/blob/3e874563dd524df9af6827f72edecca13a615802/src/cluster/json.cr#L5-L15)
   # for example usage.
-  @[Experimental("Cluster support is still under development. Some APIs may change while details are discovered and highly customized clusters (for example, servers handling individual hash slots or multiple hash-slot ranges) are not yet supported.")]
   class Cluster
     include Commands
     include Commands::Immediate
