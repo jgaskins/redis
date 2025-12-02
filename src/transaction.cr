@@ -23,12 +23,27 @@ module Redis
       return if status.discarded?
       @connection.encode command
       @command_count += 1
+    ensure
+      @connection.log.debug &.emit "multi", command: command
+        .map { |part|
+          case part
+          in String
+            part
+          in Bytes
+            String.new(part).inspect
+          end
+        }
+        .join(' ')
     end
 
     def exec
+      start = Time.monotonic
       begin
         finish("exec").as(Array)
       ensure
+        @connection.log.debug &.emit "exec",
+          commands: @command_count,
+          duration_ms: (Time.monotonic - start).total_milliseconds
         @status = :committed
       end
     end

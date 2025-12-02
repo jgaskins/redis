@@ -20,6 +20,7 @@ module Redis
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
     protected getter parser : Parser
     getter? closed = false
+    getter log
 
     # We receive all connection information in the URI.
     #
