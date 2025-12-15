@@ -420,6 +420,13 @@ module Redis
       run command
     end
 
+    # Send a `DBSIZE` command to the server, returning the number of keys in the
+    # currently-selected database.
+    def dbsize
+      command = {"dbsize"}
+      run command
+    end
+
     # Delete all the keys of the currently selected DB
     def flushdb
       run({"flushdb"})
