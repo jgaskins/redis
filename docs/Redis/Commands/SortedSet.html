@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.13.0">
+<meta name="crystal_docs.project_version" content="0.14.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::SortedSet - redis 0.13.0</title>
+  <title>Redis::Commands::SortedSet - redis 0.14.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.13.0
+        0.14.0
       </span>
     </div>
   </div>
@@ -67,8 +67,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+  <li class="parent " data-id="redis/Redis/Client" data-name="redis::client">
       <a href="../../Redis/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Client/SScanIterator" data-name="redis::client::sscaniterator">
+      <a href="../../Redis/Client/SScanIterator.html">SScanIterator</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -107,6 +117,11 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/Deferred" data-name="redis::commands::deferred">
+      <a href="../../Redis/Commands/Deferred.html">Deferred</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
       <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
       
@@ -124,6 +139,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
       <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Immediate" data-name="redis::commands::immediate">
+      <a href="../../Redis/Commands/Immediate.html">Immediate</a>
       
     </li>
   
@@ -152,8 +172,18 @@
       
     </li>
   
-  <li class=" current" data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+  <li class="parent open current" data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
       <a href="../../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet/ZRangeOrder" data-name="redis::commands::sortedset::zrangeorder">
+      <a href="../../Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -642,18 +672,8 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
       <a href="../../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
-      
-        <ul>
-  
-  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
-      <a href="../../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -669,6 +689,26 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingResponse" data-name="redis::streaming::xpendingresponse">
+      <a href="../../Redis/Streaming/XPendingResponse.html">XPendingResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingResponse/Data" data-name="redis::streaming::xpendingresponse::data">
+      <a href="../../Redis/Streaming/XPendingResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XRangeResponse" data-name="redis::streaming::xrangeresponse">
+      <a href="../../Redis/Streaming/XRangeResponse.html">XRangeResponse</a>
       
     </li>
   
@@ -797,8 +837,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+  <li class="parent " data-id="redis/Redis/Transaction" data-name="redis::transaction">
       <a href="../../Redis/Transaction.html">Transaction</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Transaction/Status" data-name="redis::transaction::status">
+      <a href="../../Redis/Transaction/Status.html">Status</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -875,7 +925,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L1" target="_blank">
         commands/sorted_set.cr
       </a>
     
@@ -914,6 +964,11 @@
       </li>
     
       <li class="entry-summary">
+        <a href="#zadd%28key%2C%2Avalues%3AString%29-instance-method" class="signature"><strong>#zadd</strong>(key, *values : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#zcard%28key%3AString%29-instance-method" class="signature"><strong>#zcard</strong>(key : String)</a>
         
       </li>
@@ -924,12 +979,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#zrange%28key%3AString%2Cstarting%3AString%7CInt64%2Cending%3AString%7CInt64%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#zrange</strong>(key : String, starting : String | Int64, ending : String | Int64, with_scores : Bool = <span class="n">false</span>)</a>
+        <a href="#zrange%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Cbyorder%3AZRangeOrder%7CNil%3Dnil%2Crev%3ABool%7CNil%3Dnil%2Climit%3ATuple%28String%7CInt%2CString%7CInt%29%7CNil%3Dnil%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#zrange</strong>(key : String, start : String | Int64, stop : String | Int64, by order : ZRangeOrder | Nil = <span class="n">nil</span>, rev : Bool | Nil = <span class="n">nil</span>, limit : Tuple(String | Int, String | Int) | Nil = <span class="n">nil</span>, with_scores : Bool = <span class="n">false</span>)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#zrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#zrangebyscore</strong>(key : String, low : String | Int64, high : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</a>
+        <a href="#zrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#zrangebyscore</strong>(key : String, start : String | Int64, stop : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -949,12 +1004,12 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#zremrangebyrank%28key%3AString%2Clow%3AInt64%2Chigh%3AInt64%29-instance-method" class="signature"><strong>#zremrangebyrank</strong>(key : String, low : Int64, high : Int64)</a>
+        <a href="#zremrangebyrank%28key%3AString%2Cstart%3AInt64%2Cstop%3AInt64%29-instance-method" class="signature"><strong>#zremrangebyrank</strong>(key : String, start : Int64, stop : Int64)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#zremrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%29-instance-method" class="signature"><strong>#zremrangebyscore</strong>(key : String, low : String | Int64, high : String | Int64)</a>
+        <a href="#zremrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%29-instance-method" class="signature"><strong>#zremrangebyscore</strong>(key : String, start : String | Int64, stop : String | Int64)</a>
         
       </li>
     
@@ -1008,7 +1063,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L42" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1024,7 +1079,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L76" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="zadd(key,*values:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>zadd</strong>(key, *values : String)
+
+        <a class="method-permalink" href="#zadd%28key%2C%2Avalues%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L68" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1040,7 +1111,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1056,39 +1127,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L70" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L104" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="zrange(key:String,starting:String|Int64,ending:String|Int64,with_scores:Bool=false)-instance-method">
+    <div class="entry-detail" id="zrange(key:String,start:String|Int64,stop:String|Int64,byorder:ZRangeOrder|Nil=nil,rev:Bool|Nil=nil,limit:Tuple(String|Int,String|Int)|Nil=nil,with_scores:Bool=false)-instance-method">
       <div class="signature">
         
-        def <strong>zrange</strong>(key : String, starting : String | Int64, ending : String | Int64, with_scores : Bool = <span class="n">false</span>)
+        def <strong>zrange</strong>(key : String, start : String | Int64, stop : String | Int64, by order : <a href="../../Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a> | Nil = <span class="n">nil</span>, rev : Bool | Nil = <span class="n">nil</span>, limit : Tuple(String | Int, String | Int) | Nil = <span class="n">nil</span>, with_scores : Bool = <span class="n">false</span>)
 
-        <a class="method-permalink" href="#zrange%28key%3AString%2Cstarting%3AString%7CInt64%2Cending%3AString%7CInt64%2Cwith_scores%3ABool%3Dfalse%29-instance-method">#</a>
+        <a class="method-permalink" href="#zrange%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Cbyorder%3AZRangeOrder%7CNil%3Dnil%2Crev%3ABool%7CNil%3Dnil%2Climit%3ATuple%28String%7CInt%2CString%7CInt%29%7CNil%3Dnil%2Cwith_scores%3ABool%3Dfalse%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="zrangebyscore(key:String,low:String|Int64,high:String|Int64,limit:Enumerable(String)|Nil=nil)-instance-method">
+    <div class="entry-detail" id="zrangebyscore(key:String,start:String|Int64,stop:String|Int64,limit:Enumerable(String)|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>zrangebyscore</strong>(key : String, low : String | Int64, high : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)
+        def <strong>zrangebyscore</strong>(key : String, start : String | Int64, stop : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#zrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#zrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1104,7 +1175,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L88" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1120,7 +1191,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L62" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1136,39 +1207,39 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L92" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="zremrangebyrank(key:String,low:Int64,high:Int64)-instance-method">
+    <div class="entry-detail" id="zremrangebyrank(key:String,start:Int64,stop:Int64)-instance-method">
       <div class="signature">
         
-        def <strong>zremrangebyrank</strong>(key : String, low : Int64, high : Int64)
+        def <strong>zremrangebyrank</strong>(key : String, start : Int64, stop : Int64)
 
-        <a class="method-permalink" href="#zremrangebyrank%28key%3AString%2Clow%3AInt64%2Chigh%3AInt64%29-instance-method">#</a>
+        <a class="method-permalink" href="#zremrangebyrank%28key%3AString%2Cstart%3AInt64%2Cstop%3AInt64%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L38" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L60" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="zremrangebyscore(key:String,low:String|Int64,high:String|Int64)-instance-method">
+    <div class="entry-detail" id="zremrangebyscore(key:String,start:String|Int64,stop:String|Int64)-instance-method">
       <div class="signature">
         
-        def <strong>zremrangebyscore</strong>(key : String, low : String | Int64, high : String | Int64)
+        def <strong>zremrangebyscore</strong>(key : String, start : String | Int64, stop : String | Int64)
 
-        <a class="method-permalink" href="#zremrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%29-instance-method">#</a>
+        <a class="method-permalink" href="#zremrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L34" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1184,7 +1255,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1200,7 +1271,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L78" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1216,7 +1287,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/sorted_set.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/sorted_set.cr#L108" target="_blank">View source</a>]
         
       </div>
     </div>

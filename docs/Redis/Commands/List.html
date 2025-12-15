@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.13.0">
+<meta name="crystal_docs.project_version" content="0.14.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::List - redis 0.13.0</title>
+  <title>Redis::Commands::List - redis 0.14.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.13.0
+        0.14.0
       </span>
     </div>
   </div>
@@ -67,8 +67,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+  <li class="parent " data-id="redis/Redis/Client" data-name="redis::client">
       <a href="../../Redis/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Client/SScanIterator" data-name="redis::client::sscaniterator">
+      <a href="../../Redis/Client/SScanIterator.html">SScanIterator</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -107,6 +117,11 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/Deferred" data-name="redis::commands::deferred">
+      <a href="../../Redis/Commands/Deferred.html">Deferred</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
       <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
       
@@ -124,6 +139,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
       <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Immediate" data-name="redis::commands::immediate">
+      <a href="../../Redis/Commands/Immediate.html">Immediate</a>
       
     </li>
   
@@ -152,8 +172,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+  <li class="parent " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
       <a href="../../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet/ZRangeOrder" data-name="redis::commands::sortedset::zrangeorder">
+      <a href="../../Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -642,18 +672,8 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
       <a href="../../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
-      
-        <ul>
-  
-  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
-      <a href="../../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -669,6 +689,26 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingResponse" data-name="redis::streaming::xpendingresponse">
+      <a href="../../Redis/Streaming/XPendingResponse.html">XPendingResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingResponse/Data" data-name="redis::streaming::xpendingresponse::data">
+      <a href="../../Redis/Streaming/XPendingResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XRangeResponse" data-name="redis::streaming::xrangeresponse">
+      <a href="../../Redis/Streaming/XRangeResponse.html">XRangeResponse</a>
       
     </li>
   
@@ -797,8 +837,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+  <li class="parent " data-id="redis/Redis/Transaction" data-name="redis::transaction">
       <a href="../../Redis/Transaction.html">Transaction</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Transaction/Status" data-name="redis::transaction::status">
+      <a href="../../Redis/Transaction/Status.html">Status</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -875,7 +925,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L1" target="_blank">
         commands/list.cr
       </a>
     
@@ -1110,7 +1160,7 @@ redis.blpop keys, <span class="n">1</span>.second <span class="c"># =&gt; nil (a
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L128" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L128" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1144,7 +1194,7 @@ redis.blpop <span class="s">&quot;foo&quot;</span>, <span class="n">1</span>.sec
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L154" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L154" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1178,7 +1228,7 @@ redis.blpop <span class="s">&quot;foo&quot;</span>, <span class="n">1</span> <sp
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L175" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1212,7 +1262,7 @@ redis.blpop <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;1&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L197" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L197" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1228,7 +1278,7 @@ redis.blpop <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;1&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L316" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L316" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1262,7 +1312,7 @@ redis.brpop <span class="s">&quot;foo&quot;</span>, <span class="n">1</span>.sec
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L218" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L218" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1296,7 +1346,7 @@ redis.brpop <span class="s">&quot;foo&quot;</span>, <span class="n">1</span> <sp
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L239" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L239" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1330,7 +1380,7 @@ redis.brpop <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;1&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L261" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L261" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1346,7 +1396,7 @@ redis.brpop <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;1&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L328" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L328" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1362,7 +1412,7 @@ redis.brpop <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;1&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L332" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L332" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1378,7 +1428,7 @@ redis.brpop <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;1&quot
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L265" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L265" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1406,7 +1456,7 @@ redis.lmove <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;bar&qu
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L53" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L53" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1432,7 +1482,7 @@ redis.lpop <span class="s">&quot;my-list&quot;</span> <span class="c"># =&gt; ni
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L31" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1448,7 +1498,7 @@ redis.lpop <span class="s">&quot;my-list&quot;</span> <span class="c"># =&gt; ni
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1473,7 +1523,7 @@ redis.lpush <span class="s">&quot;my-list&quot;</span>, <span class="s">&quot;fo
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L10" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1489,7 +1539,7 @@ redis.lpush <span class="s">&quot;my-list&quot;</span>, <span class="s">&quot;fo
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L38" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L38" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1505,7 +1555,7 @@ redis.lpush <span class="s">&quot;my-list&quot;</span>, <span class="s">&quot;fo
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L269" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L269" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1529,7 +1579,7 @@ redis.ltrim <span class="s">&quot;ids&quot;</span>, <span class="n">1</span>, <s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L312" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L312" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1554,7 +1604,7 @@ redis.ltrim <span class="s">&quot;ids&quot;</span>, start..stop</code></pre>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L281" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L281" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1578,7 +1628,7 @@ redis.ltrim <span class="s">&quot;ids&quot;</span>, <span class="n">1</span>..<s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L296" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L296" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1603,7 +1653,7 @@ redis.rpop <span class="s">&quot;foo&quot;</span> <span class="c"># =&gt; nil</s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L86" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L86" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1632,7 +1682,7 @@ redis.rpoplpush <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;ba
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L74" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L74" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1648,7 +1698,7 @@ redis.rpoplpush <span class="s">&quot;foo&quot;</span>, <span class="s">&quot;ba
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L102" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L102" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1673,7 +1723,7 @@ redis.rpush <span class="s">&quot;my-list&quot;</span>, <span class="s">&quot;fo
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/list.cr#L98" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/list.cr#L98" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.13.0">
+<meta name="crystal_docs.project_version" content="0.14.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis - redis 0.13.0</title>
+  <title>Redis - redis 0.14.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.13.0
+        0.14.0
       </span>
     </div>
   </div>
@@ -67,8 +67,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+  <li class="parent " data-id="redis/Redis/Client" data-name="redis::client">
       <a href="Redis/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Client/SScanIterator" data-name="redis::client::sscaniterator">
+      <a href="Redis/Client/SScanIterator.html">SScanIterator</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -107,6 +117,11 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/Deferred" data-name="redis::commands::deferred">
+      <a href="Redis/Commands/Deferred.html">Deferred</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
       <a href="Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
       
@@ -124,6 +139,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
       <a href="Redis/Commands/HyperLogLog.html">HyperLogLog</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Immediate" data-name="redis::commands::immediate">
+      <a href="Redis/Commands/Immediate.html">Immediate</a>
       
     </li>
   
@@ -152,8 +172,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+  <li class="parent " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
       <a href="Redis/Commands/SortedSet.html">SortedSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet/ZRangeOrder" data-name="redis::commands::sortedset::zrangeorder">
+      <a href="Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -642,18 +672,8 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
       <a href="Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
-      
-        <ul>
-  
-  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
-      <a href="Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -669,6 +689,26 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingResponse" data-name="redis::streaming::xpendingresponse">
+      <a href="Redis/Streaming/XPendingResponse.html">XPendingResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingResponse/Data" data-name="redis::streaming::xpendingresponse::data">
+      <a href="Redis/Streaming/XPendingResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XRangeResponse" data-name="redis::streaming::xrangeresponse">
+      <a href="Redis/Streaming/XRangeResponse.html">XRangeResponse</a>
       
     </li>
   
@@ -797,8 +837,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+  <li class="parent " data-id="redis/Redis/Transaction" data-name="redis::transaction">
       <a href="Redis/Transaction.html">Transaction</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Transaction/Status" data-name="redis::transaction::status">
+      <a href="Redis/Transaction/Status.html">Status</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -861,147 +911,147 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/client.cr#L7" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L9" target="_blank">
         client.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/cluster.cr#L8" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/cluster.cr#L9" target="_blank">
         cluster.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands.cr#L10" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands.cr#L10" target="_blank">
         commands.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/connection.cr#L13" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/connection.cr#L14" target="_blank">
         connection.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/errors.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/errors.cr#L1" target="_blank">
         errors.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/graph.cr#L16" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/graph.cr#L16" target="_blank">
         graph.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/json.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/json.cr#L5" target="_blank">
         json.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/log.cr#L3" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/log.cr#L3" target="_blank">
         log.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/parser.cr#L4" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/parser.cr#L4" target="_blank">
         parser.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/pipeline.cr#L6" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/pipeline.cr#L7" target="_blank">
         pipeline.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/read_only_commands.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/read_only_commands.cr#L1" target="_blank">
         read_only_commands.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/redis.cr#L9" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/redis.cr#L9" target="_blank">
         redis.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/search.cr#L5" target="_blank">
         search.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/search/aggregate.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/search/aggregate.cr#L1" target="_blank">
         search/aggregate.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L3" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/streaming.cr#L3" target="_blank">
         streaming.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/time_series.cr#L4" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/time_series.cr#L4" target="_blank">
         time_series.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/to_hash.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/to_hash.cr#L1" target="_blank">
         to_hash.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/transaction.cr#L4" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/transaction.cr#L5" target="_blank">
         transaction.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/value.cr#L3" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/value.cr#L3" target="_blank">
         value.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/version.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/version.cr#L1" target="_blank">
         version.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/writer.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/writer.cr#L1" target="_blank">
         writer.cr
       </a>
     
@@ -1050,7 +1100,7 @@
       
     
       <dt class="entry-const" id="VERSION">
-        <strong>VERSION</strong> = <code><span class="s">&quot;0.13.0&quot;</span></code>
+        <strong>VERSION</strong> = <code><span class="s">&quot;0.14.0&quot;</span></code>
       </dt>
       
     
@@ -1116,7 +1166,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/to_hash.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/to_hash.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1132,7 +1182,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/to_hash.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/to_hash.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>

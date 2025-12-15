@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.13.0">
+<meta name="crystal_docs.project_version" content="0.14.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Streaming::XPendingBaseResponse - redis 0.13.0</title>
+  <title>Redis::Streaming::XPendingBaseResponse - redis 0.14.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.13.0
+        0.14.0
       </span>
     </div>
   </div>
@@ -67,8 +67,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+  <li class="parent " data-id="redis/Redis/Client" data-name="redis::client">
       <a href="../../Redis/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Client/SScanIterator" data-name="redis::client::sscaniterator">
+      <a href="../../Redis/Client/SScanIterator.html">SScanIterator</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -107,6 +117,11 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/Deferred" data-name="redis::commands::deferred">
+      <a href="../../Redis/Commands/Deferred.html">Deferred</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
       <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
       
@@ -124,6 +139,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
       <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Immediate" data-name="redis::commands::immediate">
+      <a href="../../Redis/Commands/Immediate.html">Immediate</a>
       
     </li>
   
@@ -152,8 +172,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+  <li class="parent " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
       <a href="../../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet/ZRangeOrder" data-name="redis::commands::sortedset::zrangeorder">
+      <a href="../../Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -642,18 +672,8 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+  <li class=" current" data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
       <a href="../../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
-      
-        <ul>
-  
-  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
-      <a href="../../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -669,6 +689,26 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingResponse" data-name="redis::streaming::xpendingresponse">
+      <a href="../../Redis/Streaming/XPendingResponse.html">XPendingResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingResponse/Data" data-name="redis::streaming::xpendingresponse::data">
+      <a href="../../Redis/Streaming/XPendingResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XRangeResponse" data-name="redis::streaming::xrangeresponse">
+      <a href="../../Redis/Streaming/XRangeResponse.html">XRangeResponse</a>
       
     </li>
   
@@ -797,8 +837,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+  <li class="parent " data-id="redis/Redis/Transaction" data-name="redis::transaction">
       <a href="../../Redis/Transaction.html">Transaction</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Transaction/Status" data-name="redis::transaction::status">
+      <a href="../../Redis/Transaction/Status.html">Status</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -827,16 +877,27 @@
 <h1 class="type-name">
 
   <span class="kind">
-    struct
+    class
   </span> Redis::<wbr>Streaming::<wbr>XPendingBaseResponse
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Streaming/XPendingBaseResponse.html">Redis::Streaming::XPendingBaseResponse</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Streaming/XPendingBaseResponse.html">Redis::Streaming::XPendingBaseResponse</a></li><li class="superclass"><a href="../../Redis/Streaming/XPendingResponse.html">Redis::Streaming::XPendingResponse</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p><span class="flag red">DEPRECATED</span>  Please use <code><a href="../../Redis/Streaming/XPendingResponse.html">Redis::Streaming::XPendingResponse</a></code></p>
 
 
 
@@ -863,7 +924,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/streaming.cr#L57" target="_blank">
         streaming.cr
       </a>
     
@@ -875,69 +936,53 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28response%3AArray%29-class-method" class="signature"><strong>.new</strong>(response : Array)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Summary
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#count%3AInt64-instance-method" class="signature"><strong>#count</strong> : Int64</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#data%3AArray%28Data%29-instance-method" class="signature"><strong>#data</strong> : Array(Data)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#earliest%3AString-instance-method" class="signature"><strong>#earliest</strong> : String</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#latest%3AString-instance-method" class="signature"><strong>#latest</strong> : String</a>
-        
-      </li>
-    
-  </ul>
-
 
 
   <div class="methods-inherited">
     
       
 
+  <h3>Instance methods inherited from class <code><a href="../../Redis/Streaming/XPendingResponse.html">Redis::Streaming::XPendingResponse</a></code></h3>
+  
+  
+    <a href="../../Redis/Streaming/XPendingResponse.html#count%3AInt64-instance-method" class="tooltip">
+      <span>count : Int64</span>
+    count</a>, 
+    
+  
+    <a href="../../Redis/Streaming/XPendingResponse.html#data%3AArray%28Data%29-instance-method" class="tooltip">
+      <span>data : Array(Data)</span>
+    data</a>, 
+    
+  
+    <a href="../../Redis/Streaming/XPendingResponse.html#earliest%3AString-instance-method" class="tooltip">
+      <span>earliest : String</span>
+    earliest</a>, 
+    
+  
+    <a href="../../Redis/Streaming/XPendingResponse.html#latest%3AString-instance-method" class="tooltip">
+      <span>latest : String</span>
+    latest</a>
+    
+  
+
 
       
+
+  <h3>Constructor methods inherited from class <code><a href="../../Redis/Streaming/XPendingResponse.html">Redis::Streaming::XPendingResponse</a></code></h3>
+  
+  
+    <a href="../../Redis/Streaming/XPendingResponse.html#new%28response%3AArray%29-class-method" class="tooltip">
+      <span>new(response : Array)</span>
+    new</a>
+    
+  
 
 
       
@@ -976,112 +1021,12 @@
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(response:Array)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(response : Array)
-
-        <a class="method-permalink" href="#new%28response%3AArray%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L8" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
   
 
   
-  <h2>
-    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Instance Method Detail
-  </h2>
-  
-    <div class="entry-detail" id="count:Int64-instance-method">
-      <div class="signature">
-        
-        def <strong>count</strong> : Int64
-
-        <a class="method-permalink" href="#count%3AInt64-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L6" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="data:Array(Data)-instance-method">
-      <div class="signature">
-        
-        def <strong>data</strong> : Array(<a href="../../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>)
-
-        <a class="method-permalink" href="#data%3AArray%28Data%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L6" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="earliest:String-instance-method">
-      <div class="signature">
-        
-        def <strong>earliest</strong> : String
-
-        <a class="method-permalink" href="#earliest%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L6" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="latest:String-instance-method">
-      <div class="signature">
-        
-        def <strong>latest</strong> : String
-
-        <a class="method-permalink" href="#latest%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/streaming.cr#L6" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
 
 </div>

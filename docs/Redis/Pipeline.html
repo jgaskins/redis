@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.13.0">
+<meta name="crystal_docs.project_version" content="0.14.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Pipeline - redis 0.13.0</title>
+  <title>Redis::Pipeline - redis 0.14.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.13.0
+        0.14.0
       </span>
     </div>
   </div>
@@ -67,8 +67,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+  <li class="parent " data-id="redis/Redis/Client" data-name="redis::client">
       <a href="../Redis/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Client/SScanIterator" data-name="redis::client::sscaniterator">
+      <a href="../Redis/Client/SScanIterator.html">SScanIterator</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -107,6 +117,11 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/Deferred" data-name="redis::commands::deferred">
+      <a href="../Redis/Commands/Deferred.html">Deferred</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
       <a href="../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
       
@@ -124,6 +139,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
       <a href="../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Immediate" data-name="redis::commands::immediate">
+      <a href="../Redis/Commands/Immediate.html">Immediate</a>
       
     </li>
   
@@ -152,8 +172,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+  <li class="parent " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
       <a href="../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet/ZRangeOrder" data-name="redis::commands::sortedset::zrangeorder">
+      <a href="../Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -642,18 +672,8 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
       <a href="../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
-      
-        <ul>
-  
-  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
-      <a href="../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -669,6 +689,26 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingResponse" data-name="redis::streaming::xpendingresponse">
+      <a href="../Redis/Streaming/XPendingResponse.html">XPendingResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingResponse/Data" data-name="redis::streaming::xpendingresponse::data">
+      <a href="../Redis/Streaming/XPendingResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XRangeResponse" data-name="redis::streaming::xrangeresponse">
+      <a href="../Redis/Streaming/XRangeResponse.html">XRangeResponse</a>
       
     </li>
   
@@ -797,8 +837,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+  <li class="parent " data-id="redis/Redis/Transaction" data-name="redis::transaction">
       <a href="../Redis/Transaction.html">Transaction</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Transaction/Status" data-name="redis::transaction::status">
+      <a href="../Redis/Transaction/Status.html">Status</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -856,6 +906,8 @@
     
       <li class="other-type"><a href="../Redis/Commands.html">Redis::Commands</a></li>
     
+      <li class="other-type"><a href="../Redis/Commands/Deferred.html">Redis::Commands::Deferred</a></li>
+    
   </ul>
 
 
@@ -877,7 +929,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/pipeline.cr#L7" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/pipeline.cr#L8" target="_blank">
         pipeline.cr
       </a>
     
@@ -946,8 +998,26 @@
     
       
 
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands.html">Redis::Commands</a></code></h3>
   
+  
+    <a href="../Redis/Commands.html#dbsize-instance-method" class="tooltip">
+      <span>dbsize</span>
+    dbsize</a>, 
+    
   
     <a href="../Redis/Commands.html#decr%28key%3AString%29-instance-method" class="tooltip">
       <span>decr(key : String)</span>
@@ -1060,7 +1130,7 @@
     
   
     <a href="../Redis/Commands.html#mget%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
-      <span>mget(keys : Enumerable(String))</span>
+      <span>mget(keys : Enumerable(String))<br/>mget(*keys : String)</span>
     mget</a>, 
     
   
@@ -1125,7 +1195,7 @@
     
   
     <a href="../Redis/Commands.html#set%28key%2Cvalue%2C%2A%2Cex%3ATime%2Cnx%3Dfalse%2Cxx%3Dfalse%2Ckeepttl%3Dfalse%2Cget%3Dfalse%29-instance-method" class="tooltip">
-      <span>set(key, value, *, ex : Time, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)<br/>set(key, value, *, ex : Time::Span, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)<br/>set(key : String, value : String, *, ex : String | Int | Nil = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)</span>
+      <span>set(key, value, *, ex : Time, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)<br/>set(key, value, *, ex : Time::Span, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)<br/>set(key : String, value : String | Bytes, *, ex : String | Int | Nil = <span class="n">nil</span>, px : String | Int | Nil = <span class="n">nil</span>, nx = <span class="n">false</span>, xx = <span class="n">false</span>, keepttl = <span class="n">false</span>, get = <span class="n">false</span>)</span>
     set</a>, 
     
   
@@ -1250,8 +1320,8 @@
     xadd</a>, 
     
   
-    <a href="../Redis/Commands/Stream.html#xautoclaim%28key%3AString%2Cgroup%3AString%2Cconsumer%3AString%2Cmin_idle_time%3ATime%3A%3ASpan%2Cstart%3AString%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>xautoclaim(key : String, group : String, consumer : String, min_idle_time : Time::Span, start : String, count : Int | String | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/Stream.html#xautoclaim%28key%3AString%2Cgroup%3AString%2Cconsumer%3AString%2Cmin_idle_time%3ATime%3A%3ASpan%2Cstart%3AString%2Ccount%3AInt32%7CString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>xautoclaim(key : String, group : String, consumer : String, min_idle_time : Time::Span, start : String, count : Int32 | String | Nil = <span class="n">nil</span>)</span>
     xautoclaim</a>, 
     
   
@@ -1280,23 +1350,28 @@
     xlen</a>, 
     
   
-    <a href="../Redis/Commands/Stream.html#xpending%28key%3AString%2Cgroup%3AString%2Cstart%3AString%2Cendfinish%3AString%2Ccount%3AString%7CInt%2Cidle%3AString%7CTime%3A%3ASpan%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>xpending(key : String, group : String, start : String, end finish : String, count : String | Int, idle : String | Time::Span | Nil = <span class="n">nil</span>)<br/>xpending(key : String, group : String)</span>
+    <a href="../Redis/Commands/Stream.html#xpending%28key%3AString%2Cgroup%3AString%2Cstart%3AString%2Cendfinish%3AString%2Ccount%3AString%7CInt32%2Cidle%3AString%7CTime%3A%3ASpan%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>xpending(key : String, group : String, start : String, end finish : String, count : String | Int32, idle : String | Time::Span | Nil = <span class="n">nil</span>)<br/>xpending(key : String, group : String)</span>
     xpending</a>, 
     
   
-    <a href="../Redis/Commands/Stream.html#xrange%28key%3AString%2Cstartmin%3AString%2Cendmax%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>xrange(key : String, start min : String, end max : String, count : String | Int | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/Stream.html#xrange%28key%3AString%2Cstartmin%3AString%2Cendmax%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>xrange(key : String, start min : String, end max : String, count : String | Int32 | Nil = <span class="n">nil</span>)</span>
     xrange</a>, 
     
   
-    <a href="../Redis/Commands/Stream.html#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="tooltip">
-      <span>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)<br/>xreadgroup(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</span>
+    <a href="../Redis/Commands/Stream.html#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt32%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="tooltip">
+      <span>xreadgroup(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)<br/>xreadgroup(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</span>
     xreadgroup</a>, 
     
   
-    <a href="../Redis/Commands/Stream.html#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>xtrim(key : String, minid : Tuple(String, String), limit : String | Int | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/Stream.html#xrevrange%28key%3AString%2Cendmax%3AString%2Cstartmin%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>xrevrange(key : String, end max : String, start min : String, count : String | Int32 | Nil = <span class="n">nil</span>)</span>
+    xrevrange</a>, 
+    
+  
+    <a href="../Redis/Commands/Stream.html#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt32%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>xtrim(key : String, minid : Tuple(String, String), limit : String | Int32 | Nil = <span class="n">nil</span>)</span>
     xtrim</a>
     
   
@@ -1318,7 +1393,7 @@
   
   
     <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CInt64%2Cvalue%3AString%29-instance-method" class="tooltip">
-      <span>zadd(key : String, score : String | Int64, value : String)<br/>zadd(key : String, values : Enumerable(String))</span>
+      <span>zadd(key : String, score : String | Int64, value : String)<br/>zadd(key : String, values : Enumerable(String))<br/>zadd(key, *values : String)</span>
     zadd</a>, 
     
   
@@ -1332,13 +1407,13 @@
     zcount</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrange%28key%3AString%2Cstarting%3AString%7CInt64%2Cending%3AString%7CInt64%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
-      <span>zrange(key : String, starting : String | Int64, ending : String | Int64, with_scores : Bool = <span class="n">false</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrange%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Cbyorder%3AZRangeOrder%7CNil%3Dnil%2Crev%3ABool%7CNil%3Dnil%2Climit%3ATuple%28String%7CInt%2CString%7CInt%29%7CNil%3Dnil%2Cwith_scores%3ABool%3Dfalse%29-instance-method" class="tooltip">
+      <span>zrange(key : String, start : String | Int64, stop : String | Int64, by order : ZRangeOrder | Nil = <span class="n">nil</span>, rev : Bool | Nil = <span class="n">nil</span>, limit : Tuple(String | Int, String | Int) | Nil = <span class="n">nil</span>, with_scores : Bool = <span class="n">false</span>)</span>
     zrange</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>zrangebyscore(key : String, low : String | Int64, high : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>zrangebyscore(key : String, start : String | Int64, stop : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
     zrangebyscore</a>, 
     
   
@@ -1347,13 +1422,13 @@
     zrem</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zremrangebyrank%28key%3AString%2Clow%3AInt64%2Chigh%3AInt64%29-instance-method" class="tooltip">
-      <span>zremrangebyrank(key : String, low : Int64, high : Int64)</span>
+    <a href="../Redis/Commands/SortedSet.html#zremrangebyrank%28key%3AString%2Cstart%3AInt64%2Cstop%3AInt64%29-instance-method" class="tooltip">
+      <span>zremrangebyrank(key : String, start : Int64, stop : Int64)</span>
     zremrangebyrank</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zremrangebyscore%28key%3AString%2Clow%3AString%7CInt64%2Chigh%3AString%7CInt64%29-instance-method" class="tooltip">
-      <span>zremrangebyscore(key : String, low : String | Int64, high : String | Int64)</span>
+    <a href="../Redis/Commands/SortedSet.html#zremrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%29-instance-method" class="tooltip">
+      <span>zremrangebyscore(key : String, start : String | Int64, stop : String | Int64)</span>
     zremrangebyscore</a>, 
     
   
@@ -1639,7 +1714,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/pipeline.cr#L13" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/pipeline.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1677,7 +1752,7 @@ and resolve all <code><a href="../Redis/Future.html">Redis::Future</a></code>s w
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/pipeline.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/pipeline.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1699,7 +1774,7 @@ command, it gets pushed to the server via this method.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/pipeline.cr#L18" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/pipeline.cr#L20" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.13.0">
+<meta name="crystal_docs.project_version" content="0.14.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::Stream - redis 0.13.0</title>
+  <title>Redis::Commands::Stream - redis 0.14.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.13.0
+        0.14.0
       </span>
     </div>
   </div>
@@ -67,8 +67,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Client" data-name="redis::client">
+  <li class="parent " data-id="redis/Redis/Client" data-name="redis::client">
       <a href="../../Redis/Client.html">Client</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Client/SScanIterator" data-name="redis::client::sscaniterator">
+      <a href="../../Redis/Client/SScanIterator.html">SScanIterator</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -107,6 +117,11 @@
       
         <ul>
   
+  <li class=" " data-id="redis/Redis/Commands/Deferred" data-name="redis::commands::deferred">
+      <a href="../../Redis/Commands/Deferred.html">Deferred</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/Commands/EmptyEnumerable" data-name="redis::commands::emptyenumerable">
       <a href="../../Redis/Commands/EmptyEnumerable.html">EmptyEnumerable</a>
       
@@ -124,6 +139,11 @@
   
   <li class=" " data-id="redis/Redis/Commands/HyperLogLog" data-name="redis::commands::hyperloglog">
       <a href="../../Redis/Commands/HyperLogLog.html">HyperLogLog</a>
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Immediate" data-name="redis::commands::immediate">
+      <a href="../../Redis/Commands/Immediate.html">Immediate</a>
       
     </li>
   
@@ -152,8 +172,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
+  <li class="parent " data-id="redis/Redis/Commands/SortedSet" data-name="redis::commands::sortedset">
       <a href="../../Redis/Commands/SortedSet.html">SortedSet</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Commands/SortedSet/ZRangeOrder" data-name="redis::commands::sortedset::zrangeorder">
+      <a href="../../Redis/Commands/SortedSet/ZRangeOrder.html">ZRangeOrder</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -642,18 +672,8 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
+  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse" data-name="redis::streaming::xpendingbaseresponse">
       <a href="../../Redis/Streaming/XPendingBaseResponse.html">XPendingBaseResponse</a>
-      
-        <ul>
-  
-  <li class=" " data-id="redis/Redis/Streaming/XPendingBaseResponse/Data" data-name="redis::streaming::xpendingbaseresponse::data">
-      <a href="../../Redis/Streaming/XPendingBaseResponse/Data.html">Data</a>
-      
-    </li>
-  
-</ul>
-
       
     </li>
   
@@ -669,6 +689,26 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class="parent " data-id="redis/Redis/Streaming/XPendingResponse" data-name="redis::streaming::xpendingresponse">
+      <a href="../../Redis/Streaming/XPendingResponse.html">XPendingResponse</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XPendingResponse/Data" data-name="redis::streaming::xpendingresponse::data">
+      <a href="../../Redis/Streaming/XPendingResponse/Data.html">Data</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Streaming/XRangeResponse" data-name="redis::streaming::xrangeresponse">
+      <a href="../../Redis/Streaming/XRangeResponse.html">XRangeResponse</a>
       
     </li>
   
@@ -797,8 +837,18 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Transaction" data-name="redis::transaction">
+  <li class="parent " data-id="redis/Redis/Transaction" data-name="redis::transaction">
       <a href="../../Redis/Transaction.html">Transaction</a>
+      
+        <ul>
+  
+  <li class=" " data-id="redis/Redis/Transaction/Status" data-name="redis::transaction::status">
+      <a href="../../Redis/Transaction/Status.html">Status</a>
+      
+    </li>
+  
+</ul>
+
       
     </li>
   
@@ -875,7 +925,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L1" target="_blank">
         commands/stream.cr
       </a>
     
@@ -955,7 +1005,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#xautoclaim%28key%3AString%2Cgroup%3AString%2Cconsumer%3AString%2Cmin_idle_time%3ATime%3A%3ASpan%2Cstart%3AString%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xautoclaim</strong>(key : String, group : String, consumer : String, min_idle_time : Time::Span, start : String, count : Int | String | Nil = <span class="n">nil</span>)</a>
+        <a href="#xautoclaim%28key%3AString%2Cgroup%3AString%2Cconsumer%3AString%2Cmin_idle_time%3ATime%3A%3ASpan%2Cstart%3AString%2Ccount%3AInt32%7CString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xautoclaim</strong>(key : String, group : String, consumer : String, min_idle_time : Time::Span, start : String, count : Int32 | String | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -1010,7 +1060,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#xpending%28key%3AString%2Cgroup%3AString%2Cstart%3AString%2Cendfinish%3AString%2Ccount%3AString%7CInt%2Cidle%3AString%7CTime%3A%3ASpan%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xpending</strong>(key : String, group : String, start : String, end finish : String, count : String | Int, idle : String | Time::Span | Nil = <span class="n">nil</span>)</a>
+        <a href="#xpending%28key%3AString%2Cgroup%3AString%2Cstart%3AString%2Cendfinish%3AString%2Ccount%3AString%7CInt32%2Cidle%3AString%7CTime%3A%3ASpan%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xpending</strong>(key : String, group : String, start : String, end finish : String, count : String | Int32, idle : String | Time::Span | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -1022,28 +1072,35 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#xrange%28key%3AString%2Cstartmin%3AString%2Cendmax%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xrange</strong>(key : String, start min : String, end max : String, count : String | Int | Nil = <span class="n">nil</span>)</a>
+        <a href="#xrange%28key%3AString%2Cstartmin%3AString%2Cendmax%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xrange</strong>(key : String, start min : String, end max : String, count : String | Int32 | Nil = <span class="n">nil</span>)</a>
         
           <div class="summary"><p>Return the entries in the given stream between the <code>start</code> and <code>end</code> ids.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="signature"><strong>#xreadgroup</strong>(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)</a>
+        <a href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt32%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="signature"><strong>#xreadgroup</strong>(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)</a>
         
           <div class="summary"><p>Execute an <code>XREADGROUP</code> command on the Redis server.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3ANamedTuple%3DNamedTuple.new%29-instance-method" class="signature"><strong>#xreadgroup</strong>(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</a>
+        <a href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt32%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3ANamedTuple%3DNamedTuple.new%29-instance-method" class="signature"><strong>#xreadgroup</strong>(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</a>
         
           <div class="summary"><p>Execute an <code>XREADGROUP</code> command on the Redis server.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xtrim</strong>(key : String, minid : Tuple(String, String), limit : String | Int | Nil = <span class="n">nil</span>)</a>
+        <a href="#xrevrange%28key%3AString%2Cendmax%3AString%2Cstartmin%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xrevrange</strong>(key : String, end max : String, start min : String, count : String | Int32 | Nil = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Return the entries in the given stream between the <code>start</code> and <code>end</code> ids.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt32%7CNil%3Dnil%29-instance-method" class="signature"><strong>#xtrim</strong>(key : String, minid : Tuple(String, String), limit : String | Int32 | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -1082,7 +1139,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L289" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L297" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1098,7 +1155,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L293" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L301" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1126,7 +1183,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L39" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L39" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1154,7 +1211,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L54" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1170,7 +1227,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1199,7 +1256,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L14" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1220,7 +1277,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L19" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1241,23 +1298,23 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L24" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xautoclaim(key:String,group:String,consumer:String,min_idle_time:Time::Span,start:String,count:Int|String|Nil=nil)-instance-method">
+    <div class="entry-detail" id="xautoclaim(key:String,group:String,consumer:String,min_idle_time:Time::Span,start:String,count:Int32|String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>xautoclaim</strong>(key : String, group : String, consumer : String, min_idle_time : Time::Span, start : String, count : Int | String | Nil = <span class="n">nil</span>)
+        def <strong>xautoclaim</strong>(key : String, group : String, consumer : String, min_idle_time : Time::Span, start : String, count : Int32 | String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#xautoclaim%28key%3AString%2Cgroup%3AString%2Cconsumer%3AString%2Cmin_idle_time%3ATime%3A%3ASpan%2Cstart%3AString%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#xautoclaim%28key%3AString%2Cgroup%3AString%2Cconsumer%3AString%2Cmin_idle_time%3ATime%3A%3ASpan%2Cstart%3AString%2Ccount%3AInt32%7CString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L301" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L309" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1273,7 +1330,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L103" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1289,7 +1346,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L99" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L99" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1311,7 +1368,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L183" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1333,7 +1390,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L153" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L161" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1355,7 +1412,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L184" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L192" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1371,7 +1428,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L139" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L147" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1392,7 +1449,7 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L144" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L152" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1413,23 +1470,23 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xpending(key:String,group:String,start:String,endfinish:String,count:String|Int,idle:String|Time::Span|Nil=nil)-instance-method">
+    <div class="entry-detail" id="xpending(key:String,group:String,start:String,endfinish:String,count:String|Int32,idle:String|Time::Span|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>xpending</strong>(key : String, group : String, start : String, end finish : String, count : String | Int, idle : String | Time::Span | Nil = <span class="n">nil</span>)
+        def <strong>xpending</strong>(key : String, group : String, start : String, end finish : String, count : String | Int32, idle : String | Time::Span | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#xpending%28key%3AString%2Cgroup%3AString%2Cstart%3AString%2Cendfinish%3AString%2Ccount%3AString%7CInt%2Cidle%3AString%7CTime%3A%3ASpan%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#xpending%28key%3AString%2Cgroup%3AString%2Cstart%3AString%2Cendfinish%3AString%2Ccount%3AString%7CInt32%2Cidle%3AString%7CTime%3A%3ASpan%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L269" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L277" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1450,17 +1507,17 @@ efficiently. This method returns the <code>id</code> that Redis stores.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L265" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L273" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xrange(key:String,startmin:String,endmax:String,count:String|Int|Nil=nil)-instance-method">
+    <div class="entry-detail" id="xrange(key:String,startmin:String,endmax:String,count:String|Int32|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>xrange</strong>(key : String, start min : String, end max : String, count : String | Int | Nil = <span class="n">nil</span>)
+        def <strong>xrange</strong>(key : String, start min : String, end max : String, count : String | Int32 | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#xrange%28key%3AString%2Cstartmin%3AString%2Cendmax%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#xrange%28key%3AString%2Cstartmin%3AString%2Cendmax%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1472,17 +1529,17 @@ If <code>count</code> is provided, Redis will return only that number of entries
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L118" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xreadgroup(group:String,consumer:String,count:String|Int|Nil=nil,block:Time::Span|String|Int|Nil=nil,no_ack=false,streams:::Hash(String,String)={}ofString=&gt;String)-instance-method">
+    <div class="entry-detail" id="xreadgroup(group:String,consumer:String,count:String|Int32|Nil=nil,block:Time::Span|String|Int32|Nil=nil,no_ack=false,streams:::Hash(String,String)={}ofString=&gt;String)-instance-method">
       <div class="signature">
         
-        def <strong>xreadgroup</strong>(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)
+        def <strong>xreadgroup</strong>(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)
 
-        <a class="method-permalink" href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method">#</a>
+        <a class="method-permalink" href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt32%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1495,17 +1552,17 @@ If <code>count</code> is provided, Redis will return only that number of entries
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L192" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xreadgroup(group:String,consumer:String,count:String|Int|Nil=nil,block:Time::Span|String|Int|Nil=nil,no_ack=false,streams:NamedTuple=NamedTuple.new)-instance-method">
+    <div class="entry-detail" id="xreadgroup(group:String,consumer:String,count:String|Int32|Nil=nil,block:Time::Span|String|Int32|Nil=nil,no_ack=false,streams:NamedTuple=NamedTuple.new)-instance-method">
       <div class="signature">
         
-        def <strong>xreadgroup</strong>(group : String, consumer : String, count : String | Int | Nil = <span class="n">nil</span>, block : Time::Span | String | Int | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)
+        def <strong>xreadgroup</strong>(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)
 
-        <a class="method-permalink" href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3ANamedTuple%3DNamedTuple.new%29-instance-method">#</a>
+        <a class="method-permalink" href="#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt32%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3ANamedTuple%3DNamedTuple.new%29-instance-method">#</a>
       </div>
       
         <div class="doc">
@@ -1525,23 +1582,45 @@ response <span class="o">=</span> <span class="t">Redis</span><span class="t">::
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L235" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L243" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="xtrim(key:String,minid:Tuple(String,String),limit:String|Int|Nil=nil)-instance-method">
+    <div class="entry-detail" id="xrevrange(key:String,endmax:String,startmin:String,count:String|Int32|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>xtrim</strong>(key : String, minid : Tuple(String, String), limit : String | Int | Nil = <span class="n">nil</span>)
+        def <strong>xrevrange</strong>(key : String, end max : String, start min : String, count : String | Int32 | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#xrevrange%28key%3AString%2Cendmax%3AString%2Cstartmin%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Return the entries in the given stream between the <code>start</code> and <code>end</code> ids.
+If <code>count</code> is provided, Redis will return only that number of entries.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L126" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="xtrim(key:String,minid:Tuple(String,String),limit:String|Int32|Nil=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>xtrim</strong>(key : String, minid : Tuple(String, String), limit : String | Int32 | Nil = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#xtrim%28key%3AString%2Cminid%3ATuple%28String%2CString%29%2Climit%3AString%7CInt32%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.13.0/src/commands/stream.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/commands/stream.cr#L140" target="_blank">View source</a>]
         
       </div>
     </div>
