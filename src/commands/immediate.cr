@@ -43,6 +43,7 @@ module Redis::Commands::Immediate
     # make sure the return type is set when run directly on the connection.
     override_return_types({
       keys:        Array,
+      dbsize:      Int64,
       del:         Int64,
       unlink:      Int64,
       ttl:         Int64,
