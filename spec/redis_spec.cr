@@ -315,6 +315,50 @@ describe Redis::Client do
 
       values.should be_empty
     end
+
+    test "can add a value only if it doesnt exist" do
+      redis.zscore(key, "value").should eq nil
+      redis.zadd(key, {"1", "value"}, nx: true).should eq 1
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, {"2", "value"}, nx: true).should eq 0
+      redis.zscore(key, "value").should eq "1"
+    end
+
+    test "can add a value only if it DOES exist" do
+      redis.zadd(key, {"1", "value"}, xx: true).should eq 0
+      redis.zscore(key, "value").should eq nil
+      redis.zadd key, {"1", "value"}
+      redis.zadd(key, {"2", "value"}, xx: true).should eq 0 # Wasn't added, just changed
+      redis.zscore(key, "value").should eq "2"
+    end
+
+    test "can add a value only if it is less than the current score" do
+      redis.zadd key, {"1", "value"}
+      redis.zadd(key, {"2", "value"}, lt: true).should eq 0
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
+      redis.zscore(key, "value").should eq "0.5"
+    end
+
+    test "can add a value only if it is greater than the current score" do
+      redis.zadd key, {"1", "value"}
+      redis.zadd(key, {"0.5", "value"}, gt: true).should eq 0
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, {"2", "value"}, gt: true).should eq 0
+      redis.zscore(key, "value").should eq "2"
+    end
+
+    test "can return the number of keys that changed, not just added" do
+      redis.zadd key, {"1", "first", "2", "second"}
+      # Using GT and CH to illustrate combining arguments
+      redis.zadd(key, {"0.5", "first", "2.5", "second"}, gt: true, ch: true).should eq 1
+    end
+
+    test "can treat scores as increments" do
+      redis.zadd key, {"4321", "first"}
+      redis.zadd key, {"1234", "first"}, incr: true
+      redis.zscore(key, "first").should eq "5555"
+    end
   end
 
   describe "hash" do

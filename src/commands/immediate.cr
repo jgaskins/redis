@@ -138,7 +138,7 @@ module Redis::Commands::Immediate
       bzmpop:           Array?,
       bzpopmax:         Array,
       bzpopmin:         Array,
-      zadd:             Int64,
+      zadd:             Int64 | String | Nil,
       zcard:            Int64,
       zcount:           Int64,
       zdiff:            Array,

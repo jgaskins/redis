@@ -73,13 +73,29 @@ module Redis::Commands::SortedSet
     run({"zadd", key} + values)
   end
 
-  def zadd(key : String, values : Enumerable(String))
+  def zadd(
+    key : String,
+    values : Enumerable(String),
+    *,
+    nx = false,
+    xx = false,
+    gt = false,
+    lt = false,
+    ch = false,
+    incr = nil,
+  )
     if values.size.odd?
       raise ArgumentError.new("There must be an even number of value arguments to represent score/value pairs")
     end
 
     command = Array(String).new(initial_capacity: 2 + values.size)
     command << "zadd" << key
+    command << "nx" if nx
+    command << "xx" if xx
+    command << "lt" if lt
+    command << "gt" if gt
+    command << "ch" if ch
+    command << "incr" if incr
     values.each { |value| command << value }
 
     run command
