@@ -45,12 +45,12 @@ module Redis::Commands::SortedSet
 
   def zrangebyscore(
     key : String,
-    start : String | Int64,
-    stop : String | Int64,
+    min : String | Int64,
+    max : String | Int64,
     with_scores = false,
     limit : Enumerable(String)? = nil,
   )
-    command = {"zrangebyscore", key, start.to_s, stop.to_s}
+    command = {"zrangebyscore", key, min.to_s, max.to_s}
 
     if with_scores
       command += {"withscores"}
