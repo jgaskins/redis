@@ -66,10 +66,6 @@ module Redis::Commands::SortedSet
   end
 
   def zadd(key, *values : String)
-    if values.size.odd?
-      raise ArgumentError.new("There must be an even number of value arguments to represent score/value pairs")
-    end
-
     run({"zadd", key} + values)
   end
 
