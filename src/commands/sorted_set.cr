@@ -43,9 +43,18 @@ module Redis::Commands::SortedSet
     SCORE
   end
 
-  def zrangebyscore(key : String, start : String | Int64, stop : String | Int64, limit : Enumerable(String)? = nil)
-    command = {"zrangebyscore", key, stop.to_s, stop.to_s}
+  def zrangebyscore(
+    key : String,
+    start : String | Int64,
+    stop : String | Int64,
+    with_scores = false,
+    limit : Enumerable(String)? = nil,
+  )
+    command = {"zrangebyscore", key, start.to_s, stop.to_s}
 
+    if with_scores
+      command += {"withscores"}
+    end
     if limit
       command += {"limit", limit[0], limit[1]}
     end

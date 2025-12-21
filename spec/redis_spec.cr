@@ -285,6 +285,11 @@ describe Redis::Client do
       redis.zrange(key, "+inf", "-inf", by: :score, rev: true, with_scores: true)
         .should eq %w[three 3 two 2 one 1]
 
+
+      redis.zrangebyscore(key, "-inf", "+inf")
+        .should eq %w[one two three]
+      redis.zrangebyscore(key, "-inf", "+inf", with_scores: true)
+        .should eq %w[one 1 two 2 three 3]
     end
 
     test "counts the number of elements set at the key" do
