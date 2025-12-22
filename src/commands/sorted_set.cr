@@ -62,15 +62,78 @@ module Redis::Commands::SortedSet
     run command
   end
 
-  def zremrangebyscore(key : String, start : String | Int64, stop : String | Int64)
-    run({"zremrangebyscore", key, start.to_s, stop.to_s})
+  def zremrangebylex(key : String, range : Range)
+    min = range.begin
+    max = range.end
+
+    if min.nil?
+      min = "-"
+    else
+      min = "[#{min}"
+    end
+    if max.nil?
+      max = "+"
+    elsif range.excludes_end?
+      max = "(#{max}"
+    else
+      max = "[#{max}"
+    end
+
+    zremrangebylex key, min, max
   end
 
-  def zremrangebyrank(key : String, start : Int64, stop : Int64)
+  def zremrangebylex(key : String, min : String, max : String)
+    unless min.starts_with?('[') || min.starts_with?('(') || min == "-" || min == "+"
+      raise ArgumentError.new(%{zremrangebylex requires that `min` start with either '[' or '(' or be the special "-" or "+" values})
+    end
+    unless max.starts_with?('[') || max.starts_with?('(') || max == "-" || max == "+"
+      raise ArgumentError.new(%{zremrangebylex requires that `max` start with either '[' or '(' or be the special "-" or "+" values})
+    end
+
+    run({"zremrangebylex", key, min, max})
+  end
+
+  def zremrangebyscore(key : String, range : Range)
+    start = range.begin
+    stop = range.end
+
+    start = "-inf" if start.nil?
+    stop = "+inf" if stop.nil?
+    if range.excludes_end?
+      stop = "(#{stop}"
+    end
+
+    start = start.to_f64 if start.is_a? Int
+    stop = stop.to_f64 if stop.is_a? Int
+
+    zremrangebyscore key, start, stop
+  end
+
+  def zremrangebyscore(key : String, min : String | Float64, max : String | Float64)
+    run({"zremrangebyscore", key, min.to_s, max.to_s})
+  end
+
+  def zremrangebyrank(key : String, range : Range)
+    start = range.begin
+    stop = range.end
+
+    start = "0" if start.nil?
+    stop = "-1" if stop.nil?
+    if range.excludes_end?
+      stop = stop.to_i64 - 1
+    end
+
+    start = start.to_i64 if start.is_a? Int
+    stop = stop.to_i64 if stop.is_a? Int
+
+    zremrangebyrank(key, start, stop)
+  end
+
+  def zremrangebyrank(key : String, start : Int64 | String, stop : Int64 | String)
     run({"zremrangebyrank", key, start.to_s, stop.to_s})
   end
 
-  def zadd(key : String, score : String | Int64, value : String)
+  def zadd(key : String, score : String | Int64 | Float64, value : String)
     run({"zadd", key, score.to_s, value})
   end
 

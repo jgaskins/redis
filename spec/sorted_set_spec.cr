@@ -45,6 +45,86 @@ describe Redis::Commands::SortedSet do
       .should eq %w[one 1 two 2 three 3]
   end
 
+  describe "zremrangebyrank" do
+    test "removes with a range" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      # Removing all but the first and last
+      redis.zremrangebyrank(key, 1...99).should eq 98
+
+      redis.zrange(key, 0, -1).should eq %w[entry-0 entry-99]
+    end
+
+    test "removes with start and stop as ints" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      redis.zremrangebyrank(key, 0i8, 0i8).should eq 1
+      redis.zremrangebyrank(key, 0i16, 0i16).should eq 1
+      redis.zremrangebyrank(key, 0i32, 0i32).should eq 1
+      redis.zremrangebyrank(key, 0i64, 0i64).should eq 1
+    end
+
+    test "removes with start and stop as strings" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      redis.zremrangebyrank(key, "0", "0").should eq 1
+    end
+  end
+
+  describe "zremrangebyscore" do
+    test "removes with a range" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      redis.zremrangebyscore(key, 0...10).should eq 10
+      redis.zremrangebyscore(key, 10.0...20.0).should eq 10
+      redis.zremrangebyscore(key, ...30).should eq 10
+      redis.zremrangebyscore(key, ..40).should eq 11
+    end
+
+    test "removes with min and max as floats" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      redis.zremrangebyscore(key, min: 0.0, max: 9.9).should eq 10
+      redis.zremrangebyscore(key, min: 10.0_f32, max: 19.9_f32).should eq 10
+    end
+
+    test "removes with min and max as ints" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      redis.zremrangebyscore(key, min: 0i8, max: 9i8).should eq 10
+      redis.zremrangebyscore(key, min: 10i16, max: 19i16).should eq 10
+      redis.zremrangebyscore(key, min: 20i32, max: 29i32).should eq 10
+      redis.zremrangebyscore(key, min: 30i64, max: 39i64).should eq 10
+    end
+
+    test "removes with min and max as strings" do
+      redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
+
+      redis.zremrangebyscore(key, min: "0.0", max: "9.9").should eq 10
+    end
+  end
+
+  describe "zremrangebylex" do
+    test "removes with a range" do
+      redis.zadd key, Array.new(100) { |i| ["0", "entry-%02d" % i] }.flatten
+
+      redis.zremrangebylex(key, "entry-0"..."entry-10").should eq 10
+      redis.zremrangebylex(key, "entry-10".."entry-20").should eq 11
+    end
+
+    test "removes with min and max as strings" do
+      redis.zadd key, Array.new(100) { |i| ["0", "entry-%02d" % i] }.flatten
+
+      redis.zremrangebylex(key, "[entry-0", "(entry-10").should eq 10
+      redis.zremrangebylex(key, "[entry-10", "[entry-20").should eq 11
+    end
+
+    test "requires that min and max be properly formatted" do
+      expect_raises(ArgumentError) { redis.zremrangebylex(key, "min", "[max") }
+      expect_raises(ArgumentError) { redis.zremrangebylex(key, "[min", "max") }
+    end
+  end
+
   test "counts the number of elements set at the key" do
     redis.zadd(key, "1", "one")
     redis.zadd(key, "2", "two")
