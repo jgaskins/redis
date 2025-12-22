@@ -87,7 +87,7 @@ module Redis::Commands::SortedSet
     gt = false,
     lt = false,
     ch = false,
-    incr = nil,
+    incr = false,
   )
     if values.size.odd?
       raise ArgumentError.new("There must be an even number of value arguments to represent score/value pairs")
