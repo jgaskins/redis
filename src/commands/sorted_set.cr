@@ -93,7 +93,8 @@ module Redis::Commands::SortedSet
       raise ArgumentError.new("There must be an even number of value arguments to represent score/value pairs")
     end
 
-    command = Array(String).new(initial_capacity: 2 + values.size)
+    options_size = {nx, xx, gt, lt, ch, incr}.count(&.itself)
+    command = Array(String).new(initial_capacity: 2 + options_size + values.size)
     command << "zadd" << key
     command << "nx" if nx
     command << "xx" if xx
