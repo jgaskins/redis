@@ -133,12 +133,47 @@ module Redis::Commands::SortedSet
     run({"zremrangebyrank", key, start.to_s, stop.to_s})
   end
 
-  def zadd(key : String, score : String | Int64 | Float64, value : String)
-    run({"zadd", key, score.to_s, value})
+  def zadd(
+    key : String,
+    score : String | Int64 | Float64,
+    value : String,
+    *,
+    nx = false,
+    xx = false,
+    gt = false,
+    lt = false,
+    ch = false,
+    incr = false,
+  )
+    command = {"zadd", key}
+    command += {"nx"} if nx
+    command += {"xx"} if xx
+    command += {"lt"} if lt
+    command += {"gt"} if gt
+    command += {"ch"} if ch
+    command += {"incr"} if incr
+    command += {score.to_s, value}
+    run(command)
   end
 
-  def zadd(key, *values : String)
-    run({"zadd", key} + values)
+  def zadd(
+    key : String,
+    *values : String,
+    nx = false,
+    xx = false,
+    gt = false,
+    lt = false,
+    ch = false,
+  )
+    command = {"zadd", key}
+    command += {"nx"} if nx
+    command += {"xx"} if xx
+    command += {"lt"} if lt
+    command += {"gt"} if gt
+    command += {"ch"} if ch
+    command += values
+
+    run command
   end
 
   def zadd(

@@ -7,18 +7,79 @@ redis = Redis::Client.new
 define_test redis
 
 describe Redis::Commands::SortedSet do
-  test "can add and remove members of a sorted set" do
-    redis.zadd(key, "1", "a").should eq 1
-    redis.zadd(key, "1", "a").should eq 0
-    redis.zrange(key, "0", "-1").should eq %w[a]
+  describe "zadd" do
+    test "adds members" do
+      redis.zadd(key, "1", "a").should eq 1
+      redis.zadd(key, "1", "a").should eq 0
+      redis.zrange(key, "0", "-1").should eq %w[a]
 
-    redis.zadd key, "2", "b"
-    redis.zrange(key, "0", "-1").as(Array).should contain "a"
-    redis.zrange(key, "0", "-1").as(Array).should contain "b"
+      redis.zadd key, "2", "b"
+      redis.zrange(key, "0", "-1").as(Array).should contain "a"
+      redis.zrange(key, "0", "-1").as(Array).should contain "b"
 
-    redis.zrem key, "a"
-    redis.zrange(key, "0", "-1").as(Array).should_not contain "a"
-    redis.zrange(key, 0, -1).as(Array).should contain "b"
+      redis.zrem key, "a"
+      redis.zrange(key, "0", "-1").as(Array).should_not contain "a"
+      redis.zrange(key, 0, -1).as(Array).should contain "b"
+    end
+
+    test "can add a member only if it doesnt exist" do
+      redis.zscore(key, "value").should eq nil
+      redis.zadd(key, {"1", "value"}, nx: true).should eq 1
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, {"2", "value"}, nx: true).should eq 0
+      redis.zadd(key, "3", "value", nx: true).should eq 0 # variadic
+      redis.zscore(key, "value").should eq "1"
+    end
+
+    test "can add a member only if it DOES exist" do
+      redis.zadd(key, {"1", "value"}, xx: true).should eq 0
+      redis.zadd(key, "1", "value", xx: true).should eq 0
+      redis.zscore(key, "value").should eq nil
+      redis.zadd key, {"1", "value"}
+      redis.zadd(key, {"2", "value"}, xx: true).should eq 0 # Wasn't added, just changed
+      redis.zscore(key, "value").should eq "2"
+      redis.zadd(key, "3", "value", xx: true).should eq 0 # variadic
+      redis.zscore(key, "value").should eq "3"
+    end
+
+    test "can add a member only if it is less than the current score" do
+      redis.zadd key, {"1", "value"}
+      redis.zadd(key, {"2", "value"}, lt: true).should eq 0
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, "2", "value", lt: true).should eq 0 # variadic
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
+      redis.zscore(key, "value").should eq "0.5"
+      redis.zadd(key, "0.1", "value", lt: true).should eq 0 # variadic
+      redis.zscore(key, "value").should eq "0.1"
+    end
+
+    test "can add a member only if it is greater than the current score" do
+      redis.zadd key, {"1", "value"}
+      redis.zadd(key, {"0.5", "value"}, gt: true).should eq 0
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, "0.5", "value", gt: true).should eq 0 # variadic
+      redis.zscore(key, "value").should eq "1"
+      redis.zadd(key, {"2", "value"}, gt: true).should eq 0
+      redis.zscore(key, "value").should eq "2"
+      redis.zadd(key, "3", "value", gt: true).should eq 0 # variadic
+      redis.zscore(key, "value").should eq "3"
+    end
+
+    test "can return the number of members that changed, not just added" do
+      redis.zadd key, {"1", "first", "2", "second"}
+      # Using GT and CH to illustrate combining arguments
+      redis.zadd(key, {"0.5", "first", "2.5", "second"}, gt: true, ch: true).should eq 1
+      redis.zadd(key, "-0.5", "first", "3.5", "second", gt: true, ch: true).should eq 1
+    end
+
+    test "can treat scores as increments" do
+      redis.zadd key, {"4321", "first"}
+      redis.zadd key, {"1234", "first"}, incr: true
+      redis.zscore(key, "first").should eq "5555"
+      redis.zadd key, "2222", "first", incr: true
+      redis.zscore(key, "first").should eq "7777"
+    end
   end
 
   test "can run ZRANGE BYLEX" do
@@ -152,49 +213,5 @@ describe Redis::Commands::SortedSet do
     end
 
     values.should be_empty
-  end
-
-  test "can add a value only if it doesnt exist" do
-    redis.zscore(key, "value").should eq nil
-    redis.zadd(key, {"1", "value"}, nx: true).should eq 1
-    redis.zscore(key, "value").should eq "1"
-    redis.zadd(key, {"2", "value"}, nx: true).should eq 0
-    redis.zscore(key, "value").should eq "1"
-  end
-
-  test "can add a value only if it DOES exist" do
-    redis.zadd(key, {"1", "value"}, xx: true).should eq 0
-    redis.zscore(key, "value").should eq nil
-    redis.zadd key, {"1", "value"}
-    redis.zadd(key, {"2", "value"}, xx: true).should eq 0 # Wasn't added, just changed
-    redis.zscore(key, "value").should eq "2"
-  end
-
-  test "can add a value only if it is less than the current score" do
-    redis.zadd key, {"1", "value"}
-    redis.zadd(key, {"2", "value"}, lt: true).should eq 0
-    redis.zscore(key, "value").should eq "1"
-    redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
-    redis.zscore(key, "value").should eq "0.5"
-  end
-
-  test "can add a value only if it is greater than the current score" do
-    redis.zadd key, {"1", "value"}
-    redis.zadd(key, {"0.5", "value"}, gt: true).should eq 0
-    redis.zscore(key, "value").should eq "1"
-    redis.zadd(key, {"2", "value"}, gt: true).should eq 0
-    redis.zscore(key, "value").should eq "2"
-  end
-
-  test "can return the number of keys that changed, not just added" do
-    redis.zadd key, {"1", "first", "2", "second"}
-    # Using GT and CH to illustrate combining arguments
-    redis.zadd(key, {"0.5", "first", "2.5", "second"}, gt: true, ch: true).should eq 1
-  end
-
-  test "can treat scores as increments" do
-    redis.zadd key, {"4321", "first"}
-    redis.zadd key, {"1234", "first"}, incr: true
-    redis.zscore(key, "first").should eq "5555"
   end
 end
