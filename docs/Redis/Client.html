@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.14.0">
+<meta name="crystal_docs.project_version" content="0.14.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Client - redis 0.14.0</title>
+  <title>Redis::Client - redis 0.14.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.14.0
+        0.14.1
       </span>
     </div>
   </div>
@@ -949,7 +949,7 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L23" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L23" target="_blank">
         client.cr
       </a>
     
@@ -1481,8 +1481,8 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands/SortedSet.html">Redis::Commands::SortedSet</a></code></h3>
   
   
-    <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CInt64%2Cvalue%3AString%29-instance-method" class="tooltip">
-      <span>zadd(key : String, score : String | Int64, value : String)<br/>zadd(key : String, values : Enumerable(String))<br/>zadd(key, *values : String)</span>
+    <a href="../Redis/Commands/SortedSet.html#zadd%28key%3AString%2Cscore%3AString%7CInt64%7CFloat64%2Cvalue%3AString%2C%2A%2Cnx%3Dfalse%2Cxx%3Dfalse%2Cgt%3Dfalse%2Clt%3Dfalse%2Cch%3Dfalse%2Cincr%3Dfalse%29-instance-method" class="tooltip">
+      <span>zadd(key : String, score : String | Int64 | Float64, value : String, *, nx = <span class="n">false</span>, xx = <span class="n">false</span>, gt = <span class="n">false</span>, lt = <span class="n">false</span>, ch = <span class="n">false</span>, incr = <span class="n">false</span>)<br/>zadd(key : String, values : Enumerable(String), *, nx = <span class="n">false</span>, xx = <span class="n">false</span>, gt = <span class="n">false</span>, lt = <span class="n">false</span>, ch = <span class="n">false</span>, incr = <span class="n">false</span>)<br/>zadd(key : String, *values : String, nx = <span class="n">false</span>, xx = <span class="n">false</span>, gt = <span class="n">false</span>, lt = <span class="n">false</span>, ch = <span class="n">false</span>)</span>
     zadd</a>, 
     
   
@@ -1501,8 +1501,8 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     zrange</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>zrangebyscore(key : String, start : String | Int64, stop : String | Int64, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Cmin%3AString%7CInt64%2Cmax%3AString%7CInt64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>zrangebyscore(key : String, min : String | Int64, max : String | Int64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
     zrangebyscore</a>, 
     
   
@@ -1511,13 +1511,18 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
     zrem</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zremrangebyrank%28key%3AString%2Cstart%3AInt64%2Cstop%3AInt64%29-instance-method" class="tooltip">
-      <span>zremrangebyrank(key : String, start : Int64, stop : Int64)</span>
+    <a href="../Redis/Commands/SortedSet.html#zremrangebylex%28key%3AString%2Cmin%3AString%2Cmax%3AString%29-instance-method" class="tooltip">
+      <span>zremrangebylex(key : String, min : String, max : String)<br/>zremrangebylex(key : String, range : Range)</span>
+    zremrangebylex</a>, 
+    
+  
+    <a href="../Redis/Commands/SortedSet.html#zremrangebyrank%28key%3AString%2Cstart%3AInt64%7CString%2Cstop%3AInt64%7CString%29-instance-method" class="tooltip">
+      <span>zremrangebyrank(key : String, start : Int64 | String, stop : Int64 | String)<br/>zremrangebyrank(key : String, range : Range)</span>
     zremrangebyrank</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zremrangebyscore%28key%3AString%2Cstart%3AString%7CInt64%2Cstop%3AString%7CInt64%29-instance-method" class="tooltip">
-      <span>zremrangebyscore(key : String, start : String | Int64, stop : String | Int64)</span>
+    <a href="../Redis/Commands/SortedSet.html#zremrangebyscore%28key%3AString%2Cmin%3AString%7CFloat64%2Cmax%3AString%7CFloat64%29-instance-method" class="tooltip">
+      <span>zremrangebyscore(key : String, min : String | Float64, max : String | Float64)<br/>zremrangebyscore(key : String, range : Range)</span>
     zremrangebyscore</a>, 
     
   
@@ -1804,7 +1809,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L35" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L35" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1832,7 +1837,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1862,7 +1867,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L150" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L150" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1878,7 +1883,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L62" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1894,7 +1899,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L138" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1910,7 +1915,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L134" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L134" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1926,7 +1931,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L146" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L146" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1950,7 +1955,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1966,7 +1971,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L58" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L58" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1982,7 +1987,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L66" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L66" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1998,7 +2003,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L70" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L70" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2014,7 +2019,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L142" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L142" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2030,7 +2035,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.0/src/client.cr#L119" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/client.cr#L119" target="_blank">View source</a>]
         
       </div>
     </div>
