@@ -16,6 +16,22 @@ describe Redis::Commands::Geo do
     x, y = bar.as(Array).map(&.as(String).to_f)
     x.should be_within 0.00001, of: 12
     y.should be_within 0.00001, of: 34
+
+    foo, bar = redis.geopos(key, {"foo", "bar"})
+    x, y = foo.as(Array).map(&.as(String).to_f)
+    x.should be_within 0.00001, of: 42
+    y.should be_within 0.00001, of: 69
+    x, y = bar.as(Array).map(&.as(String).to_f)
+    x.should be_within 0.00001, of: 12
+    y.should be_within 0.00001, of: 34
+
+    foo, bar = redis.geopos(key, %w[foo bar])
+    x, y = foo.as(Array).map(&.as(String).to_f)
+    x.should be_within 0.00001, of: 42
+    y.should be_within 0.00001, of: 69
+    x, y = bar.as(Array).map(&.as(String).to_f)
+    x.should be_within 0.00001, of: 12
+    y.should be_within 0.00001, of: 34
   end
 
   test "adds `Redis::Geo::Member`s to a geospatial index" do
@@ -47,7 +63,10 @@ describe Redis::Commands::Geo do
       "42", "69", "foo",
       "12", "34", "bar"
 
-    redis.geodist(key, "foo", "bar", :mi).should eq "2681.5198"
+    redis.geodist(key, "foo", "bar", :mi).to_f.should be_within 0.0001, of: 2681.5198
+    redis.geodist(key, "foo", "bar", :km).to_f.should be_within 0.0001, of: 4315.4770
+    redis.geodist(key, "foo", "bar", :m).to_f.should be_within 0.0001, of: 4315477.0479
+    redis.geodist(key, "foo", "bar", :ft).to_f.should be_within 0.0001, of: 14158389.2648
   end
 
   test "searches a geospatial index by coordinates (FROMLONLAT, BYRADIUS)" do

@@ -925,7 +925,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L40" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L78" target="_blank">
         commands/geo.cr
       </a>
     
@@ -956,40 +956,63 @@
       <li class="entry-summary">
         <a href="#geoadd%28key%3AString%2Centries%3AEnumerable%28Redis%3A%3AGeo%3A%3AMember%29%2Cnx%3Dnil%2Cxx%3Dnil%2Cch%3Dnil%29-instance-method" class="signature"><strong>#geoadd</strong>(key : String, entries : Enumerable(Redis::Geo::Member), nx = <span class="n">nil</span>, xx = <span class="n">nil</span>, ch = <span class="n">nil</span>)</a>
         
+          <div class="summary"><p>Add <code>entries</code> to the geospatial index (backed by a <code><a href="../../Redis/Commands/SortedSet.html">SortedSet</a></code>) stored in <code>key</code> (updating them if they already exist) and return the number of entries added to the index.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#geoadd%28key%3AString%2C%2Aentries%3AString%2Cnx%3Dnil%2Cxx%3Dnil%2Cch%3Dnil%29-instance-method" class="signature"><strong>#geoadd</strong>(key : String, *entries : String, nx = <span class="n">nil</span>, xx = <span class="n">nil</span>, ch = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add <code>entries</code> to the geospatial index (backed by a <code><a href="../../Redis/Commands/SortedSet.html">SortedSet</a></code>) stored in <code>key</code> (updating them if they already exist) and return the number of entries added to the index.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#geodist%28key%3AString%2Cmember1%3AString%2Cmember2%3AString%2Cunit%3ARedis%3A%3AGeo%3A%3AUnit%7CNil%3Dnil%29-instance-method" class="signature"><strong>#geodist</strong>(key : String, member1 : String, member2 : String, unit : Redis::Geo::Unit | Nil = <span class="n">nil</span>)</a>
         
+          <div class="summary"><p>Return the crow-flies distance between <code>member1</code> and <code>member2</code> of the geospatial index stored in <code>key</code> in the specified <code>unit</code>, defaulting to meters.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#geopos%28key%3AString%2Cmembers%3AEnumerable%28String%29%29-instance-method" class="signature"><strong>#geopos</strong>(key : String, members : Enumerable(String))</a>
+        
+          <div class="summary"><p>Returns <code>[longitude, latitude]</code> for all <code>members</code> provided.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#geopos%28key%3AString%2C%2Amembers%3AString%29-instance-method" class="signature"><strong>#geopos</strong>(key : String, *members : String)</a>
+        
+          <div class="summary"><p>Returns <code>[longitude, latitude]</code> for all <code>members</code> provided.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#geosearch%28key%3AString%2C%2A%2Cfromlonlatlonlat%3ATuple%28String%2CString%29%2Cbyradiusradius%3ARedis%3A%3AGeo%3A%3ARadius%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#geosearch</strong>(key : String, *, fromlonlat lonlat : Tuple(String, String), byradius radius : Redis::Geo::Radius, sort : Redis::Geo::Sort | Nil = <span class="n">nil</span>, count : Int | String | Nil = <span class="n">nil</span>, withcoord : Bool = <span class="n">false</span>, withdist : Bool = <span class="n">false</span>)</a>
         
+          <div class="summary"><p>Search the geospatial index stored in <code>key</code> and return the members within <code>radius</code> from <code>lonlat</code>.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#geosearch%28key%3AString%2C%2A%2Cfromlonlatlonlat%3ATuple%28String%2CString%29%2Cbyboxbox%3ARedis%3A%3AGeo%3A%3ABox%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#geosearch</strong>(key : String, *, fromlonlat lonlat : Tuple(String, String), bybox box : Redis::Geo::Box, sort : Redis::Geo::Sort | Nil = <span class="n">nil</span>, count : Int | String | Nil = <span class="n">nil</span>, withcoord : Bool = <span class="n">false</span>, withdist : Bool = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Search the geospatial index stored in <code>key</code> and return the members within the bounding <code>box</code> around <code>longlat</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#geosearch%28key%3AString%2C%2A%2Cfrommembermember%3AString%2Cbyradiusradius%3ARedis%3A%3AGeo%3A%3ARadius%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#geosearch</strong>(key : String, *, frommember member : String, byradius radius : Redis::Geo::Radius, sort : Redis::Geo::Sort | Nil = <span class="n">nil</span>, count : Int | String | Nil = <span class="n">nil</span>, withcoord : Bool = <span class="n">false</span>, withdist : Bool = <span class="n">false</span>)</a>
         
+          <div class="summary"><p>Search the geospatial index stored in <code>key</code> and return the members within <code>radius</code> from <code>member</code>.</p></div>
+        
       </li>
     
       <li class="entry-summary">
         <a href="#geosearch%28key%3AString%2C%2A%2Cfrommembermember%3AString%2Cbyboxbox%3ARedis%3A%3AGeo%3A%3ABox%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#geosearch</strong>(key : String, *, frommember member : String, bybox box : Redis::Geo::Box, sort : Redis::Geo::Sort | Nil = <span class="n">nil</span>, count : Int | String | Nil = <span class="n">nil</span>, withcoord : Bool = <span class="n">false</span>, withdist : Bool = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Search the geospatial index stored in <code>key</code> and return the members within the bounding <code>box</code> around <code>member</code>.</p></div>
         
       </li>
     
@@ -1025,10 +1048,36 @@
         <a class="method-permalink" href="#geoadd%28key%3AString%2Centries%3AEnumerable%28Redis%3A%3AGeo%3A%3AMember%29%2Cnx%3Dnil%2Cxx%3Dnil%2Cch%3Dnil%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Add <code>entries</code> to the geospatial index (backed by a <code><a href="../../Redis/Commands/SortedSet.html">SortedSet</a></code>) stored in
+<code>key</code> (updating them if they already exist) and return the number of entries
+added to the index. This overload is provided to avoid having to remember
+the order of the <code>entries</code> arguments and also to provide for a dynamic
+number of entries that is not known at compile time.</p>
+<p>Setting the following options to <code>true</code> will have the corresponding effect
+on the command:</p>
+<ul>
+<li><code>nx</code> will only add the entries if they do <em>not</em> already exist in the geospatial index; mutually exclusive with <code>xx</code></li>
+<li><code>xx</code> will only add the entries if they <em>do</em> already exist in the geospatial index; mutually exclusive with <code>nx</code></li>
+<li><code>ch</code> alters the return value to represent the number of entries <em>changed</em> rather than the number of entries <em>added</em></li>
+</ul>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;places&quot;</span>,
+  {
+    <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Member</span>.new(
+      longitude: longitude,
+      latitude: latitude,
+      member: restaurant.id.to_s,
+    ),
+  },
+  longitude, latitude, restaurant.id.to_s,
+  nx: <span class="n">true</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L51" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L131" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1041,10 +1090,28 @@
         <a class="method-permalink" href="#geoadd%28key%3AString%2C%2Aentries%3AString%2Cnx%3Dnil%2Cxx%3Dnil%2Cch%3Dnil%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Add <code>entries</code> to the geospatial index (backed by a <code><a href="../../Redis/Commands/SortedSet.html">SortedSet</a></code>) stored in
+<code>key</code> (updating them if they already exist) and return the number of entries
+added to the index. Note that <code>entries</code> must be strings and must be in
+groups of 3 in the following order: <code>longitude, latitude, member</code>.</p>
+<p>Setting the following options to <code>true</code> will have the corresponding effect
+on the command:</p>
+<ul>
+<li><code>nx</code> will only add the entries if they do <em>not</em> already exist in the geospatial index; mutually exclusive with <code>xx</code></li>
+<li><code>xx</code> will only add the entries if they <em>do</em> already exist in the geospatial index; mutually exclusive with <code>nx</code></li>
+<li><code>ch</code> alters the return value to represent the number of entries <em>changed</em> rather than the number of entries <em>added</em></li>
+</ul>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;places&quot;</span>,
+  longitude, latitude, restaurant.id.to_s,
+  nx: <span class="n">true</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L41" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1057,10 +1124,44 @@
         <a class="method-permalink" href="#geodist%28key%3AString%2Cmember1%3AString%2Cmember2%3AString%2Cunit%3ARedis%3A%3AGeo%3A%3AUnit%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Return the crow-flies distance between <code>member1</code> and <code>member2</code> of the
+geospatial index stored in <code>key</code> in the specified <code>unit</code>, defaulting to
+meters.</p>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;nfl-stadiums&quot;</span>,
+  <span class="s">&quot;-76.622852&quot;</span>, <span class="s">&quot;39.278093&quot;</span>, <span class="s">&quot;ravens&quot;</span>,
+  <span class="s">&quot;-94.483899&quot;</span>, <span class="s">&quot;39.048868&quot;</span>, <span class="s">&quot;chiefs&quot;</span>
+
+<span class="c"># About 956 miles between the Baltimore Ravens and Kansas City Chiefs stadiums</span>
+redis.geodist(<span class="s">&quot;nfl-stadiums&quot;</span>, <span class="s">&quot;ravens&quot;</span>, <span class="s">&quot;chiefs&quot;</span>, <span class="n">:mi</span>) <span class="c"># =&gt; &quot;955.6877&quot;</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L70" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L172" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="geopos(key:String,members:Enumerable(String))-instance-method">
+      <div class="signature">
+        
+        def <strong>geopos</strong>(key : String, members : Enumerable(String))
+
+        <a class="method-permalink" href="#geopos%28key%3AString%2Cmembers%3AEnumerable%28String%29%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>[longitude, latitude]</code> for all <code>members</code> provided.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L152" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1073,10 +1174,15 @@
         <a class="method-permalink" href="#geopos%28key%3AString%2C%2Amembers%3AString%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Returns <code>[longitude, latitude]</code> for all <code>members</code> provided.</p>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L66" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L147" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1089,10 +1195,28 @@
         <a class="method-permalink" href="#geosearch%28key%3AString%2C%2A%2Cfromlonlatlonlat%3ATuple%28String%2CString%29%2Cbyradiusradius%3ARedis%3A%3AGeo%3A%3ARadius%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Search the geospatial index stored in <code>key</code> and return the members within <code>radius</code> from <code>lonlat</code>. If <code>count</code> is specified, at most that many entries will be returned. You can specify <code>sort</code> as <code>:asc</code> or <code>:desc</code> to sort them in ascending or descending order, respectively. <code>withcoord</code> also includes the coordinates as a <code>[longitude, latitude]</code> array alongside the member string. <code>withdist</code> will also return the distance between the member and <code>lonlat</code>, using the same unit of measurement specified in <code>radius</code>.</p>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;driver-locations&quot;</span>,
+  <span class="s">&quot;-81.683963&quot;</span>, <span class="s">&quot;41.509156&quot;</span>, <span class="s">&quot;driver1&quot;</span>, <span class="c"># downtown</span>
+  <span class="s">&quot;-81.601267&quot;</span>, <span class="s">&quot;41.556502&quot;</span>, <span class="s">&quot;driver2&quot;</span>, <span class="c"># bratenahl</span>
+  <span class="s">&quot;-81.687367&quot;</span>, <span class="s">&quot;41.468931&quot;</span>, <span class="s">&quot;driver3&quot;</span>  <span class="c"># the house from A Christmas Story</span>
+
+redis.geosearch <span class="s">&quot;driver-locations&quot;</span>,
+  fromlonlat: {<span class="s">&quot;-81.688997&quot;</span>, <span class="s">&quot;41.471040&quot;</span>},
+  byradius: <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Radius</span>.new(<span class="n">5</span>, <span class="n">:mi</span>), <span class="c"># 5 miles</span>
+  sort: <span class="n">:asc</span>,
+  withcoord: <span class="n">true</span>,
+  withdist: <span class="n">true</span>
+<span class="c"># =&gt; [[&quot;driver3&quot;, &quot;0.1685&quot;, [&quot;-81.6873648762703&quot;, &quot;41.468931655993906&quot;]],</span>
+<span class="c">#     [&quot;driver1&quot;, &quot;2.6471&quot;, [&quot;-81.68396383523941&quot;, &quot;41.50915514607146&quot;]]]</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L76" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L195" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1105,10 +1229,29 @@
         <a class="method-permalink" href="#geosearch%28key%3AString%2C%2A%2Cfromlonlatlonlat%3ATuple%28String%2CString%29%2Cbyboxbox%3ARedis%3A%3AGeo%3A%3ABox%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Search the geospatial index stored in <code>key</code> and return the members within the bounding <code>box</code> around <code>longlat</code>. If <code>count</code> is specified, at most that many entries will be returned. You can specify <code>sort</code> as <code>:asc</code> or <code>:desc</code> to sort them in ascending or descending order, respectively. <code>withcoord</code> also includes the coordinates as a <code>[longitude, latitude]</code> array alongside the member string. <code>withdist</code> will also return the distance between the member and <code>lonlat</code>, using the same unit of measurement specified in <code>box</code>.</p>
+<p>Bear in mind that <code>lonlat</code> is in the <em>center</em> of <code><a href="../../Redis/Geo/Box.html">Redis::Geo::Box</a></code>, so if you need something within 10 miles north/south/east/west, the box needs to have a <code>width</code> and <code>height</code> of 20 miles.</p>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;driver-locations&quot;</span>,
+  <span class="s">&quot;-81.683963&quot;</span>, <span class="s">&quot;41.509156&quot;</span>, <span class="s">&quot;driver1&quot;</span>, <span class="c"># downtown</span>
+  <span class="s">&quot;-81.601267&quot;</span>, <span class="s">&quot;41.556502&quot;</span>, <span class="s">&quot;driver2&quot;</span>, <span class="c"># bratenahl</span>
+  <span class="s">&quot;-81.687367&quot;</span>, <span class="s">&quot;41.468931&quot;</span>, <span class="s">&quot;driver3&quot;</span>  <span class="c"># the house from A Christmas Story</span>
+
+redis.geosearch <span class="s">&quot;driver-locations&quot;</span>,
+  fromlonlat: {<span class="s">&quot;-81.688997&quot;</span>, <span class="s">&quot;41.471040&quot;</span>},
+  bybox: <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">1</span>, <span class="n">5</span>, <span class="n">:mi</span>), <span class="c"># 1 mile wide by 5 miles tall</span>
+  sort: <span class="n">:asc</span>,
+  withcoord: <span class="n">true</span>,
+  withdist: <span class="n">true</span>
+<span class="c"># =&gt; [[&quot;driver3&quot;, &quot;0.1685&quot;, [&quot;-81.6873648762703&quot;, &quot;41.468931655993906&quot;]],</span>
+<span class="c">#     [&quot;driver1&quot;, &quot;2.6471&quot;, [&quot;-81.68396383523941&quot;, &quot;41.50915514607146&quot;]]]</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L103" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L241" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1121,10 +1264,27 @@
         <a class="method-permalink" href="#geosearch%28key%3AString%2C%2A%2Cfrommembermember%3AString%2Cbyradiusradius%3ARedis%3A%3AGeo%3A%3ARadius%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Search the geospatial index stored in <code>key</code> and return the members within <code>radius</code> from <code>member</code>. If <code>count</code> is specified, at most that many entries will be returned. You can specify <code>sort</code> as <code>:asc</code> or <code>:desc</code> to sort them in ascending or descending order, respectively. <code>withcoord</code> also includes the coordinates as a <code>[longitude, latitude]</code> array alongside the member string. <code>withdist</code> will also return the distance between the member and <code>lonlat</code>, using the same unit of measurement specified in <code>radius</code>.</p>
+<p>Note that the <code>member</code> you passed in will be returned with a distance of <code>&quot;0.0000&quot;</code>.</p>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;user-locations&quot;</span>,
+  <span class="s">&quot;-81.683963&quot;</span>, <span class="s">&quot;41.509156&quot;</span>, <span class="s">&quot;user1&quot;</span>, <span class="c"># downtown</span>
+  <span class="s">&quot;-81.601267&quot;</span>, <span class="s">&quot;41.556502&quot;</span>, <span class="s">&quot;user2&quot;</span>, <span class="c"># bratenahl</span>
+  <span class="s">&quot;-81.687367&quot;</span>, <span class="s">&quot;41.468931&quot;</span>, <span class="s">&quot;user3&quot;</span>  <span class="c"># the house from A Christmas Story</span>
+
+redis.geosearch <span class="s">&quot;user-locations&quot;</span>,
+  frommember: <span class="s">&quot;user1&quot;</span>,
+  byradius: <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Radius</span>.new(<span class="n">5</span>, <span class="n">:mi</span>), <span class="c"># 5 miles</span>
+  sort: <span class="n">:asc</span>,
+  withdist: <span class="n">true</span>
+<span class="c"># =&gt; [[&quot;user1&quot;, &quot;0.0000&quot;], [&quot;user3&quot;, &quot;2.7855&quot;]]</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L285" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1137,10 +1297,27 @@
         <a class="method-permalink" href="#geosearch%28key%3AString%2C%2A%2Cfrommembermember%3AString%2Cbyboxbox%3ARedis%3A%3AGeo%3A%3ABox%2Csort%3ARedis%3A%3AGeo%3A%3ASort%7CNil%3Dnil%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cwithcoord%3ABool%3Dfalse%2Cwithdist%3ABool%3Dfalse%29-instance-method">#</a>
       </div>
       
+        <div class="doc">
+          
+          <p>Search the geospatial index stored in <code>key</code> and return the members within the bounding <code>box</code> around <code>member</code>. If <code>count</code> is specified, at most that many entries will be returned. You can specify <code>sort</code> as <code>:asc</code> or <code>:desc</code> to sort them in ascending or descending order, respectively. <code>withcoord</code> also includes the coordinates as a <code>[longitude, latitude]</code> array alongside the member string. <code>withdist</code> will also return the distance between the member and <code>lonlat</code>, using the same unit of measurement specified in <code>radius</code>.</p>
+<p>Note that the <code>member</code> you passed in will be returned, and if you pass <code>withdist: true</code>, will have a distance of <code>&quot;0.0000&quot;</code>.</p>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;user-locations&quot;</span>,
+  <span class="s">&quot;-81.683963&quot;</span>, <span class="s">&quot;41.509156&quot;</span>, <span class="s">&quot;user1&quot;</span>, <span class="c"># downtown</span>
+  <span class="s">&quot;-81.601267&quot;</span>, <span class="s">&quot;41.556502&quot;</span>, <span class="s">&quot;user2&quot;</span>, <span class="c"># bratenahl</span>
+  <span class="s">&quot;-81.687367&quot;</span>, <span class="s">&quot;41.468931&quot;</span>, <span class="s">&quot;user3&quot;</span>  <span class="c"># the house from A Christmas Story</span>
+
+redis.geosearch <span class="s">&quot;user-locations&quot;</span>,
+  frommember: <span class="s">&quot;user1&quot;</span>,
+  bybox: <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">1</span>, <span class="n">5</span>, <span class="n">:mi</span>), <span class="c"># 1 mile wide by 5 miles tall</span>
+  sort: <span class="n">:asc</span>,
+  withdist: <span class="n">true</span>
+<span class="c"># =&gt; [[&quot;user1&quot;, &quot;0.0000&quot;], [&quot;user3&quot;, &quot;2.7855&quot;]]</span></code></pre>
+        </div>
+      
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L157" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L329" target="_blank">View source</a>]
         
       </div>
     </div>

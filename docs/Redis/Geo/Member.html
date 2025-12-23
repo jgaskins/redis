@@ -888,6 +888,25 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Object that makes adding entries to a geospatial index more expressive than
+using variadic positional arguments.</p>
+<pre><code class="language-crystal">redis.geoadd <span class="s">&quot;drivers&quot;</span>, [
+  <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Member</span>.new(
+    longitude: longitude,
+    latitude: latitude,
+    member: driver.id,
+  ),
+]</code></pre>
+
 
 
 
@@ -913,7 +932,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L25" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L51" target="_blank">
         commands/geo.cr
       </a>
     
@@ -1051,7 +1070,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1083,7 +1102,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1099,7 +1118,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L25" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>

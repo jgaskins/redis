@@ -888,6 +888,20 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Represent a bounding box for a <code>geosearch</code> command.</p>
+<pre><code class="language-crystal">redis.geosearch <span class="s">&quot;drivers&quot;</span>,
+  fromlonlat: {longitude, latitude},
+  bybox: <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Box</span>.new(<span class="n">10</span>, <span class="n">5</span>, <span class="n">:mi</span>) <span class="c"># 10 miles wide by 5 miles heigh</span></code></pre>
+
 
 
 
@@ -913,7 +927,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L14" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L28" target="_blank">
         commands/geo.cr
       </a>
     
@@ -1056,7 +1070,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1072,7 +1086,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L29" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1104,7 +1118,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1120,7 +1134,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L14" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L28" target="_blank">View source</a>]
         
       </div>
     </div>

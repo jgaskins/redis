@@ -888,6 +888,20 @@
 
 
 
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>Represent a radius for a <code>geosearch</code> command.</p>
+<pre><code class="language-crystal">redis.geosearch <span class="s">&quot;drivers&quot;</span>,
+  fromlonlat: {longitude, latitude},
+  byradius: <span class="t">Redis</span><span class="t">::</span><span class="t">Geo</span><span class="t">::</span><span class="t">Radius</span>.new(<span class="n">5</span>, <span class="n">:mi</span>)</code></pre>
+
 
 
 
@@ -913,7 +927,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L3" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L10" target="_blank">
         commands/geo.cr
       </a>
     
@@ -941,7 +955,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#new%28magnitude%3AInt%2Cunit%3AUnit%29-class-method" class="signature"><strong>.new</strong>(magnitude : Int, unit : Unit)</a>
+        <a href="#new%28magnitude%3ANumber%2Cunit%3AUnit%29-class-method" class="signature"><strong>.new</strong>(magnitude : Number, unit : Unit)</a>
         
       </li>
     
@@ -1051,23 +1065,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="new(magnitude:Int,unit:Unit)-class-method">
+    <div class="entry-detail" id="new(magnitude:Number,unit:Unit)-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(magnitude : Int, unit : <a href="../../Redis/Geo/Unit.html">Unit</a>)
+        def self.<strong>new</strong>(magnitude : Number, unit : <a href="../../Redis/Geo/Unit.html">Unit</a>)
 
-        <a class="method-permalink" href="#new%28magnitude%3AInt%2Cunit%3AUnit%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28magnitude%3ANumber%2Cunit%3AUnit%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L4" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1099,7 +1113,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1115,7 +1129,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L3" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/geo.cr#L10" target="_blank">View source</a>]
         
       </div>
     </div>
