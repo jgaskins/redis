@@ -48,6 +48,7 @@ module Redis::Commands::Immediate
       unlink:      Int64,
       ttl:         Int64,
       pttl:        Int64,
+      dump:        String?,
       script_load: String,
 
       # String commands

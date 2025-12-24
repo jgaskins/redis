@@ -447,6 +447,10 @@ module Redis
         .to_h
     end
 
+    def dump(key : String)
+      run({"dump", key})
+    end
+
     def wait(numreplicas replica_count : Int | String, timeout : Time::Span)
       wait replica_count, timeout.total_milliseconds.ceil.to_i
     end
