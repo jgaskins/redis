@@ -176,6 +176,11 @@ module Redis
   end
 
   module Commands
+    # Return a `BloomFilter`, allowing you to run commands for Bloom Filters.
+    #
+    # ```
+    # redis.bf.add "my-bloom-filter", "value"
+    # ```
     def bf
       BloomFilter.new(self)
     end
