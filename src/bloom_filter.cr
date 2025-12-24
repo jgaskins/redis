@@ -122,6 +122,21 @@ module Redis
       run({"bf.exists", key, item})
     end
 
+    # Returns an array corresponding to each member of `items` containing `1` if
+    # the item was added or `0` if it was not.
+    #
+    # ```
+    # redis.bf.madd key, %w[one two]
+    # redis.bf.mexists(key, %w[one two three]) # => [1, 1, 0]
+    # ```
+    def mexists(key : String, items : Enumerable(String))
+      command = Array(String).new(initial_capacity: 2 + items.size)
+      command << "bf.mexists" << key
+      command.concat items
+
+      run command
+    end
+
     # Returns the number of items added to the Bloom Filter that have been
     # detected as unique.
     #

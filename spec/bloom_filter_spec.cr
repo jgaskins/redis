@@ -36,6 +36,12 @@ describe Redis::BloomFilter do
     redis.bf.exists(key, "doesn't exist").should eq 0
   end
 
+  test "checks whether many items exist in a bloom filter" do
+    redis.bf.insert key, error: 0.01, capacity: 10, items: %w[one two]
+
+    redis.bf.mexists(key, %w[one two three]).should eq [1, 1, 0]
+  end
+
   test "gets the cardinality of a bloom filter" do
     redis.bf.insert key, error: 0.01, capacity: 10, items: %w[
       one
