@@ -170,6 +170,18 @@ module Redis
       run({"incrbyfloat", key, amount.to_s})
     end
 
+    # Return the number of bytes in the string stored in `key`, returns `0` if
+    # the key does not exist.
+    #
+    # ```
+    # redis.set "foo", "bar"
+    # redis.strlen("foo")        # => 3
+    # redis.strlen(UUID.v4.to_s) # => 0
+    # ```
+    def strlen(key : String)
+      run({"strlen", key})
+    end
+
     # Delete all specified keys and return the number of keys deleted.
     #
     # ```
