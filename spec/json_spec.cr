@@ -97,8 +97,8 @@ describe Redis::JSON do
     end
   end
 
-  it "gets many values and deserializes them as the given type" do
-    included = UUID.v7.to_s
+  test "gets many values and deserializes them as the given type" do
+    included = key
     empty = UUID.v7.to_s
 
     redis.json.set included, ".", {
