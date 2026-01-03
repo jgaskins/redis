@@ -434,6 +434,20 @@ module Redis
         T.from_json(result.as(String))
       end
     end
+
+    # Trim the array stored at `path` in `key` down to the indexes `start..stop` (inclusive), equivalent to `redis.json.set(key, path, redis.json.get(key, path, as: Array)[start..stop])`.
+    #
+    # ```
+    # redis.json.set "post:123", ".author_ids", [1, 2, 3]
+    #
+    # redis.json.arrtrim("post:123", ".author_ids", start: 1, stop: 1)
+    #
+    # redis.json.get("post:123", ".author_ids", as: Array(Int64))
+    # # => [2]
+    # ```
+    def arrtrim(key : String, path : String, start : Int | String, stop : Int | String)
+      @redis.run({"json.arrtrim", key, path, start.to_s, stop.to_s})
+    end
   end
 
   module Commands

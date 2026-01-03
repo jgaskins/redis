@@ -289,4 +289,12 @@ describe Redis::JSON do
     redis.json.arrpop(key, ".values", as: Int64).should eq 2
     redis.json.arrlen(key, ".values").should eq 1
   end
+
+  test "trims an array" do
+    redis.json.set key, ".", {values: Array.new(10, &.itself)}
+
+    redis.json.arrtrim(key, ".values", start: 0, stop: 4).should eq 5
+
+    redis.json.get(key, ".values", as: Array(Int64)).should eq [0, 1, 2, 3, 4]
+  end
 end
