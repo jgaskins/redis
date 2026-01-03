@@ -181,6 +181,14 @@ describe Redis::JSON do
     redis.json.numincrby(key, "$.products..quantity", 1, as: Array(Int32)).should eq [3, 4, 5]
   end
 
+  test "multiplies numbers" do
+    redis.json.set key, ".", {value: 23}
+
+    redis.json.nummultby(key, ".value", 3).should eq "69"
+
+    redis.json.get(key, ".value", as: Int64).should eq 69
+  end
+
   test "clears JSON values" do
     redis.json.set key, ".", {values: [1], count: 1234}
 

@@ -261,6 +261,18 @@ module Redis
       T.from_json(numincrby(key, path, count).as(String))
     end
 
+    # Multiply the number at the given `path` in `key` by `factor`.
+    #
+    # ```
+    # redis.json.set key, ".", {value: 23}
+    # redis.json.nummultby key, ".value", 3
+    #
+    # redis.json.get key, ".value", as: Int64 # => 69
+    # ```
+    def nummultby(key : String, path : String, factor : String | Int)
+      @redis.run({"json.nummultby", key, path, factor.to_s})
+    end
+
     def toggle(key : String, path : String)
       @redis.run({"json.toggle", key, path})
     end
