@@ -69,6 +69,32 @@ module Redis
       @redis.run command
     end
 
+    # Set multiple JSON values, using multiple paths and even multiple keys.
+    # This is the equivalent of running multiple `JSON.SET` commands in a single
+    # atomic command.
+    #
+    # ```
+    # redis.json.mset([
+    #   {"post:#{post_id}", ".", post},
+    #   {"user:#{post.author_id}", ".last_posted_at", now},
+    # ])
+    # ```
+    def mset(entries : Enumerable({String, String, T})) forall T
+      command = Array(String).new(initial_capacity: 1 + entries.size * 3)
+      command << "json.mset"
+      entries.each do |key, path, value|
+        command << key << path
+        case value
+        when String
+          command << value
+        else
+          command << value.to_json
+        end
+      end
+
+      @redis.run command
+    end
+
     # Get the raw JSON string at the specified `key`
     def get(key : String)
       @redis.run({"json.get", key})

@@ -75,6 +75,20 @@ describe Redis::JSON do
     redis.json.get(key, ".customer.name").should eq "Jamie".to_json
   end
 
+  test "sets many values atomically via JSONPath" do
+    # We can't operate atomically on subpaths unless the object already exists,
+    # so we go ahead and create the root object.
+    redis.json.set key, ".", {zero: 0}
+
+    redis.json.mset [
+      # Overwrites the value set above because we're setting it at the root.
+      {key, ".", {one: 1}},
+      {key, ".two", 2},
+    ]
+
+    redis.json.get(key, ".").should eq({one: 1, two: 2}.to_json)
+  end
+
   test "gets values and deserializes them as a given class" do
     redis.json.set key, ".", {
       customer: {
