@@ -277,6 +277,38 @@ module Redis
       @redis.run({"json.toggle", key, path})
     end
 
+    # Merge the JSON-serializable `value` into the object stored at `path` in
+    # `key`.
+    #
+    # ```
+    # redis.json.set key, ".", {one: 1}
+
+    # redis.json.merge key, ".", {two: 2}
+    # redis.json.merge key, ".three", 3
+
+    # redis.json.get(key, as: NamedTuple(one: String, two: String, three: String))
+    # # => {one: 1, two: 2, three: 3}
+    # ```
+    def merge(key : String, path : String, value)
+      merge key, path, value.to_json
+    end
+
+    # Merge the object in the `value` string containing a JSON-serialized object
+    # into the object stored at `path` in `key`.
+    #
+    # ```
+    # redis.json.set key, ".", {one: 1}
+
+    # redis.json.merge key, ".", {two: 2}.to_json
+    # redis.json.merge key, ".three", "3"
+
+    # redis.json.get(key, as: NamedTuple(one: String, two: String, three: String))
+    # # => {one: 1, two: 2, three: 3}
+    # ```
+    def merge(key : String, path : String, value : String)
+      @redis.run({"json.merge", key, path, value})
+    end
+
     # Append `value` as JSON to the array located at the JSONPath in `key`
     #
     # ```

@@ -216,6 +216,15 @@ describe Redis::JSON do
     json.get(key).should eq({bool: true}.to_json)
   end
 
+  test "merges an object into a key" do
+    redis.json.set key, ".", {one: 1}
+
+    redis.json.merge key, ".", {two: 2}
+    redis.json.merge key, ".three", 3
+
+    redis.json.get(key).should eq({one: 1, two: 2, three: 3}.to_json)
+  end
+
   test "appends a value to an array" do
     redis.json.set key, ".", {values: [1]}
 
