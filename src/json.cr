@@ -191,6 +191,32 @@ module Redis
       end
     end
 
+    # Returns the keys for the JSON object stored in `key` at `path`. The return value depends on whether `path` is `$`-based or `.`-based. `$`-based paths will return an array of arrays of strings while `.`-based paths will return an array of strings, however the compile-time return type of this method is `Redis::Value`, so you'll need to downcast manually.
+    #
+    # ```
+    # redis.json.set "user:123", ".", {id: 123, name: "Jamie", created_at: Time.utc.to_unix_ms}
+    #
+    # redis.json.objkeys("user:123", ".") # => ["id", "name", "created_at"]
+    # redis.json.objkeys("user:123", "$") # => [["id", "name", "created_at"]]
+    # ```
+    def objkeys(key : String, path : String)
+      @redis.run({"json.objkeys", key, path})
+    end
+
+    # Returns the number of keys for the JSON object stored in `key` at `path`, with `path` defaulting to the root object. The return value depends on whether `path` is `$`-based or `.`-based. `$`-based paths will return an array of `Int64?` (paths that don't result in an object return `nil`) while `.`-based paths will return an `Int64?`, however the compile-time return type of this method is `Redis::Value` because the path is not inferred at compile-time, so you'll need to downcast manually.
+    #
+    # ```
+    # redis.json.set "user:123", ".", {id: 123, name: "Jamie", created_at: Time.utc.to_unix_ms}
+    #
+    # redis.json.objlen("user:123", ".") # => 3
+    # redis.json.objlen("user:123", "$") # => [3]
+    # ```
+    def objlen(key : String, path : String? = nil)
+      command = {"json.objlen", key}
+      command += {path.to_s} if path
+      @redis.run command
+    end
+
     def clear(key : String, path : String? = nil)
       command = {"json.clear", key}
       command += {path} if path

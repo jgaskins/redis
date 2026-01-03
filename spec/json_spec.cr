@@ -132,6 +132,36 @@ describe Redis::JSON do
     results.should be_a Array(Order?)
   end
 
+  test "gets the keys of an object" do
+    redis.json.set key, ".", {one: 1, two: 2, three: 3}
+
+    redis.json.objkeys(key, ".").should eq %w[one two three]
+    redis.json.objkeys(key, "$").should eq [%w[one two three]]
+  end
+
+  test "gets the size of an object" do
+    redis.json.set key, ".", {
+      id:     UUID.v7,
+      title:  "This is a new blog post",
+      author: {
+        name:      "Jamie",
+        image_url: "https://example.com/avatar.png",
+      },
+      published_at: Time.utc,
+    }
+
+    # Path defaults to `"."`
+    redis.json.objlen(key).should eq 4
+    # Explicit path
+    redis.json.objlen(key, ".").should eq 4
+    # Non-root path
+    redis.json.objlen(key, ".author").should eq 2
+    # Explicit $-based path
+    redis.json.objlen(key, "$").should eq [4]
+    # Non-root $-based path
+    redis.json.objlen(key, "$.author").should eq [2]
+  end
+
   test "increments numbers" do
     redis.json.set key, ".", {
       customer: {
