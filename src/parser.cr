@@ -1,3 +1,5 @@
+require "big/big_int"
+
 require "./value"
 require "./errors"
 
@@ -33,12 +35,32 @@ module Redis
       case byte_marker = @io.read_byte
       when ':'
         parse_int.tap { @io.skip 2 }
+      when '('
+        BigInt.new(@io.read_line)
       when '*'
         length = parse_int
         @io.skip 2
         if length >= 0
           Array(Value).new(length) { read }
         end
+      when '%'
+        size = parse_int
+        @io.skip 2
+        hash = Hash(Value, Value).new(initial_capacity: size)
+        size.times { hash[read] = read }
+        hash
+      when '~'
+        size = parse_int
+        @io.skip 2
+        set = Set(Value).new(size)
+        size.times { set << read }
+        set
+      when '|'
+        size = parse_int
+        @io.skip 2
+        hash = Hash(Value, Value).new(initial_capacity: size)
+        size.times { hash[read] = read }
+        Attributes.new hash
       when '$'
         length = parse_int
         @io.skip 2
@@ -47,6 +69,13 @@ module Redis
           @io.skip 2 # Skip CRLF
           value
         end
+      when '='
+        length = parse_int
+        @io.skip 2
+        @io.skip 4
+        value = @io.read_string length - 4
+        @io.skip 2
+        value
       when '+'
         # Most of the time, RESP simple strings are just "OK", so we can
         # optimize for that case to avoid heap allocations. If it is *not* the
@@ -66,6 +95,21 @@ module Redis
             str << @io.read_line
           end.chomp
         end
+      when '_'
+        @io.skip 2
+        nil
+      when ','
+        @io.read_line.to_f
+      when '#'
+        value = @io.read_char == 't'
+        @io.skip 2
+        value
+      when '!'
+        length = parse_int
+        @io.skip 2
+        type = @io.read_line(' ', chomp: true)
+        message = @io.read_line
+        ERROR_MAP[type].new("#{type} #{message}")
       when '-'
         type, message = @io.read_line.split(' ', 2)
         ERROR_MAP[type].new("#{type} #{message}")
