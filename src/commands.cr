@@ -6,6 +6,7 @@ require "./commands/sorted_set"
 require "./commands/stream"
 require "./commands/geo"
 require "./commands/hyperloglog"
+require "./commands/vector"
 
 module Redis
   # All Redis commands are defined in this module. Any paradigm that needs to
@@ -21,6 +22,7 @@ module Redis
     include Commands::Stream
     include Commands::Geo
     include Commands::HyperLogLog
+    include Commands::Vector
 
     # Execute the given command and return the result from the server. Commands
     # must be an `Enumerable` and its `size` method must be re-entrant.

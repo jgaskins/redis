@@ -23,16 +23,18 @@ module Redis::Commands::Immediate
   # :nodoc:
   macro override_return_types(methods)
     {% for method, return_type in methods %}
-      {% for methods in [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream, Commands::Geo].map(&.methods.select { |m| m.name == method }).reject(&.nil?) %}
+      {% for methods in [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream, Commands::Geo, Commands::HyperLogLog, Commands::Vector].map(&.methods.select { |m| m.name == method }).reject(&.nil?) %}
         {% for m in methods %}
-          # :nodoc:
-          def {{method.id}}(
-            {% for arg, index in m.args %}
-              {% if m.splat_index == index %}*{% end %}{{arg}},
-            {% end %}
-          ) : {{return_type}}
-            super{{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
-          end
+          {% unless m.return_type %}
+            # :nodoc:
+            def {{method.id}}(
+              {% for arg, index in m.args %}
+                {% if m.splat_index == index %}*{% end %}{{arg}},
+              {% end %}
+            ) : {{return_type}} {% unless m.free_vars.empty? %}forall {{m.free_vars.splat}}{% end %}
+              super{{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
+            end
+          {% end %}
         {% end %}
       {% end %}
     {% end %}
@@ -190,6 +192,13 @@ module Redis::Commands::Immediate
       geopos:    Array,
       geodist:   String,
       geosearch: Array,
+
+      # Vector
+      vadd:     Int64,
+      vdim:     Int64,
+      vemb:     Array,
+      vsim:     Array,
+      vgetattr: String,
     })
   end
 
