@@ -152,11 +152,13 @@ module Redis
     end
 
     private def checkout(&)
-      @pool.checkout do |connection|
-        yield connection
-      rescue ex : IO::Error
-        connection.close
-        raise ex
+      @pool.retry do
+        @pool.checkout do |connection|
+          yield connection
+        rescue ex : IO::Error
+          connection.close
+          raise ex
+        end
       end
     end
   end

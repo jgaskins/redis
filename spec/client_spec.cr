@@ -89,5 +89,16 @@ module Redis
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_interval.should eq(30)
       end
     end
+
+    it "retries on failure" do
+      redis = Client.new
+      key = UUID.v7.to_s
+
+      redis.get(key).should eq nil
+
+      redis.@pool.checkout { |c| c.@socket.close } # THE INTERNET BROKE
+
+      redis.get(key).should eq nil
+    end
   end
 end
