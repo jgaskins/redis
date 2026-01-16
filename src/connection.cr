@@ -1,5 +1,6 @@
 require "socket"
 require "openssl"
+require "db/error"
 
 require "./commands"
 require "./commands/immediate"
@@ -227,26 +228,12 @@ module Redis
     def run(command, retries = 5) : Value
       start = Time.monotonic
 
-      loop do
+      begin
         @writer.encode command
         flush
         return read
-      rescue ex : IO::Error
-        if retries > 0
-          retries -= 1
-          initialize @uri
-        else
-          raise ex
-        end
-      rescue ex : Redis::ReadOnly
-        @socket.close
-        if retries > 0
-          retries -= 1
-          initialize @uri
-        else
-          close
-          raise ex
-        end
+      rescue ex : IO::Error | ReadOnly
+        raise DB::PoolResourceLost.new(self, cause: ex)
       ensure
         @log.debug &.emit "redis",
           command: command.join(' '),
