@@ -72,8 +72,8 @@ module Redis
     # redis.get("foo") # => nil
     #
     # # Does not overwrite when `nx` is truthy
-    # redis.set "foo", "value", nx: true       # => "OK"
-    # redis.set "foo", "other-value", nx: true # => nil
+    # redis.set "foo", "1", nx: true # => "OK"
+    # redis.set "foo", "2", nx: true # => nil
     #
     # # Does not create a key when `xx` is truthy
     # redis.del "update-only"
@@ -86,7 +86,17 @@ module Redis
     # ```
     #
     # NOTE: `nx` and `xx` are mutually exclusive, as are `ex` and `px`. They exist in the same method signature only to avoid an explosion of `set` implementations.
-    def set(key : String, value : String | Bytes, *, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false, get = false)
+    def set(
+      key : String,
+      value : String | Bytes,
+      *,
+      ex : (String | Int)? = nil,
+      px : String | Int | Nil = nil,
+      nx = false,
+      xx = false,
+      keepttl = false,
+      get = false,
+    )
       command = {"set", key, value}
       command += {"nx"} if nx
       command += {"xx"} if xx
