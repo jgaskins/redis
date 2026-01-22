@@ -5,6 +5,16 @@ require "../src/connection"
 
 module Redis
   describe Connection do
+    it "reconnects after being disconnected" do
+      redis = Connection.new
+
+      redis.get "foo"
+
+      redis.@socket.close # THE INTERNET BROKE!
+
+      redis.get "foo"
+    end
+
     it "retries transactions" do
       redis = Connection.new
       key = UUID.random.to_s

@@ -228,12 +228,26 @@ module Redis
     def run(command, retries = 5) : Value
       start = Time.monotonic
 
-      begin
+      loop do
         @writer.encode command
         flush
         return read
-      rescue ex : IO::Error | ReadOnly
-        raise DB::PoolResourceLost.new(self, cause: ex)
+      rescue ex : IO::Error
+        if retries > 0
+          retries -= 1
+          initialize @uri
+        else
+          raise DB::PoolResourceLost.new(self, cause: ex)
+        end
+      rescue ex : Redis::ReadOnly
+        @socket.close
+        if retries > 0
+          retries -= 1
+          initialize @uri
+        else
+          close
+          raise DB::PoolResourceLost.new(self, cause: ex)
+        end
       ensure
         @log.debug &.emit "redis",
           command: command.join(' '),
