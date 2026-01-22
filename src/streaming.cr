@@ -88,6 +88,68 @@ module Redis
       end
     end
 
+    struct XReadResponse
+      struct Event
+        include Enumerable({String, String})
+        getter id : String
+        getter fields : Hash(String, String)
+
+        def initialize(array : Array(Redis::Value))
+          id, fields = array
+          @id = id.as(String)
+          fields = fields.as(Array)
+          @fields = Hash(String, String).new(initial_capacity: fields.size // 2)
+          fields.each_slice(2, reuse: true) do |(key, value)|
+            @fields[key.as(String)] = value.as(String)
+          end
+        end
+
+        delegate each, to: @fields
+
+        def [](field : String) : String
+          @fields[field]
+        end
+
+        def []?(field : String) : String?
+          @fields[field]?
+        end
+
+        def dig(field : String)
+          self[field]?
+        end
+      end
+
+      include Enumerable({String, Array(Event)})
+      @results : Hash(String, Array(Event))
+
+      def initialize(response : Array(Redis::Value))
+        @results = Hash(String, Array(Event)).new(initial_capacity: response.size)
+        response.each do |stream_list_item|
+          stream_key, events = stream_list_item.as(Array)
+          stream_key = stream_key.as(String)
+          events = events.as(Array)
+
+          @results[stream_key] = events.map do |event_array|
+            Event.new(event_array.as(Array))
+          end
+        end
+      end
+
+      delegate each, to: @results
+
+      def [](stream_name : String) : Array(Event)
+        @results[stream_name]
+      end
+
+      def []?(stream_name : String) : Array(Event)?
+        @results[stream_name]?
+      end
+
+      def dig(stream_name : String, *rest)
+        @results.dig stream_name, *rest
+      end
+    end
+
     # Transform the `XREADGROUP` result into a more friendly object.
     struct XReadGroupResponse
       getter results

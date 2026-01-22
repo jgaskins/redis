@@ -185,6 +185,7 @@ module Redis::Commands::Immediate
       xlen:       Int64,
       xpending:   Array,
       xrange:     Array,
+      xread:      Array(Value)?,
       xreadgroup: Array(Value)?,
       xrevrange:  Array,
       xtrim:      Int64,
