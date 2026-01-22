@@ -3,6 +3,8 @@ require "./value"
 module Redis
   module Streaming
     struct Message
+      include Enumerable({String, String})
+
       getter id : String
       getter values : Hash(String, String)
 
@@ -17,6 +19,20 @@ module Redis
       end
 
       def initialize(@id, @values)
+      end
+
+      delegate each, to: @values
+
+      def [](field : String) : String
+        @values[field]
+      end
+
+      def []?(field : String) : String?
+        @values[field]?
+      end
+
+      def dig(field : String)
+        self[field]?
       end
     end
 
@@ -88,65 +104,50 @@ module Redis
       end
     end
 
+    # The `XReadResponse` is a convenience object that you can pass the result
+    # of a `Commands#xread` call to. Traversing nested `Array(Redis::Value)`
+    # structures isn't a great experience, so we provide these objects to make
+    # it easier to work with.
+    #
+    # ```
+    # if response = redis.xread(streams: {my_stream: "0"})
+    #   Redis::Streaming::XReadResponse.new(response).each do |stream, messages|
+    #     messages.each do |msg|
+    #       # ...
+    #     end
+    #   end
+    # end
+    # ```
     struct XReadResponse
-      struct Event
-        include Enumerable({String, String})
-        getter id : String
-        getter fields : Hash(String, String)
+      include Enumerable({String, Array(Message)})
 
-        def initialize(array : Array(Redis::Value))
-          id, fields = array
-          @id = id.as(String)
-          fields = fields.as(Array)
-          @fields = Hash(String, String).new(initial_capacity: fields.size // 2)
-          fields.each_slice(2, reuse: true) do |(key, value)|
-            @fields[key.as(String)] = value.as(String)
-          end
-        end
-
-        delegate each, to: @fields
-
-        def [](field : String) : String
-          @fields[field]
-        end
-
-        def []?(field : String) : String?
-          @fields[field]?
-        end
-
-        def dig(field : String)
-          self[field]?
-        end
-      end
-
-      include Enumerable({String, Array(Event)})
-      @results : Hash(String, Array(Event))
+      @streams : Hash(String, Array(Message))
 
       def initialize(response : Array(Redis::Value))
-        @results = Hash(String, Array(Event)).new(initial_capacity: response.size)
+        @streams = Hash(String, Array(Message)).new(initial_capacity: response.size)
         response.each do |stream_list_item|
           stream_key, events = stream_list_item.as(Array)
           stream_key = stream_key.as(String)
           events = events.as(Array)
 
-          @results[stream_key] = events.map do |event_array|
-            Event.new(event_array.as(Array))
+          @streams[stream_key] = events.map do |event_array|
+            Message.new(event_array.as(Array))
           end
         end
       end
 
-      delegate each, to: @results
+      delegate each, to: @streams
 
-      def [](stream_name : String) : Array(Event)
-        @results[stream_name]
+      def [](stream_name : String) : Array(Message)
+        @streams[stream_name]
       end
 
-      def []?(stream_name : String) : Array(Event)?
-        @results[stream_name]?
+      def []?(stream_name : String) : Array(Message)?
+        @streams[stream_name]?
       end
 
       def dig(stream_name : String, *rest)
-        @results.dig stream_name, *rest
+        @streams.dig stream_name, *rest
       end
     end
 
