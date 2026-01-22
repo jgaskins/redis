@@ -1,5 +1,6 @@
 require "socket"
 require "openssl"
+require "db/error"
 
 require "./commands"
 require "./commands/immediate"
@@ -236,7 +237,7 @@ module Redis
           retries -= 1
           initialize @uri
         else
-          raise ex
+          raise DB::PoolResourceLost.new(self, cause: ex)
         end
       rescue ex : Redis::ReadOnly
         @socket.close
@@ -245,7 +246,7 @@ module Redis
           initialize @uri
         else
           close
-          raise ex
+          raise DB::PoolResourceLost.new(self, cause: ex)
         end
       ensure
         @log.debug &.emit "redis",
