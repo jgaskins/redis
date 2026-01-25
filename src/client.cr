@@ -24,6 +24,7 @@ module Redis
     include Commands
     include Commands::Immediate
 
+    getter uri : URI
     @pool : DB::Pool(Connection)
 
     def self.from_env(env_var)
@@ -32,7 +33,7 @@ module Redis
 
     # The client holds a pool of connections that expands and contracts as
     # needed.
-    def initialize(uri : URI = URI.parse(ENV.fetch("REDIS_URL", "redis:///")), @log = Log)
+    def initialize(@uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///")), @log = Log)
       # defaults as per https://github.com/crystal-lang/crystal-db/blob/v0.11.0/src/db/pool.cr
       initial_pool_size = uri.query_params.fetch("initial_pool_size", 1).to_i
       max_pool_size = uri.query_params.fetch("max_pool_size", 0).to_i
