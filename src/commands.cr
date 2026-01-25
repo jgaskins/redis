@@ -426,7 +426,7 @@ module Redis
       run command
     end
 
-    def mset(data : Hash(String, String))
+    def mset(data : ::Hash(String, String))
       command = Array(String).new(initial_capacity: 1 + data.size)
       command << "mset"
       data.each do |key, value|
