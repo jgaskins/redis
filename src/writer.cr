@@ -2,12 +2,11 @@ module Redis
   struct Writer
     CRLF = "\r\n"
 
-    getter io
+    getter io : IO
 
-    def initialize(@io : IO)
+    def initialize(@io)
     end
 
-    # :nodoc:
     def encode(values : Enumerable(String) | Enumerable(Bytes) | Enumerable(String | Bytes))
       io << '*' << values.size << CRLF
       values.each do |part|
@@ -15,15 +14,9 @@ module Redis
       end
     end
 
-    # :nodoc:
-    def encode(string : String)
-      io << '$' << string.bytesize << CRLF
-      io << string << CRLF
-    end
-
-    def encode(bytes : Slice)
-      io << '$' << bytes.size << CRLF
-      io.write bytes
+    def encode(data : String | Bytes)
+      io << '$' << data.bytesize << CRLF
+      io.write data.to_slice
       io << CRLF
     end
   end
