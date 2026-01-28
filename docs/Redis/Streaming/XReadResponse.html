@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Cache - redis 0.15.0</title>
+  <title>Redis::Streaming::XReadResponse - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -372,12 +372,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/Graph" data-name="redis::graph">
+  <li class="parent " data-id="redis/Redis/Graph" data-name="redis::graph">
       <a href="../../Redis/Graph.html">Graph</a>
       
         <ul>
   
-  <li class=" current" data-id="redis/Redis/Graph/Cache" data-name="redis::graph::cache">
+  <li class=" " data-id="redis/Redis/Graph/Cache" data-name="redis::graph::cache">
       <a href="../../Redis/Graph/Cache.html">Cache</a>
       
     </li>
@@ -667,7 +667,7 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Streaming" data-name="redis::streaming">
+  <li class="parent open current" data-id="redis/Redis/Streaming" data-name="redis::streaming">
       <a href="../../Redis/Streaming.html">Streaming</a>
       
         <ul>
@@ -737,7 +737,7 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Streaming/XReadResponse" data-name="redis::streaming::xreadresponse">
+  <li class=" current" data-id="redis/Redis/Streaming/XReadResponse" data-name="redis::streaming::xreadresponse">
       <a href="../../Redis/Streaming/XReadResponse.html">XReadResponse</a>
       
     </li>
@@ -892,13 +892,37 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> Redis::<wbr>Graph::<wbr>Cache
+    struct
+  </span> Redis::<wbr>Streaming::<wbr>XReadResponse
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Graph/Cache.html">Redis::Graph::Cache</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Streaming/XReadResponse.html">Redis::Streaming::XReadResponse</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>
+    <a id="overview" class="anchor" href="#overview">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Overview
+  </h2>
+
+  <p>The <code><a href="../../Redis/Streaming/XReadResponse.html">XReadResponse</a></code> is a convenience object that you can pass the result
+of a <code>Commands#xread</code> call to. Traversing nested <code>Array(<a href="../../Redis/Value.html">Redis::Value</a>)</code>
+structures isn't a great experience, so we provide these objects to make
+it easier to work with.</p>
+<pre><code class="language-crystal"><span class="k">if</span> response <span class="o">=</span> redis.xread(streams: {my_stream: <span class="s">&quot;0&quot;</span>})
+  <span class="t">Redis</span><span class="t">::</span><span class="t">Streaming</span><span class="t">::</span><span class="t">XReadResponse</span>.new(response).each <span class="k">do</span> <span class="o">|</span>stream, messages<span class="o">|</span>
+    messages.each <span class="k">do</span> <span class="o">|</span>msg<span class="o">|</span>
+      <span class="c"># ...</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
 
 
 
@@ -906,8 +930,19 @@
 
 
 
-
-
+  <h2>
+    <a id="included-modules" class="anchor" href="#included-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Included Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type">Enumerable({String, Array(<a href="../../Redis/Streaming/Message.html">Redis::Streaming::Message</a>)})</li>
+    
+  </ul>
 
 
 
@@ -928,8 +963,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L4" target="_blank">
-        graph/cache.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L121" target="_blank">
+        streaming.cr
       </a>
     
     <br/>
@@ -951,7 +986,7 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#new%28redis%3ARedis%3A%3ACommands%2Ckey%3AString%29-class-method" class="signature"><strong>.new</strong>(redis : Redis::Commands, key : String)</a>
+        <a href="#new%28response%3AArray%28Redis%3A%3AValue%29%29-class-method" class="signature"><strong>.new</strong>(response : Array(Redis::Value))</a>
         
       </li>
     
@@ -974,52 +1009,27 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#clear-instance-method" class="signature"><strong>#clear</strong></a>
+        <a href="#%5B%5D%28stream_name%3AString%29%3AArray%28Message%29-instance-method" class="signature"><strong>#[]</strong>(stream_name : String) : Array(Message)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#key%3AString-instance-method" class="signature"><strong>#key</strong> : String</a>
+        <a href="#%5B%5D%3F%28stream_name%3AString%29%3AArray%28Message%29%7CNil-instance-method" class="signature"><strong>#[]?</strong>(stream_name : String) : Array(Message) | Nil</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#label%28label_id%3AInt64%29%3AString-instance-method" class="signature"><strong>#label</strong>(label_id : Int64) : String</a>
+        <a href="#dig%28stream_name%3AString%2C%2Arest%29-instance-method" class="signature"><strong>#dig</strong>(stream_name : String, *rest)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#labels-instance-method" class="signature"><strong>#labels</strong></a>
+        <a href="#each%28%2Aargs%2C%2A%2Aoptions%29-instance-method" class="signature"><strong>#each</strong>(*args, **options)</a>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#properties-instance-method" class="signature"><strong>#properties</strong></a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#property%28property_id%3AInt64%29%3AString-instance-method" class="signature"><strong>#property</strong>(property_id : Int64) : String</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#redis%3ACommands-instance-method" class="signature"><strong>#redis</strong> : Commands</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#refresh_properties%3ANil-instance-method" class="signature"><strong>#refresh_properties</strong> : Nil</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#relationship_type%28type_id%3AInt%29%3AString-instance-method" class="signature"><strong>#relationship_type</strong>(type_id : Int) : String</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#relationship_types-instance-method" class="signature"><strong>#relationship_types</strong></a>
+        <a href="#each%28%2Aargs%2C%2A%2Aoptions%2C%26%29-instance-method" class="signature"><strong>#each</strong>(*args, **options, &)</a>
         
       </li>
     
@@ -1028,6 +1038,32 @@
 
 
   <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
     
       
 
@@ -1067,18 +1103,18 @@
     Constructor Detail
   </h2>
   
-    <div class="entry-detail" id="new(redis:Redis::Commands,key:String)-class-method">
+    <div class="entry-detail" id="new(response:Array(Redis::Value))-class-method">
       <div class="signature">
         
-        def self.<strong>new</strong>(redis : <a href="../../Redis/Commands.html">Redis::Commands</a>, key : String)
+        def self.<strong>new</strong>(response : Array(<a href="../../Redis/Value.html">Redis::Value</a>))
 
-        <a class="method-permalink" href="#new%28redis%3ARedis%3A%3ACommands%2Ckey%3AString%29-class-method">#</a>
+        <a class="method-permalink" href="#new%28response%3AArray%28Redis%3A%3AValue%29%29-class-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L11" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L126" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1099,162 +1135,82 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="clear-instance-method">
+    <div class="entry-detail" id="[](stream_name:String):Array(Message)-instance-method">
       <div class="signature">
         
-        def <strong>clear</strong>
+        def <strong>[]</strong>(stream_name : String) : Array(<a href="../../Redis/Streaming/Message.html">Message</a>)
 
-        <a class="method-permalink" href="#clear-instance-method">#</a>
+        <a class="method-permalink" href="#%5B%5D%28stream_name%3AString%29%3AArray%28Message%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L141" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="key:String-instance-method">
+    <div class="entry-detail" id="[]?(stream_name:String):Array(Message)|Nil-instance-method">
       <div class="signature">
         
-        def <strong>key</strong> : String
+        def <strong>[]?</strong>(stream_name : String) : Array(<a href="../../Redis/Streaming/Message.html">Message</a>) | Nil
 
-        <a class="method-permalink" href="#key%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#%5B%5D%3F%28stream_name%3AString%29%3AArray%28Message%29%7CNil-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L145" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="label(label_id:Int64):String-instance-method">
+    <div class="entry-detail" id="dig(stream_name:String,*rest)-instance-method">
       <div class="signature">
         
-        def <strong>label</strong>(label_id : Int64) : String
+        def <strong>dig</strong>(stream_name : String, *rest)
 
-        <a class="method-permalink" href="#label%28label_id%3AInt64%29%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#dig%28stream_name%3AString%2C%2Arest%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L149" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="labels-instance-method">
+    <div class="entry-detail" id="each(*args,**options)-instance-method">
       <div class="signature">
         
-        def <strong>labels</strong>
+        def <strong>each</strong>(*args, **options)
 
-        <a class="method-permalink" href="#labels-instance-method">#</a>
+        <a class="method-permalink" href="#each%28%2Aargs%2C%2A%2Aoptions%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="properties-instance-method">
+    <div class="entry-detail" id="each(*args,**options,&amp;)-instance-method">
       <div class="signature">
         
-        def <strong>properties</strong>
+        def <strong>each</strong>(*args, **options, &)
 
-        <a class="method-permalink" href="#properties-instance-method">#</a>
+        <a class="method-permalink" href="#each%28%2Aargs%2C%2A%2Aoptions%2C%26%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L59" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="property(property_id:Int64):String-instance-method">
-      <div class="signature">
-        
-        def <strong>property</strong>(property_id : Int64) : String
-
-        <a class="method-permalink" href="#property%28property_id%3AInt64%29%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L67" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="redis:Commands-instance-method">
-      <div class="signature">
-        
-        def <strong>redis</strong> : <a href="../../Redis/Commands.html">Commands</a>
-
-        <a class="method-permalink" href="#redis%3ACommands-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L5" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="refresh_properties:Nil-instance-method">
-      <div class="signature">
-        
-        def <strong>refresh_properties</strong> : Nil
-
-        <a class="method-permalink" href="#refresh_properties%3ANil-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L83" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="relationship_type(type_id:Int):String-instance-method">
-      <div class="signature">
-        
-        def <strong>relationship_type</strong>(type_id : Int) : String
-
-        <a class="method-permalink" href="#relationship_type%28type_id%3AInt%29%3AString-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L41" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="relationship_types-instance-method">
-      <div class="signature">
-        
-        def <strong>relationship_types</strong>
-
-        <a class="method-permalink" href="#relationship_types-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L51" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>

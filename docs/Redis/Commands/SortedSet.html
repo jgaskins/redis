@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.14.1">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="0.15.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::SortedSet - redis 0.14.1</title>
+  <title>Redis::Commands::SortedSet - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.14.1
+        0.15.0
       </span>
     </div>
   </div>
@@ -61,6 +61,11 @@
       <a href="../../Redis.html">Redis</a>
       
         <ul>
+  
+  <li class=" " data-id="redis/Redis/BloomFilter" data-name="redis::bloomfilter">
+      <a href="../../Redis/BloomFilter.html">BloomFilter</a>
+      
+    </li>
   
   <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
       <a href="../../Redis/BusyGroup.html">BusyGroup</a>
@@ -199,6 +204,11 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Vector" data-name="redis::commands::vector">
+      <a href="../../Redis/Commands/Vector.html">Vector</a>
       
     </li>
   
@@ -727,6 +737,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/Streaming/XReadResponse" data-name="redis::streaming::xreadresponse">
+      <a href="../../Redis/Streaming/XReadResponse.html">XReadResponse</a>
+      
+    </li>
+  
 </ul>
 
       
@@ -925,7 +940,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L1" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L1" target="_blank">
         commands/sorted_set.cr
       </a>
     
@@ -984,7 +999,7 @@
       </li>
     
       <li class="entry-summary">
-        <a href="#zrangebyscore%28key%3AString%2Cmin%3AString%7CInt64%2Cmax%3AString%7CInt64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#zrangebyscore</strong>(key : String, min : String | Int64, max : String | Int64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</a>
+        <a href="#zrangebyscore%28key%3AString%2Cmin%3AString%7CFloat64%2Cmax%3AString%7CFloat64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#zrangebyscore</strong>(key : String, min : String | Float64, max : String | Float64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</a>
         
       </li>
     
@@ -1083,7 +1098,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L136" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L136" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1099,7 +1114,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L179" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L179" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1115,7 +1130,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L159" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L159" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1131,7 +1146,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L2" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1147,7 +1162,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L224" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L224" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1163,23 +1178,23 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L15" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="zrangebyscore(key:String,min:String|Int64,max:String|Int64,with_scores=false,limit:Enumerable(String)|Nil=nil)-instance-method">
+    <div class="entry-detail" id="zrangebyscore(key:String,min:String|Float64,max:String|Float64,with_scores=false,limit:Enumerable(String)|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>zrangebyscore</strong>(key : String, min : String | Int64, max : String | Int64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)
+        def <strong>zrangebyscore</strong>(key : String, min : String | Float64, max : String | Float64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#zrangebyscore%28key%3AString%2Cmin%3AString%7CInt64%2Cmax%3AString%7CInt64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#zrangebyscore%28key%3AString%2Cmin%3AString%7CFloat64%2Cmax%3AString%7CFloat64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method">#</a>
       </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1195,7 +1210,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L208" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L208" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1211,7 +1226,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L216" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L216" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1227,7 +1242,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L212" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L212" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1243,7 +1258,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L85" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1259,7 +1274,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L65" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L65" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1275,7 +1290,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L132" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L132" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1291,7 +1306,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L116" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L116" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1307,7 +1322,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L112" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L112" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1323,7 +1338,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L96" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L96" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1339,7 +1354,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L6" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1355,7 +1370,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L232" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L232" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1371,7 +1386,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/commands/sorted_set.cr#L228" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/sorted_set.cr#L228" target="_blank">View source</a>]
         
       </div>
     </div>

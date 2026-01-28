@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.14.1">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="0.15.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::JSON(Runnable) - redis 0.14.1</title>
+  <title>Redis::JSON(Runnable) - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.14.1
+        0.15.0
       </span>
     </div>
   </div>
@@ -61,6 +61,11 @@
       <a href="../Redis.html">Redis</a>
       
         <ul>
+  
+  <li class=" " data-id="redis/Redis/BloomFilter" data-name="redis::bloomfilter">
+      <a href="../Redis/BloomFilter.html">BloomFilter</a>
+      
+    </li>
   
   <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
       <a href="../Redis/BusyGroup.html">BusyGroup</a>
@@ -199,6 +204,11 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Vector" data-name="redis::commands::vector">
+      <a href="../Redis/Commands/Vector.html">Vector</a>
       
     </li>
   
@@ -727,6 +737,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/Streaming/XReadResponse" data-name="redis::streaming::xreadresponse">
+      <a href="../Redis/Streaming/XReadResponse.html">XReadResponse</a>
+      
+    </li>
+  
 </ul>
 
       
@@ -950,7 +965,7 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L36" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L36" target="_blank">
         json.cr
       </a>
     
@@ -1059,6 +1074,13 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       </li>
     
       <li class="entry-summary">
+        <a href="#arrtrim%28key%3AString%2Cpath%3AString%2Cstart%3AInt%7CString%2Cstop%3AInt%7CString%29-instance-method" class="signature"><strong>#arrtrim</strong>(key : String, path : String, start : Int | String, stop : Int | String)</a>
+        
+          <div class="summary"><p>Trim the array stored at <code>path</code> in <code>key</code> down to the indexes <code>start..stop</code> (inclusive), equivalent to <code>redis.json.set(key, path, redis.json.get(key, path, as: Array)[start..stop])</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#clear%28key%3AString%2Cpath%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#clear</strong>(key : String, path : String | Nil = <span class="n">nil</span>)</a>
         
       </li>
@@ -1097,9 +1119,30 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       </li>
     
       <li class="entry-summary">
+        <a href="#merge%28key%3AString%2Cpath%3AString%2Cvalue%3AString%29-instance-method" class="signature"><strong>#merge</strong>(key : String, path : String, value : String)</a>
+        
+          <div class="summary"><p>redis.json.get(key, as: NamedTuple(one: String, two: String, three: String)) # =&gt; {one: 1, two: 2, three: 3} ```</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#merge%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method" class="signature"><strong>#merge</strong>(key : String, path : String, value)</a>
+        
+          <div class="summary"><p>redis.json.get(key, as: NamedTuple(one: String, two: String, three: String)) # =&gt; {one: 1, two: 2, three: 3} ```</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#mget%28keys%3AArray%28String%29%2Cpath%3AString%2Castype%3AT.class%29%3AArray%28T%7CNil%29forallT-instance-method" class="signature"><strong>#mget</strong>(keys : Array(String), path : String, as type : <span class="t">T</span>.<span class="k">class</span>) : Array(T | Nil) forall T</a>
         
           <div class="summary"><p>Get the values for all <code>keys</code> at the specified JSONPaths.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#mset%28entries%3AEnumerable%28Tuple%28String%2CString%2CT%29%29%29forallT-instance-method" class="signature"><strong>#mset</strong>(entries : Enumerable(Tuple(String, String, T))) forall T</a>
+        
+          <div class="summary"><p>Set multiple JSON values, using multiple paths and even multiple keys.</p></div>
         
       </li>
     
@@ -1114,6 +1157,27 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
         <a href="#numincrby%28key%3AString%2Cpath%3AString%2Ccount%3AString%7CInt%29-instance-method" class="signature"><strong>#numincrby</strong>(key : String, path : String, count : String | Int)</a>
         
           <div class="summary"><p>Increment the number at the specified JSONPath</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#nummultby%28key%3AString%2Cpath%3AString%2Cfactor%3AString%7CInt%29-instance-method" class="signature"><strong>#nummultby</strong>(key : String, path : String, factor : String | Int)</a>
+        
+          <div class="summary"><p>Multiply the number at the given <code>path</code> in <code>key</code> by <code>factor</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#objkeys%28key%3AString%2Cpath%3AString%29-instance-method" class="signature"><strong>#objkeys</strong>(key : String, path : String)</a>
+        
+          <div class="summary"><p>Returns the keys for the JSON object stored in <code>key</code> at <code>path</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#objlen%28key%3AString%2Cpath%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#objlen</strong>(key : String, path : String | Nil = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Returns the number of keys for the JSON object stored in <code>key</code> at <code>path</code>, with <code>path</code> defaulting to the root object.</p></div>
         
       </li>
     
@@ -1197,7 +1261,7 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L37" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L37" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1235,7 +1299,7 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L221" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L317" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1257,7 +1321,7 @@ redis.json.get(<span class="s">&quot;person:</span><span class="i">#{</span>id<s
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L230" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L326" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1281,7 +1345,7 @@ and only if it falls in the specified <code>range</code></p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L256" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L352" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1303,7 +1367,7 @@ and only if it falls in the specified <code>range</code></p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L245" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L341" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1326,7 +1390,7 @@ and only if it falls in the specified <code>range</code></p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L275" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L371" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1353,7 +1417,7 @@ and only if it falls in the specified <code>range</code></p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L289" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L385" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1376,7 +1440,7 @@ and only if it falls in the specified <code>range</code></p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L305" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L401" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1400,7 +1464,7 @@ element) in the array located at the JSONPath in <code>key</code></p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L316" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L412" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1426,7 +1490,34 @@ yielded to a <code><a href="../Redis/Connection.html#multi%28retries%3D5%2C%26%2
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L336" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L432" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="arrtrim(key:String,path:String,start:Int|String,stop:Int|String)-instance-method">
+      <div class="signature">
+        
+        def <strong>arrtrim</strong>(key : String, path : String, start : Int | String, stop : Int | String)
+
+        <a class="method-permalink" href="#arrtrim%28key%3AString%2Cpath%3AString%2Cstart%3AInt%7CString%2Cstop%3AInt%7CString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Trim the array stored at <code>path</code> in <code>key</code> down to the indexes <code>start..stop</code> (inclusive), equivalent to <code>redis.json.set(key, path, redis.json.get(key, path, as: Array)[start..stop])</code>.</p>
+<pre><code class="language-crystal">redis.json.set <span class="s">&quot;post:123&quot;</span>, <span class="s">&quot;.author_ids&quot;</span>, [<span class="n">1</span>, <span class="n">2</span>, <span class="n">3</span>]
+
+redis.json.arrtrim(<span class="s">&quot;post:123&quot;</span>, <span class="s">&quot;.author_ids&quot;</span>, start: <span class="n">1</span>, stop: <span class="n">1</span>)
+
+redis.json.get(<span class="s">&quot;post:123&quot;</span>, <span class="s">&quot;.author_ids&quot;</span>, <span class="k">as</span>: <span class="t">Array</span>(<span class="t">Int64</span>))
+<span class="c"># =&gt; [2]</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L448" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1442,7 +1533,7 @@ yielded to a <code><a href="../Redis/Connection.html#multi%28retries%3D5%2C%26%2
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L168" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L220" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1458,7 +1549,7 @@ yielded to a <code><a href="../Redis/Connection.html#multi%28retries%3D5%2C%26%2
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L175" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L227" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1505,7 +1596,7 @@ inside the method, which isn't possible when using pipelines or <code>multi</cod
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L138" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L164" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1529,7 +1620,7 @@ given JSONPath.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L110" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1558,7 +1649,7 @@ which isn't a thing when using pipelines or <code>multi</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L101" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L127" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1579,7 +1670,61 @@ which isn't a thing when using pipelines or <code>multi</code>.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L73" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L99" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge(key:String,path:String,value:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>merge</strong>(key : String, path : String, value : String)
+
+        <a class="method-permalink" href="#merge%28key%3AString%2Cpath%3AString%2Cvalue%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>redis.json.get(key, as: NamedTuple(one: String, two: String, three: String))</p>
+<h1><a id="one-1-two-2-three-3" class="anchor" href="#one-1-two-2-three-3">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>=&gt; {one: 1, two: 2, three: 3}</h1>
+<pre><code class="language-crystal"></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L308" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="merge(key:String,path:String,value)-instance-method">
+      <div class="signature">
+        
+        def <strong>merge</strong>(key : String, path : String, value)
+
+        <a class="method-permalink" href="#merge%28key%3AString%2Cpath%3AString%2Cvalue%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>redis.json.get(key, as: NamedTuple(one: String, two: String, three: String))</p>
+<h1><a id="one-1-two-2-three-3" class="anchor" href="#one-1-two-2-three-3">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>=&gt; {one: 1, two: 2, three: 3}</h1>
+<pre><code class="language-crystal"></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L292" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1608,7 +1753,34 @@ shard.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L154" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L180" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="mset(entries:Enumerable(Tuple(String,String,T)))forallT-instance-method">
+      <div class="signature">
+        
+        def <strong>mset</strong>(entries : Enumerable(Tuple(String, String, T))) forall T
+
+        <a class="method-permalink" href="#mset%28entries%3AEnumerable%28Tuple%28String%2CString%2CT%29%29%29forallT-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Set multiple JSON values, using multiple paths and even multiple keys.
+This is the equivalent of running multiple <code>JSON.SET</code> commands in a single
+atomic command.</p>
+<pre><code class="language-crystal">redis.json.mset([
+  {<span class="s">&quot;post:</span><span class="i">#{</span>post_id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.&quot;</span>, post},
+  {<span class="s">&quot;user:</span><span class="i">#{</span>post.author_id<span class="i">}</span><span class="s">&quot;</span>, <span class="s">&quot;.last_posted_at&quot;</span>, now},
+])</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L82" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1640,7 +1812,7 @@ result from the server, so the result must not be deferred.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L208" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L260" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1662,7 +1834,82 @@ result from the server, so the result must not be deferred.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L187" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L239" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="nummultby(key:String,path:String,factor:String|Int)-instance-method">
+      <div class="signature">
+        
+        def <strong>nummultby</strong>(key : String, path : String, factor : String | Int)
+
+        <a class="method-permalink" href="#nummultby%28key%3AString%2Cpath%3AString%2Cfactor%3AString%7CInt%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Multiply the number at the given <code>path</code> in <code>key</code> by <code>factor</code>.</p>
+<pre><code class="language-crystal">redis.json.set key, <span class="s">&quot;.&quot;</span>, {value: <span class="n">23</span>}
+redis.json.nummultby key, <span class="s">&quot;.value&quot;</span>, <span class="n">3</span>
+
+redis.json.get key, <span class="s">&quot;.value&quot;</span>, <span class="k">as</span>: <span class="t">Int64</span> <span class="c"># =&gt; 69</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L272" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="objkeys(key:String,path:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>objkeys</strong>(key : String, path : String)
+
+        <a class="method-permalink" href="#objkeys%28key%3AString%2Cpath%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the keys for the JSON object stored in <code>key</code> at <code>path</code>. The return value depends on whether <code>path</code> is <code>$</code>-based or <code>.</code>-based. <code>$</code>-based paths will return an array of arrays of strings while <code>.</code>-based paths will return an array of strings, however the compile-time return type of this method is <code><a href="../Redis/Value.html">Redis::Value</a></code>, so you'll need to downcast manually.</p>
+<pre><code class="language-crystal">redis.json.set <span class="s">&quot;user:123&quot;</span>, <span class="s">&quot;.&quot;</span>, {id: <span class="n">123</span>, name: <span class="s">&quot;Jamie&quot;</span>, created_at: <span class="t">Time</span>.utc.to_unix_ms}
+
+redis.json.objkeys(<span class="s">&quot;user:123&quot;</span>, <span class="s">&quot;.&quot;</span>) <span class="c"># =&gt; [&quot;id&quot;, &quot;name&quot;, &quot;created_at&quot;]</span>
+redis.json.objkeys(<span class="s">&quot;user:123&quot;</span>, <span class="s">&quot;$&quot;</span>) <span class="c"># =&gt; [[&quot;id&quot;, &quot;name&quot;, &quot;created_at&quot;]]</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L202" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="objlen(key:String,path:String|Nil=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>objlen</strong>(key : String, path : String | Nil = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#objlen%28key%3AString%2Cpath%3AString%7CNil%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the number of keys for the JSON object stored in <code>key</code> at <code>path</code>, with <code>path</code> defaulting to the root object. The return value depends on whether <code>path</code> is <code>$</code>-based or <code>.</code>-based. <code>$</code>-based paths will return an array of <code>Int64?</code> (paths that don't result in an object return <code>nil</code>) while <code>.</code>-based paths will return an <code>Int64?</code>, however the compile-time return type of this method is <code><a href="../Redis/Value.html">Redis::Value</a></code> because the path is not inferred at compile-time, so you'll need to downcast manually.</p>
+<pre><code class="language-crystal">redis.json.set <span class="s">&quot;user:123&quot;</span>, <span class="s">&quot;.&quot;</span>, {id: <span class="n">123</span>, name: <span class="s">&quot;Jamie&quot;</span>, created_at: <span class="t">Time</span>.utc.to_unix_ms}
+
+redis.json.objlen(<span class="s">&quot;user:123&quot;</span>, <span class="s">&quot;.&quot;</span>) <span class="c"># =&gt; 3</span>
+redis.json.objlen(<span class="s">&quot;user:123&quot;</span>, <span class="s">&quot;$&quot;</span>) <span class="c"># =&gt; [3]</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L214" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1698,7 +1945,7 @@ the new email value at the <code>.email</code> JSONPath:</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L64" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L64" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1714,7 +1961,7 @@ the new email value at the <code>.email</code> JSONPath:</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/json.cr#L212" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/json.cr#L276" target="_blank">View source</a>]
         
       </div>
     </div>

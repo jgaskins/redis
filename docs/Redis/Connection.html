@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.14.1">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="0.15.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Connection - redis 0.14.1</title>
+  <title>Redis::Connection - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.14.1
+        0.15.0
       </span>
     </div>
   </div>
@@ -61,6 +61,11 @@
       <a href="../Redis.html">Redis</a>
       
         <ul>
+  
+  <li class=" " data-id="redis/Redis/BloomFilter" data-name="redis::bloomfilter">
+      <a href="../Redis/BloomFilter.html">BloomFilter</a>
+      
+    </li>
   
   <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
       <a href="../Redis/BusyGroup.html">BusyGroup</a>
@@ -199,6 +204,11 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Vector" data-name="redis::commands::vector">
+      <a href="../Redis/Commands/Vector.html">Vector</a>
       
     </li>
   
@@ -727,6 +737,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/Streaming/XReadResponse" data-name="redis::streaming::xreadresponse">
+      <a href="../Redis/Streaming/XReadResponse.html">XReadResponse</a>
+      
+    </li>
+  
 </ul>
 
       
@@ -940,14 +955,14 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L16" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L17" target="_blank">
         connection.cr
       </a>
     
     <br/>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/graph.cr#L517" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph.cr#L517" target="_blank">
         graph.cr
       </a>
     
@@ -1169,6 +1184,11 @@
   <h3>Instance methods inherited from module <code><a href="../Redis/Commands.html">Redis::Commands</a></code></h3>
   
   
+    <a href="../Redis/Commands.html#bf-instance-method" class="tooltip">
+      <span>bf</span>
+    bf</a>, 
+    
+  
     <a href="../Redis/Commands.html#dbsize-instance-method" class="tooltip">
       <span>dbsize</span>
     dbsize</a>, 
@@ -1187,6 +1207,11 @@
     <a href="../Redis/Commands.html#del%28keys%3AEnumerable%28String%29%29-instance-method" class="tooltip">
       <span>del(keys : Enumerable(String))<br/>del(*keys : String)</span>
     del</a>, 
+    
+  
+    <a href="../Redis/Commands.html#dump%28key%3AString%29-instance-method" class="tooltip">
+      <span>dump(key : String)</span>
+    dump</a>, 
     
   
     <a href="../Redis/Commands.html#eval%28script%3AString%2Ckeys%3AEnumerable%28String%29%3DEmptyEnumerable.new%2Cargs%3AEnumerable%28String%29%3DEmptyEnumerable.new%29-instance-method" class="tooltip">
@@ -1289,8 +1314,8 @@
     mget</a>, 
     
   
-    <a href="../Redis/Commands.html#mset%28data%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
-      <span>mset(data : Hash(String, String))</span>
+    <a href="../Redis/Commands.html#mset%28data%3A%3A%3AHash%28String%2CString%29%29-instance-method" class="tooltip">
+      <span>mset(data : ::Hash(String, String))</span>
     mset</a>, 
     
   
@@ -1354,6 +1379,11 @@
     set</a>, 
     
   
+    <a href="../Redis/Commands.html#strlen%28key%3AString%29-instance-method" class="tooltip">
+      <span>strlen(key : String)</span>
+    strlen</a>, 
+    
+  
     <a href="../Redis/Commands.html#ts-instance-method" class="tooltip">
       <span>ts</span>
     ts</a>, 
@@ -1377,6 +1407,58 @@
     <a href="../Redis/Commands.html#wait%28numreplicasreplica_count%3AInt%7CString%2Ctimeout%3ATime%3A%3ASpan%29-instance-method" class="tooltip">
       <span>wait(numreplicas replica_count : Int | String, timeout : Time::Span)<br/>wait(numreplicas replica_count : Int | String, timeout : Int | String)</span>
     wait</a>
+    
+  
+
+
+      
+
+
+      
+
+
+      
+
+
+    
+      
+
+  <h3>Instance methods inherited from module <code><a href="../Redis/Commands/Vector.html">Redis::Commands::Vector</a></code></h3>
+  
+  
+    <a href="../Redis/Commands/Vector.html#vadd%28key%3AString%2Cvector%3AEnumerable%28Float32%29%2Celement%3AString%2C%2A%2Creduce%3AInt%7CString%7CNil%3Dnil%2Csetattrattributes%3Dnil%29-instance-method" class="tooltip">
+      <span>vadd(key : String, vector : Enumerable(Float32), element : String, *, reduce : Int | String | Nil = <span class="n">nil</span>, setattr attributes = <span class="n">nil</span>)</span>
+    vadd</a>, 
+    
+  
+    <a href="../Redis/Commands/Vector.html#vcard%28key%3AString%29-instance-method" class="tooltip">
+      <span>vcard(key : String)</span>
+    vcard</a>, 
+    
+  
+    <a href="../Redis/Commands/Vector.html#vdim%28key%3AString%29-instance-method" class="tooltip">
+      <span>vdim(key : String)</span>
+    vdim</a>, 
+    
+  
+    <a href="../Redis/Commands/Vector.html#vemb%28key%3AString%2Celement%3AString%29-instance-method" class="tooltip">
+      <span>vemb(key : String, element : String)</span>
+    vemb</a>, 
+    
+  
+    <a href="../Redis/Commands/Vector.html#vgetattr%28key%3AString%2Celement%3AString%2Castype%3AT.class%29%3AT%7CNilforallT-instance-method" class="tooltip">
+      <span>vgetattr(key : String, element : String, as type : <span class="t">T</span>.<span class="k">class</span>) : T | Nil forall T<br/>vgetattr(key : String, element : String)</span>
+    vgetattr</a>, 
+    
+  
+    <a href="../Redis/Commands/Vector.html#vrange%28key%3AString%2Cstart%3AString%2Cendstop%3AString%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>vrange(key : String, start : String, end stop : String, count : Int | String | Nil = <span class="n">nil</span>)</span>
+    vrange</a>, 
+    
+  
+    <a href="../Redis/Commands/Vector.html#vsim%28key%3AString%2Celement%3AString%2C%2A%2Cepsilon%3AFloat%7CString%7CNil%3Dnil%2Cwithscores%3ABool%3Dfalse%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>vsim(key : String, element : String, *, epsilon : Float | String | Nil = <span class="n">nil</span>, withscores : Bool = <span class="n">false</span>, count : Int | String | Nil = <span class="n">nil</span>)<br/>vsim(key : String, vector : Array(Float32), *, epsilon : Float | String | Nil = <span class="n">nil</span>, withscores : Bool = <span class="n">false</span>, count : Int | String | Nil = <span class="n">nil</span>)</span>
+    vsim</a>
     
   
 
@@ -1515,6 +1597,11 @@
     xrange</a>, 
     
   
+    <a href="../Redis/Commands/Stream.html#xread%28%2A%2Ccount%3AInt%7CString%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CInt%7CString%7CNil%3Dnil%2Cstreams%3ANamedTuple%29-instance-method" class="tooltip">
+      <span>xread(*, count : Int | String | Nil = <span class="n">nil</span>, block : Time::Span | Int | String | Nil = <span class="n">nil</span>, streams : NamedTuple)<br/>xread(*, count : Int | String | Nil = <span class="n">nil</span>, block : Time::Span | Int | String | Nil = <span class="n">nil</span>, streams : ::Hash(String, String))</span>
+    xread</a>, 
+    
+  
     <a href="../Redis/Commands/Stream.html#xreadgroup%28group%3AString%2Cconsumer%3AString%2Ccount%3AString%7CInt32%7CNil%3Dnil%2Cblock%3ATime%3A%3ASpan%7CString%7CInt32%7CNil%3Dnil%2Cno_ack%3Dfalse%2Cstreams%3A%3A%3AHash%28String%2CString%29%3D%7B%7DofString%3D%3EString%29-instance-method" class="tooltip">
       <span>xreadgroup(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : ::Hash(String, String) = {} <span class="k">of</span> <span class="t">String</span> <span class="o">=&gt;</span> <span class="t">String</span>)<br/>xreadgroup(group : String, consumer : String, count : String | Int32 | Nil = <span class="n">nil</span>, block : Time::Span | String | Int32 | Nil = <span class="n">nil</span>, no_ack = <span class="n">false</span>, streams : NamedTuple = <span class="t">NamedTuple</span>.new)</span>
     xreadgroup</a>, 
@@ -1567,8 +1654,8 @@
     zrange</a>, 
     
   
-    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Cmin%3AString%7CInt64%2Cmax%3AString%7CInt64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
-      <span>zrangebyscore(key : String, min : String | Int64, max : String | Int64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
+    <a href="../Redis/Commands/SortedSet.html#zrangebyscore%28key%3AString%2Cmin%3AString%7CFloat64%2Cmax%3AString%7CFloat64%2Cwith_scores%3Dfalse%2Climit%3AEnumerable%28String%29%7CNil%3Dnil%29-instance-method" class="tooltip">
+      <span>zrangebyscore(key : String, min : String | Float64, max : String | Float64, with_scores = <span class="n">false</span>, limit : Enumerable(String) | Nil = <span class="n">nil</span>)</span>
     zrangebyscore</a>, 
     
   
@@ -1877,7 +1964,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L31" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1914,7 +2001,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L323" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L324" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1930,7 +2017,7 @@ DB selection uses the URI path.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L22" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L23" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1955,7 +2042,7 @@ useful if a command like this has not been implemented yet.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L371" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L372" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1977,7 +2064,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L335" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L336" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1993,7 +2080,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L277" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L278" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2009,7 +2096,7 @@ server.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L23" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L24" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2041,7 +2128,7 @@ redis.get <span class="s">&quot;counter&quot;</span> <span class="c"># =&gt; nil
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L118" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L119" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2067,7 +2154,7 @@ server before reading any of the results.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L84" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L85" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2114,7 +2201,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L149" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L150" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2130,7 +2217,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L210" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L211" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2151,7 +2238,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L340" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L341" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2173,7 +2260,7 @@ closed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L351" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L352" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2196,7 +2283,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L218" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L219" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2218,7 +2305,7 @@ replicas.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L227" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L228" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2243,7 +2330,7 @@ generates the array of all those keys.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L262" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L263" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2259,7 +2346,7 @@ generates the array of all those keys.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L292" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L293" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2306,7 +2393,7 @@ and <code>on_unsubscribe</code> on the subscription.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L149" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L150" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2329,7 +2416,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L193" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L194" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2350,7 +2437,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L199" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L200" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2371,7 +2458,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L205" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L206" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2392,7 +2479,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L361" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L362" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2408,7 +2495,7 @@ blocks to add new subscriptions.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/connection.cr#L307" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/connection.cr#L308" target="_blank">View source</a>]
         
       </div>
     </div>

@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Crystal Docs 1.10.1">
-<meta name="crystal_docs.project_version" content="0.14.1">
+<meta name="generator" content="Crystal Docs 1.18.2">
+<meta name="crystal_docs.project_version" content="0.15.0">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Streaming::Message - redis 0.14.1</title>
+  <title>Redis::Streaming::Message - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.14.1
+        0.15.0
       </span>
     </div>
   </div>
@@ -61,6 +61,11 @@
       <a href="../../Redis.html">Redis</a>
       
         <ul>
+  
+  <li class=" " data-id="redis/Redis/BloomFilter" data-name="redis::bloomfilter">
+      <a href="../../Redis/BloomFilter.html">BloomFilter</a>
+      
+    </li>
   
   <li class=" " data-id="redis/Redis/BusyGroup" data-name="redis::busygroup">
       <a href="../../Redis/BusyGroup.html">BusyGroup</a>
@@ -199,6 +204,11 @@
   
 </ul>
 
+      
+    </li>
+  
+  <li class=" " data-id="redis/Redis/Commands/Vector" data-name="redis::commands::vector">
+      <a href="../../Redis/Commands/Vector.html">Vector</a>
       
     </li>
   
@@ -727,6 +737,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/Streaming/XReadResponse" data-name="redis::streaming::xreadresponse">
+      <a href="../../Redis/Streaming/XReadResponse.html">XReadResponse</a>
+      
+    </li>
+  
 </ul>
 
       
@@ -894,6 +909,20 @@
 
 
 
+  <h2>
+    <a id="included-modules" class="anchor" href="#included-modules">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Included Modules
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type">Enumerable({String, String})</li>
+    
+  </ul>
+
 
 
 
@@ -913,7 +942,7 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/streaming.cr#L5" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L5" target="_blank">
         streaming.cr
       </a>
     
@@ -964,6 +993,31 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
+        <a href="#%5B%5D%28field%3AString%29%3AString-instance-method" class="signature"><strong>#[]</strong>(field : String) : String</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#%5B%5D%3F%28field%3AString%29%3AString%7CNil-instance-method" class="signature"><strong>#[]?</strong>(field : String) : String | Nil</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#dig%28field%3AString%29-instance-method" class="signature"><strong>#dig</strong>(field : String)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each%28%2Aargs%2C%2A%2Aoptions%29-instance-method" class="signature"><strong>#each</strong>(*args, **options)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#each%28%2Aargs%2C%2A%2Aoptions%2C%26%29-instance-method" class="signature"><strong>#each</strong>(*args, **options, &)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#id%3AString-instance-method" class="signature"><strong>#id</strong> : String</a>
         
       </li>
@@ -978,6 +1032,19 @@
 
 
   <div class="methods-inherited">
+    
+      
+
+
+      
+
+
+      
+
+
+      
+
+
     
       
 
@@ -1041,7 +1108,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/streaming.cr#L19" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L21" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1057,7 +1124,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/streaming.cr#L9" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L11" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1078,6 +1145,86 @@
     Instance Method Detail
   </h2>
   
+    <div class="entry-detail" id="[](field:String):String-instance-method">
+      <div class="signature">
+        
+        def <strong>[]</strong>(field : String) : String
+
+        <a class="method-permalink" href="#%5B%5D%28field%3AString%29%3AString-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L26" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="[]?(field:String):String|Nil-instance-method">
+      <div class="signature">
+        
+        def <strong>[]?</strong>(field : String) : String | Nil
+
+        <a class="method-permalink" href="#%5B%5D%3F%28field%3AString%29%3AString%7CNil-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="dig(field:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>dig</strong>(field : String)
+
+        <a class="method-permalink" href="#dig%28field%3AString%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L34" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each(*args,**options)-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>(*args, **options)
+
+        <a class="method-permalink" href="#each%28%2Aargs%2C%2A%2Aoptions%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L24" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="each(*args,**options,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>each</strong>(*args, **options, &)
+
+        <a class="method-permalink" href="#each%28%2Aargs%2C%2A%2Aoptions%2C%26%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L24" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
     <div class="entry-detail" id="id:String-instance-method">
       <div class="signature">
         
@@ -1089,7 +1236,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/streaming.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L8" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1105,7 +1252,7 @@
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.14.1/src/streaming.cr#L7" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/streaming.cr#L9" target="_blank">View source</a>]
         
       </div>
     </div>

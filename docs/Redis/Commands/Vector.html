@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Graph::Cache - redis 0.15.0</title>
+  <title>Redis::Commands::Vector - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -117,7 +117,7 @@
       
     </li>
   
-  <li class="parent " data-id="redis/Redis/Commands" data-name="redis::commands">
+  <li class="parent open current" data-id="redis/Redis/Commands" data-name="redis::commands">
       <a href="../../Redis/Commands.html">Commands</a>
       
         <ul>
@@ -207,7 +207,7 @@
       
     </li>
   
-  <li class=" " data-id="redis/Redis/Commands/Vector" data-name="redis::commands::vector">
+  <li class=" current" data-id="redis/Redis/Commands/Vector" data-name="redis::commands::vector">
       <a href="../../Redis/Commands/Vector.html">Vector</a>
       
     </li>
@@ -372,12 +372,12 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/Graph" data-name="redis::graph">
+  <li class="parent " data-id="redis/Redis/Graph" data-name="redis::graph">
       <a href="../../Redis/Graph.html">Graph</a>
       
         <ul>
   
-  <li class=" current" data-id="redis/Redis/Graph/Cache" data-name="redis::graph::cache">
+  <li class=" " data-id="redis/Redis/Graph/Cache" data-name="redis::graph::cache">
       <a href="../../Redis/Graph/Cache.html">Cache</a>
       
     </li>
@@ -892,13 +892,12 @@
 <h1 class="type-name">
 
   <span class="kind">
-    class
-  </span> Redis::<wbr>Graph::<wbr>Cache
+    module
+  </span> Redis::<wbr>Commands::<wbr>Vector
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../../Redis/Graph/Cache.html">Redis::Graph::Cache</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
 
 
 
@@ -914,6 +913,19 @@
 
 
 
+  <h2>
+    <a id="direct-including-types" class="anchor" href="#direct-including-types">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Direct including types
+  </h2>
+  <ul class="other-types-list">
+    
+      <li class="other-type"><a href="../../Redis/Commands.html">Redis::Commands</a></li>
+    
+  </ul>
 
 
 
@@ -928,8 +940,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L4" target="_blank">
-        graph/cache.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L3" target="_blank">
+        commands/vector.cr
       </a>
     
     <br/>
@@ -940,23 +952,6 @@
 
 
   
-  <h2>
-    <a id="constructors" class="anchor" href="#constructors">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructors
-  </h2>
-  <ul class="list-summary">
-    
-      <li class="entry-summary">
-        <a href="#new%28redis%3ARedis%3A%3ACommands%2Ckey%3AString%29-class-method" class="signature"><strong>.new</strong>(redis : Redis::Commands, key : String)</a>
-        
-      </li>
-    
-  </ul>
-
 
   
 
@@ -974,52 +969,65 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#clear-instance-method" class="signature"><strong>#clear</strong></a>
+        <a href="#vadd%28key%3AString%2Cvector%3AEnumerable%28Float32%29%2Celement%3AString%2C%2A%2Creduce%3AInt%7CString%7CNil%3Dnil%2Csetattrattributes%3Dnil%29-instance-method" class="signature"><strong>#vadd</strong>(key : String, vector : Enumerable(Float32), element : String, *, reduce : Int | String | Nil = <span class="n">nil</span>, setattr attributes = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Add <code>element</code> with its associated <code>vector</code> to the vector set stored in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#key%3AString-instance-method" class="signature"><strong>#key</strong> : String</a>
+        <a href="#vcard%28key%3AString%29-instance-method" class="signature"><strong>#vcard</strong>(key : String)</a>
+        
+          <div class="summary"><p>Return the number of vectors contained in the vector set stored in <code>key</code>, also referred to as the cardinality of the set.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#label%28label_id%3AInt64%29%3AString-instance-method" class="signature"><strong>#label</strong>(label_id : Int64) : String</a>
+        <a href="#vdim%28key%3AString%29-instance-method" class="signature"><strong>#vdim</strong>(key : String)</a>
+        
+          <div class="summary"><p>Return the dimensionality of the vectors in the vector set stored in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#labels-instance-method" class="signature"><strong>#labels</strong></a>
+        <a href="#vemb%28key%3AString%2Celement%3AString%29-instance-method" class="signature"><strong>#vemb</strong>(key : String, element : String)</a>
+        
+          <div class="summary"><p>Return the vector for <code>element</code> stored in the vector set in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#properties-instance-method" class="signature"><strong>#properties</strong></a>
+        <a href="#vgetattr%28key%3AString%2Celement%3AString%2Castype%3AT.class%29%3AT%7CNilforallT-instance-method" class="signature"><strong>#vgetattr</strong>(key : String, element : String, as type : <span class="t">T</span>.<span class="k">class</span>) : T | Nil forall T</a>
+        
+          <div class="summary"><p>Get the attributes for <code>element</code> stored in <code>key</code>, deserializing them as the type <code>T</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#property%28property_id%3AInt64%29%3AString-instance-method" class="signature"><strong>#property</strong>(property_id : Int64) : String</a>
+        <a href="#vgetattr%28key%3AString%2Celement%3AString%29-instance-method" class="signature"><strong>#vgetattr</strong>(key : String, element : String)</a>
+        
+          <div class="summary"><p>Get the attributes for <code>element</code> stored in <code>key</code> as a JSON string.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#redis%3ACommands-instance-method" class="signature"><strong>#redis</strong> : Commands</a>
+        <a href="#vrange%28key%3AString%2Cstart%3AString%2Cendstop%3AString%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#vrange</strong>(key : String, start : String, end stop : String, count : Int | String | Nil = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Return an array of elements between <code>start</code> and <code>end</code> in the vector set stored in <code>key</code>, optionally limiting the result size to <code>count</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#refresh_properties%3ANil-instance-method" class="signature"><strong>#refresh_properties</strong> : Nil</a>
+        <a href="#vsim%28key%3AString%2Celement%3AString%2C%2A%2Cepsilon%3AFloat%7CString%7CNil%3Dnil%2Cwithscores%3ABool%3Dfalse%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#vsim</strong>(key : String, element : String, *, epsilon : Float | String | Nil = <span class="n">nil</span>, withscores : Bool = <span class="n">false</span>, count : Int | String | Nil = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Return the elements of the vector set stored in <code>key</code> whose vectors are most similar to that of <code>element</code>, which must also be stored in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#relationship_type%28type_id%3AInt%29%3AString-instance-method" class="signature"><strong>#relationship_type</strong>(type_id : Int) : String</a>
+        <a href="#vsim%28key%3AString%2Cvector%3AArray%28Float32%29%2C%2A%2Cepsilon%3AFloat%7CString%7CNil%3Dnil%2Cwithscores%3ABool%3Dfalse%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#vsim</strong>(key : String, vector : Array(Float32), *, epsilon : Float | String | Nil = <span class="n">nil</span>, withscores : Bool = <span class="n">false</span>, count : Int | String | Nil = <span class="n">nil</span>)</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#relationship_types-instance-method" class="signature"><strong>#relationship_types</strong></a>
+          <div class="summary"><p>Return the elements of the vector set stored in <code>key</code> whose vectors are most similar to <code>vector</code>, which does not need to be stored in <code>key</code>.</p></div>
         
       </li>
     
@@ -1029,61 +1037,9 @@
 
   <div class="methods-inherited">
     
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
-      
-
-
-      
-
-
-      
-
-
-      
-
-
-    
   </div>
 
   
-  <h2>
-    <a id="constructor-detail" class="anchor" href="#constructor-detail">
-  <svg class="octicon-link" aria-hidden="true">
-    <use href="#octicon-link"/>
-  </svg>
-</a>
-    Constructor Detail
-  </h2>
-  
-    <div class="entry-detail" id="new(redis:Redis::Commands,key:String)-class-method">
-      <div class="signature">
-        
-        def self.<strong>new</strong>(redis : <a href="../../Redis/Commands.html">Redis::Commands</a>, key : String)
-
-        <a class="method-permalink" href="#new%28redis%3ARedis%3A%3ACommands%2Ckey%3AString%29-class-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L11" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-
 
   
 
@@ -1099,162 +1055,240 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="clear-instance-method">
+    <div class="entry-detail" id="vadd(key:String,vector:Enumerable(Float32),element:String,*,reduce:Int|String|Nil=nil,setattrattributes=nil)-instance-method">
       <div class="signature">
         
-        def <strong>clear</strong>
+        def <strong>vadd</strong>(key : String, vector : Enumerable(Float32), element : String, *, reduce : Int | String | Nil = <span class="n">nil</span>, setattr attributes = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#clear-instance-method">#</a>
+        <a class="method-permalink" href="#vadd%28key%3AString%2Cvector%3AEnumerable%28Float32%29%2Celement%3AString%2C%2A%2Creduce%3AInt%7CString%7CNil%3Dnil%2Csetattrattributes%3Dnil%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Add <code>element</code> with its associated <code>vector</code> to the vector set stored in <code>key</code>.</p>
+<pre><code class="language-crystal">redis.vadd <span class="s">&quot;embeddings&quot;</span>, vectorize(text), text</code></pre>
+<p>You can optionally reduce <code>vector</code> to a given dimensionality with the
+<code>reduce</code> argument if you need to sacrifice precision to conserve space.</p>
+<pre><code class="language-crystal">redis.vadd <span class="s">&quot;embeddings&quot;</span>, vectorize(text), text, reduce: <span class="n">50</span></code></pre>
+<p>You can also set attributes for this vector. Any JSON-serializable value
+can be passed into the <code>setattr</code> argument.</p>
+<pre><code class="language-crystal">redis.vadd <span class="s">&quot;embeddings&quot;</span>, vectorize(text), text,
+  setattr: {
+    lang: <span class="s">&quot;en&quot;</span>,
+  }</code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L89" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L26" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="key:String-instance-method">
+    <div class="entry-detail" id="vcard(key:String)-instance-method">
       <div class="signature">
         
-        def <strong>key</strong> : String
+        def <strong>vcard</strong>(key : String)
 
-        <a class="method-permalink" href="#key%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#vcard%28key%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Return the number of vectors contained in the vector set stored in <code>key</code>,
+also referred to as the cardinality of the set.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L6" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L46" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="label(label_id:Int64):String-instance-method">
+    <div class="entry-detail" id="vdim(key:String)-instance-method">
       <div class="signature">
         
-        def <strong>label</strong>(label_id : Int64) : String
+        def <strong>vdim</strong>(key : String)
 
-        <a class="method-permalink" href="#label%28label_id%3AInt64%29%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#vdim%28key%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Return the dimensionality of the vectors in the vector set stored in <code>key</code>.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L17" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L51" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="labels-instance-method">
+    <div class="entry-detail" id="vemb(key:String,element:String)-instance-method">
       <div class="signature">
         
-        def <strong>labels</strong>
+        def <strong>vemb</strong>(key : String, element : String)
 
-        <a class="method-permalink" href="#labels-instance-method">#</a>
+        <a class="method-permalink" href="#vemb%28key%3AString%2Celement%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Return the vector for <code>element</code> stored in the vector set in <code>key</code>.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L29" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L56" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="properties-instance-method">
+    <div class="entry-detail" id="vgetattr(key:String,element:String,astype:T.class):T|NilforallT-instance-method">
       <div class="signature">
         
-        def <strong>properties</strong>
+        def <strong>vgetattr</strong>(key : String, element : String, as type : <span class="t">T</span>.<span class="k">class</span>) : T | Nil forall T
 
-        <a class="method-permalink" href="#properties-instance-method">#</a>
+        <a class="method-permalink" href="#vgetattr%28key%3AString%2Celement%3AString%2Castype%3AT.class%29%3AT%7CNilforallT-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Get the attributes for <code>element</code> stored in <code>key</code>, deserializing them as the
+type <code>T</code>.</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">Properties</span>
+  <span class="k">include</span> <span class="t">JSON</span><span class="t">::</span><span class="t">Serializable</span>
+
+  getter post_id : <span class="t">Int64</span>
+  getter author_id : <span class="t">Int64</span>
+<span class="k">end</span>
+
+<span class="k">if</span> properties <span class="o">=</span> redis.vgetattr(<span class="s">&quot;embeddings&quot;</span>, post_text, <span class="k">as</span>: <span class="t">Properties</span>)
+  author <span class="o">=</span> <span class="t">AuthorQuery</span>.new.find(properties.author_id)
+<span class="k">end</span></code></pre>
+<p><span class="flag purple">NOTE</span>  You can only run this method against <code><a href="../../Redis/Commands/Immediate.html">Immediate</a></code> types, such as
+<code><a href="../../Redis/Client.html">Client</a></code>, <code><a href="../../Redis/Connection.html">Connection</a></code>, <code><a href="../../Redis/ReplicationClient.html">ReplicationClient</a></code>, or <code><a href="../../Redis/Cluster.html">Cluster</a></code>. Calling this
+method on a <code><a href="../../Redis/Pipeline.html">Pipeline</a></code> or <code><a href="../../Redis/Transaction.html">Transaction</a></code> will result in a compile-time error.
+If you need to run this in a pipeline, you will need to deserialize the
+string manually with the other <code><a href="../../Redis/Commands/Vector.html#vgetattr%28key%3AString%2Celement%3AString%2Castype%3AT.class%29%3AT%7CNilforallT-instance-method">#vgetattr</a></code> overload.</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L81" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="property(property_id:Int64):String-instance-method">
+    <div class="entry-detail" id="vgetattr(key:String,element:String)-instance-method">
       <div class="signature">
         
-        def <strong>property</strong>(property_id : Int64) : String
+        def <strong>vgetattr</strong>(key : String, element : String)
 
-        <a class="method-permalink" href="#property%28property_id%3AInt64%29%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#vgetattr%28key%3AString%2Celement%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Get the attributes for <code>element</code> stored in <code>key</code> as a JSON string.</p>
+<pre><code class="language-crystal"><span class="k">struct</span> <span class="t">Properties</span>
+  <span class="k">include</span> <span class="t">JSON</span><span class="t">::</span><span class="t">Serializable</span>
+
+  getter post_id : <span class="t">Int64</span>
+  getter author_id : <span class="t">Int64</span>
+<span class="k">end</span>
+
+<span class="k">if</span> (json <span class="o">=</span> redis.vgetattr(<span class="s">&quot;embeddings&quot;</span>, post_text)) <span class="o">&amp;&amp;</span> (properties <span class="o">=</span> <span class="t">Properties</span>.from_json(json))
+  author <span class="o">=</span> <span class="t">AuthorQuery</span>.new.find(properties.author_id)
+<span class="k">end</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L67" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L105" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="redis:Commands-instance-method">
+    <div class="entry-detail" id="vrange(key:String,start:String,endstop:String,count:Int|String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>redis</strong> : <a href="../../Redis/Commands.html">Commands</a>
+        def <strong>vrange</strong>(key : String, start : String, end stop : String, count : Int | String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#redis%3ACommands-instance-method">#</a>
+        <a class="method-permalink" href="#vrange%28key%3AString%2Cstart%3AString%2Cendstop%3AString%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Return an array of elements between <code>start</code> and <code>end</code> in the vector set
+stored in <code>key</code>, optionally limiting the result size to <code>count</code>.</p>
+<p>The values for <code>start</code> and <code>end</code> have identical semantics to <a href="https://redis.io/docs/latest/commands/zrange/#lexicographical-ranges"><code>zrange</code> with
+the <code>bylex</code> option</a>
+(<code>by: :lex</code> in this shard).</p>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L5" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L115" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="refresh_properties:Nil-instance-method">
+    <div class="entry-detail" id="vsim(key:String,element:String,*,epsilon:Float|String|Nil=nil,withscores:Bool=false,count:Int|String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>refresh_properties</strong> : Nil
+        def <strong>vsim</strong>(key : String, element : String, *, epsilon : Float | String | Nil = <span class="n">nil</span>, withscores : Bool = <span class="n">false</span>, count : Int | String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#refresh_properties%3ANil-instance-method">#</a>
+        <a class="method-permalink" href="#vsim%28key%3AString%2Celement%3AString%2C%2A%2Cepsilon%3AFloat%7CString%7CNil%3Dnil%2Cwithscores%3ABool%3Dfalse%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Return the elements of the vector set stored in <code>key</code> whose vectors are most
+similar to that of <code>element</code>, which must also be stored in <code>key</code>. You can
+limit the similarity comparison using <code>epsilon</code> as an upper limit of cosine
+distance or by capping the number of results with <code>count</code> (defaults to 10).</p>
+<pre><code class="language-crystal">results <span class="o">=</span> redis.vsim(<span class="s">&quot;embeddings&quot;</span>, text, epsilon: <span class="n">0.2</span>, count: <span class="n">25</span>)</code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L83" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L130" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="relationship_type(type_id:Int):String-instance-method">
+    <div class="entry-detail" id="vsim(key:String,vector:Array(Float32),*,epsilon:Float|String|Nil=nil,withscores:Bool=false,count:Int|String|Nil=nil)-instance-method">
       <div class="signature">
         
-        def <strong>relationship_type</strong>(type_id : Int) : String
+        def <strong>vsim</strong>(key : String, vector : Array(Float32), *, epsilon : Float | String | Nil = <span class="n">nil</span>, withscores : Bool = <span class="n">false</span>, count : Int | String | Nil = <span class="n">nil</span>)
 
-        <a class="method-permalink" href="#relationship_type%28type_id%3AInt%29%3AString-instance-method">#</a>
+        <a class="method-permalink" href="#vsim%28key%3AString%2Cvector%3AArray%28Float32%29%2C%2A%2Cepsilon%3AFloat%7CString%7CNil%3Dnil%2Cwithscores%3ABool%3Dfalse%2Ccount%3AInt%7CString%7CNil%3Dnil%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Return the elements of the vector set stored in <code>key</code> whose vectors are most
+similar to <code>vector</code>, which does not need to be stored in <code>key</code>. You can
+limit the similarity comparison using <code>epsilon</code> as an upper limit of cosine
+distance or by capping the number of results with <code>count</code> (defaults to 10).</p>
+<pre><code class="language-crystal">results <span class="o">=</span> redis.vsim(<span class="s">&quot;embeddings&quot;</span>, vectorize(text), epsilon: <span class="n">0.2</span>, count: <span class="n">25</span>)</code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L41" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="relationship_types-instance-method">
-      <div class="signature">
-        
-        def <strong>relationship_types</strong>
-
-        <a class="method-permalink" href="#relationship_types-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/graph/cache.cr#L51" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/vector.cr#L153" target="_blank">View source</a>]
         
       </div>
     </div>

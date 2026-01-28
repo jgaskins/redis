@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::TimeSeries(Runnable) - redis 0.15.0</title>
+  <title>Redis::BloomFilter - redis 0.15.0</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -62,7 +62,7 @@
       
         <ul>
   
-  <li class=" " data-id="redis/Redis/BloomFilter" data-name="redis::bloomfilter">
+  <li class=" current" data-id="redis/Redis/BloomFilter" data-name="redis::bloomfilter">
       <a href="../Redis/BloomFilter.html">BloomFilter</a>
       
     </li>
@@ -762,7 +762,7 @@
       
     </li>
   
-  <li class="parent open current" data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
+  <li class="parent " data-id="redis/Redis/TimeSeries" data-name="redis::timeseries(runnable)">
       <a href="../Redis/TimeSeries.html">TimeSeries</a>
       
         <ul>
@@ -893,12 +893,12 @@
 
   <span class="kind">
     struct
-  </span> Redis::<wbr>TimeSeries(Runnable)
+  </span> Redis::<wbr>BloomFilter
 
 </h1>
 
 
-  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Redis/TimeSeries.html">Redis::TimeSeries(Runnable)</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Redis/BloomFilter.html">Redis::BloomFilter</a></li><li class="superclass">Struct</li><li class="superclass">Value</li><li class="superclass">Object</li></ul>
 
 
 
@@ -912,11 +912,26 @@
     Overview
   </h2>
 
-  <p>Time-series support for Redis using the
-<a href="https://oss.redis.com/redistimeseries/">RedisTimeSeries module</a>.</p>
-<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;redis&quot;</span>
-<span class="k">require</span> <span class="s">&quot;redis/time_series&quot;</span></code></pre>
-<p><span class="flag lime">EXPERIMENTAL</span>  Support for the Redis TimeSeries module is subject to change.</p>
+  <p>A Bloom Filter is a probabilistic data structure that allows testing whether
+an item is a member of a set. It differs from a traditional set in that it
+doesn't store all members, but instead stores a few bits that determine
+whether it's likely to have been stored. This makes the Bloom Filter much
+more space-efficient than a traditional set.</p>
+<pre><code class="language-crystal">user_ids <span class="o">=</span> <span class="t">Array</span>.new(<span class="n">50</span>) { <span class="t">UUID</span>.v7 }
+
+<span class="c"># Add the same user ids to both the Bloom Filter and the set</span>
+redis.bf.madd <span class="s">&quot;users-bf&quot;</span>, user_ids.map(<span class="o">&amp;</span>.to_s)
+redis.sadd <span class="s">&quot;users-set&quot;</span>, user_ids.map(<span class="o">&amp;</span>.to_s)
+
+<span class="c"># Both the Bloom Filter and the set have the same cardinality</span>
+redis.bf.card(<span class="s">&quot;users-bf&quot;</span>) <span class="c"># =&gt; 50</span>
+redis.scard(<span class="s">&quot;users-set&quot;</span>)  <span class="c"># =&gt; 50</span>
+
+<span class="c"># The Bloom Filter uses 6x less memory</span>
+redis.dump(<span class="s">&quot;users-bf&quot;</span>).<span class="k">as</span>(<span class="t">String</span>).bytesize  <span class="c"># =&gt; 206</span>
+redis.dump(<span class="s">&quot;users-set&quot;</span>).<span class="k">as</span>(<span class="t">String</span>).bytesize <span class="c"># =&gt; 1199</span></code></pre>
+<p><span class="flag purple">NOTE</span>  Bloom Filters are probabilistic, not a perfect representation of the members of the set. You also cannot see what's in the set, only test whether a string is likely to be in it and check its cardinality. If you need to be able to inspect the set or have 100% precision on whether a string is a member of a set, then a Bloom Filter is not the appropriate data structure.</p>
+<p>When checking whether a string is a member of a Bloom Filter, you are guaranteed never to get a false negative, but you may get false positives. That is, if <code>redis.bf.exists(key, item)</code> returns <code>0</code> then <code>item</code> is <em>definitely</em> not in the Bloom Filter, but if it returns <code>1</code> then it <em>probably</em> is, to within the <code>error_rate</code> specified in <code><a href="../Redis/BloomFilter.html#reserve%28key%3AString%2Cerror_rate%3AString%7CFloat64%2Ccapacity%3AString%7CInt64%2C%2A%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%29-instance-method">#reserve</a></code> or <code><a href="../Redis/BloomFilter.html#insert%28key%3AString%2Citems%3AArray%28String%29%2C%2A%2Ccapacity%3AString%7CInt64%3Dnil%2Cerrorerror_rate%3AString%7CFloat64%7CNil%3Dnil%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%2Cnocreate%3ABool%3Dfalse%29-instance-method">#insert</a></code>. The <code>error_rate</code> argument allows you to optimize for memory or precision. The smaller the error rate, the more memory your Bloom Filter will use.</p>
 
 
 
@@ -943,8 +958,8 @@
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L13" target="_blank">
-        time_series.cr
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L27" target="_blank">
+        bloom_filter.cr
       </a>
     
     <br/>
@@ -955,6 +970,23 @@
 
 
   
+  <h2>
+    <a id="constructors" class="anchor" href="#constructors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructors
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28redis%3ARedis%3A%3ACommands%29-class-method" class="signature"><strong>.new</strong>(redis : Redis::Commands)</a>
+        
+      </li>
+    
+  </ul>
+
 
   
 
@@ -972,52 +1004,58 @@
   <ul class="list-summary">
     
       <li class="entry-summary">
-        <a href="#add%28key%3AString%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#add</strong>(key : String, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : Encoding | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : DuplicatePolicy | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)</a>
+        <a href="#add%28key%3AString%2Citem%3AString%29-instance-method" class="signature"><strong>#add</strong>(key : String, item : String)</a>
+        
+          <div class="summary"><p>Add <code>item</code> to the Bloom Filter stored in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#add%28key%3AString%2Ctimestamp%3ATime%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#add</strong>(key : String, timestamp : Time, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : Encoding | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : DuplicatePolicy | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)</a>
+        <a href="#card%28key%3AString%29-instance-method" class="signature"><strong>#card</strong>(key : String)</a>
+        
+          <div class="summary"><p>Returns the number of items added to the Bloom Filter that have been detected as unique.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Calign%3AAlignment%7CTime%7CNil%3Dnil%2Cbuckettimestamp%3ABucketTimestamp%7CNil%3Dnil%2Cempty%3ABool%7CNil%3Dnil%29-instance-method" class="signature"><strong>#aggregation</strong>(aggregator : AggregationType, bucket_duration : Time::Span, align : Alignment | Time | Nil = <span class="n">nil</span>, buckettimestamp : BucketTimestamp | Nil = <span class="n">nil</span>, empty : Bool | Nil = <span class="n">nil</span>)</a>
+        <a href="#exists%28key%3AString%2Citem%3AString%29-instance-method" class="signature"><strong>#exists</strong>(key : String, item : String)</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method" class="signature"><strong>#create</strong>(key : String, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : Encoding | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, duplicate_policy : DuplicatePolicy | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)</a>
-        
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#get%28key%3AString%29-instance-method" class="signature"><strong>#get</strong>(key : String)</a>
+          <div class="summary"><p>Returns <code>1</code> if <code>item</code> is a member of the Bloom Filter stored in <code>key</code>, <code>0</code> otherwise.</p></div>
         
       </li>
     
       <li class="entry-summary">
         <a href="#info%28key%3AString%29-instance-method" class="signature"><strong>#info</strong>(key : String)</a>
         
-      </li>
-    
-      <li class="entry-summary">
-        <a href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%7CNil%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%7CNil%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%7CNil%3Dnil%2Cwithlabels%3ABool%7CNil%3Dnil%2Cselected_labels%3AEnumerable%28String%29%7CNil%3Dnil%2Ccount%3AInt%7CNil%3Dnil%2Caggregation%3AAggregation%7CNil%3Dnil%2Cgroupby%3AString%7CNil%3Dnil%2Creduce%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#mrange</strong>(time_range : ::Range(Time, Time | Nil), filter : String, filter_by_ts : Enumerable(Time) | Nil = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64) | Nil = <span class="n">nil</span>, withlabels : Bool | Nil = <span class="n">nil</span>, selected_labels : Enumerable(String) | Nil = <span class="n">nil</span>, count : Int | Nil = <span class="n">nil</span>, aggregation : Aggregation | Nil = <span class="n">nil</span>, groupby : String | Nil = <span class="n">nil</span>, reduce : String | Nil = <span class="n">nil</span>)</a>
+          <div class="summary"><p>Returns an array (convertible to a hash via <code><a href="../Redis.html#to_hash%28array%3AArray%2Cvalue_type%3AT.class%29%3AHash%28String%2CT%29forallT-class-method">Redis.to_hash</a></code>) containing information about the Bloom Filter stored in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%7CNil%29%2Cfilter%3AArray%28String%29%2Cfilter_by_ts%3AEnumerable%28Time%29%7CNil%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%7CNil%3Dnil%2Cwithlabels%3ABool%7CNil%3Dnil%2Cselected_labels%3AEnumerable%28String%29%7CNil%3Dnil%2Ccount%3AInt%7CNil%3Dnil%2Caggregation%3AAggregation%7CNil%3Dnil%2Cgroupby%3AString%7CNil%3Dnil%2Creduce%3AString%7CNil%3Dnil%29-instance-method" class="signature"><strong>#mrange</strong>(time_range : ::Range(Time, Time | Nil), filter : Array(String), filter_by_ts : Enumerable(Time) | Nil = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64) | Nil = <span class="n">nil</span>, withlabels : Bool | Nil = <span class="n">nil</span>, selected_labels : Enumerable(String) | Nil = <span class="n">nil</span>, count : Int | Nil = <span class="n">nil</span>, aggregation : Aggregation | Nil = <span class="n">nil</span>, groupby : String | Nil = <span class="n">nil</span>, reduce : String | Nil = <span class="n">nil</span>)</a>
+        <a href="#insert%28key%3AString%2Citems%3AArray%28String%29%2C%2A%2Ccapacity%3AString%7CInt64%3Dnil%2Cerrorerror_rate%3AString%7CFloat64%7CNil%3Dnil%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%2Cnocreate%3ABool%3Dfalse%29-instance-method" class="signature"><strong>#insert</strong>(key : String, items : Array(String), *, capacity : String | Int64 = <span class="n">nil</span>, error error_rate : String | Float64 | Nil = <span class="n">nil</span>, nonscaling : Bool = <span class="n">false</span>, expansion : String | Int64 | Nil = <span class="n">nil</span>, nocreate : Bool = <span class="n">false</span>)</a>
+        
+          <div class="summary"><p>Insert <code>items</code> into the Bloom Filter stored in <code>key</code>, creating it if it doesn't already exist.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#queryindex%28filter%3AString%29-instance-method" class="signature"><strong>#queryindex</strong>(filter : String)</a>
+        <a href="#madd%28key%3AString%2Citems%3AEnumerable%28String%29%29-instance-method" class="signature"><strong>#madd</strong>(key : String, items : Enumerable(String))</a>
+        
+          <div class="summary"><p>Add <code>items</code> to the Bloom Filter stored in <code>key</code>.</p></div>
         
       </li>
     
       <li class="entry-summary">
-        <a href="#range%28key%3AString%2Ctime_range%3A%3A%3ARange%28Time%2CTime%29%2C%26%3ARangeOptions-%3E%29-instance-method" class="signature"><strong>#range</strong>(key : String, time_range : ::Range(Time, Time), & : RangeOptions -> )</a>
+        <a href="#mexists%28key%3AString%2Citems%3AEnumerable%28String%29%29-instance-method" class="signature"><strong>#mexists</strong>(key : String, items : Enumerable(String))</a>
+        
+          <div class="summary"><p>Returns an array corresponding to each member of <code>items</code> containing <code>1</code> if the item was added or <code>0</code> if it was not.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#reserve%28key%3AString%2Cerror_rate%3AString%7CFloat64%2Ccapacity%3AString%7CInt64%2C%2A%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%29-instance-method" class="signature"><strong>#reserve</strong>(key : String, error_rate : String | Float64, capacity : String | Int64, *, nonscaling : Bool = <span class="n">false</span>, expansion : String | Int64 | Nil = <span class="n">nil</span>)</a>
+        
+          <div class="summary"><p>Create a Bloom Filter in <code>key</code> with the given <code>error_rate</code> and <code>capacity</code>.</p></div>
         
       </li>
     
@@ -1069,6 +1107,32 @@
   </div>
 
   
+  <h2>
+    <a id="constructor-detail" class="anchor" href="#constructor-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Constructor Detail
+  </h2>
+  
+    <div class="entry-detail" id="new(redis:Redis::Commands)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(redis : <a href="../Redis/Commands.html">Redis::Commands</a>)
+
+        <a class="method-permalink" href="#new%28redis%3ARedis%3A%3ACommands%29-class-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
 
   
 
@@ -1084,82 +1148,75 @@
     Instance Method Detail
   </h2>
   
-    <div class="entry-detail" id="add(key:String,value:Float64|Int64,retention:Time::Span|Nil=nil,encoding:Encoding|Nil=nil,chunk_size:Int64|Nil=nil,on_duplicateduplicate_policy:DuplicatePolicy|Nil=nil,labels:Hash(String,String|Int32|Int64)|Nil=nil)-instance-method">
+    <div class="entry-detail" id="add(key:String,item:String)-instance-method">
       <div class="signature">
         
-        def <strong>add</strong>(key : String, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a> | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a> | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)
+        def <strong>add</strong>(key : String, item : String)
 
-        <a class="method-permalink" href="#add%28key%3AString%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#add%28key%3AString%2Citem%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Add <code>item</code> to the Bloom Filter stored in <code>key</code>.</p>
+<pre><code class="language-crystal">redis.bf.add <span class="s">&quot;user:</span><span class="i">#{</span>user.id<span class="i">}</span><span class="s">:products_ordered&quot;</span>, product.id</code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L54" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L97" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="add(key:String,timestamp:Time,value:Float64|Int64,retention:Time::Span|Nil=nil,encoding:Encoding|Nil=nil,chunk_size:Int64|Nil=nil,on_duplicateduplicate_policy:DuplicatePolicy|Nil=nil,labels:Hash(String,String|Int32|Int64)|Nil=nil)-instance-method">
+    <div class="entry-detail" id="card(key:String)-instance-method">
       <div class="signature">
         
-        def <strong>add</strong>(key : String, timestamp : Time, value : Float64 | Int64, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a> | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, on_duplicate duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a> | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)
+        def <strong>card</strong>(key : String)
 
-        <a class="method-permalink" href="#add%28key%3AString%2Ctimestamp%3ATime%2Cvalue%3AFloat64%7CInt64%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Con_duplicateduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#card%28key%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns the number of items added to the Bloom Filter that have been
+detected as unique.</p>
+<pre><code class="language-crystal">key <span class="o">=</span> <span class="s">&quot;user:</span><span class="i">#{</span>user.id<span class="i">}</span><span class="s">:products_ordered&quot;</span>
+redis.bf.card(key)           <span class="c"># =&gt; 0</span>
+redis.bf.add key, product.id <span class="c"># =&gt; 1</span>
+redis.bf.card(key)           <span class="c"># =&gt; 1</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L91" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L149" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="aggregation(aggregator:AggregationType,bucket_duration:Time::Span,align:Alignment|Time|Nil=nil,buckettimestamp:BucketTimestamp|Nil=nil,empty:Bool|Nil=nil)-instance-method">
+    <div class="entry-detail" id="exists(key:String,item:String)-instance-method">
       <div class="signature">
         
-        def <strong>aggregation</strong>(aggregator : <a href="../Redis/TimeSeries/AggregationType.html">AggregationType</a>, bucket_duration : Time::Span, align : <a href="../Redis/TimeSeries/Alignment.html">Alignment</a> | Time | Nil = <span class="n">nil</span>, buckettimestamp : <a href="../Redis/TimeSeries/BucketTimestamp.html">BucketTimestamp</a> | Nil = <span class="n">nil</span>, empty : Bool | Nil = <span class="n">nil</span>)
+        def <strong>exists</strong>(key : String, item : String)
 
-        <a class="method-permalink" href="#aggregation%28aggregator%3AAggregationType%2Cbucket_duration%3ATime%3A%3ASpan%2Calign%3AAlignment%7CTime%7CNil%3Dnil%2Cbuckettimestamp%3ABucketTimestamp%7CNil%3Dnil%2Cempty%3ABool%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#exists%28key%3AString%2Citem%3AString%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns <code>1</code> if <code>item</code> is a member of the Bloom Filter stored in <code>key</code>, <code>0</code> otherwise.</p>
+<pre><code class="language-crystal">key <span class="o">=</span> <span class="s">&quot;user:</span><span class="i">#{</span>user.id<span class="i">}</span><span class="s">:products_ordered&quot;</span>
+redis.bf.exists(key, product.id) <span class="c"># =&gt; 0</span>
+redis.bf.add key, product.id     <span class="c"># =&gt; 1</span>
+redis.bf.exists(key, product.id) <span class="c"># =&gt; 1</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L153" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="create(key:String,retention:Time::Span|Nil=nil,encoding:Encoding|Nil=nil,chunk_size:Int64|Nil=nil,duplicate_policy:DuplicatePolicy|Nil=nil,labels:Hash(String,String|Int32|Int64)|Nil=nil)-instance-method">
-      <div class="signature">
-        
-        def <strong>create</strong>(key : String, retention : Time::Span | Nil = <span class="n">nil</span>, encoding : <a href="../Redis/TimeSeries/Encoding.html">Encoding</a> | Nil = <span class="n">nil</span>, chunk_size : Int64 | Nil = <span class="n">nil</span>, duplicate_policy : <a href="../Redis/TimeSeries/DuplicatePolicy.html">DuplicatePolicy</a> | Nil = <span class="n">nil</span>, labels : Hash(String, String | Int32 | Int64) | Nil = <span class="n">nil</span>)
-
-        <a class="method-permalink" href="#create%28key%3AString%2Cretention%3ATime%3A%3ASpan%7CNil%3Dnil%2Cencoding%3AEncoding%7CNil%3Dnil%2Cchunk_size%3AInt64%7CNil%3Dnil%2Cduplicate_policy%3ADuplicatePolicy%7CNil%3Dnil%2Clabels%3AHash%28String%2CString%7CInt32%7CInt64%29%7CNil%3Dnil%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L18" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="get(key:String)-instance-method">
-      <div class="signature">
-        
-        def <strong>get</strong>(key : String)
-
-        <a class="method-permalink" href="#get%28key%3AString%29-instance-method">#</a>
-      </div>
-      
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L126" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L121" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1172,74 +1229,121 @@
         <a class="method-permalink" href="#info%28key%3AString%29-instance-method">#</a>
       </div>
       
-      <br/>
-      <div>
-        
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L145" target="_blank">View source</a>]
-        
-      </div>
-    </div>
-  
-    <div class="entry-detail" id="mrange(time_range:::Range(Time,Time|Nil),filter:String,filter_by_ts:Enumerable(Time)|Nil=nil,filter_by_value:::Range(Float64,Float64)|Nil=nil,withlabels:Bool|Nil=nil,selected_labels:Enumerable(String)|Nil=nil,count:Int|Nil=nil,aggregation:Aggregation|Nil=nil,groupby:String|Nil=nil,reduce:String|Nil=nil)-instance-method">
-      <div class="signature">
-        
-        def <strong>mrange</strong>(time_range : ::Range(Time, Time | Nil), filter : String, filter_by_ts : Enumerable(Time) | Nil = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64) | Nil = <span class="n">nil</span>, withlabels : Bool | Nil = <span class="n">nil</span>, selected_labels : Enumerable(String) | Nil = <span class="n">nil</span>, count : Int | Nil = <span class="n">nil</span>, aggregation : <a href="../Redis/TimeSeries/Aggregation.html">Aggregation</a> | Nil = <span class="n">nil</span>, groupby : String | Nil = <span class="n">nil</span>, reduce : String | Nil = <span class="n">nil</span>)
-
-        <a class="method-permalink" href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%7CNil%29%2Cfilter%3AString%2Cfilter_by_ts%3AEnumerable%28Time%29%7CNil%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%7CNil%3Dnil%2Cwithlabels%3ABool%7CNil%3Dnil%2Cselected_labels%3AEnumerable%28String%29%7CNil%3Dnil%2Ccount%3AInt%7CNil%3Dnil%2Caggregation%3AAggregation%7CNil%3Dnil%2Cgroupby%3AString%7CNil%3Dnil%2Creduce%3AString%7CNil%3Dnil%29-instance-method">#</a>
-      </div>
+        <div class="doc">
+          
+          <p>Returns an array (convertible to a hash via <code><a href="../Redis.html#to_hash%28array%3AArray%2Cvalue_type%3AT.class%29%3AHash%28String%2CT%29forallT-class-method">Redis.to_hash</a></code>) containing information about the Bloom Filter stored in <code>key</code>.</p>
+<pre><code class="language-crystal">redis.bf.reserve(key, error_rate: <span class="n">0.01</span>, capacity: <span class="n">10</span>)
+redis.bf.info(key)
+<span class="c"># =&gt; [&quot;Capacity&quot;,</span>
+<span class="c">#     10,</span>
+<span class="c">#     &quot;Size&quot;,</span>
+<span class="c">#     112,</span>
+<span class="c">#     &quot;Number of filters&quot;,</span>
+<span class="c">#     1,</span>
+<span class="c">#     &quot;Number of items inserted&quot;,</span>
+<span class="c">#     0,</span>
+<span class="c">#     &quot;Expansion rate&quot;,</span>
+<span class="c">#     2]</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L181" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L169" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="mrange(time_range:::Range(Time,Time|Nil),filter:Array(String),filter_by_ts:Enumerable(Time)|Nil=nil,filter_by_value:::Range(Float64,Float64)|Nil=nil,withlabels:Bool|Nil=nil,selected_labels:Enumerable(String)|Nil=nil,count:Int|Nil=nil,aggregation:Aggregation|Nil=nil,groupby:String|Nil=nil,reduce:String|Nil=nil)-instance-method">
+    <div class="entry-detail" id="insert(key:String,items:Array(String),*,capacity:String|Int64=nil,errorerror_rate:String|Float64|Nil=nil,nonscaling:Bool=false,expansion:String|Int64|Nil=nil,nocreate:Bool=false)-instance-method">
       <div class="signature">
         
-        def <strong>mrange</strong>(time_range : ::Range(Time, Time | Nil), filter : Array(String), filter_by_ts : Enumerable(Time) | Nil = <span class="n">nil</span>, filter_by_value : ::Range(Float64, Float64) | Nil = <span class="n">nil</span>, withlabels : Bool | Nil = <span class="n">nil</span>, selected_labels : Enumerable(String) | Nil = <span class="n">nil</span>, count : Int | Nil = <span class="n">nil</span>, aggregation : <a href="../Redis/TimeSeries/Aggregation.html">Aggregation</a> | Nil = <span class="n">nil</span>, groupby : String | Nil = <span class="n">nil</span>, reduce : String | Nil = <span class="n">nil</span>)
+        def <strong>insert</strong>(key : String, items : Array(String), *, capacity : String | Int64 = <span class="n">nil</span>, error error_rate : String | Float64 | Nil = <span class="n">nil</span>, nonscaling : Bool = <span class="n">false</span>, expansion : String | Int64 | Nil = <span class="n">nil</span>, nocreate : Bool = <span class="n">false</span>)
 
-        <a class="method-permalink" href="#mrange%28time_range%3A%3A%3ARange%28Time%2CTime%7CNil%29%2Cfilter%3AArray%28String%29%2Cfilter_by_ts%3AEnumerable%28Time%29%7CNil%3Dnil%2Cfilter_by_value%3A%3A%3ARange%28Float64%2CFloat64%29%7CNil%3Dnil%2Cwithlabels%3ABool%7CNil%3Dnil%2Cselected_labels%3AEnumerable%28String%29%7CNil%3Dnil%2Ccount%3AInt%7CNil%3Dnil%2Caggregation%3AAggregation%7CNil%3Dnil%2Cgroupby%3AString%7CNil%3Dnil%2Creduce%3AString%7CNil%3Dnil%29-instance-method">#</a>
+        <a class="method-permalink" href="#insert%28key%3AString%2Citems%3AArray%28String%29%2C%2A%2Ccapacity%3AString%7CInt64%3Dnil%2Cerrorerror_rate%3AString%7CFloat64%7CNil%3Dnil%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%2Cnocreate%3ABool%3Dfalse%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Insert <code>items</code> into the Bloom Filter stored in <code>key</code>, creating it if it doesn't already exist. The <code>capacity</code>, <code>error_rate</code>, <code>nonscaling</code>, and <code>expansion</code> arguments are the same as for <code><a href="../Redis/BloomFilter.html#reserve%28key%3AString%2Cerror_rate%3AString%7CFloat64%2Ccapacity%3AString%7CInt64%2C%2A%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%29-instance-method">#reserve</a></code>.</p>
+<pre><code class="language-crystal">redis.bf.insert <span class="s">&quot;user:</span><span class="i">#{</span>user_id<span class="i">}</span><span class="s">:products_ordered&quot;</span>, products.map(<span class="o">&amp;</span>.id),
+  error: <span class="n">0.01</span>,
+  capacity: <span class="n">100</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L207" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L62" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="queryindex(filter:String)-instance-method">
+    <div class="entry-detail" id="madd(key:String,items:Enumerable(String))-instance-method">
       <div class="signature">
         
-        def <strong>queryindex</strong>(filter : String)
+        def <strong>madd</strong>(key : String, items : Enumerable(String))
 
-        <a class="method-permalink" href="#queryindex%28filter%3AString%29-instance-method">#</a>
+        <a class="method-permalink" href="#madd%28key%3AString%2Citems%3AEnumerable%28String%29%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Add <code>items</code> to the Bloom Filter stored in <code>key</code>.</p>
+<pre><code class="language-crystal">redis.bf.madd <span class="s">&quot;user:</span><span class="i">#{</span>user.id<span class="i">}</span><span class="s">:products_ordered&quot;</span>, products.map(<span class="o">&amp;</span>.id)</code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L149" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L106" target="_blank">View source</a>]
         
       </div>
     </div>
   
-    <div class="entry-detail" id="range(key:String,time_range:::Range(Time,Time),&amp;:RangeOptions-&gt;)-instance-method">
+    <div class="entry-detail" id="mexists(key:String,items:Enumerable(String))-instance-method">
       <div class="signature">
         
-        def <strong>range</strong>(key : String, time_range : ::Range(Time, Time), & : <a href="../Redis/TimeSeries/RangeOptions.html">RangeOptions</a> -> )
+        def <strong>mexists</strong>(key : String, items : Enumerable(String))
 
-        <a class="method-permalink" href="#range%28key%3AString%2Ctime_range%3A%3A%3ARange%28Time%2CTime%29%2C%26%3ARangeOptions-%3E%29-instance-method">#</a>
+        <a class="method-permalink" href="#mexists%28key%3AString%2Citems%3AEnumerable%28String%29%29-instance-method">#</a>
       </div>
+      
+        <div class="doc">
+          
+          <p>Returns an array corresponding to each member of <code>items</code> containing <code>1</code> if
+the item was added or <code>0</code> if it was not.</p>
+<pre><code class="language-crystal">redis.bf.madd key, <span class="s">%w[one two]</span>
+redis.bf.mexists(key, <span class="s">%w[one two three]</span>) <span class="c"># =&gt; [1, 1, 0]</span></code></pre>
+        </div>
       
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/time_series.cr#L130" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L132" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="reserve(key:String,error_rate:String|Float64,capacity:String|Int64,*,nonscaling:Bool=false,expansion:String|Int64|Nil=nil)-instance-method">
+      <div class="signature">
+        
+        def <strong>reserve</strong>(key : String, error_rate : String | Float64, capacity : String | Int64, *, nonscaling : Bool = <span class="n">false</span>, expansion : String | Int64 | Nil = <span class="n">nil</span>)
+
+        <a class="method-permalink" href="#reserve%28key%3AString%2Cerror_rate%3AString%7CFloat64%2Ccapacity%3AString%7CInt64%2C%2A%2Cnonscaling%3ABool%3Dfalse%2Cexpansion%3AString%7CInt64%7CNil%3Dnil%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Create a Bloom Filter in <code>key</code> with the given <code>error_rate</code> and <code>capacity</code>. You can tune the <code>expansion</code> factor or prevent expansion entirely by setting <code>nonscaling: true</code>.</p>
+<pre><code class="language-crystal">redis.bf.reserve <span class="s">&quot;user:</span><span class="i">#{</span>user_id<span class="i">}</span><span class="s">:products_ordered&quot;</span>,
+  error_rate: <span class="n">0.01</span>,
+  capacity: <span class="n">100</span></code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/bloom_filter.cr#L40" target="_blank">View source</a>]
         
       </div>
     </div>
