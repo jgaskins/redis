@@ -125,14 +125,14 @@ module Redis
           yield txn
         rescue ex
           txn.discard
-          raise ex
+          raise DB::PoolResourceLost.new(self, cause: ex)
         end
       rescue ex : IO::Error
         if retries > 0
           retries -= 1
           initialize @uri
         else
-          raise ex
+          raise DB::PoolResourceLost.new(self, cause: ex)
         end
       else
         if txn.discarded?
