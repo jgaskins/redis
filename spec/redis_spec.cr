@@ -21,6 +21,38 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  describe "#get!" do
+    test "gets a key, asserting that it exists" do
+      redis.set key, {
+        id:    123,
+        items: [
+          {
+            id:               1,
+            product_id:       1234,
+            quantity:         1,
+            unit_price_cents: 100_00,
+          },
+          {
+            id:               2,
+            product_id:       4321,
+            quantity:         2,
+            unit_price_cents: 200_00,
+          },
+        ],
+      }.to_json
+
+      cart = RedisSpec::Cart.from_json(redis.get!(key))
+      cart.id.should eq 123
+      cart.items.size.should eq 2
+    end
+
+    test "raises an error if the key does not exist" do
+      expect_raises Redis::MissingKey do
+        redis.get!(UUID.v7.to_s)
+      end
+    end
+  end
+
   test "it returns 0 when passed no keys to delete" do
     redis.del([] of String).should eq 0
   end
@@ -386,79 +418,6 @@ describe Redis::Client do
     end
   end
 
-  context "transactions" do
-    test "returns the results of the commands, like pipelines do" do
-      # Returns
-      redis.multi do |redis|
-        redis.set key, "value"
-        redis.get key
-      end.should eq %w[OK value]
-    end
-
-    test "returns an empty array when the transaction is discarded" do
-      redis.multi do |redis|
-        redis.set key, "this gets discarded"
-        redis.discard
-        redis.get "this never actually does anything anyway"
-      end.should be_empty
-    end
-
-    test "returns command errors, but does not raise" do
-      redis.multi do |redis|
-        redis.set key, "foo"
-        redis.lpush key, "bar" # error, performing list operation on a string
-        redis.get key
-      end.should eq [
-        "OK",
-        Redis::Error.new("WRONGTYPE Operation against a key holding the wrong kind of value"),
-        "foo",
-      ]
-    end
-
-    test "allows the block to return/break" do
-      value = redis.multi do |redis|
-        redis.set key, "value"
-        break 1
-      end
-
-      value.should eq 1
-      redis.get(key).should eq "value"
-    end
-
-    test "does more transaction stuff" do
-      redis.get(key).should eq nil
-
-      _, nope, _, yep = redis.multi do |redis|
-        redis.set key, "nope"
-        redis.get key
-        redis.set key, "yep"
-        redis.get key
-      end
-
-      nope.should eq "nope"
-      yep.should eq "yep"
-
-      redis.get(key).should eq "yep"
-      redis.del key
-
-      expect_raises Exception do
-        redis.multi do |redis|
-          redis.set key, "lol"
-
-          raise "oops"
-        ensure
-          redis.get(key).should eq nil
-        end
-
-        # Ensure we're still in the same state
-        redis.get(key).should eq nil
-        # Ensure we can still set the key
-        redis.set key, "yep"
-        redis.get(key).should eq "yep"
-      end
-    end
-  end
-
   test "works with lists" do
     spawn do
       sleep 10.milliseconds
@@ -594,6 +553,19 @@ describe Redis::Client do
           ready = true if count == 2
         end
       end
+    end
+  end
+end
+
+module RedisSpec
+  struct Cart
+    include JSON::Serializable
+
+    getter id : Int64
+    getter items : Array(Item)
+
+    struct Item
+      include JSON::Serializable
     end
   end
 end

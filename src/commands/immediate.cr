@@ -1,4 +1,5 @@
 require "../commands"
+require "../errors"
 
 # Immediate objects are ones that execute commands on the server and return
 # their results immediately. This allows the caller to know that it can
@@ -205,4 +206,37 @@ module Redis::Commands::Immediate
   end
 
   set_return_types!
+
+  # Returns the value of the string stored in `key`, asserting that it exists.
+  #
+  # ```
+  # require "redis"
+  # require "msgpack" # Storing MessagePack data
+  #
+  # struct Cart
+  #   include MessagePack::Serializable
+  #
+  #   getter user_id : Int64
+  #   getter items : Array(Item)
+  #
+  #   struct Item
+  #     include MessagePack::Serializable
+  #
+  #     getter id : Int64
+  #     getter product_id : Int64
+  #     getter quantity : Int32
+  #     getter unit_price_cents : Int64
+  #   end
+  # end
+  #
+  # p! Cart.from_msgpack(redis.get!("cart:123"))
+  # ```
+  def get!(key : String) : String
+    if value = get(key)
+      value
+    else
+      raise MissingKey.new("Assertion that the key #{key.inspect} exists failed.")
+    end
+  end
+
 end

@@ -16,6 +16,13 @@ module Redis
   Error.define NoGroup
   Error.define BusyGroup
   Error.define ReadOnly
+  # Raised when using a command that requires a key to exist.
+  #
+  # ```
+  # redis.get! "nonexistent"
+  # # => Assertion that the key "nonexistent" exists failed. (Redis::MissingKey)
+  # ```
+  Error.define MissingKey, nil
 
   class Cluster
     Error.define Error, nil

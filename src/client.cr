@@ -140,6 +140,35 @@ module Redis
       checkout(&.multi { |txn| yield txn })
     end
 
+    # Watch the given `keys` for changes when you need to fetch them for update
+    # in a transaction and yield the connection with that watch active. This
+    # allows for optimistic updates within the transaction, returning `nil` from
+    # `Transaction#exec` if any of the keys are modified before the transaction
+    # completes.
+    #
+    # ```
+    # # Begin watching the `session:123` key, yields the connection that's
+    # # watching it
+    # redis.watch "session:123" do |conn|
+    #   session = Session.from_json(conn.get!("session:123"))
+    #   session.user_id = user.id
+    #
+    #   # Begin a new tra
+    #   conn.multi do |txn|
+    #     txn.set "session:123", session.to_json
+    #   end
+    # end
+    # ```
+    #
+    # NOTE: This does not *prevent* concurrent updates the way an RDBMS like Postgres does. Redis has no way to prevent that when performing more than a single command. However, this pattern allows you to _detect_ a concurrent update (the `multi` block returns `nil`), so you'll need to design your interactions with the Redis server around this and, if necessary, retry the transaction according to your application's needs.
+    # IMPORTANT: Use this sparingly. Whenever feasible, instead of a fetch/mutate/save cycle, update keys atomically in Redis. For example, if you're using a JSON field, set properties directly with `JSON#set` or increment them with `JSON#numincrby`. Redis is designed specifically to work that way.
+    def watch(*keys : String, &)
+      checkout do |connection|
+        connection.watch(*keys)
+        yield connection
+      end
+    end
+
     def subscribe(*channels, &)
       checkout(&.subscribe(*channels) { |subscription, conn| yield subscription, conn })
     end

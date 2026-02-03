@@ -138,11 +138,11 @@ module Redis
         if txn.discarded?
           return [] of Value
         else
-          return txn.exec.as(Array)
+          return txn.exec
         end
       ensure
         if txn && txn.status.queued?
-          txn.exec.as(Array)
+          txn.exec
         end
       end
     end
@@ -329,6 +329,16 @@ module Redis
     # :nodoc:
     def finalize
       close rescue nil
+    end
+
+    # Watch the given keys for changes.
+    def watch(*keys : String)
+      run({"watch"} + keys)
+    end
+
+    # Stop watching all watched keys on this connection.
+    def unwatch
+      run({"unwatch"})
     end
 
     # Flush the connection buffer and make sure we've sent everything to the
