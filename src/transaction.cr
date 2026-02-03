@@ -48,18 +48,6 @@ module Redis
       end
     end
 
-    def exec
-      start = Time.monotonic
-      begin
-        finish("exec").as(Array(Value)?)
-      ensure
-        @connection.log.debug &.emit "exec",
-          commands: @command_count,
-          duration_ms: (Time.monotonic - start).total_milliseconds
-        @status = :committed
-      end
-    end
-
     def start!
       @connection.encode({"multi"})
     end
