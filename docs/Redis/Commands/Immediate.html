@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.18.2">
-<meta name="crystal_docs.project_version" content="0.15.0">
+<meta name="crystal_docs.project_version" content="0.15.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Commands::Immediate - redis 0.15.0</title>
+  <title>Redis::Commands::Immediate - redis 0.15.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.15.0
+        0.15.1
       </span>
     </div>
   </div>
@@ -587,6 +587,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/MissingKey" data-name="redis::missingkey">
+      <a href="../../Redis/MissingKey.html">MissingKey</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/NoGroup" data-name="redis::nogroup">
       <a href="../../Redis/NoGroup.html">NoGroup</a>
       
@@ -971,7 +976,7 @@ return types to only the types that the Redis server is known to return.</p>
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/immediate.cr#L22" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/commands/immediate.cr#L23" target="_blank">
         commands/immediate.cr
       </a>
     
@@ -1006,6 +1011,25 @@ return types to only the types that the Redis server is known to return.</p>
 
 
   
+  <h2>
+    <a id="instance-method-summary" class="anchor" href="#instance-method-summary">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Summary
+  </h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#get%21%28key%3AString%29%3AString-instance-method" class="signature"><strong>#get!</strong>(key : String) : String</a>
+        
+          <div class="summary"><p>Returns the value of the string stored in <code>key</code>, asserting that it exists.</p></div>
+        
+      </li>
+    
+  </ul>
+
 
 
   <div class="methods-inherited">
@@ -1037,7 +1061,7 @@ return types to only the types that the Redis server is known to return.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/commands/immediate.cr#L43" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/commands/immediate.cr#L44" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1045,6 +1069,57 @@ return types to only the types that the Redis server is known to return.</p>
 
 
   
+  <h2>
+    <a id="instance-method-detail" class="anchor" href="#instance-method-detail">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>
+    Instance Method Detail
+  </h2>
+  
+    <div class="entry-detail" id="get!(key:String):String-instance-method">
+      <div class="signature">
+        
+        def <strong>get!</strong>(key : String) : String
+
+        <a class="method-permalink" href="#get%21%28key%3AString%29%3AString-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Returns the value of the string stored in <code>key</code>, asserting that it exists.</p>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;redis&quot;</span>
+<span class="k">require</span> <span class="s">&quot;msgpack&quot;</span> <span class="c"># Storing MessagePack data</span>
+
+<span class="k">struct</span> <span class="t">Cart</span>
+  <span class="k">include</span> <span class="t">MessagePack</span><span class="t">::</span><span class="t">Serializable</span>
+
+  getter user_id : <span class="t">Int64</span>
+  getter items : <span class="t">Array</span>(<span class="t">Item</span>)
+
+  <span class="k">struct</span> <span class="t">Item</span>
+    <span class="k">include</span> <span class="t">MessagePack</span><span class="t">::</span><span class="t">Serializable</span>
+
+    getter id : <span class="t">Int64</span>
+    getter product_id : <span class="t">Int64</span>
+    getter quantity : <span class="t">Int32</span>
+    getter unit_price_cents : <span class="t">Int64</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+p! <span class="t">Cart</span>.from_msgpack(redis.get!(<span class="s">&quot;cart:123&quot;</span>))</code></pre>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/commands/immediate.cr#L234" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
 
 
 </div>

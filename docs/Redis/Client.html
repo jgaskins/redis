@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Crystal Docs 1.18.2">
-<meta name="crystal_docs.project_version" content="0.15.0">
+<meta name="crystal_docs.project_version" content="0.15.1">
 <meta name="crystal_docs.project_name" content="redis">
 
 
@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../js/doc.js"></script>
 
   <meta name="repository-name" content="redis">
-  <title>Redis::Client - redis 0.15.0</title>
+  <title>Redis::Client - redis 0.15.1</title>
   <script type="text/javascript">
     CrystalDocs.base_path = "../";
   </script>
@@ -45,7 +45,7 @@
       </h1>
 
       <span class="project-version">
-        0.15.0
+        0.15.1
       </span>
     </div>
   </div>
@@ -587,6 +587,11 @@
       
     </li>
   
+  <li class=" " data-id="redis/Redis/MissingKey" data-name="redis::missingkey">
+      <a href="../Redis/MissingKey.html">MissingKey</a>
+      
+    </li>
+  
   <li class=" " data-id="redis/Redis/NoGroup" data-name="redis::nogroup">
       <a href="../Redis/NoGroup.html">NoGroup</a>
       
@@ -964,7 +969,7 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   </h2>
   
     
-      <a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L23" target="_blank">
+      <a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L23" target="_blank">
         client.cr
       </a>
     
@@ -1086,6 +1091,13 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
       </li>
     
       <li class="entry-summary">
+        <a href="#watch%28%2Akeys%3AString%2C%26%29-instance-method" class="signature"><strong>#watch</strong>(*keys : String, &)</a>
+        
+          <div class="summary"><p>Watch the given <code>keys</code> for changes when you need to fetch them for update in a transaction and yield the connection with that watch active.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
         <a href="#zscan_each%28key%3AString%2C%2A%2Cmatchpattern%3AString%7CNil%3Dnil%2Ccount%3AString%7CInt%7CNil%3Dnil%2C%26%29%3ANil-instance-method" class="signature"><strong>#zscan_each</strong>(key : String, *, match pattern : String | Nil = <span class="n">nil</span>, count : String | Int | Nil = <span class="n">nil</span>, &) : Nil</a>
         
       </li>
@@ -1097,6 +1109,15 @@ redis <span class="o">=</span> <span class="t">Redis</span><span class="t">::</s
   <div class="methods-inherited">
     
       
+
+  <h3>Instance methods inherited from module <code><a href="../Redis/Commands/Immediate.html">Redis::Commands::Immediate</a></code></h3>
+  
+  
+    <a href="../Redis/Commands/Immediate.html#get%21%28key%3AString%29%3AString-instance-method" class="tooltip">
+      <span>get!(key : String) : String</span>
+    get!</a>
+    
+  
 
 
       
@@ -1901,7 +1922,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L36" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L36" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1929,7 +1950,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L30" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L30" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1959,7 +1980,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L151" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L180" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1975,7 +1996,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L63" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L63" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -1991,7 +2012,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L139" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L139" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2007,7 +2028,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L135" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L135" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2023,7 +2044,7 @@ needed.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L147" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L176" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2047,7 +2068,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L131" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L131" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2063,7 +2084,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L59" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L59" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2079,7 +2100,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L67" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L67" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2095,7 +2116,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L71" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L71" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2111,7 +2132,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L143" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L172" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2127,7 +2148,45 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L27" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L27" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="watch(*keys:String,&amp;)-instance-method">
+      <div class="signature">
+        
+        def <strong>watch</strong>(*keys : String, &)
+
+        <a class="method-permalink" href="#watch%28%2Akeys%3AString%2C%26%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc">
+          
+          <p>Watch the given <code>keys</code> for changes when you need to fetch them for update
+in a transaction and yield the connection with that watch active. This
+allows for optimistic updates within the transaction, returning <code>nil</code> from
+<code><a href="../Redis/Transaction.html#exec-instance-method">Transaction#exec</a></code> if any of the keys are modified before the transaction
+completes.</p>
+<pre><code class="language-crystal"><span class="c"># Begin watching the `session:123` key, yields the connection that&#39;s</span>
+<span class="c"># watching it</span>
+redis.watch <span class="s">&quot;session:123&quot;</span> <span class="k">do</span> <span class="o">|</span>conn<span class="o">|</span>
+  session <span class="o">=</span> <span class="t">Session</span>.from_json(conn.get!(<span class="s">&quot;session:123&quot;</span>))
+  session.user_id <span class="o">=</span> user.id
+
+  <span class="c"># Begin a new tra</span>
+  conn.multi <span class="k">do</span> <span class="o">|</span>txn<span class="o">|</span>
+    txn.set <span class="s">&quot;session:123&quot;</span>, session.to_json
+  <span class="k">end</span>
+<span class="k">end</span></code></pre>
+<p><span class="flag purple">NOTE</span>  This does not <em>prevent</em> concurrent updates the way an RDBMS like Postgres does. Redis has no way to prevent that when performing more than a single command. However, this pattern allows you to <em>detect</em> a concurrent update (the <code><a href="../Redis/Client.html#multi%28%26%29-instance-method">#multi</a></code> block returns <code>nil</code>), so you'll need to design your interactions with the Redis server around this and, if necessary, retry the transaction according to your application's needs.
+IMPORTANT: Use this sparingly. Whenever feasible, instead of a fetch/mutate/save cycle, update keys atomically in Redis. For example, if you're using a JSON field, set properties directly with <code><a href="../Redis/JSON.html#set%28key%3AString%2Cpath%3AString%2Cvalue%2C%2A%2Cnx%3Dfalse%2Cxx%3Dfalse%29-instance-method">JSON#set</a></code> or increment them with <code><a href="../Redis/JSON.html#numincrby%28key%3AString%2Cpath%3AString%2Ccount%3AString%7CInt%2Castype%3AT.class%29%3ATforallT-instance-method">JSON#numincrby</a></code>. Redis is designed specifically to work that way.</p>
+        </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L165" target="_blank">View source</a>]
         
       </div>
     </div>
@@ -2143,7 +2202,7 @@ connection back into the pool.</p>
       <br/>
       <div>
         
-          [<a href="https://github.com/jgaskins/redis/blob/v0.15.0/src/client.cr#L120" target="_blank">View source</a>]
+          [<a href="https://github.com/jgaskins/redis/blob/v0.15.1/src/client.cr#L120" target="_blank">View source</a>]
         
       </div>
     </div>
