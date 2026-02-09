@@ -14,8 +14,8 @@ module Redis::Streaming
         consumer = UUID.v4.to_s
         redis.xgroup_create key, group, mkstream: true
         redis.xgroup_create_consumer key, group, consumer
-        one = redis.xadd(key, "*", fields: {one: "1"}).not_nil!
-        two = redis.xadd(key, "*", fields: {two: "2"}).not_nil!
+        one = redis.xadd(key, "*", fields: {one: "1", two: "2"}).not_nil!
+        two = redis.xadd(key, "*", fields: {three: "3"}).not_nil!
         response = redis
           .xreadgroup(
             group: group,
@@ -30,8 +30,8 @@ module Redis::Streaming
         response.results.first.key.should eq key
         response.results.first.messages.size.should eq 2
         response.results.first.messages.should eq [
-          Message.new(one, {"one" => "1"}),
-          Message.new(two, {"two" => "2"}),
+          Message.new(one, {"one" => "1", "two" => "2"}),
+          Message.new(two, {"three" => "3"}),
         ]
       end
     end
