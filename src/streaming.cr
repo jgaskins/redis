@@ -13,7 +13,7 @@ module Redis
         values = values.as(Array)
         @id = id.as(String)
         @values = Hash(String, String).new(initial_capacity: values.size // 2)
-        (values.size // 2).times do |index|
+        (0...values.size).step(2) do |index|
           @values[values[index].as(String)] = values[index + 1].as(String)
         end
       end
