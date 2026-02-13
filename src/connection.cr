@@ -125,14 +125,14 @@ module Redis
           yield txn
         rescue ex
           txn.discard
-          raise DB::PoolResourceLost.new(self, cause: ex)
+          raise ex
         end
       rescue ex : IO::Error
         if retries > 0
           retries -= 1
           initialize @uri
         else
-          raise DB::PoolResourceLost.new(self, cause: ex)
+          raise ex
         end
       else
         if txn.discarded?
@@ -145,6 +145,8 @@ module Redis
           txn.exec
         end
       end
+    rescue ex : IO::Error
+      raise DB::PoolResourceLost.new(self, cause: ex)
     end
 
     {% for command in %w[subscribe psubscribe] %}
@@ -237,7 +239,7 @@ module Redis
           retries -= 1
           initialize @uri
         else
-          raise DB::PoolResourceLost.new(self, cause: ex)
+          raise ex
         end
       rescue ex : Redis::ReadOnly
         @socket.close
@@ -246,13 +248,15 @@ module Redis
           initialize @uri
         else
           close
-          raise DB::PoolResourceLost.new(self, cause: ex)
+          raise ex
         end
       ensure
         @log.debug &.emit "redis",
           command: command.join(' '),
           duration_ms: (Time.monotonic - start).total_milliseconds
       end
+    rescue ex : IO::Error | Redis::ReadOnly
+      raise DB::PoolResourceLost.new(self, cause: ex)
     end
 
     # Iterate over keys that match the given pattern or all keys if no pattern
