@@ -482,5 +482,13 @@ module Redis
     def wait(numreplicas replica_count : Int | String, timeout : Int | String)
       run({"wait", replica_count.to_s, timeout.to_s})
     end
+
+    private def instant_time
+      {%if compare_versions(Crystal::VERSION, "1.19.0") >= 0 %}
+        Time.instant
+      {% else %}
+        Time.monotonic
+      {% end %}
+    end
   end
 end

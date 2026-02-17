@@ -233,7 +233,7 @@ module Redis
         # it before checking.
         command = command.downcase if command =~ /[A-Z]/
 
-        started_at = Time.monotonic
+        started_at = instant_time
         if READ_ONLY_COMMANDS.includes?(command)
           read_pool_for(key)
         else
@@ -241,7 +241,7 @@ module Redis
         end.checkout do |connection|
           connection.run(full_command)
         end.tap do
-          LOG.debug &.emit(command: full_command.join(' '), duration: (Time.monotonic - started_at).total_seconds)
+          LOG.debug &.emit(command: full_command.join(' '), duration: (instant_time - started_at).total_seconds)
         end
       else
         raise Error.new("No key was specified for this command, so the cluster driver cannot route it to an appropriate Redis shard. A cluster-specific method must be added to handle cases like these until a generalized solution is added.")
