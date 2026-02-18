@@ -37,13 +37,13 @@ module Redis
     end
 
     def exec
-      start = Time.monotonic
+      start = instant_time
       begin
         finish("exec").as(Array(Value)?)
       ensure
         @connection.log.debug &.emit "exec",
           commands: @command_count,
-          duration_ms: (Time.monotonic - start).total_milliseconds
+          duration_ms: (instant_time - start).total_milliseconds
         @status = :committed
       end
     end

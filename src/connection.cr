@@ -228,7 +228,7 @@ module Redis
     # run({"set", "foo", "bar"})
     # ```
     def run(command, retries = 5) : Value
-      start = Time.monotonic
+      start = instant_time
 
       loop do
         @writer.encode command
@@ -253,7 +253,7 @@ module Redis
       ensure
         @log.debug &.emit "redis",
           command: command.join(' '),
-          duration_ms: (Time.monotonic - start).total_milliseconds
+          duration_ms: (instant_time - start).total_milliseconds
       end
     rescue ex : IO::Error | Redis::ReadOnly
       raise DB::PoolResourceLost.new(self, cause: ex)
