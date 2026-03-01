@@ -63,7 +63,7 @@ module Redis
       key : String,
       items : Array(String),
       *,
-      capacity : String | Int64 = nil,
+      capacity : String | Int64 | Nil = nil,
       error error_rate : String | Float64 | Nil = nil,
       nonscaling : Bool = false,
       expansion : String | Int64 | Nil = nil,
