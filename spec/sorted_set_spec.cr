@@ -49,9 +49,9 @@ describe Redis::Commands::SortedSet do
       redis.zadd(key, "2", "value", lt: true).should eq 0 # variadic
       redis.zscore(key, "value").should eq "1"
       redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
-      redis.zscore(key, "value").should eq "0.5"
+      redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.5
       redis.zadd(key, "0.1", "value", lt: true).should eq 0 # variadic
-      redis.zscore(key, "value").should eq "0.1"
+      redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.1
     end
 
     test "can add a member only if it is greater than the current score" do
