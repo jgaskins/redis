@@ -54,6 +54,7 @@ module Redis::Commands::Immediate
       dump:          String?,
       script_load:   String,
       script_exists: Array,
+      info:          String,
 
       # String commands
       append:      Int64,
@@ -239,4 +240,12 @@ module Redis::Commands::Immediate
     end
   end
 
+  def info
+    run({"info"})
+      .as(String)
+      .lines
+      .reject { |line| line =~ /^(#|$)/ }
+      .map(&.split(':', 2))
+      .to_h
+  end
 end
