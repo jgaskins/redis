@@ -6,33 +6,36 @@ require "../src/streaming"
 module Redis::Streaming
   redis = Redis::Client.new
   define_test redis
+  test = TestRunner.new(redis)
 
   describe Redis::Streaming do
-    describe XReadGroupResponse do
-      test "parses the result array" do
-        group = UUID.v4.to_s
-        consumer = UUID.v4.to_s
-        redis.xgroup_create key, group, mkstream: true
-        redis.xgroup_create_consumer key, group, consumer
-        one = redis.xadd(key, "*", fields: {one: "1", two: "2"}).not_nil!
-        two = redis.xadd(key, "*", fields: {three: "3"}).not_nil!
-        response = redis
-          .xreadgroup(
-            group: group,
-            consumer: consumer,
-            streams: {key => ">"},
-          )         # Array?
-          .not_nil! # Array
+    if test.server_version >= Version["6.2.0"]
+      describe XReadGroupResponse do
+        test "parses the result array" do
+          group = UUID.v4.to_s
+          consumer = UUID.v4.to_s
+          redis.xgroup_create key, group, mkstream: true
+          redis.xgroup_create_consumer key, group, consumer
+          one = redis.xadd(key, "*", fields: {one: "1", two: "2"}).not_nil!
+          two = redis.xadd(key, "*", fields: {three: "3"}).not_nil!
+          response = redis
+            .xreadgroup(
+              group: group,
+              consumer: consumer,
+              streams: {key => ">"},
+            )         # Array?
+            .not_nil! # Array
 
-        response = XReadGroupResponse.new(response)
+          response = XReadGroupResponse.new(response)
 
-        response.results.size.should eq 1
-        response.results.first.key.should eq key
-        response.results.first.messages.size.should eq 2
-        response.results.first.messages.should eq [
-          Message.new(one, {"one" => "1", "two" => "2"}),
-          Message.new(two, {"three" => "3"}),
-        ]
+          response.results.size.should eq 1
+          response.results.first.key.should eq key
+          response.results.first.messages.size.should eq 2
+          response.results.first.messages.should eq [
+            Message.new(one, {"one" => "1", "two" => "2"}),
+            Message.new(two, {"three" => "3"}),
+          ]
+        end
       end
     end
 
