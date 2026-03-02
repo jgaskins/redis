@@ -14,16 +14,16 @@ jobs:
 
     services:
       redis:
-        image: redis/redis-stack-server
+        image: redis
         # Set health checks to wait until redis has started
         options: >-
           --health-cmd "redis-cli ping"
-          --health-interval 10s
+          --health-interval 1s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 60
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Install dependencies
       run: shards install
     - name: Run tests
