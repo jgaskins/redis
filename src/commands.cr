@@ -462,13 +462,8 @@ module Redis
       run({"flushall"})
     end
 
-    def info
-      run({"info"})
-        .as(String)
-        .lines
-        .reject { |line| line =~ /^(#|$)/ }
-        .map(&.split(':', 2))
-        .to_h
+    def info(section : String)
+      run({"info", section})
     end
 
     def dump(key : String)
@@ -484,7 +479,7 @@ module Redis
     end
 
     private def instant_time
-      {%if compare_versions(Crystal::VERSION, "1.19.0") >= 0 %}
+      {% if compare_versions(Crystal::VERSION, "1.19.0") >= 0 %}
         Time.instant
       {% else %}
         Time.monotonic
