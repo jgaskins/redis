@@ -79,7 +79,7 @@ module Redis
 
         redis.@pool.checkout.@socket.as(TCPSocket).keepalive?.should eq(false)
         # system default settings
-        redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_count.should eq(8)
+        redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_count.should eq(default_keepalive_count)
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_idle.should eq(7200)
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_interval.should eq(75)
       end

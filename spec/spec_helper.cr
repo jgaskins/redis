@@ -20,6 +20,15 @@ macro define_test(redis)
   end
 end
 
+def default_keepalive_count
+  # TODO: Verify these on non-macOS/Linux OSes
+  {% if flag? :linux %}
+    9
+  {% else %}
+    8
+  {% end %}
+end
+
 struct TestRunner
   def initialize(@redis : Redis::Commands::Immediate)
   end
