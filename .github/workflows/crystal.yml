@@ -6,15 +6,27 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        crystal:
+        - latest
+        - 1.18
+        - 1.17
+        redis:
+        - 6
+        - 7
+        - 8.0
+        - 8.2
+        - 8.4
+        - 8.6
     container:
-      image: crystallang/crystal
+      image: crystallang/crystal:${{ matrix.crystal }}
 
     services:
       redis:
-        image: redis
+        image: redis:${{ matrix.redis }}
         # Set health checks to wait until redis has started
         options: >-
           --health-cmd "redis-cli ping"
