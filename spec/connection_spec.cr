@@ -40,8 +40,10 @@ module Redis
     end
 
     context "with keepalive" do
+      default_uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///"))
+
       it "does nothing if nothing passed" do
-        redis = Connection.new(URI.parse("redis://localhost:6379"))
+        redis = Connection.new(default_uri)
 
         redis.get "foo"
 
@@ -53,7 +55,14 @@ module Redis
       end
 
       it "accepts settings" do
-        redis = Connection.new(URI.parse("redis://localhost:6379?keepalive=true&keepalive_count=5&keepalive_idle=10&keepalive_interval=15"))
+        uri = default_uri.dup
+        uri.query_params = URI::Params{
+          "keepalive"          => "true",
+          "keepalive_count"    => "5",
+          "keepalive_idle"     => "10",
+          "keepalive_interval" => "15",
+        }
+        redis = Connection.new(uri)
 
         redis.get "foo"
 
@@ -64,7 +73,9 @@ module Redis
       end
 
       it "uses default shard keepalive settings" do
-        redis = Connection.new(URI.parse("redis://localhost:6379?keepalive=true"))
+        uri = default_uri.dup
+        uri.query_params = URI::Params{"keepalive" => "true"}
+        redis = Connection.new(uri)
 
         redis.get "foo"
 
