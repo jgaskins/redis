@@ -63,6 +63,16 @@ module Redis::Geo
 
     # Miles
     MI
+
+    def to_s : String
+      {% for member in @type.constants %}
+        if {{member.underscore}}?
+          return {{member.underscore.stringify}}
+        end
+      {% end %}
+
+      value.to_s
+    end
   end
 
   # Sort directions for `geosearch` comands.
