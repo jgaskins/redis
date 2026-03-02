@@ -12,16 +12,16 @@ jobs:
       matrix:
         crystal:
         - latest
-        - 1.18
-        - 1.17
+        - "1.18"
+        - "1.17"
         redis:
-        - 6.0
-        - 6.2
-        - 7
-        - 8.0
-        - 8.2
-        - 8.4
-        - 8.6
+        - "6.0"
+        - "6.2"
+        - "7"
+        - "8.0"
+        - "8.2"
+        - "8.4"
+        - "8.6"
     container:
       image: crystallang/crystal:${{ matrix.crystal }}
 
