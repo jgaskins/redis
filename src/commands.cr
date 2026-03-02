@@ -306,6 +306,15 @@ module Redis
       SYNC
     end
 
+    # Flush the Lua scripts cache, see [the official docs](https://redis.io/commands/script-flush/).
+    #
+    # ```
+    # redis.script_flush
+    # ```
+    def script_flush
+      run({"script", "flush"})
+    end
+
     # Return an array where each entry is `1` if the corresponding entry in the
     # list of `shas` exists or `0` if it does not.
     def script_exists(*shas : String)

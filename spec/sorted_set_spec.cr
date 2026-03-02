@@ -5,6 +5,7 @@ require "../src/redis"
 
 redis = Redis::Client.new
 define_test redis
+test = TestRunner.new(redis)
 
 describe Redis::Commands::SortedSet do
   describe "zadd" do
@@ -42,35 +43,37 @@ describe Redis::Commands::SortedSet do
       redis.zscore(key, "value").should eq "3"
     end
 
-    test "can add a member only if it is less than the current score" do
-      redis.zadd key, {"1", "value"}
-      redis.zadd(key, {"2", "value"}, lt: true).should eq 0
-      redis.zscore(key, "value").should eq "1"
-      redis.zadd(key, "2", "value", lt: true).should eq 0 # variadic
-      redis.zscore(key, "value").should eq "1"
-      redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
-      redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.5
-      redis.zadd(key, "0.1", "value", lt: true).should eq 0 # variadic
-      redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.1
-    end
+    if test.server_version >= Version["6.2.0"]
+      test "can add a member only if it is less than the current score" do
+        redis.zadd key, {"1", "value"}
+        redis.zadd(key, {"2", "value"}, lt: true).should eq 0
+        redis.zscore(key, "value").should eq "1"
+        redis.zadd(key, "2", "value", lt: true).should eq 0 # variadic
+        redis.zscore(key, "value").should eq "1"
+        redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
+        redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.5
+        redis.zadd(key, "0.1", "value", lt: true).should eq 0 # variadic
+        redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.1
+      end
 
-    test "can add a member only if it is greater than the current score" do
-      redis.zadd key, {"1", "value"}
-      redis.zadd(key, {"0.5", "value"}, gt: true).should eq 0
-      redis.zscore(key, "value").should eq "1"
-      redis.zadd(key, "0.5", "value", gt: true).should eq 0 # variadic
-      redis.zscore(key, "value").should eq "1"
-      redis.zadd(key, {"2", "value"}, gt: true).should eq 0
-      redis.zscore(key, "value").should eq "2"
-      redis.zadd(key, "3", "value", gt: true).should eq 0 # variadic
-      redis.zscore(key, "value").should eq "3"
-    end
+      test "can add a member only if it is greater than the current score" do
+        redis.zadd key, {"1", "value"}
+        redis.zadd(key, {"0.5", "value"}, gt: true).should eq 0
+        redis.zscore(key, "value").should eq "1"
+        redis.zadd(key, "0.5", "value", gt: true).should eq 0 # variadic
+        redis.zscore(key, "value").should eq "1"
+        redis.zadd(key, {"2", "value"}, gt: true).should eq 0
+        redis.zscore(key, "value").should eq "2"
+        redis.zadd(key, "3", "value", gt: true).should eq 0 # variadic
+        redis.zscore(key, "value").should eq "3"
+      end
 
-    test "can return the number of members that changed, not just added" do
-      redis.zadd key, {"1", "first", "2", "second"}
-      # Using GT and CH to illustrate combining arguments
-      redis.zadd(key, {"0.5", "first", "2.5", "second"}, gt: true, ch: true).should eq 1
-      redis.zadd(key, "-0.5", "first", "3.5", "second", gt: true, ch: true).should eq 1
+      test "can return the number of members that changed, not just added" do
+        redis.zadd key, {"1", "first", "2", "second"}
+        # Using GT and CH to illustrate combining arguments
+        redis.zadd(key, {"0.5", "first", "2.5", "second"}, gt: true, ch: true).should eq 1
+        redis.zadd(key, "-0.5", "first", "3.5", "second", gt: true, ch: true).should eq 1
+      end
     end
 
     test "can treat scores as increments" do
@@ -82,28 +85,30 @@ describe Redis::Commands::SortedSet do
     end
   end
 
-  test "can run ZRANGE BYLEX" do
-    redis.zadd key,
-      "0", "c",
-      "0", "b",
-      "0", "a"
+  if test.server_version >= Version["6.2.0"]
+    test "can run ZRANGE BYLEX" do
+      redis.zadd key,
+        "0", "c",
+        "0", "b",
+        "0", "a"
 
-    redis.zrange(key, "-", "+", by: :lex, limit: {0, 2}).should eq %w[a b]
-  end
+      redis.zrange(key, "-", "+", by: :lex, limit: {0, 2}).should eq %w[a b]
+    end
 
-  test "can run ZRANGE BYSCORE" do
-    redis.zadd key,
-      "1", "one",
-      "2", "two",
-      "3", "three"
+    test "can run ZRANGE BYSCORE" do
+      redis.zadd key,
+        "1", "one",
+        "2", "two",
+        "3", "three"
 
-    redis.zrange(key, "+inf", "-inf", by: :score, rev: true, with_scores: true)
-      .should eq %w[three 3 two 2 one 1]
+      redis.zrange(key, "+inf", "-inf", by: :score, rev: true, with_scores: true)
+        .should eq %w[three 3 two 2 one 1]
 
-    redis.zrangebyscore(key, "-inf", "+inf")
-      .should eq %w[one two three]
-    redis.zrangebyscore(key, "-inf", "+inf", with_scores: true)
-      .should eq %w[one 1 two 2 three 3]
+      redis.zrangebyscore(key, "-inf", "+inf")
+        .should eq %w[one two three]
+      redis.zrangebyscore(key, "-inf", "+inf", with_scores: true)
+        .should eq %w[one 1 two 2 three 3]
+    end
   end
 
   describe "zremrangebyrank" do
