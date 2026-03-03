@@ -8,11 +8,12 @@ module Redis
   class Pipeline
     include Commands
     include Commands::Deferred
+    getter connection : Connection
 
     @futures = [] of Future
 
     # Wraps a connection so that our `run` and `commit` methods can execute against it.
-    def initialize(@connection : Connection)
+    def initialize(@connection)
     end
 
     # The `run` method is required by the `Commands` mixin. When you run a Redis
@@ -28,7 +29,11 @@ module Redis
     # and resolve all `Redis::Future`s with them in the order they were sent.
     def commit
       @futures.map_with_index do |future, index|
-        future.resolve(@connection.read)
+        while (result = @connection.parser.read).is_a? Attributes
+          @connection.@on_attributes.call result
+        end
+
+        future.resolve(result)
       rescue ex
         raise ResolutionError.new("Failed reading pipeline item #{index}: #{ex.message.inspect}", cause: ex)
       end
