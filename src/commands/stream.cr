@@ -113,6 +113,49 @@ module Redis::Commands::Stream
     run({"xlen", key})
   end
 
+  def xread(
+    *,
+    count : Int | String | Nil = nil,
+    block : Time::Span | Int | String | Nil = nil,
+    streams : NamedTuple,
+  )
+    if block.is_a? Time::Span
+      block = block.total_milliseconds.to_i64
+    end
+    command = {"xread"}
+    command += {"count", count.to_s} if count
+    command += {"block", block.to_s} if block
+    command += {"streams"} + streams.keys.map(&.to_s) + streams.values
+
+    run command
+  end
+
+  def xread(
+    *,
+    count : Int | String | Nil = nil,
+    block : Time::Span | Int | String | Nil = nil,
+    streams : ::Hash(String, String),
+  )
+    if block.is_a? Time::Span
+      block = block.total_milliseconds.to_i64
+    end
+    command_size = streams.size * 2 + # key [key...] id [id...]
+                   (count ? 2 : 0) +  # [COUNT count]
+                   (block ? 2 : 0) +  # [BLOCK milliseconds]
+                   2 +                # XREAD ... STREAMS
+                   0
+
+    command = Array(String).new(initial_capacity: command_size)
+    command << "xread"
+    command << "count" << count.to_s if count
+    command << "block" << block.to_s if block
+    command << "streams"
+    streams.each_key { |key| command << key }
+    streams.each_value { |value| command << value }
+
+    run command
+  end
+
   # Return the entries in the given stream between the `start` and `end` ids.
   # If `count` is provided, Redis will return only that number of entries.
   def xrange(key : String, start min : String, end max : String, count : String | Int32 | Nil = nil)
@@ -121,6 +164,7 @@ module Redis::Commands::Stream
 
     run command
   end
+
   # Return the entries in the given stream between the `start` and `end` ids.
   # If `count` is provided, Redis will return only that number of entries.
   def xrevrange(key : String, end max : String, start min : String, count : String | Int32 | Nil = nil)

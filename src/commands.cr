@@ -6,6 +6,7 @@ require "./commands/sorted_set"
 require "./commands/stream"
 require "./commands/geo"
 require "./commands/hyperloglog"
+require "./commands/vector"
 
 module Redis
   # All Redis commands are defined in this module. Any paradigm that needs to
@@ -21,6 +22,7 @@ module Redis
     include Commands::Stream
     include Commands::Geo
     include Commands::HyperLogLog
+    include Commands::Vector
 
     # Execute the given command and return the result from the server. Commands
     # must be an `Enumerable` and its `size` method must be re-entrant.
@@ -70,8 +72,8 @@ module Redis
     # redis.get("foo") # => nil
     #
     # # Does not overwrite when `nx` is truthy
-    # redis.set "foo", "value", nx: true       # => "OK"
-    # redis.set "foo", "other-value", nx: true # => nil
+    # redis.set "foo", "1", nx: true # => "OK"
+    # redis.set "foo", "2", nx: true # => nil
     #
     # # Does not create a key when `xx` is truthy
     # redis.del "update-only"
@@ -84,7 +86,17 @@ module Redis
     # ```
     #
     # NOTE: `nx` and `xx` are mutually exclusive, as are `ex` and `px`. They exist in the same method signature only to avoid an explosion of `set` implementations.
-    def set(key : String, value : String | Bytes, *, ex : (String | Int)? = nil, px : String | Int | Nil = nil, nx = false, xx = false, keepttl = false, get = false)
+    def set(
+      key : String,
+      value : String | Bytes,
+      *,
+      ex : (String | Int)? = nil,
+      px : String | Int | Nil = nil,
+      nx = false,
+      xx = false,
+      keepttl = false,
+      get = false,
+    )
       command = {"set", key, value}
       command += {"nx"} if nx
       command += {"xx"} if xx
@@ -414,7 +426,7 @@ module Redis
       run command
     end
 
-    def mset(data : Hash(String, String))
+    def mset(data : ::Hash(String, String))
       command = Array(String).new(initial_capacity: 1 + data.size)
       command << "mset"
       data.each do |key, value|
@@ -450,13 +462,8 @@ module Redis
       run({"flushall"})
     end
 
-    def info
-      run({"info"})
-        .as(String)
-        .lines
-        .reject { |line| line =~ /^(#|$)/ }
-        .map(&.split(':', 2))
-        .to_h
+    def info(section : String)
+      run({"info", section})
     end
 
     def dump(key : String)
@@ -469,6 +476,14 @@ module Redis
 
     def wait(numreplicas replica_count : Int | String, timeout : Int | String)
       run({"wait", replica_count.to_s, timeout.to_s})
+    end
+
+    private def instant_time
+      {% if compare_versions(Crystal::VERSION, "1.19.0") >= 0 %}
+        Time.instant
+      {% else %}
+        Time.monotonic
+      {% end %}
     end
   end
 end

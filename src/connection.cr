@@ -1,5 +1,6 @@
 require "socket"
 require "openssl"
+require "db/error"
 
 require "./commands"
 require "./commands/immediate"
@@ -27,7 +28,7 @@ module Redis
     # SSL connections require specifying the `rediss://` scheme.
     # Password authentication uses the URI password.
     # DB selection uses the URI path.
-    def initialize(@uri : URI = URI.parse("redis:///"), @log = Log)
+    def initialize(@uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///")), @log = Log)
       host = uri.host.presence || "localhost"
       port = uri.port || 6379
       socket = TCPSocket.new(host, port)
@@ -137,13 +138,15 @@ module Redis
         if txn.discarded?
           return [] of Value
         else
-          return txn.exec.as(Array)
+          return txn.exec
         end
       ensure
         if txn && txn.status.queued?
-          txn.exec.as(Array)
+          txn.exec
         end
       end
+    rescue ex : IO::Error
+      raise DB::PoolResourceLost.new(self, cause: ex)
     end
 
     {% for command in %w[subscribe psubscribe] %}
@@ -225,7 +228,7 @@ module Redis
     # run({"set", "foo", "bar"})
     # ```
     def run(command, retries = 5) : Value
-      start = Time.monotonic
+      start = instant_time
 
       loop do
         @writer.encode command
@@ -250,8 +253,10 @@ module Redis
       ensure
         @log.debug &.emit "redis",
           command: command.join(' '),
-          duration_ms: (Time.monotonic - start).total_milliseconds
+          duration_ms: (instant_time - start).total_milliseconds
       end
+    rescue ex : IO::Error | Redis::ReadOnly
+      raise DB::PoolResourceLost.new(self, cause: ex)
     end
 
     # Iterate over keys that match the given pattern or all keys if no pattern
@@ -328,6 +333,16 @@ module Redis
     # :nodoc:
     def finalize
       close rescue nil
+    end
+
+    # Watch the given keys for changes.
+    def watch(*keys : String)
+      run({"watch"} + keys)
+    end
+
+    # Stop watching all watched keys on this connection.
+    def unwatch
+      run({"unwatch"})
     end
 
     # Flush the connection buffer and make sure we've sent everything to the

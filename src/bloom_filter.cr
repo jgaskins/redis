@@ -1,3 +1,5 @@
+require "./commands"
+
 module Redis
   # A Bloom Filter is a probabilistic data structure that allows testing whether
   # an item is a member of a set. It differs from a traditional set in that it
@@ -63,7 +65,7 @@ module Redis
       key : String,
       items : Array(String),
       *,
-      capacity : String | Int64 = nil,
+      capacity : String | Int64 | Nil = nil,
       error error_rate : String | Float64 | Nil = nil,
       nonscaling : Bool = false,
       expansion : String | Int64 | Nil = nil,

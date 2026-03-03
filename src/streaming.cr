@@ -3,6 +3,8 @@ require "./value"
 module Redis
   module Streaming
     struct Message
+      include Enumerable({String, String})
+
       getter id : String
       getter values : Hash(String, String)
 
@@ -11,12 +13,26 @@ module Redis
         values = values.as(Array)
         @id = id.as(String)
         @values = Hash(String, String).new(initial_capacity: values.size // 2)
-        (values.size // 2).times do |index|
+        (0...values.size).step(2) do |index|
           @values[values[index].as(String)] = values[index + 1].as(String)
         end
       end
 
       def initialize(@id, @values)
+      end
+
+      delegate each, to: @values
+
+      def [](field : String) : String
+        @values[field]
+      end
+
+      def []?(field : String) : String?
+        @values[field]?
+      end
+
+      def dig(field : String)
+        self[field]?
       end
     end
 
@@ -85,6 +101,53 @@ module Redis
         def age
           Time.utc - last_delivered_at
         end
+      end
+    end
+
+    # The `XReadResponse` is a convenience object that you can pass the result
+    # of a `Commands#xread` call to. Traversing nested `Array(Redis::Value)`
+    # structures isn't a great experience, so we provide these objects to make
+    # it easier to work with.
+    #
+    # ```
+    # if response = redis.xread(streams: {my_stream: "0"})
+    #   Redis::Streaming::XReadResponse.new(response).each do |stream, messages|
+    #     messages.each do |msg|
+    #       # ...
+    #     end
+    #   end
+    # end
+    # ```
+    struct XReadResponse
+      include Enumerable({String, Array(Message)})
+
+      @streams : Hash(String, Array(Message))
+
+      def initialize(response : Array(Redis::Value))
+        @streams = Hash(String, Array(Message)).new(initial_capacity: response.size)
+        response.each do |stream_list_item|
+          stream_key, events = stream_list_item.as(Array)
+          stream_key = stream_key.as(String)
+          events = events.as(Array)
+
+          @streams[stream_key] = events.map do |event_array|
+            Message.new(event_array.as(Array))
+          end
+        end
+      end
+
+      delegate each, to: @streams
+
+      def [](stream_name : String) : Array(Message)
+        @streams[stream_name]
+      end
+
+      def []?(stream_name : String) : Array(Message)?
+        @streams[stream_name]?
+      end
+
+      def dig(stream_name : String, *rest)
+        @streams.dig stream_name, *rest
       end
     end
 

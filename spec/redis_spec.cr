@@ -21,6 +21,38 @@ describe Redis::Client do
     redis.get(key).should eq nil
   end
 
+  describe "#get!" do
+    test "gets a key, asserting that it exists" do
+      redis.set key, {
+        id:    123,
+        items: [
+          {
+            id:               1,
+            product_id:       1234,
+            quantity:         1,
+            unit_price_cents: 100_00,
+          },
+          {
+            id:               2,
+            product_id:       4321,
+            quantity:         2,
+            unit_price_cents: 200_00,
+          },
+        ],
+      }.to_json
+
+      cart = RedisSpec::Cart.from_json(redis.get!(key))
+      cart.id.should eq 123
+      cart.items.size.should eq 2
+    end
+
+    test "raises an error if the key does not exist" do
+      expect_raises Redis::MissingKey do
+        redis.get!(UUID.v7.to_s)
+      end
+    end
+  end
+
   test "it returns 0 when passed no keys to delete" do
     redis.del([] of String).should eq 0
   end
@@ -386,166 +418,6 @@ describe Redis::Client do
     end
   end
 
-  describe "streams" do
-    test "can use streams" do
-      entry_ids = [
-        redis.xadd(key, "*", {"foo" => "bar"}),
-        redis.xadd(key, "*", {foo: "bar"}),
-      ]
-      range = redis.xrange(key, "-", "+")
-      range.size.should eq 2
-      range.each_with_index do |result, index|
-        id, data = result.as(Array)
-        id.should eq entry_ids[index]
-        data.should eq %w[foo bar]
-      end
-    end
-
-    test "can traverse streams in reverse" do
-      entry_ids = [
-        redis.xadd(key, "*", {"foo" => "bar"}),
-        redis.xadd(key, "*", {foo: "bar"}),
-      ].reverse
-      range = redis.xrevrange(key, "+", "-")
-      range.size.should eq 2
-      range.each_with_index do |result, index|
-        id, data = result.as(Array)
-        id.should eq entry_ids[index]
-        data.should eq %w[foo bar]
-      end
-    end
-
-    test "can cap streams by event count" do
-      redis.pipeline do |pipe|
-        11.times do
-          pipe.xadd key, "*",
-            maxlen: {"=", "10"},
-            fields: {foo: "bar"}
-        end
-      end
-
-      redis.xlen(key).should eq 10
-    end
-
-    test "can cap streams by id" do
-      results = redis.pipeline do |pipe|
-        minid = 10.seconds.ago.to_unix_ms.to_s
-
-        10.times do |i|
-          pipe.xadd key,
-            "#{(11 - i).seconds.ago.to_unix_ms.to_s}-#{i}",
-            {foo: "bar"}
-        end
-        pipe.xadd key, "*",
-          minid: {"=", minid},
-          fields: {foo: "bar"}
-      end
-
-      redis.xlen(key).should eq 10
-    end
-
-    test "can approximately cap streams" do
-      redis.pipeline do |pipe|
-        2_000.times { pipe.xadd key, "*", maxlen: {"~", "10"}, fields: {foo: "bar"} }
-      end
-
-      redis.xlen(key).should be <= 100
-    end
-
-    it "can consume streams" do
-      key = "my-stream"
-      group = "my-group"
-
-      begin
-        entry_id = redis.xadd key, "*", {foo: "bar"}
-        # Create a group to consume this stream starting at the beginning
-        redis.xgroup "create", key, group, "0"
-        consumer_id = UUID.random.to_s
-
-        result = redis.xreadgroup group, consumer_id, count: "10", streams: {"my-stream": ">"}
-      rescue ex
-        pp ex
-        raise ex
-      ensure
-        redis.xgroup "destroy", key, group
-        redis.del key
-      end
-    end
-  end
-
-  context "transactions" do
-    test "returns the results of the commands, like pipelines do" do
-      # Returns
-      redis.multi do |redis|
-        redis.set key, "value"
-        redis.get key
-      end.should eq %w[OK value]
-    end
-
-    test "returns an empty array when the transaction is discarded" do
-      redis.multi do |redis|
-        redis.set key, "this gets discarded"
-        redis.discard
-        redis.get "this never actually does anything anyway"
-      end.should be_empty
-    end
-
-    test "returns command errors, but does not raise" do
-      redis.multi do |redis|
-        redis.set key, "foo"
-        redis.lpush key, "bar" # error, performing list operation on a string
-        redis.get key
-      end.should eq [
-        "OK",
-        Redis::Error.new("WRONGTYPE Operation against a key holding the wrong kind of value"),
-        "foo",
-      ]
-    end
-
-    test "allows the block to return/break" do
-      value = redis.multi do |redis|
-        redis.set key, "value"
-        break 1
-      end
-
-      value.should eq 1
-      redis.get(key).should eq "value"
-    end
-
-    test "does more transaction stuff" do
-      redis.get(key).should eq nil
-
-      _, nope, _, yep = redis.multi do |redis|
-        redis.set key, "nope"
-        redis.get key
-        redis.set key, "yep"
-        redis.get key
-      end
-
-      nope.should eq "nope"
-      yep.should eq "yep"
-
-      redis.get(key).should eq "yep"
-      redis.del key
-
-      expect_raises Exception do
-        redis.multi do |redis|
-          redis.set key, "lol"
-
-          raise "oops"
-        ensure
-          redis.get(key).should eq nil
-        end
-
-        # Ensure we're still in the same state
-        redis.get(key).should eq nil
-        # Ensure we can still set the key
-        redis.set key, "yep"
-        redis.get(key).should eq "yep"
-      end
-    end
-  end
-
   test "works with lists" do
     spawn do
       sleep 10.milliseconds
@@ -681,6 +553,24 @@ describe Redis::Client do
           ready = true if count == 2
         end
       end
+    end
+  end
+
+  it "gets info about the Redis server" do
+    redis.info.should be_a Hash(String, String)
+    redis.info("modules").should be_a String
+  end
+end
+
+module RedisSpec
+  struct Cart
+    include JSON::Serializable
+
+    getter id : Int64
+    getter items : Array(Item)
+
+    struct Item
+      include JSON::Serializable
     end
   end
 end

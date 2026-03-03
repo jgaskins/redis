@@ -5,10 +5,26 @@ require "../src/client"
 
 module Redis
   describe Client do
+    default_uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///"))
+    default_pool_params = URI::Params{
+      "initial_pool_size"  => "2",
+      "max_pool_size"      => "10",
+      "checkout_timeout"   => "10",
+      "retry_attempts"     => "2",
+      "retry_delay"        => "0.5",
+      "max_idle_pool_size" => "50",
+    }
+    default_keepalive_params = URI::Params{
+      "keepalive"          => "true",
+      "keepalive_count"    => "5",
+      "keepalive_idle"     => "10",
+      "keepalive_interval" => "15",
+    }
+
     it "allows kitchen sink params" do
-      pool_params = "?initial_pool_size=2&max_pool_size=10&checkout_timeout=10&retry_attempts=2&retry_delay=0.5&max_idle_pool_size=50"
-      keepalive_params = "&keepalive=true&keepalive_count=5&keepalive_idle=10&keepalive_interval=15"
-      redis = Client.new(URI.parse("redis://localhost:6379/0#{pool_params}#{keepalive_params}"))
+      uri = default_uri.dup
+      uri.query_params = default_pool_params.merge(default_keepalive_params)
+      redis = Client.new(uri)
 
       redis.get "foo"
 
@@ -40,8 +56,9 @@ module Redis
       end
 
       it "allowing standard pool args" do
-        pool_params = "?initial_pool_size=2&max_pool_size=10&checkout_timeout=10&retry_attempts=2&retry_delay=0.5&max_idle_pool_size=50"
-        redis = Client.new(URI.parse("redis://localhost:6379/0#{pool_params}"))
+        uri = default_uri.dup
+        uri.query_params = default_pool_params
+        redis = Client.new(uri)
 
         redis.get "foo"
 
@@ -56,19 +73,21 @@ module Redis
 
     context "with keepalive" do
       it "does nothing if nothing passed" do
-        redis = Client.new(URI.parse("redis://localhost:6379"))
+        redis = Client.new(default_uri)
 
         redis.get "foo"
 
         redis.@pool.checkout.@socket.as(TCPSocket).keepalive?.should eq(false)
         # system default settings
-        redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_count.should eq(8)
+        redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_count.should eq(default_keepalive_count)
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_idle.should eq(7200)
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_interval.should eq(75)
       end
 
       it "accepts settings" do
-        redis = Client.new(URI.parse("redis://localhost:6379?keepalive=true&keepalive_count=5&keepalive_idle=10&keepalive_interval=15"))
+        uri = default_uri.dup
+        uri.query_params = default_keepalive_params
+        redis = Client.new(uri)
 
         redis.get "foo"
 
@@ -79,7 +98,9 @@ module Redis
       end
 
       it "uses default shard keepalive settings" do
-        redis = Client.new(URI.parse("redis://localhost:6379?keepalive=true"))
+        uri = default_uri.dup
+        uri.query_params = URI::Params{"keepalive" => "true"}
+        redis = Client.new(uri)
 
         redis.get "foo"
 
@@ -88,6 +109,17 @@ module Redis
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_idle.should eq(60)
         redis.@pool.checkout.@socket.as(TCPSocket).tcp_keepalive_interval.should eq(30)
       end
+    end
+
+    it "retries on failure" do
+      redis = Client.new
+      key = UUID.v7.to_s
+
+      redis.get(key).should eq nil
+
+      redis.@pool.checkout { |c| c.@socket.close } # THE INTERNET BROKE
+
+      redis.get(key).should eq nil
     end
   end
 end

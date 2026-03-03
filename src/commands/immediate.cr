@@ -1,4 +1,5 @@
 require "../commands"
+require "../errors"
 
 # Immediate objects are ones that execute commands on the server and return
 # their results immediately. This allows the caller to know that it can
@@ -23,16 +24,18 @@ module Redis::Commands::Immediate
   # :nodoc:
   macro override_return_types(methods)
     {% for method, return_type in methods %}
-      {% for methods in [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream, Commands::Geo].map(&.methods.select { |m| m.name == method }).reject(&.nil?) %}
+      {% for methods in [Commands, Commands::Hash, Commands::List, Commands::Set, Commands::SortedSet, Commands::Stream, Commands::Geo, Commands::HyperLogLog, Commands::Vector].map(&.methods.select { |m| m.name == method }).reject(&.nil?) %}
         {% for m in methods %}
-          # :nodoc:
-          def {{method.id}}(
-            {% for arg, index in m.args %}
-              {% if m.splat_index == index %}*{% end %}{{arg}},
-            {% end %}
-          ) : {{return_type}}
-            super{{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
-          end
+          {% unless m.return_type %}
+            # :nodoc:
+            def {{method.id}}(
+              {% for arg, index in m.args %}
+                {% if m.splat_index == index %}*{% end %}{{arg}},
+              {% end %}
+            ) : {{return_type}} {% unless m.free_vars.empty? %}forall {{m.free_vars.splat}}{% end %}
+              super{{".as(#{return_type})".id unless return_type.stringify == "Nil"}}
+            end
+          {% end %}
         {% end %}
       {% end %}
     {% end %}
@@ -42,14 +45,16 @@ module Redis::Commands::Immediate
     # When new commands are added to the Commands mixin, add an entry here to
     # make sure the return type is set when run directly on the connection.
     override_return_types({
-      keys:        Array,
-      dbsize:      Int64,
-      del:         Int64,
-      unlink:      Int64,
-      ttl:         Int64,
-      pttl:        Int64,
-      dump:        String?,
-      script_load: String,
+      keys:          Array,
+      dbsize:        Int64,
+      del:           Int64,
+      unlink:        Int64,
+      ttl:           Int64,
+      pttl:          Int64,
+      dump:          String?,
+      script_load:   String,
+      script_exists: Array,
+      info:          String,
 
       # String commands
       append:      Int64,
@@ -183,6 +188,7 @@ module Redis::Commands::Immediate
       xlen:       Int64,
       xpending:   Array,
       xrange:     Array,
+      xread:      Array(Value)?,
       xreadgroup: Array(Value)?,
       xrevrange:  Array,
       xtrim:      Int64,
@@ -190,8 +196,56 @@ module Redis::Commands::Immediate
       geopos:    Array,
       geodist:   String,
       geosearch: Array,
+
+      # Vector
+      vadd:     Int64,
+      vdim:     Int64,
+      vemb:     Array,
+      vsim:     Array,
+      vgetattr: String,
     })
   end
 
   set_return_types!
+
+  # Returns the value of the string stored in `key`, asserting that it exists.
+  #
+  # ```
+  # require "redis"
+  # require "msgpack" # Storing MessagePack data
+  #
+  # struct Cart
+  #   include MessagePack::Serializable
+  #
+  #   getter user_id : Int64
+  #   getter items : Array(Item)
+  #
+  #   struct Item
+  #     include MessagePack::Serializable
+  #
+  #     getter id : Int64
+  #     getter product_id : Int64
+  #     getter quantity : Int32
+  #     getter unit_price_cents : Int64
+  #   end
+  # end
+  #
+  # p! Cart.from_msgpack(redis.get!("cart:123"))
+  # ```
+  def get!(key : String) : String
+    if value = get(key)
+      value
+    else
+      raise MissingKey.new("Assertion that the key #{key.inspect} exists failed.")
+    end
+  end
+
+  def info
+    run({"info"})
+      .as(String)
+      .lines
+      .reject { |line| line =~ /^(#|$)/ }
+      .map(&.split(':', 2))
+      .to_h
+  end
 end

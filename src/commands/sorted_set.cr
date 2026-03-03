@@ -45,8 +45,8 @@ module Redis::Commands::SortedSet
 
   def zrangebyscore(
     key : String,
-    min : String | Int64,
-    max : String | Int64,
+    min : String | Float64,
+    max : String | Float64,
     with_scores = false,
     limit : Enumerable(String)? = nil,
   )

@@ -49,7 +49,6 @@ require "./read_only_commands"
 # automatically pick up the changes. You can set how often it checks for these
 # changes with the `topology_ttl` argument to the constructor or leave it at its
 # default of 10 seconds.
-@[Experimental("`ReplicationClient` is currently in alpha testing. There may be rough edges.")]
 class Redis::ReplicationClient
   include Commands
   include Commands::Immediate
@@ -77,7 +76,7 @@ class Redis::ReplicationClient
     connection = Connection.new(entrypoint, log: Log.for("redis.replication_client"))
 
     begin
-      result = connection.run({"info", "replication"}).as(String)
+      result = connection.info("replication").as(String)
     ensure
       connection.close
     end
