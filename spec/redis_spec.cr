@@ -564,6 +564,11 @@ describe Redis::Client do
       end
     end
   end
+
+  it "gets info about the Redis server" do
+    redis.info.should be_a Hash(String, String)
+    redis.info("modules").should be_a String
+  end
 end
 
 module RedisSpec
