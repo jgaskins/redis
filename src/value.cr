@@ -1,4 +1,5 @@
 require "./errors"
+require "big/big_int"
 
 module Redis
   # Values consumed and emitted by Redis can be strings, 64-bit integers, `nil`,
