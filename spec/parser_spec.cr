@@ -88,12 +88,26 @@ module Redis
       parser.read.should eq false
     end
 
-    it "reads blob errors as Redis::Error" do
-      io = IO::Memory.new("!15\r\nOMG Hello World!\r\n!11\r\nOK Computer\r\n")
+    it "reads simple errors as Redis::Error" do
+      io = IO::Memory.new("-OMG The thing broke!")
       parser = Parser.new(io)
 
-      parser.read.should eq Error.new("OMG Hello World!")
-      parser.read.should eq Error.new("OK Computer")
+      parser.read.should eq Error.new("OMG The thing broke!")
+    end
+
+    it "reads blob errors as Redis::Error" do
+      first_error_msg = "OMG Hello World!\r\nSecond line"
+      second_error_msg = "OK Computer"
+      parser = Parser.new(IO::Memory.new(<<-EOF))
+        !#{first_error_msg.bytesize}\r
+        #{first_error_msg}\r
+        !#{second_error_msg.bytesize}\r
+        #{second_error_msg}\r
+
+        EOF
+
+      parser.read.should eq Error.new(first_error_msg)
+      parser.read.should eq Error.new(second_error_msg)
     end
 
     it "reads verbatim strings as String" do
@@ -116,7 +130,9 @@ module Redis
       io = IO::Memory.new("%2\r\n+one\r\n:1\r\n$3\r\ntwo\r\n:2\r\n%1\r\n+foo\r\n+bar\r\n")
       parser = Parser.new(io)
 
-      parser.read.should eq({
+      hash = parser.read
+      hash.should be_a Hash(Redis::Value, Redis::Value)
+      hash.should eq({
         "one" => 1,
         "two" => 2,
       })
@@ -137,8 +153,6 @@ module Redis
       parser.read.should eq Attributes.new({"foo" => "bar"} of Value => Value)
       parser.read.should eq Attributes.new({"one" => 1i64, "two" => 2i64} of Value => Value)
     end
-
-
 
     it "can read without failing if the IO is closed" do
       reader, writer = IO.pipe

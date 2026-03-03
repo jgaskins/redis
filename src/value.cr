@@ -13,7 +13,6 @@ module Redis
                 Error |
                 Hash(Value, Value) |
                 Set(Value) |
-                Attributes |
                 Array(Value)
 
   struct Attributes
@@ -31,7 +30,7 @@ module Redis
       @hash[key]?
     end
 
-    def each
+    def each(&)
       @hash.each do |key, value|
         yield({key, value})
       end
