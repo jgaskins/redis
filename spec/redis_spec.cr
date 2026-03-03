@@ -5,6 +5,7 @@ require "../src/redis"
 
 redis = Redis::Client.new
 define_test redis
+test = TestRunner.new(redis)
 
 describe Redis::Client do
   it "can ping the server" do
@@ -73,17 +74,19 @@ describe Redis::Client do
     end
   end
 
-  test "deletes a key and returns its value" do
-    redis.getdel(key).should eq nil
-    redis.set key, "value"
-    redis.getdel(key).should eq "value"
-    redis.get(key).should eq nil
-  end
+  if test.server_version >= Version["6.2.0"]
+    test "deletes a key and returns its value" do
+      redis.getdel(key).should eq nil
+      redis.set key, "value"
+      redis.getdel(key).should eq "value"
+      redis.get(key).should eq nil
+    end
 
-  test "sets a value and returns the previous value" do
-    redis.set key, "value"
-    redis.set(key, "new value", get: true).should eq "value"
-    redis.get(key).should eq "new value"
+    test "sets a value and returns the previous value" do
+      redis.set key, "value"
+      redis.set(key, "new value", get: true).should eq "value"
+      redis.get(key).should eq "new value"
+    end
   end
 
   test "can set expiration timestamps on keys" do
@@ -431,12 +434,14 @@ describe Redis::Client do
     left = random_key
     right = random_key
 
-    begin
-      redis.lpush left, "foo"
-      redis.lmove left, right, :left, :right
-      redis.rpop(right).should eq "foo"
-    ensure
-      redis.del left, right
+    if test.server_version >= Version["6.2.0"]
+      begin
+        redis.lpush left, "foo"
+        redis.lmove left, right, :left, :right
+        redis.rpop(right).should eq "foo"
+      ensure
+        redis.del left, right
+      end
     end
   end
 
@@ -494,7 +499,11 @@ describe Redis::Client do
       redis.script_exists([sha, "123"]).should eq [1, 0]
 
       # Delete the scripts
-      redis.script_flush :sync
+      if test.server_version >= Version["6.2.0"]
+        redis.script_flush :sync
+      else
+        redis.script_flush
+      end
       redis.script_exists(sha, "123").should eq [0, 0]
     end
   end

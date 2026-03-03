@@ -4,6 +4,7 @@ require "../src/redis"
 
 redis = Redis::Client.new
 define_test redis
+test = TestRunner.new(redis)
 
 describe Redis::Commands::Geo do
   test "adds a member to a geospatial index and retrieves it by name" do
@@ -69,74 +70,76 @@ describe Redis::Commands::Geo do
     redis.geodist(key, "foo", "bar", :ft).to_f.should be_within 0.0001, of: 14158389.2648
   end
 
-  test "searches a geospatial index by coordinates (FROMLONLAT, BYRADIUS)" do
-    redis.geoadd key,
-      "0", "0", "a",
-      "0", "0.1", "b",
-      "0.1", "0", "c",
-      "0.1", "0.1", "d"
+  if test.server_version >= Version["6.2.0"]
+    test "searches a geospatial index by coordinates (FROMLONLAT, BYRADIUS)" do
+      redis.geoadd key,
+        "0", "0", "a",
+        "0", "0.1", "b",
+        "0.1", "0", "c",
+        "0.1", "0.1", "d"
 
-    results = redis.geosearch key,
-      fromlonlat: {"0", "0"},
-      byradius: Redis::Geo::Radius.new(7, :mi),
-      sort: :asc,
-      count: 4
+      results = redis.geosearch key,
+        fromlonlat: {"0", "0"},
+        byradius: Redis::Geo::Radius.new(7, :mi),
+        sort: :asc,
+        count: 4
 
-    results.size.should eq 3
-    results.should contain "a"
-    results.should contain "b"
-    results.should contain "c"
-    results.should_not contain "d" # Excluded because it's too far away
-  end
+      results.size.should eq 3
+      results.should contain "a"
+      results.should contain "b"
+      results.should contain "c"
+      results.should_not contain "d" # Excluded because it's too far away
+    end
 
-  test "searches a geospatial index by coordinates (FROMMEMBER, BYRADIUS)" do
-    redis.geoadd key,
-      "0", "0", "a",
-      "0", "0.1", "b",
-      "0.1", "0", "c",
-      "0.2", "0.2", "d"
+    test "searches a geospatial index by coordinates (FROMMEMBER, BYRADIUS)" do
+      redis.geoadd key,
+        "0", "0", "a",
+        "0", "0.1", "b",
+        "0.1", "0", "c",
+        "0.2", "0.2", "d"
 
-    results = redis.geosearch key,
-      frommember: "a",
-      byradius: Redis::Geo::Radius.new(6, :mi),
-      sort: :asc
+      results = redis.geosearch key,
+        frommember: "a",
+        byradius: Redis::Geo::Radius.new(6, :mi),
+        sort: :asc
 
-    results.should eq %w[a]
-  end
+      results.should eq %w[a]
+    end
 
-  test "searches a geospatial index by coordinates (FROMLONLAT, BYBOX)" do
-    redis.geoadd key,
-      "0", "0", "a",
-      "0", "0.1", "b",
-      "0.1", "0", "c",
-      "0.2", "0.2", "d"
+    test "searches a geospatial index by coordinates (FROMLONLAT, BYBOX)" do
+      redis.geoadd key,
+        "0", "0", "a",
+        "0", "0.1", "b",
+        "0.1", "0", "c",
+        "0.2", "0.2", "d"
 
-    wide_box = redis.geosearch key,
-      fromlonlat: {"0", "0"},
-      bybox: Redis::Geo::Box.new(14, 1, :mi)
-    tall_box = redis.geosearch key,
-      fromlonlat: {"0", "0"},
-      bybox: Redis::Geo::Box.new(1, 14, :mi)
+      wide_box = redis.geosearch key,
+        fromlonlat: {"0", "0"},
+        bybox: Redis::Geo::Box.new(14, 1, :mi)
+      tall_box = redis.geosearch key,
+        fromlonlat: {"0", "0"},
+        bybox: Redis::Geo::Box.new(1, 14, :mi)
 
-    wide_box.should eq %w[a c]
-    tall_box.should eq %w[a b]
-  end
+      wide_box.should eq %w[a c]
+      tall_box.should eq %w[a b]
+    end
 
-  test "searches a geospatial index by coordinates (FROMMEMBER, BYBOX)" do
-    redis.geoadd key,
-      "0", "0", "a",
-      "0", "0.1", "b",
-      "0.1", "0", "c",
-      "0.2", "0.2", "d"
+    test "searches a geospatial index by coordinates (FROMMEMBER, BYBOX)" do
+      redis.geoadd key,
+        "0", "0", "a",
+        "0", "0.1", "b",
+        "0.1", "0", "c",
+        "0.2", "0.2", "d"
 
-    wide_box = redis.geosearch key,
-      frommember: "a",
-      bybox: Redis::Geo::Box.new(14, 1, :mi)
-    tall_box = redis.geosearch key,
-      frommember: "a",
-      bybox: Redis::Geo::Box.new(1, 14, :mi)
+      wide_box = redis.geosearch key,
+        frommember: "a",
+        bybox: Redis::Geo::Box.new(14, 1, :mi)
+      tall_box = redis.geosearch key,
+        frommember: "a",
+        bybox: Redis::Geo::Box.new(1, 14, :mi)
 
-    wide_box.should eq %w[a c]
-    tall_box.should eq %w[a b]
+      wide_box.should eq %w[a c]
+      tall_box.should eq %w[a b]
+    end
   end
 end
