@@ -21,6 +21,7 @@ module Redis
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
     protected getter parser : Parser
     getter? closed = false
+    getter attributes : Attributes = Attributes.new
     getter log
 
     # We receive all connection information in the URI.
@@ -351,16 +352,20 @@ module Redis
       @socket.flush
     end
 
+    # :nodoc:
     # Read the next value from the server
     def read
       case value = @parser.read
       when Error
         raise value
+      when Attributes
+        attributes.merge! value
       else
         value
       end
     end
 
+    # :nodoc:
     # Read the next value from the server, returning `nil` if the connection is
     # closed.
     def read?

@@ -19,7 +19,7 @@ module Redis
     include Enumerable({Value, Value})
     @hash : Hash(Value, Value)
 
-    def initialize(@hash)
+    def initialize(@hash = {} of Value => Value)
     end
 
     def [](key : String) : Value
@@ -34,6 +34,10 @@ module Redis
       @hash.each do |key, value|
         yield({key, value})
       end
+    end
+
+    def merge!(other : self)
+      @hash.merge other.@hash
     end
   end
 end
