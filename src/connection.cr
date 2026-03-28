@@ -19,6 +19,7 @@ module Redis
     include Commands::Immediate
 
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
+    @on_attributes = Proc(Attributes, Nil).new { }
     protected getter parser : Parser
     getter? closed = false
     getter log
@@ -56,8 +57,9 @@ module Redis
       pipeline do |redis|
         # Authentication
         if (username = uri.user) && (password = uri.password)
-          redis.run({"auth", username, password})
+          redis.run({"hello", "3", "auth", username, password})
         elsif password = uri.password
+          redis.run({"hello", "3"})
           redis.run({"auth", password})
         end
 
@@ -351,24 +353,34 @@ module Redis
       @socket.flush
     end
 
+    # :nodoc:
     # Read the next value from the server
-    def read
-      case value = @parser.read
-      when Error
-        raise value
-      else
-        value
+    def read : Value
+      loop do
+        case value = @parser.read
+        when Error
+          raise value
+        when Attributes
+          @on_attributes.call value
+        else
+          return value
+        end
       end
     end
 
+    # :nodoc:
     # Read the next value from the server, returning `nil` if the connection is
     # closed.
     def read?
-      case value = @parser.read?
-      when Error
-        raise value
-      else
-        value
+      loop do
+        case value = @parser.read?
+        when Error
+          raise value
+        when Attributes
+          @on_attributes.call value
+        else
+          return value
+        end
       end
     end
 
