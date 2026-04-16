@@ -48,6 +48,7 @@ module Redis::Commands::Immediate
       keys:          Array,
       dbsize:        Int64,
       del:           Int64,
+      exists:        Int64,
       unlink:        Int64,
       ttl:           Int64,
       pttl:          Int64,

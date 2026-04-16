@@ -200,6 +200,14 @@ module Redis
       flush
     end
 
+    # Subscribe to the given channel patterns without having to pass a block
+    # that would block execution. This is useful to run inside of other subscription
+    # blocks to add new subscriptions.
+    def psubscribe(*channels : String)
+      @writer.encode({"psubscribe"} + channels)
+      flush
+    end
+
     # Unsubscribe this connection from all subscriptions.
     def unsubscribe
       @writer.encode({"unsubscribe"})
@@ -434,7 +442,7 @@ module Redis
     @on_message = Proc(String, String, String, Nil).new { }
     @on_subscribe = Proc(String, Int64, Nil).new { }
     @on_unsubscribe = Proc(String, Int64, Nil).new { }
-    @channels = [] of String
+    @channels = Set(String).new
 
     # :nodoc:
     def initialize(@connection : Connection)
