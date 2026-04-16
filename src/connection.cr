@@ -430,7 +430,7 @@ module Redis
     @on_message = Proc(String, String, String, Nil).new { }
     @on_subscribe = Proc(String, Int64, Nil).new { }
     @on_unsubscribe = Proc(String, Int64, Nil).new { }
-    @channels = [] of String
+    @channels = Set(String).new
 
     # :nodoc:
     def initialize(@connection : Connection)
