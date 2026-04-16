@@ -42,6 +42,6 @@ jobs:
     - name: Install dependencies
       run: shards install
     - name: Run tests
-      run: crystal spec --verbose --profile
+      run: crystal spec --profile
       env:
         REDIS_URL: redis://redis/
