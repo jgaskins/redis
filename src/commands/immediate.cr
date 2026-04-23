@@ -41,6 +41,7 @@ module Redis::Commands::Immediate
     {% end %}
   end
 
+  # :nodoc:
   macro set_return_types!
     # When new commands are added to the Commands mixin, add an entry here to
     # make sure the return type is set when run directly on the connection.
