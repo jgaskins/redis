@@ -61,38 +61,28 @@ module Redis
     end
 
     struct Immediate
-      private getter redis : Commands::Immediate
+      private getter topk : TopK
 
-      def initialize(@redis)
+      def initialize(@topk)
       end
 
-      def reserve(*args, **kwargs) : String
-        default.reserve(*args, **kwargs).as(String)
+      private macro cast(**methods)
+        {% for method, type in methods %}
+          # Executes `TopK#{{method.id}}` and casts down to `{{type.id}}`.
+          def {{method.id}}(*args, **kwargs)
+            topk.{{method.id}}(*args, **kwargs).as({{type}})
+          end
+        {% end %}
       end
 
-      def info(key : String) : Array
-        default.info(key).as(Array)
-      end
-
-      def add(*args, **kwargs) : Array
-        default.add(*args, **kwargs).as(Array)
-      end
-
-      def list(key : String, *, withcount = false) : Array
-        default.list(key, withcount: withcount).as(Array)
-      end
-
-      def query(*args, **kwargs) : Array
-        default.query(*args, **kwargs).as(Array)
-      end
-
-      def incrby(*args, **kwargs) : Array
-        default.incrby(*args, **kwargs).as(Array)
-      end
-
-      private def default
-        TopK.new(redis)
-      end
+      cast(
+        reserve: String,
+        info: Array,
+        add: Array,
+        list: Array,
+        query: Array,
+        incrby: Array,
+      )
     end
   end
 
@@ -128,7 +118,7 @@ module Redis
     # Returns a `TopK::Immediate`, which automatically downcasts results from
     # `TopK` into the appropriate type for those methods.
     def topk
-      TopK::Immediate.new self
+      TopK::Immediate.new TopK.new self
     end
   end
 end
