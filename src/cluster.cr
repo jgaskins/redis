@@ -95,7 +95,9 @@ module Redis
           slots = "0-0"
         end
 
-        ip, port, cluster_port = host_info.split(/[:@]/)
+        # Format: <ip>:<port>@<cport>[,<hostname>[,<aux>=<value>]*]
+        # We only need ip/port/cport here; drop hostname and aux fields.
+        ip, port, cluster_port = host_info.split(',', 2).first.split(/[:@]/)
         port = port.to_i
         cluster_port = cluster_port.to_i
 
