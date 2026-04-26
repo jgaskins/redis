@@ -13,6 +13,14 @@ module Redis
   # route commands which do not change state to shard replicas to spread the
   # load across the cluster.
   #
+  # As nodes are added or removed, replicas are promoted, or hash slots migrate
+  # between shards, the cluster client will adapt to the new topology
+  # automatically. Commands that receive a `MOVED` redirection are retried
+  # against the new node, and topology is re-discovered in the background so
+  # subsequent commands route correctly without requiring another redirection.
+  # Commands that receive an `ASK` redirection (slot mid-migration) are retried
+  # against the importing node with an `ASKING` prefix.
+  #
   # It's important that, when using commands which operate on multiple keys (for
   # example: `MGET`, `DEL`, `RPOPLPUSH`, etc) that _all_ specified keys reside
   # on the same shard in the cluster. Usually, this means designing your key
@@ -43,8 +51,25 @@ module Redis
     # :nodoc:
     alias Slots = Range(Int32, Int32)
 
-    @write_pools : Array({Slots, DB::Pool(Connection)})
-    @read_pools : Array({Slots, DB::Pool(Connection)})
+    @write_pools : Array({Slots, Pool})
+    @read_pools : Array({Slots, Pool})
+
+    # Pools are kept in these hashes across topology refreshes so we don't drop
+    # warm connections when a node's slot range changes. They also let us
+    # create a pool on demand for a node we discover via a `MOVED`/`ASK`
+    # redirection before our next topology refresh runs.
+    @write_pools_by_address : ::Hash(String, Pool)
+    @read_pools_by_address : ::Hash(String, Pool)
+
+    @topology_lock : Mutex
+    @topology_refresh_throttle : Time::Span
+    {% if compare_versions(Crystal::VERSION, "1.19.0") >= 0 %}
+      @last_topology_refresh : Time::Instant
+    {% else %}
+      @last_topology_refresh : Time::Span
+    {% end %}
+    @topology_refresh_in_flight = false
+    @closed = false
 
     # Tell the cluster driver that all the specified Redis commands can be
     # routed to read-only replicas.
@@ -72,110 +97,34 @@ module Redis
     # Pass a `URI` (defaulting to the `REDIS_CLUSTER_URL` environment variable)
     # to connect to the specified Redis cluster — the URI can point to _any_
     # server in the cluster and `Redis::Cluster` will discover the rest.
-    def initialize(uri : URI = URI.parse(ENV["REDIS_CLUSTER_URL"]? || "redis:///"))
-      @write_nodes = {} of String => Node
-      @read_nodes = {} of String => Node
-      replica_map = {} of String => String
+    #
+    # *topology_refresh_throttle* controls the minimum interval between
+    # automatic background topology refreshes. When `MOVED` redirections come
+    # in faster than this interval, refreshes are coalesced.
+    def initialize(
+      @uri : URI = URI.parse(ENV["REDIS_CLUSTER_URL"]? || "redis:///"),
+      @topology_refresh_throttle : Time::Span = 1.second,
+    )
+      @write_pools_by_address = {} of String => Pool
+      @read_pools_by_address = {} of String => Pool
+      @write_pools = [] of {Slots, Pool}
+      @read_pools = [] of {Slots, Pool}
+      @topology_lock = Mutex.new(:reentrant)
+      @last_topology_refresh = instant_time - 1.hour
 
-      # We use the provided URI only as an entrypoint into the cluster.
-      connection = Connection.new(uri)
-      nodes = connection.run({"cluster", "nodes"}).as(String)
-      connection.close
+      @topology_lock.synchronize { discover_topology! }
+    end
 
-      # Parse out all the information about each node in the cluster, separating
-      # them into readable and writable nodes so we know where to route queries.
-      nodes.each_line do |line|
-        id, host_info, flags_str, master, last_ping, last_pong, config, connected = line.split(' ', 8)
-        # The "slots" parameter might not be provided for replicas, so we handle
-        # that here and use a bogus hash-slot range that will parse into a valid
-        # Int32 range.
-        if connected.index(' ')
-          connected, slots = connected.split
-        else
-          slots = "0-0"
+    # Force a refresh of the cluster's topology. This is normally done
+    # automatically in response to `MOVED` redirections, but it can be useful
+    # to call this method explicitly when an external process tells you that
+    # the cluster has changed.
+    def refresh_topology(force : Bool = true) : Nil
+      @topology_lock.synchronize do
+        unless force
+          return if instant_time - @last_topology_refresh < @topology_refresh_throttle
         end
-
-        # Format: <ip>:<port>@<cport>[,<hostname>[,<aux>=<value>]*]
-        # We only need ip/port/cport here; drop hostname and aux fields.
-        ip, port, cluster_port = host_info.split(',', 2).first.split(/[:@]/)
-        port = port.to_i
-        cluster_port = cluster_port.to_i
-
-        flags_strings = flags_str.split(',').to_set
-        flags = Node::Flags.new(0)
-        flags |= Node::Flags::Master if flags_strings.includes?("master")
-        flags |= Node::Flags::Replica if flags_strings.includes?("slave")
-        flags |= Node::Flags::PFail if flags_strings.includes?("fail?")
-        flags |= Node::Flags::Fail if flags_strings.includes?("fail")
-        flags |= Node::Flags::Handshake if flags_strings.includes?("handshake")
-        flags |= Node::Flags::NoAddr if flags_strings.includes?("noaddr")
-        flags |= Node::Flags::NoFailover if flags_strings.includes?("nofailover")
-        flags |= Node::Flags::NoFlags if flags_strings.includes?("noflags")
-
-        # Master nodes are denoted with a `-` for *their* master nodes
-        if master == "-"
-          master = nil
-        else
-          replica_map[id] = master
-        end
-
-        last_ping = Time::UNIX_EPOCH + last_ping.to_i64.milliseconds
-        last_pong = Time::UNIX_EPOCH + last_pong.to_i64.milliseconds
-        config = config.to_i
-        connected = connected == "connected"
-        slots_low, slots_high = slots.split('-').map(&.to_i)
-        slots = slots_low..slots_high
-
-        node = Node.new(
-          id: id,
-          ip: ip,
-          port: port,
-          cluster_port: cluster_port,
-          flags: flags,
-          replica_of: nil,
-          last_ping: last_ping,
-          last_pong: last_pong,
-          config: config,
-          connected: connected,
-          slots: slots,
-        )
-
-        if node.flags.master?
-          @write_nodes[node.id] = node
-        else
-          @read_nodes[node.id] = node
-        end
-      end
-
-      @read_nodes.each_value do |node|
-        unless node.flags.fail?
-          node.replica_of = @write_nodes[replica_map[node.id]]
-        end
-      end
-
-      @write_pools = @write_nodes.map do |_id, node|
-        {
-          node.slots,
-          Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
-            connection_uri = uri.dup
-            connection_uri.host = node.ip
-            connection_uri.port = node.port
-            Connection.new(connection_uri)
-          end,
-        }
-      end
-      @read_pools = @read_nodes.map do |_id, node|
-        {
-          node.slots,
-          Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
-            connection_uri = uri.dup
-            connection_uri.host = node.ip
-            connection_uri.port = node.port
-
-            Connection.new(connection_uri)
-              .tap(&.readonly!)
-          end,
-        }
+        discover_topology!
       end
     end
 
@@ -229,48 +178,82 @@ module Redis
       # robust way to determine keys so we can figure out whether to route a
       # given query to a primary vs replicas.
       command = full_command[0]
-      if key = full_command[1]?
-        # Redis commands are case-insensitive, so if someone provides an all-caps
-        # command or something we can still route it properly here by downcasing
-        # it before checking.
-        command = command.downcase if command =~ /[A-Z]/
-
-        started_at = instant_time
-        if READ_ONLY_COMMANDS.includes?(command)
-          read_pool_for(key)
-        else
-          write_pool_for(key)
-        end.checkout do |connection|
-          connection.run(full_command)
-        end.tap do
-          LOG.debug &.emit(command: full_command.join(' '), duration: (instant_time - started_at).total_seconds)
-        end
-      else
+      key = full_command[1]?
+      unless key
         raise Error.new("No key was specified for this command, so the cluster driver cannot route it to an appropriate Redis shard. A cluster-specific method must be added to handle cases like these until a generalized solution is added.")
       end
+
+      # Redis commands are case-insensitive, so if someone provides an all-caps
+      # command or something we can still route it properly here by downcasing
+      # it before checking.
+      command = command.downcase if command =~ /[A-Z]/
+
+      started_at = instant_time
+      retries = 5
+      redirect_pool : Pool? = nil
+      asking = false
+
+      loop do
+        pool = redirect_pool || initial_pool_for(command, key)
+
+        begin
+          return pool.checkout do |connection|
+            connection.run({"asking"}) if asking
+            connection.run(full_command)
+          end
+        rescue ex : Cluster::Moved
+          raise ex if retries <= 0
+          retries -= 1
+          redirect_pool = write_pool_for_redirect(parse_redirect_address(ex.message))
+          asking = false
+          schedule_topology_refresh
+        rescue ex : Cluster::Ask
+          raise ex if retries <= 0
+          retries -= 1
+          redirect_pool = write_pool_for_redirect(parse_redirect_address(ex.message))
+          asking = true
+        end
+      end
+    ensure
+      LOG.debug &.emit(command: full_command.join(' '), duration: (instant_time - started_at).total_seconds) if started_at
     end
 
     # Close all connections to this Redis cluster
     def close
-      @write_pools.each do |(_, pool)|
-        pool.close
-      end
-      @read_pools.each do |(_, pool)|
-        pool.close
+      @topology_lock.synchronize do
+        @write_pools_by_address.each_value(&.close)
+        @read_pools_by_address.each_value(&.close)
+        @write_pools_by_address.clear
+        @read_pools_by_address.clear
+        @write_pools = [] of {Slots, Pool}
+        @read_pools = [] of {Slots, Pool}
       end
     ensure
       @closed = true
     end
 
+    private def initial_pool_for(command : String, key : String) : Pool
+      if READ_ONLY_COMMANDS.includes?(command)
+        read_pool_for(key)
+      else
+        write_pool_for(key)
+      end
+    end
+
     private def read_pool_for(key : String)
       slot = slot_for(key)
+      pools = @read_pools
 
-      result = @read_pools.shuffle.find do |(slots, pool)|
+      # Fall back to write pools if we don't have any read replicas — e.g. on
+      # a single-node "cluster" or while replicas are still coming online.
+      pools = @write_pools if pools.empty?
+
+      result = pools.shuffle.find do |(slots, _)|
         slots.includes? slot
       end
 
       if result
-        slots, pool = result
+        _, pool = result
         pool
       else
         raise Error.new("No Redis node available to handle hash slot #{slot} (key #{key.inspect})")
@@ -280,12 +263,12 @@ module Redis
     private def write_pool_for(key : String)
       slot = slot_for(key)
 
-      result = @write_pools.find do |(slots, pool)|
+      result = @write_pools.find do |(slots, _)|
         slots.includes? slot
       end
 
       if result
-        slots, pool = result
+        _, pool = result
         pool
       else
         raise Error.new("No Redis node available to handle hash slot #{slot} (key #{key.inspect})")
@@ -310,12 +293,15 @@ module Redis
     end
 
     private def each_unique_replica(&) : Nil
+      pools = @read_pools
+      pools = @write_pools if pools.empty?
+
       # Set to the write-pool size because that's the maximum size we'll need
       # for this data structure. The number of hash-slot ranges is based on
       # what *they* use.
       slot_sets = ::Set(Slots).new(@write_pools.size)
 
-      @read_pools.each do |(slots, pool)|
+      pools.each do |(slots, pool)|
         # Only yield a connection from this pool if we haven't already acted
         # on a replica for this slot set.
         unless slot_sets.includes? slots
@@ -323,6 +309,208 @@ module Redis
           pool.checkout { |conn| yield conn }
         end
       end
+    end
+
+    # Parse the host:port portion of a `MOVED`/`ASK` error message. The full
+    # message looks like `MOVED 1234 10.0.0.5:6379` or
+    # `ASK 1234 10.0.0.5:6379`.
+    private def parse_redirect_address(message : String?) : String
+      unless message
+        raise Error.new("Cluster redirection error has no message")
+      end
+
+      parts = message.split(' ', 3)
+      unless parts.size >= 3
+        raise Error.new("Could not parse redirect address from message: #{message.inspect}")
+      end
+      parts[2]
+    end
+
+    private def write_pool_for_redirect(address : String) : Pool
+      ip, port = split_address(address)
+      write_pool_for_address(ip, port)
+    end
+
+    private def split_address(address : String) : {String, Int32}
+      colon = address.rindex(':')
+      raise Error.new("Could not parse address: #{address.inspect}") unless colon
+      ip = address[0...colon]
+      port = address[colon + 1..].to_i
+      {ip, port}
+    end
+
+    private def write_pool_for_address(ip : String, port : Int32) : Pool
+      address = "#{ip}:#{port}"
+      @topology_lock.synchronize do
+        @write_pools_by_address[address] ||= build_pool(ip, port, readonly: false)
+      end
+    end
+
+    private def read_pool_for_address(ip : String, port : Int32) : Pool
+      address = "#{ip}:#{port}"
+      @topology_lock.synchronize do
+        @read_pools_by_address[address] ||= build_pool(ip, port, readonly: true)
+      end
+    end
+
+    private def build_pool(ip : String, port : Int32, *, readonly : Bool) : Pool
+      Pool.new(PoolOptions.new(max_idle_pool_size: 25, initial_pool_size: 0)) do
+        connection_uri = @uri.dup
+        connection_uri.host = ip
+        connection_uri.port = port
+        connection = Connection.new(connection_uri)
+        connection.readonly! if readonly
+        connection
+      end
+    end
+
+    # Coalesce concurrent requests to refresh topology. The first MOVED in a
+    # window of *topology_refresh_throttle* triggers a background refresh; any
+    # further MOVEDs while that refresh is running are dropped.
+    private def schedule_topology_refresh : Nil
+      should_run = @topology_lock.synchronize do
+        next false if @closed
+        next false if @topology_refresh_in_flight
+        next false if instant_time - @last_topology_refresh < @topology_refresh_throttle
+        @topology_refresh_in_flight = true
+        true
+      end
+      return unless should_run
+
+      spawn do
+        begin
+          refresh_topology(force: true)
+        rescue ex
+          LOG.warn &.emit("failed to refresh cluster topology", error: ex.message)
+        ensure
+          @topology_lock.synchronize { @topology_refresh_in_flight = false }
+        end
+      end
+    end
+
+    # Caller must hold `@topology_lock`.
+    private def discover_topology! : Nil
+      nodes_response = fetch_cluster_nodes
+
+      write_nodes = {} of String => Node
+      read_nodes = {} of String => Node
+      replica_map = {} of String => String
+
+      nodes_response.each_line do |line|
+        next if line.blank?
+        parsed = parse_node_line(line)
+        next unless parsed
+
+        node, master_id = parsed
+        replica_map[node.id] = master_id if master_id
+
+        if node.flags.master?
+          write_nodes[node.id] = node
+        elsif node.flags.replica? && !node.flags.fail? && !node.flags.no_addr?
+          read_nodes[node.id] = node
+        end
+      end
+
+      read_nodes.each_value do |node|
+        if (master_id = replica_map[node.id]?) && (master = write_nodes[master_id]?)
+          node.replica_of = master
+        end
+      end
+
+      new_write_pools = write_nodes.each_value.map { |node|
+        {node.slots, write_pool_for_address(node.ip, node.port)}
+      }.to_a
+
+      new_read_pools = [] of {Slots, Pool}
+      read_nodes.each_value do |node|
+        # Skip orphaned replicas: with no master, we don't know which slots
+        # they serve, so they can't be picked by a key lookup anyway.
+        next if node.replica_of.nil?
+        new_read_pools << {node.slots, read_pool_for_address(node.ip, node.port)}
+      end
+
+      @write_pools = new_write_pools
+      @read_pools = new_read_pools
+      @last_topology_refresh = instant_time
+    end
+
+    # Caller must hold `@topology_lock`.
+    private def fetch_cluster_nodes : String
+      # Try existing pools first so we don't have to open a brand-new
+      # connection on every refresh. Also, if our entrypoint URI has gone away
+      # (e.g. the node behind it left the cluster), we can still recover as
+      # long as some other known node is still reachable.
+      pools = @write_pools_by_address.values + @read_pools_by_address.values
+      pools.each do |pool|
+        begin
+          return pool.checkout(&.run({"cluster", "nodes"})).as(String)
+        rescue ex
+          LOG.debug &.emit("could not fetch cluster topology from a known pool, trying another", error: ex.message)
+        end
+      end
+
+      # No existing pool worked (e.g. on first run). Open a fresh connection.
+      connection = Connection.new(@uri)
+      begin
+        connection.run({"cluster", "nodes"}).as(String)
+      ensure
+        connection.close
+      end
+    end
+
+    private def parse_node_line(line : String) : {Node, String?}?
+      id, host_info, flags_str, master, last_ping, last_pong, config, connected = line.split(' ', 8)
+      # The "slots" parameter might not be provided for replicas, so we handle
+      # that here and use a bogus hash-slot range that will parse into a valid
+      # Int32 range.
+      if connected.index(' ')
+        connected, slots = connected.split
+      else
+        slots = "0-0"
+      end
+
+      # Format: <ip>:<port>@<cport>[,<hostname>[,<aux>=<value>]*]
+      # We only need ip/port/cport here; drop hostname and aux fields.
+      ip, port, cluster_port = host_info.split(',', 2).first.split(/[:@]/)
+      return nil if ip.empty?
+      port = port.to_i
+      cluster_port = cluster_port.to_i
+
+      flags_strings = flags_str.split(',').to_set
+      flags = Node::Flags.new(0)
+      flags |= Node::Flags::Master if flags_strings.includes?("master")
+      flags |= Node::Flags::Replica if flags_strings.includes?("slave")
+      flags |= Node::Flags::PFail if flags_strings.includes?("fail?")
+      flags |= Node::Flags::Fail if flags_strings.includes?("fail")
+      flags |= Node::Flags::Handshake if flags_strings.includes?("handshake")
+      flags |= Node::Flags::NoAddr if flags_strings.includes?("noaddr")
+      flags |= Node::Flags::NoFailover if flags_strings.includes?("nofailover")
+      flags |= Node::Flags::NoFlags if flags_strings.includes?("noflags")
+
+      master_id = master == "-" ? nil : master
+
+      last_ping_t = Time::UNIX_EPOCH + last_ping.to_i64.milliseconds
+      last_pong_t = Time::UNIX_EPOCH + last_pong.to_i64.milliseconds
+      config_int = config.to_i
+      connected_bool = connected == "connected"
+      slots_low, slots_high = slots.split('-').map(&.to_i)
+      slots_range = slots_low..slots_high
+
+      node = Node.new(
+        id: id,
+        ip: ip,
+        port: port,
+        cluster_port: cluster_port,
+        flags: flags,
+        replica_of: nil,
+        last_ping: last_ping_t,
+        last_pong: last_pong_t,
+        config: config_int,
+        connected: connected_bool,
+        slots: slots_range,
+      )
+
+      {node, master_id}
     end
 
     # :nodoc:
