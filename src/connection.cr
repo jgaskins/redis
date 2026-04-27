@@ -31,7 +31,8 @@ module Redis
     def initialize(@uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///")), @log = Log)
       host = uri.host.presence || "localhost"
       port = uri.port || 6379
-      socket = TCPSocket.new(host, port)
+      connect_timeout = uri.query_params.fetch("connect_timeout", "5").to_f
+      socket = TCPSocket.new(host, port, connect_timeout: (connect_timeout > 0 ? connect_timeout.seconds : nil))
       socket.sync = false
 
       # TCP keepalive settings
