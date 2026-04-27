@@ -212,6 +212,18 @@ module Redis
           retries -= 1
           redirect_pool = write_pool_for_redirect(parse_redirect_address(ex.message))
           asking = true
+        rescue ex : IO::Error | DB::PoolResourceLost
+          # Connection-level failure: either we couldn't reach the node (e.g.
+          # its IP changed and the old one is a black hole) or an in-flight
+          # connection broke and the underlying retry exhausted. The pool is
+          # the wrong one to keep using — drop it and refresh topology so we
+          # pick up current addresses, then retry on a fresh pool.
+          raise ex if retries <= 0
+          retries -= 1
+          drop_pool(pool)
+          refresh_topology(force: true)
+          redirect_pool = nil
+          asking = false
         end
       end
     ensure
@@ -417,21 +429,55 @@ module Redis
         end
       end
 
+      live_write_addresses = ::Set(String).new
       new_write_pools = write_nodes.each_value.map { |node|
+        live_write_addresses << "#{node.ip}:#{node.port}"
         {node.slots, write_pool_for_address(node.ip, node.port)}
       }.to_a
 
+      live_read_addresses = ::Set(String).new
       new_read_pools = [] of {Slots, Pool}
       read_nodes.each_value do |node|
         # Skip orphaned replicas: with no master, we don't know which slots
         # they serve, so they can't be picked by a key lookup anyway.
         next if node.replica_of.nil?
+        live_read_addresses << "#{node.ip}:#{node.port}"
         new_read_pools << {node.slots, read_pool_for_address(node.ip, node.port)}
       end
+
+      # Close and forget pools whose addresses are no longer in the cluster.
+      # Otherwise we'd keep timing out against them on every refresh and on
+      # any future request that happens to land on the slot they used to
+      # serve.
+      prune_pools(@write_pools_by_address, live_write_addresses)
+      prune_pools(@read_pools_by_address, live_read_addresses)
 
       @write_pools = new_write_pools
       @read_pools = new_read_pools
       @last_topology_refresh = instant_time
+    end
+
+    private def prune_pools(by_address : ::Hash(String, Pool), live : ::Set(String)) : Nil
+      by_address.reject! do |address, pool|
+        if live.includes?(address)
+          false
+        else
+          pool.close rescue nil
+          true
+        end
+      end
+    end
+
+    # Drop a pool we couldn't reach so we don't keep waiting on connect
+    # timeouts to the same dead address.
+    private def drop_pool(pool : Pool) : Nil
+      @topology_lock.synchronize do
+        @write_pools_by_address.reject! { |_, p| p.same?(pool) }
+        @read_pools_by_address.reject! { |_, p| p.same?(pool) }
+        @write_pools = @write_pools.reject { |(_, p)| p.same?(pool) }
+        @read_pools = @read_pools.reject { |(_, p)| p.same?(pool) }
+        pool.close rescue nil
+      end
     end
 
     # Caller must hold `@topology_lock`.
