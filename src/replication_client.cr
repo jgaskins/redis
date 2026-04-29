@@ -228,6 +228,7 @@ class Redis::ReplicationClient
       enum Role
         Master
         Replica
+        Slave = Replica
       end
     end
 
