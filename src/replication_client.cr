@@ -98,7 +98,7 @@ class Redis::ReplicationClient
           .sort_by!(&.host.not_nil!),
         topology_ttl: topology_ttl,
       )
-    in .replica?
+    in .replica?, .slave?
       initialize(
         entrypoint.dup.tap do |uri|
           uri.host = parsed.master_host
