@@ -27,6 +27,36 @@ module Redis
         )
       end
 
+      it "ignores non-replica slave_* fields and unknown replica entry keys" do
+        section = <<-SECTION
+          # Replication\r
+          role:master\r
+          connected_slaves:2\r
+          slave0:ip=cache-1.cache.redis-operator-example.svc.cluster.local,port=6379,state=online,offset=23804150,lag=0,io-thread=0\r
+          slave1:ip=cache-0.cache.redis-operator-example.svc.cluster.local,port=6379,state=online,offset=23804498,lag=0,io-thread=0\r
+          master_failover_state:no-failover\r
+          master_replid:195f2aaf474454e689dd52c1968748d407409798\r
+          master_replid2:3408492d325c40f4659a8823df3c7b6bc20ff1f5\r
+          master_repl_offset:23804498\r
+          second_repl_offset:18990135\r
+          repl_backlog_active:1\r
+          repl_backlog_size:1048576\r
+          repl_backlog_first_byte_offset:22743268\r
+          repl_backlog_histlen:1061231\r
+
+          SECTION
+
+        data = ReplicationClient::Info::Replication.new(section)
+
+        data.role.master?.should eq true
+        data.connected_replicas.should eq 2
+        data.replicas.size.should eq 2
+        data.replicas[0].ip.should eq "cache-1.cache.redis-operator-example.svc.cluster.local"
+        data.replicas[0].port.should eq 6379
+        data.replicas[0].state.online?.should eq true
+        data.replicas[0].lag.should eq 0.seconds
+      end
+
       it "parses a replica's replication section" do
         section = <<-SECTION
           # Replication\r
