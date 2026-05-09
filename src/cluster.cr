@@ -49,10 +49,10 @@ module Redis
     private alias PoolOptions = DB::Pool::Options
 
     # :nodoc:
-    alias Slots = Range(Int32, Int32)
+    alias SlotRange = Range(Int32, Int32)
 
-    @write_pools : Array({Slots, Pool})
-    @read_pools : Array({Slots, Pool})
+    @write_pools : Array({SlotRange, Pool})
+    @read_pools : Array({SlotRange, Pool})
 
     # Pools are kept in these hashes across topology refreshes so we don't drop
     # warm connections when a node's slot range changes. They also let us
@@ -107,8 +107,8 @@ module Redis
     )
       @write_pools_by_address = {} of String => Pool
       @read_pools_by_address = {} of String => Pool
-      @write_pools = [] of {Slots, Pool}
-      @read_pools = [] of {Slots, Pool}
+      @write_pools = [] of {SlotRange, Pool}
+      @read_pools = [] of {SlotRange, Pool}
       @topology_lock = Mutex.new(:reentrant)
       @last_topology_refresh = instant_time - 1.hour
 
@@ -237,8 +237,8 @@ module Redis
         @read_pools_by_address.each_value(&.close)
         @write_pools_by_address.clear
         @read_pools_by_address.clear
-        @write_pools = [] of {Slots, Pool}
-        @read_pools = [] of {Slots, Pool}
+        @write_pools = [] of {SlotRange, Pool}
+        @read_pools = [] of {SlotRange, Pool}
       end
     ensure
       @closed = true
@@ -299,25 +299,19 @@ module Redis
     end
 
     private def each_master(&) : Nil
+      seen = ::Set(Pool).new(@write_pools.size)
       @write_pools.each do |(_, pool)|
-        pool.checkout { |conn| yield conn }
+        pool.checkout { |conn| yield conn } if seen.add?(pool)
       end
     end
 
     private def each_unique_replica(&) : Nil
       pools = @read_pools
       pools = @write_pools if pools.empty?
+      seen = ::Set(Pool).new(pools.size)
 
-      # Set to the write-pool size because that's the maximum size we'll need
-      # for this data structure. The number of hash-slot ranges is based on
-      # what *they* use.
-      slot_sets = ::Set(Slots).new(@write_pools.size)
-
-      pools.each do |(slots, pool)|
-        # Only yield a connection from this pool if we haven't already acted
-        # on a replica for this slot set.
-        unless slot_sets.includes? slots
-          slot_sets << slots
+      pools.each do |(_, pool)|
+        if seen.add?(pool)
           pool.checkout { |conn| yield conn }
         end
       end
@@ -429,20 +423,31 @@ module Redis
         end
       end
 
+      # Each node may serve multiple discontiguous slot ranges (common after
+      # resharding). Flatten into one routing entry per range so the existing
+      # `find { range.includes? slot }` lookup covers every slot the node
+      # actually owns. Masters with no slots are still tracked by address
+      # (so MOVED redirects can find a warm pool) but are excluded from the
+      # routing table.
       live_write_addresses = ::Set(String).new
-      new_write_pools = write_nodes.each_value.map { |node|
+      new_write_pools = [] of {SlotRange, Pool}
+      write_nodes.each_value do |node|
         live_write_addresses << "#{node.ip}:#{node.port}"
-        {node.slots, write_pool_for_address(node.ip, node.port)}
-      }.to_a
+        next if node.slots.empty?
+        pool = write_pool_for_address(node.ip, node.port)
+        node.slots.each { |range| new_write_pools << {range, pool} }
+      end
 
       live_read_addresses = ::Set(String).new
-      new_read_pools = [] of {Slots, Pool}
+      new_read_pools = [] of {SlotRange, Pool}
       read_nodes.each_value do |node|
         # Skip orphaned replicas: with no master, we don't know which slots
         # they serve, so they can't be picked by a key lookup anyway.
         next if node.replica_of.nil?
         live_read_addresses << "#{node.ip}:#{node.port}"
-        new_read_pools << {node.slots, read_pool_for_address(node.ip, node.port)}
+        next if node.slots.empty?
+        pool = read_pool_for_address(node.ip, node.port)
+        node.slots.each { |range| new_read_pools << {range, pool} }
       end
 
       # Close and forget pools whose addresses are no longer in the cluster.
@@ -505,14 +510,26 @@ module Redis
     end
 
     private def parse_node_line(line : String) : {Node, String?}?
-      id, host_info, flags_str, master, last_ping, last_pong, config, connected = line.split(' ', 8)
-      # The "slots" parameter might not be provided for replicas, so we handle
-      # that here and use a bogus hash-slot range that will parse into a valid
-      # Int32 range.
-      if connected.index(' ')
-        connected, slots = connected.split
-      else
-        slots = "0-0"
+      id, host_info, flags_str, master, last_ping, last_pong, config, tail = line.split(' ', 8)
+
+      # `tail` is the rest of the line: "<connected|disconnected>[ <slot>...]"
+      # where each slot token is either "lo-hi", a single slot number, or a
+      # migration marker like "[123-<-id]" / "[123->-id]".
+      tail_parts = tail.split(' ')
+      connected_token = tail_parts[0]
+      slots = [] of SlotRange
+      tail_parts[1..].each do |token|
+        # Skip slot-migration markers; the cluster will send ASK for slots
+        # mid-migration and we handle that at request time.
+        next if token.starts_with?('[')
+        if dash_index = token.index('-')
+          lo = token[0...dash_index].to_i
+          hi = token[dash_index + 1..].to_i
+          slots << (lo..hi)
+        else
+          n = token.to_i
+          slots << (n..n)
+        end
       end
 
       # Format: <ip>:<port>@<cport>[,<hostname>[,<aux>=<value>]*]
@@ -538,9 +555,7 @@ module Redis
       last_ping_t = Time::UNIX_EPOCH + last_ping.to_i64.milliseconds
       last_pong_t = Time::UNIX_EPOCH + last_pong.to_i64.milliseconds
       config_int = config.to_i
-      connected_bool = connected == "connected"
-      slots_low, slots_high = slots.split('-').map(&.to_i)
-      slots_range = slots_low..slots_high
+      connected_bool = connected_token == "connected"
 
       node = Node.new(
         id: id,
@@ -553,7 +568,7 @@ module Redis
         last_pong: last_pong_t,
         config: config_int,
         connected: connected_bool,
-        slots: slots_range,
+        slots: slots,
       )
 
       {node, master_id}
@@ -571,7 +586,7 @@ module Redis
       getter last_pong : Time
       getter config : Int32
       getter? connected : Bool
-      getter slots : Range(Int32, Int32)
+      getter slots : Array(SlotRange)
 
       def initialize(@id, @ip, @port, @cluster_port, @flags, @replica_of, @last_ping, @last_pong, @config, @connected, @slots)
       end
