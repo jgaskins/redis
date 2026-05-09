@@ -202,18 +202,20 @@ module Redis
             connection.run(full_command)
           end
         rescue ex : Cluster::Moved
+          LOG.warn &.emit "MOVED", key: key, error: ex.message
           raise ex if retries <= 0
           retries -= 1
           redirect_pool = write_pool_for_redirect(parse_redirect_address(ex.message))
-          LOG.warn &.emit "Key moved", key: key, error: ex.message
           asking = false
           schedule_topology_refresh
         rescue ex : Cluster::Ask
+          LOG.warn &.emit "ASK", key: key, error: ex.message
           raise ex if retries <= 0
           retries -= 1
           redirect_pool = write_pool_for_redirect(parse_redirect_address(ex.message))
           asking = true
         rescue ex : IO::Error | DB::PoolResourceLost
+          LOG.warn &.emit ex.message.to_s, key: key
           # Connection-level failure: either we couldn't reach the node (e.g.
           # its IP changed and the old one is a black hole) or an in-flight
           # connection broke and the underlying retry exhausted. The pool is
