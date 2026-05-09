@@ -205,6 +205,7 @@ module Redis
           raise ex if retries <= 0
           retries -= 1
           redirect_pool = write_pool_for_redirect(parse_redirect_address(ex.message))
+          LOG.warn &.emit "Key moved", key: key, error: ex.message
           asking = false
           schedule_topology_refresh
         rescue ex : Cluster::Ask
