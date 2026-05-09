@@ -516,15 +516,16 @@ module Redis
       id, host_info, flags_str, master, last_ping, last_pong, config, tail = line.split(' ', 8)
 
       # `tail` is the rest of the line: "<connected|disconnected>[ <slot>...]"
-      # where each slot token is either "lo-hi", a single slot number, or a
+      # where each slot token is either "low-high", a single slot number, or a
       # migration marker like "[123-<-id]" / "[123->-id]".
       tail_parts = tail.split(' ')
       connected_token = tail_parts[0]
       slots = [] of SlotRange
       tail_parts[1..].each do |token|
-        # Skip slot-migration markers; the cluster will send ASK for slots
-        # mid-migration and we handle that at request time.
+        # Skip slot-migration markers. The cluster will send ASK for slots
+        # mid-migration and we can handle that at request time.
         next if token.starts_with?('[')
+
         if dash_index = token.index('-')
           lo = token[0...dash_index].to_i
           hi = token[dash_index + 1..].to_i
@@ -535,10 +536,17 @@ module Redis
         end
       end
 
-      # Format: <ip>:<port>@<cport>[,<hostname>[,<aux>=<value>]*]
-      # We only need ip/port/cport here; drop hostname and aux fields.
-      ip, port, cluster_port = host_info.split(',', 2).first.split(/[:@]/)
-      return nil if ip.empty?
+      # <endpoint>:<port>@<cport>[,<hostname>[,<aux>=<value>]*]
+      #
+      # `endpoint` can be an IP, a hostname (when `cluster-preferred-endpoint-type`
+      # is `hostname`), or empty. Prefer the announced hostname when present. It
+      # survives pod IP churn in Kubernetes, where each replacement pod gets a new
+      # IP and the cluster gossip could have some lag.
+      parts = host_info.split(',')
+      endpoint, port, cluster_port = parts[0].split(/[:@]/)
+      hostname = parts[1]?.presence
+      host = hostname || endpoint
+      return nil if host.empty?
       port = port.to_i
       cluster_port = cluster_port.to_i
 
@@ -562,7 +570,7 @@ module Redis
 
       node = Node.new(
         id: id,
-        ip: ip,
+        ip: host,
         port: port,
         cluster_port: cluster_port,
         flags: flags,
