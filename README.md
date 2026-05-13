@@ -16,6 +16,15 @@ A pure-Crystal implementation of the Redis protocol
 
 ## Usage
 
+This shard has 4 `Redis::Commands::Immediate` types for different topologies:
+
+| Type | Purpose | Fiber-safe? |
+|------|---------|-------------|
+| `Redis::Connection` | Single direct connection to the Redis server. | ❌ |
+| `Redis::Client` | Full client that supports many connections to the Redis server simultaneously using a connection pool. | ✅ |
+| `Redis::ReplicationClient` | Like `Redis::Client`, but sends all known read-only commands to a replica to spare the primary/master node. Automatically discovers the replication topology and adapts to changes in that topology. | ✅ |
+| `Redis::Cluster` | A `Redis::Client` for talking to Redis servers running in cluster mode. Automatically discovers the cluster topology and adapts to changes in that topology. | ✅ |
+
 ```crystal
 require "redis"
 
