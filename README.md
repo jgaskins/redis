@@ -18,12 +18,11 @@ A pure-Crystal implementation of the Redis protocol
 
 This shard has 4 `Redis::Commands::Immediate` types for different topologies:
 
-| Type | Purpose | Fiber-safe? |
-|------|---------|-------------|
-| `Redis::Connection` | Single direct connection to the Redis server. | ❌ |
-| `Redis::Client` | Full client that supports many connections to the Redis server simultaneously using a connection pool. | ✅ |
-| `Redis::ReplicationClient` | Like `Redis::Client`, but sends all known read-only commands to a replica to spare the primary/master node. Automatically discovers the replication topology and adapts to changes in that topology. | ✅ |
-| `Redis::Cluster` | A `Redis::Client` for talking to Redis servers running in cluster mode. Automatically discovers the cluster topology and adapts to changes in that topology. | ✅ |
+
+- `Redis::Connection`: Single direct connection to the Redis server. Not sharable between fibers.
+- `Redis::Client`: Full client that supports many connections to the Redis server simultaneously using a connection pool. Sharable between fibers.
+- `Redis::ReplicationClient`: Like `Redis::Client`, but sends all known read-only commands to a replica to spare the primary/master node. Automatically discovers the replication topology and adapts to changes in that topology. Sharable between fibers.
+- `Redis::Cluster`: Like `Redis::Client`, but for talking to Redis servers running in cluster mode. Automatically discovers the cluster topology and adapts to changes in that topology. Sharable between fibers.
 
 ```crystal
 require "redis"
@@ -40,11 +39,22 @@ redis.decr "counter" # => 1
 redis.del "foo", "counter" # => 2
 ```
 
-### Pipelined queries
+### Deferred commands
 
-To mitigate latency with multiple queries whose inputs and outputs are completely independent of each other, you can "pipeline" your queries by sending them all at once before reading them. To do this, you can use the `pipeline` method:
+There are two different types for deferring commands (`Redis::Commands::Deferred`):
+
+- `Redis::Pipeline`: Runs a set of commands on the Redis server without waiting for the response from each one.
+- `Redis::Transaction`: Runs a set of commands atomically. Either all of the commands run or none of them do.
+
+#### Pipelined queries
+
+To mitigate latency with multiple queries whose inputs and outputs are completely independent of each other, you can "pipeline" your queries by sending them all at once before reading them. To do this, you can use the `Redis::Client#pipeline` method:
 
 ```crystal
+require "redis"
+
+redis = Redis::Client.new
+
 redis.pipeline do |pipe|
   pipe.incr "foo"
   pipe.set "bar", "baz"
@@ -52,9 +62,9 @@ redis.pipeline do |pipe|
 end
 ```
 
-The return value of `pipeline` will be an array containing the values of each of those calls in the order they were sent. So in this case, it might be `[1, nil, 2]` to match the return values of `incr`, `set`, and `lpush`, respectively.
+The return value of `pipeline` will be an array containing the values of each of those calls in the order they were sent. So in this case, it might be `[1, "OK", 2]` to match the return values of `incr`, `set`, and `lpush`, respectively.
 
-### Transactions
+#### Transactions
 
 The Redis [`MULTI` command](https://redis.io/commands/multi) begins a transaction, so you can use the `multi` method to execute a transaction against the server:
 
@@ -74,20 +84,20 @@ The reason for this is that the only way to exit a containing block from an inne
 
 ### Beyond `localhost`
 
-To use a Redis server that isn't at `localhost:6379`, pass a `URI` to the client. For example, if you store it in your shell environment:
+By default, this shard connects to `redis://localhost:6379`. If you need to connect to a server on a different host and/or port, you can either set the `REDIS_URL` environment variable or pass a `URI` to the client. For example, if you store it in your shell environment:
 
 ```crystal
-redis = Redis::Client.new(URI.parse(ENV["REDIS_URL"]))
+redis = Redis::Client.new(URI.parse(ENV["REDIS_CACHE_URL"]))
 
 # ... or ...
 
-redis = Redis::Client.from_env("REDIS_URL")
+redis = Redis::Client.from_env("REDIS_CACHE_URL")
 ```
 
 To connect via SSL, make sure you use the `rediss://` URL scheme. If your Redis server requires a password or uses a different database slot than `0`, make sure you include them in the URL:
 
 ```crystal
-redis = Redis::Client.new(URI.parse("rediss://:my_password@example.com/3"))
+redis = Redis::Client.new(URI.parse("rediss://:my_password@redis.example.com/3"))
 ```
 
 ### Connection Pool
@@ -96,7 +106,7 @@ The `Redis::Client` maintains a connection pool, so there is no need to run your
 
 **Configuration**
 
-For this shard, we use the following default setting (outside of the Standard Lib defaults);
+For this shard, we use the following default setting (outside of the stdlib defaults);
 
 ```
 max_idle_pool_size = 25
@@ -105,29 +115,34 @@ max_idle_pool_size = 25
 > You can override this manually using the URI parameters.
 > All other settings follow the DB::Pool defaults.
 
-The behaviour of the connection pool can be configured from a set of query string parameters in the connection URI.
+The behaviour of the connection pool can be configured from a set of query string parameters in the connection URI:
 
-| Name | Default value |
-| :--- | :--- |
-| initial\_pool\_size | 1 |
-| max\_pool\_size | 0 \(unlimited\) |
-| max\_idle\_pool\_size | 1 |
-| checkout\_timeout | 5.0 \(seconds\) |
-| retry\_attempts | 1 |
-| retry\_delay | 1.0 \(seconds\) |
+- `initial_pool_size`: Size of the connection pool when instantiating the `Redis::Client`, `Redis::Cluster`, or `Redis::ReplicationClient`. Defaults to 1.
+- `max_pool_size`: Maximum size of the connection pool. Trying to check out a connection when there are already this many connections in the pool will block until a connection becomes available. Set to 0 for unlimited size. Defaults to 0 (unlimited).
+- `max_idle_pool_size`: Maximum number of idle connections in the connection pool. Tune this number for an elastic pool size. Defaults to 25.
+- `checkout_timeout`: Maximum number of seconds to wait while checking out a connection from the pool. Defaults to 5.
+- `retry_attempts`: Number of times we'll retry reconnecting to a Redis server if the connection is lost. Defaults to 1.
+- `retry_delay`: Number of seconds between retry attempts. Defaults to 1.
 
-See [Crystal guides](https://crystal-lang.org/reference/1.6/database/connection_pool.html) to learn more.
+See [Crystal guides](https://crystal-lang.org/reference/1.20/database/connection_pool.html) to learn more.
 
 **Example**
 
 ```crystal
-pool_params = "?initial_pool_size=1&max_pool_size=10&checkout_timeout=10&retry_attempts=2&retry_delay=0.5&max_idle_pool_size=50"
+pool_params = URI::Params{
+  "initial_pool_size" => "1",
+  "max_pool_size" => "10",
+  "checkout_timeout" => "10",
+  "retry_attempts" => "2",
+  "retry_delay" => "0.5",
+  "max_idle_pool_size" => "50",
+}
 redis = Redis::Client.new(URI.parse("redis://localhost:6379/0#{pool_params}"))
 ```
 
 **Recommendations**
 
-If you encounter any issues, keep these setting the same;
+If you encounter any issues, keep these setting the same:
 
 - `initial_pool_size`
 - `max_pool_size`
