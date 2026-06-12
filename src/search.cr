@@ -1,5 +1,5 @@
 require "./redis"
-
+require "./vector_encoder"
 require "./search/aggregate"
 
 module Redis
