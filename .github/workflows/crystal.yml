@@ -24,6 +24,7 @@ jobs:
         - "8.2"
         - "8.4"
         - "8.6"
+        - "8.8"
     container:
       image: crystallang/crystal:${{ matrix.crystal }}
 
