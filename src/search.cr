@@ -21,7 +21,6 @@ module Redis
   # If your Redis server is running in Cluster mode, you can
   # `require "redis/cluster/search"` to send read-only `FullText` commands to
   # shard replicas.
-  @[Experimental("RediSearch support is still under development. Some APIs may change while details are discovered.")]
   struct FullText(Runnable)
     # :nodoc:
     def initialize(@redis : Runnable)
@@ -145,12 +144,12 @@ module Redis
       payload : String | Bytes | Nil = nil,
       sortby : SortBy? = nil,
       limit : {Int, Int}? = nil,
-      params : NamedTuple | Hash(String, String) | Nil = nil,
+      params : NamedTuple | Hash | Nil = nil,
       dialect : Int? = nil,
     )
       # Pre-allocate the command buffer based on args so it performs as few
       # heap allocations as possible.
-      command = Array(String).new(
+      command = Array(String | Bytes).new(
         3 + # ft.search index query
         (nocontent ? 1 : 0) +
         (verbatim ? 1 : 0) +
@@ -267,12 +266,10 @@ module Redis
       if params
         command << "params" << (params.size * 2).to_s
         case params
-        in NamedTuple
+        in NamedTuple, Hash
           # I understand *why* NamedTuple#each has a different block signature,
           # but I don't love it.
-          params.each { |key, value| command << key.to_s << value.to_s }
-        in Hash
-          params.each { |(key, value)| command << key << value }
+          params.each { |key, value| command << key.to_s << param_string(value) }
         in Nil
         end
         dialect ||= 2
@@ -283,6 +280,18 @@ module Redis
       end
 
       @redis.run(command).as Array
+    end
+
+    private def param_string(value : String)
+      value
+    end
+
+    private def param_string(value : Int)
+      value.to_s
+    end
+
+    private def param_string(vector : Array(T)) forall T
+      VectorEncoder.new.call vector
     end
 
     record Summarize,

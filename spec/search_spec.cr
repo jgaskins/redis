@@ -41,6 +41,10 @@ module Redis
             location GEO
             post_count NUMERIC SORTABLE
             section TEXT NOSTEM
+            vector VECTOR HNSW 6
+              TYPE FLOAT32
+              DIM 3
+              DISTANCE_METRIC COSINE
         INDEX
 
         # Please leave the FILTER clause in there, it ensures we send the quoted
@@ -48,13 +52,16 @@ module Redis
         redis.ft.create <<-INDEX
           #{json_index} ON JSON
           PREFIX 1 #{json_prefix}:
-          FILTER "@post_count >= 0"
           SCHEMA
             $.name AS name TEXT NOSTEM SORTABLE
             $.body AS body TEXT
             $.location AS location GEO
             $.post_count AS post_count NUMERIC SORTABLE
             $.section AS section TEXT NOSTEM
+            $.vector AS vector VECTOR HNSW 6
+              TYPE FLOAT32
+              DIM 3
+              DISTANCE_METRIC COSINE
         INDEX
 
         wait_for_indexing_complete redis, hash_index
@@ -415,12 +422,38 @@ module Redis
 
           results = redis.ft.search(json_index, "match json")
 
+          results.first.should eq 1
           count, key, result = results
           count.should eq 1
           key.should eq "#{json_prefix}:json:match:1"
           result.should eq ["$", {body: "json match"}.to_json]
         end
       end
+
+      describe "vector search" do
+        it "can search vectors" do
+          redis.pipeline do |pipe|
+            pipe.json.set "#{json_prefix}:vector:1", ".", {vector: [1f32, 2f32, 3f32]}
+            pipe.json.set "#{json_prefix}:vector:2", ".", {vector: [4f32, 5f32, 6f32]}
+          end
+          query_vec = [4f32, 5f32, 6f32]
+
+          [
+            {"query_vec" => query_vec},
+            {query_vec: query_vec},
+          ].each do |params|
+            results = redis.ft.search json_index, "*=>[KNN 2 @vector $query_vec AS score]",
+              params: params,
+              sortby: Redis::FullText::SortBy.new("score", :asc)
+          end
+        end
+      end
     end
   end
+end
+
+struct VectorData
+  include JSON::Serializable
+
+  getter vector : Array(Float32)
 end
