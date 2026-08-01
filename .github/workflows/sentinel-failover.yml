@@ -1,17 +1,17 @@
-name: Sentinel CI
+name: Sentinel Failover CI
 
-# Runs the sentinel integration tests on every push and pull request.
-# The failover test (tagged "failover") is excluded from this workflow because
-# it takes up to 30 s and requires a stable topology. It has its own
-# workflow_dispatch-triggered workflow instead: sentinel-failover.yml. Run it
-# locally with `./sentinel.sh test-failover`.
+# Runs the sentinel failover integration test (spec/sentinel_failover_spec.cr):
+# it triggers a real forced failover via `SENTINEL failover mymaster` and
+# polls for up to 30 s for the client to follow the new master. Kept in its
+# own workflow, separate from sentinel.yml, so pushes and pull requests stay
+# fast — trigger this one manually from the Actions tab (or via
+# `gh workflow run sentinel-failover.yml`) when you want to exercise it.
 
 on:
-  push:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
-  sentinel:
+  sentinel-failover:
     runs-on: ubuntu-latest
     # No container: here — we need docker compose available on the runner to
     # spin up the sentinel topology, then run Crystal inside the Docker network.
@@ -42,12 +42,12 @@ jobs:
             sleep 2
           done
 
-      - name: Run sentinel integration tests
+      - name: Run sentinel failover test
         working-directory: examples/sentinel
-        # Runs spec/sentinel_client_spec.cr (unit + integration, no failover).
-        # The failover test lives in spec/sentinel_failover_spec.cr and runs
-        # in the separate sentinel-failover.yml workflow (takes up to 30 s).
-        run: docker compose --profile test run --rm test
+        # Needs a topology that's just come up and settled (quorum reached
+        # above) — do not run this immediately after another forced failover
+        # in the same run without re-establishing a stable topology first.
+        run: docker compose --profile test-failover run --rm test-failover
 
       - name: Show logs on failure
         if: failure()
