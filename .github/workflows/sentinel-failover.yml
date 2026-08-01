@@ -3,11 +3,14 @@ name: Sentinel Failover CI
 # Runs the sentinel failover integration test (spec/sentinel_failover_spec.cr):
 # it triggers a real forced failover via `SENTINEL failover mymaster` and
 # polls for up to 30 s for the client to follow the new master. Kept in its
-# own workflow, separate from sentinel.yml, so pushes and pull requests stay
-# fast — trigger this one manually from the Actions tab (or via
-# `gh workflow run sentinel-failover.yml`) when you want to exercise it.
+# own workflow file, separate from sentinel.yml, so it gets its own run
+# status/log stream and a slow or flaky failover run doesn't obscure the
+# faster, more stable checks in sentinel.yml. Also runnable manually from the
+# Actions tab (or via `gh workflow run sentinel-failover.yml`).
 
 on:
+  push:
+  pull_request:
   workflow_dispatch:
 
 jobs:

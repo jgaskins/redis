@@ -1,9 +1,9 @@
 name: Sentinel CI
 
 # Runs the sentinel integration tests on every push and pull request.
-# The failover test (tagged "failover") is excluded from this workflow because
-# it takes up to 30 s and requires a stable topology. It has its own
-# workflow_dispatch-triggered workflow instead: sentinel-failover.yml. Run it
+# The failover test (tagged "failover") runs separately, in its own
+# sentinel-failover.yml workflow (also on push/pull_request) — kept apart so
+# its run status/logs don't mix with this faster, more stable job. Run it
 # locally with `./sentinel.sh test-failover`.
 
 on:
