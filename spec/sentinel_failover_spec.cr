@@ -6,13 +6,13 @@ require "../src/sentinel_client"
 # independently of the main sentinel spec suite.
 #
 # Requires a running sentinel cluster:
-#   cd examples/sentinel && make up
+#   cd examples/sentinel && ./sentinel.sh up
 #
 # Run with:
 #   REDIS_SENTINEL_URLS="redis://172.28.0.20:26379,..." crystal spec spec/sentinel_failover_spec.cr
 #
 # Or via Docker (works on macOS too):
-#   cd examples/sentinel && make test-failover
+#   cd examples/sentinel && ./sentinel.sh test-failover
 
 module Redis
   describe SentinelClient do

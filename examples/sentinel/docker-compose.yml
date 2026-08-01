@@ -1,0 +1,200 @@
+networks:
+  sentinel-net:
+    name: redis-sentinel-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
+services:
+  # ---------------------------------------------------------------------------
+  # Redis nodes
+  # ---------------------------------------------------------------------------
+  # Each node announces its own fixed IP so that Sentinel always reports
+  # addresses reachable within the Docker network. Ports are also mapped to
+  # the host so that a Crystal app running on Linux can connect directly using
+  # container IPs (they are routable from the host on Linux via the bridge).
+  # On macOS/Windows with Docker Desktop use `./sentinel.sh demo` which runs
+  # the app inside the same Docker network.
+
+  redis-master:
+    image: redis:7
+    networks:
+      sentinel-net:
+        ipv4_address: 172.28.0.10
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server
+      --port 6379
+      --replica-announce-ip 172.28.0.10
+      --replica-announce-port 6379
+
+  redis-replica-1:
+    image: redis:7
+    networks:
+      sentinel-net:
+        ipv4_address: 172.28.0.11
+    ports:
+      - "6380:6379"
+    command: >
+      redis-server
+      --port 6379
+      --replicaof 172.28.0.10 6379
+      --replica-announce-ip 172.28.0.11
+      --replica-announce-port 6379
+    depends_on:
+      - redis-master
+
+  redis-replica-2:
+    image: redis:7
+    networks:
+      sentinel-net:
+        ipv4_address: 172.28.0.12
+    ports:
+      - "6381:6379"
+    command: >
+      redis-server
+      --port 6379
+      --replicaof 172.28.0.10 6379
+      --replica-announce-ip 172.28.0.12
+      --replica-announce-port 6379
+    depends_on:
+      - redis-master
+
+  # ---------------------------------------------------------------------------
+  # Sentinel nodes (quorum = 2 out of 3)
+  # ---------------------------------------------------------------------------
+  # Sentinel rewrites its config file on failover, so the template is copied
+  # to a writable location (/tmp) before starting. The config files live in
+  # ./config/ and are bind-mounted read-only.
+  #
+  # Health check: wait until `SENTINEL master mymaster` returns a status line,
+  # which means the sentinel has contacted the master and established quorum.
+
+  sentinel-1:
+    image: redis:7
+    networks:
+      sentinel-net:
+        ipv4_address: 172.28.0.20
+    ports:
+      - "26379:26379"
+    volumes:
+      - ./config/sentinel-1.conf:/etc/sentinel.conf.template:ro
+    entrypoint: ["sh", "-c", "cp /etc/sentinel.conf.template /tmp/sentinel.conf && exec redis-sentinel /tmp/sentinel.conf"]
+    depends_on:
+      - redis-master
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -p 26379 sentinel master mymaster | grep -q 'ok'"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  sentinel-2:
+    image: redis:7
+    networks:
+      sentinel-net:
+        ipv4_address: 172.28.0.21
+    ports:
+      - "26380:26380"
+    volumes:
+      - ./config/sentinel-2.conf:/etc/sentinel.conf.template:ro
+    entrypoint: ["sh", "-c", "cp /etc/sentinel.conf.template /tmp/sentinel.conf && exec redis-sentinel /tmp/sentinel.conf"]
+    depends_on:
+      - redis-master
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -p 26380 sentinel master mymaster | grep -q 'ok'"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  sentinel-3:
+    image: redis:7
+    networks:
+      sentinel-net:
+        ipv4_address: 172.28.0.22
+    ports:
+      - "26381:26381"
+    volumes:
+      - ./config/sentinel-3.conf:/etc/sentinel.conf.template:ro
+    entrypoint: ["sh", "-c", "cp /etc/sentinel.conf.template /tmp/sentinel.conf && exec redis-sentinel /tmp/sentinel.conf"]
+    depends_on:
+      - redis-master
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -p 26381 sentinel master mymaster | grep -q 'ok'"]
+      interval: 2s
+      timeout: 5s
+      retries: 20
+
+  # ---------------------------------------------------------------------------
+  # One-shot services (opt-in via profiles, not started by `./sentinel.sh up`)
+  # ---------------------------------------------------------------------------
+
+  demo:
+    image: crystallang/crystal:latest
+    networks:
+      - sentinel-net
+    volumes:
+      - ../../:/workspace
+    working_dir: /workspace
+    environment:
+      REDIS_SENTINEL_URLS: "redis://172.28.0.20:26379,redis://172.28.0.21:26380,redis://172.28.0.22:26381"
+      REDIS_SENTINEL_MASTER: "mymaster"
+    command: ["bash", "-c", "shards install --quiet && crystal run examples/sentinel/demo.cr"]
+    depends_on:
+      - sentinel-1
+      - sentinel-2
+      - sentinel-3
+    profiles:
+      - demo
+
+  # Integration tests — skips the slow failover test.
+  # Usage: ./sentinel.sh test  (after ./sentinel.sh up)
+  test:
+    image: crystallang/crystal:1.19
+    networks:
+      - sentinel-net
+    volumes:
+      - ../../:/workspace
+    working_dir: /workspace
+    environment:
+      REDIS_SENTINEL_URLS: "redis://172.28.0.20:26379,redis://172.28.0.21:26380,redis://172.28.0.22:26381"
+      REDIS_SENTINEL_MASTER: "mymaster"
+    command: ["bash", "-c", "shards install --quiet && crystal spec spec/sentinel_client_spec.cr -v"]
+    depends_on:
+      sentinel-1:
+        condition: service_healthy
+      sentinel-2:
+        condition: service_healthy
+      sentinel-3:
+        condition: service_healthy
+    profiles:
+      - test
+
+  # Failover test — triggers a real sentinel failover and waits up to 30 s.
+  # Usage: ./sentinel.sh test-failover  (after ./sentinel.sh up)
+  test-failover:
+    image: crystallang/crystal:1.19
+    networks:
+      - sentinel-net
+    volumes:
+      - ../../:/workspace
+    working_dir: /workspace
+    environment:
+      REDIS_SENTINEL_URLS: "redis://172.28.0.20:26379,redis://172.28.0.21:26380,redis://172.28.0.22:26381"
+      REDIS_SENTINEL_MASTER: "mymaster"
+    command: ["bash", "-c", "shards install --quiet && crystal spec spec/sentinel_failover_spec.cr -v"]
+    depends_on:
+      redis-replica-1:
+        condition: service_started
+      redis-replica-2:
+        condition: service_started
+      sentinel-1:
+        condition: service_healthy
+      sentinel-2:
+        condition: service_healthy
+      sentinel-3:
+        condition: service_healthy
+    profiles:
+      - test-failover
