@@ -206,9 +206,10 @@ module Redis::Commands::Immediate
       # Vector
       vadd:     Int64,
       vdim:     Int64,
-      vemb:     Array,
+      vemb:     Array(Value)?,
+      vinfo:    Array,
       vsim:     Array,
-      vgetattr: String,
+      vgetattr: String?,
     })
   end
 
