@@ -71,4 +71,84 @@ describe Redis::Cluster do
   it "hashes to the correct value" do
     cluster.slot_for("123456789").should eq 0x31C3
   end
+
+  describe "pub/sub" do
+    it "publishes only to a single shard" do
+      messages = Channel(String).new
+
+      spawn do
+        cluster.ssubscribe "a" do |subscription|
+          subscription.on_message do |_channel, msg|
+            messages.send msg
+          end
+        end
+      end
+
+      # "a" goes to hash slot 15495
+      # "b" goes to hash slot 3300
+      # These are on opposite ends of the hash-slot spectrum, so they should go
+      # to different nodes in the cluster.
+      expect_raises Redis::Cluster::CrossSlot do
+        cluster.ssubscribe "a", "b" { }
+      end
+
+      sleep 10.milliseconds
+
+      cluster.spublish "a", "yep"
+      cluster.spublish "b", "nope"
+
+      select
+      when msg = messages.receive
+        msg.should eq "yep"
+      when timeout(1.second)
+        raise "Timed out while waiting for message"
+      end
+
+      select
+      when msg = messages.receive
+        raise "Expected not to receive a message, received: #{msg.inspect}"
+      when timeout(10.milliseconds)
+      end
+    end
+
+    it "publishes to all shards" do
+      messages = Channel({String, String}).new
+
+      spawn do
+        cluster.subscribe "a" do |subscription|
+          subscription.on_message do |channel, msg|
+            messages.send({channel, msg})
+          end
+        end
+      end
+
+      spawn do
+        # This has to be in a separate fiber because it's going to a different
+        # node in the cluster.
+        cluster.subscribe "b" do |subscription|
+          subscription.on_message do |channel, msg|
+            messages.send({channel, msg})
+          end
+        end
+      end
+
+      sleep 10.milliseconds
+
+      cluster.publish "a", "1"
+      cluster.publish "b", "2"
+
+      received = Set({String, String}).new
+      2.times do
+        select
+        when msg = messages.receive
+          received << msg
+        when timeout(100.milliseconds)
+          raise "Timed out while waiting for message"
+        end
+      end
+
+      received.should contain({"a", "1"})
+      received.should contain({"b", "2"})
+    end
+  end
 end
