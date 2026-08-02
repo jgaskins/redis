@@ -12,10 +12,14 @@ describe Redis::Cluster do
   cluster = Redis::Cluster.new
 
   it "reads and writes" do
-    cluster.set "foo", "bar"
-    cluster.get("foo").should eq "bar"
-  ensure
-    cluster.del "foo"
+    key = UUID.v7.to_s
+
+    begin
+      cluster.set key, "bar"
+      cluster.get(key).should eq "bar"
+    ensure
+      cluster.del key
+    end
   end
 
   # Run this a bunch of times so we can be sure that a green spec isn't a false
