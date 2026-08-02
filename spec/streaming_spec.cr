@@ -234,7 +234,7 @@ module StreamingSpec
       end
 
       if test.server_version >= Version["6.2.0"]
-        test "creates and deletes consumers", focus: true do
+        test "creates and deletes consumers" do
           redis.xgroup_create key, "group", mkstream: true
 
           redis.xgroup_create_consumer key, "group", "consumer"
