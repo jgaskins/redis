@@ -68,14 +68,18 @@ module StreamingSpec
     describe XInfoStreamResponse do
       test "parses info about a stream" do
         redis.xgroup_create key, "group", mkstream: true
-        redis.xgroup_create_consumer key, "group", "consumer"
+        if test.server_version >= Version["6.2.0"]
+          redis.xgroup_create_consumer key, "group", "consumer"
+        end
         id = redis.xadd key, "*", fields: {id: "0"}
         redis.xreadgroup "group", "consumer", streams: {key => ">"}
 
         info = XInfoStreamResponse.new(redis.xinfo_stream(key))
 
-        info.entries_added.should eq 1 # XADD has only been called once
-        info.groups.should eq 1        # We added a group above
+        if test.server_version >= Version["7.0.0"]
+          info.entries_added.should eq 1 # XADD has only been called once
+        end
+        info.groups.should eq 1 # We added a group above
         info.length.should eq 1
 
         redis.xreadgroup "group", "consumer", streams: {key => ">"}
@@ -98,11 +102,14 @@ module StreamingSpec
         end
         from_one = XReadGroupResponse.new(results[-2].as(Array))
         from_two = XReadGroupResponse.new(results[-1].as(Array))
-        redis.xackdel key, "group", from_two.each_message.first(3).map(&.id).to_a
+        redis.xack key, "group", from_two.each_message.first(3).map(&.id).to_a
+        redis.xdel key, from_two.each_message.first(3).map(&.id).to_a
 
         info = XInfoStreamFullResponse.new(redis.xinfo_stream_full(key, count: 10))
 
-        info.entries_added.should eq 50
+        if test.server_version >= Version["7.0.0"]
+          info.entries_added.should eq 50
+        end
         info.groups.size.should eq 1
         info.length.should eq 47
       end
@@ -112,7 +119,9 @@ module StreamingSpec
       test "parses the groups for a stream" do
         redis.xgroup_create key, "one", mkstream: true
         redis.xgroup_create key, "two"
-        redis.xgroup_create_consumer key, "one", "consumer"
+        if test.server_version >= Version["6.2.0"]
+          redis.xgroup_create_consumer key, "one", "consumer"
+        end
         redis.xadd key, "*", fields: {id: "0"}
         redis.xreadgroup "one", "consumer", streams: {key => ">"}
 
@@ -131,7 +140,13 @@ module StreamingSpec
     describe XInfoConsumersResponse do
       test "parses the consumers for a group" do
         redis.xgroup_create key, "group", mkstream: true
-        redis.xgroup_create_consumer key, "group", "consumer"
+        if test.server_version >= Version["6.2.0"]
+          redis.xgroup_create_consumer key, "group", "consumer"
+        else
+          id = redis.xadd key, "*", fields: {id: "0"}
+          redis.xreadgroup "group", "consumer", streams: {key => ">"}
+          redis.xack key, "group", id.not_nil!
+        end
 
         consumer = XInfoConsumersResponse.new(redis.xinfo_consumers(key, "group")).consumers.first
 
@@ -139,7 +154,7 @@ module StreamingSpec
         # It could be either value depending on how fast we query it, so we just
         # check that it's one of them.
         consumer.idle.should be_in 0, 1
-        consumer.inactive.should eq -1
+        consumer.inactive.should eq -1 if test.server_version >= Version["7.2.0"]
         consumer.pending.should eq 0
       end
     end
@@ -147,8 +162,10 @@ module StreamingSpec
     describe XPendingResponse do
       test "parses the PEL for a group" do
         redis.xgroup_create key, "group", mkstream: true
-        redis.xgroup_create_consumer key, "group", "one"
-        redis.xgroup_create_consumer key, "group", "two"
+        if test.server_version >= Version["6.2.0"]
+          redis.xgroup_create_consumer key, "group", "one"
+          redis.xgroup_create_consumer key, "group", "two"
+        end
         # Four total messages ...
         first = redis.xadd key, "*", fields: {id: "1"}
         second = redis.xadd key, "*", fields: {id: "2"}
@@ -174,8 +191,10 @@ module StreamingSpec
     describe XPendingExtendedResponse do
       test "parses the PEL for a group" do
         redis.xgroup_create key, "group", mkstream: true
-        redis.xgroup_create_consumer key, "group", "one"
-        redis.xgroup_create_consumer key, "group", "two"
+        if test.server_version >= Version["6.2.0"]
+          redis.xgroup_create_consumer key, "group", "one"
+          redis.xgroup_create_consumer key, "group", "two"
+        end
         # Four total messages ...
         first_id = redis.xadd key, "*", fields: {id: "1"}
         second_id = redis.xadd key, "*", fields: {id: "2"}
@@ -214,21 +233,25 @@ module StreamingSpec
         redis.xinfo_groups(key).should be_empty
       end
 
-      test "creates and deletes consumers" do
-        redis.xgroup_create key, "group", mkstream: true
+      if test.server_version >= Version["6.2.0"]
+        test "creates and deletes consumers", focus: true do
+          redis.xgroup_create key, "group", mkstream: true
 
-        redis.xgroup_create_consumer key, "group", "consumer"
-        redis.xinfo_consumers(key, "group").should_not be_empty
+          redis.xgroup_create_consumer key, "group", "consumer"
+          redis.xinfo_consumers(key, "group").should_not be_empty
 
-        redis.xgroup_del_consumer key, "group", "consumer"
-        redis.xinfo_consumers(key, "group").should be_empty
+          redis.xgroup_del_consumer key, "group", "consumer"
+          redis.xinfo_consumers(key, "group").should be_empty
+        end
       end
     end
 
     describe "acknowledging messages in a consumer group" do
       test "acks a message" do
         redis.xgroup_create key, "group", mkstream: true
-        redis.xgroup_create_consumer key, "group", "consumer"
+        if test.server_version >= Version["6.2.0"]
+          redis.xgroup_create_consumer key, "group", "consumer"
+        end
         id = redis.xadd key, "*", {id: "0"}
         get_pending = -> do
           groups = redis.xinfo_groups(key)
@@ -244,20 +267,22 @@ module StreamingSpec
         get_pending.call.should eq 0 # XACKing a msg removes it from the PEL
       end
 
-      test "acks and deletes a message in a single call" do
-        redis.xgroup_create key, "group", mkstream: true
-        redis.xgroup_create_consumer key, "group", "consumer"
-        first = redis.xadd key, "*", {id: "0"}
-        second = redis.xadd key, "*", {id: "1"}
-        redis.xreadgroup "group", "consumer", streams: {key => ">"}, count: 2
+      if test.server_version >= Version["8.2.0"]
+        test "acks and deletes a message in a single call" do
+          redis.xgroup_create key, "group", mkstream: true
+          redis.xgroup_create_consumer key, "group", "consumer"
+          first = redis.xadd key, "*", {id: "0"}
+          second = redis.xadd key, "*", {id: "1"}
+          redis.xreadgroup "group", "consumer", streams: {key => ">"}, count: 2
 
-        # https://redis.io/docs/latest/commands/xackdel/#optional-arguments
-        # Without a DeleteMode (server defaults to KEEPREF)
-        redis.xackdel key, "group", [first.as(String)]
-        # With an explicit DeleteMode
-        redis.xackdel key, "group", :acked, [second.as(String)]
+          # https://redis.io/docs/latest/commands/xackdel/#optional-arguments
+          # Without a DeleteMode (server defaults to KEEPREF)
+          redis.xackdel key, "group", [first.as(String)]
+          # With an explicit DeleteMode
+          redis.xackdel key, "group", :acked, [second.as(String)]
 
-        redis.xlen(key).should eq 0
+          redis.xlen(key).should eq 0
+        end
       end
     end
 
@@ -272,34 +297,38 @@ module StreamingSpec
         redis.xtrim(key, maxlen: {"~", "90"}).should eq 100
       end
 
-      test "trims a stream to an approximate minimum id with MINID" do
-        redis.multi do |redis|
-          200.times do |i|
-            i += 1 # Can't use an id of `0`
-            redis.xadd key, i.to_s, {id: i.to_s}
+      if test.server_version >= Version["6.2.0"]
+        test "trims a stream to an approximate minimum id with MINID" do
+          redis.multi do |redis|
+            200.times do |i|
+              i += 1 # Can't use an id of `0`
+              redis.xadd key, i.to_s, {id: i.to_s}
+            end
           end
-        end
 
-        redis.xtrim(key, minid: {"~", "110"}).should eq 100
+          redis.xtrim(key, minid: {"~", "110"}).should eq 100
+        end
       end
 
-      test "accepts a delete mode" do
-        redis.multi do |redis|
-          redis.xgroup_create key, "group", mkstream: true
-          redis.xgroup_create_consumer key, "group", "consumer"
+      if test.server_version >= Version["8.2.0"]
+        test "accepts a delete mode" do
+          redis.multi do |redis|
+            redis.xgroup_create key, "group", mkstream: true
+            redis.xgroup_create_consumer key, "group", "consumer"
 
-          200.times do |i|
-            i += 1 # Can't use an id of `0`
-            redis.xadd key, i.to_s, {id: i.to_s}
+            200.times do |i|
+              i += 1 # Can't use an id of `0`
+              redis.xadd key, i.to_s, {id: i.to_s}
+            end
+
+            redis.xreadgroup "group", "consumer", streams: {key => ">"}, count: 200
+            redis.xack key, "group", Array.new(200) { |i| (i + 1).to_s }
           end
 
-          redis.xreadgroup "group", "consumer", streams: {key => ">"}, count: 200
-          redis.xack key, "group", Array.new(200) { |i| (i + 1).to_s }
+          redis.xtrim(key, minid: {"~", "100"}, delete_mode: :acked).should be_within 10, of: 100
+
+          redis.xlen(key).should be_within 10, of: 100
         end
-
-        redis.xtrim(key, minid: {"~", "100"}, delete_mode: :acked).should be_within 10, of: 100
-
-        redis.xlen(key).should be_within 10, of: 100
       end
     end
 

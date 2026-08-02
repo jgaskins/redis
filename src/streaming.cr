@@ -345,6 +345,12 @@ module Redis
       protected def get(value : Value, type : Time.class) : Time
         Time.unix_ms value.as(Int64)
       end
+
+      protected def get(value : Value, type : Time?.class) : Time?
+        if value.is_a? Int64
+          Time.unix_ms value
+        end
+      end
     end
 
     @[Experimental]
@@ -354,11 +360,11 @@ module Redis
         radix_tree_keys : Int64,
         radix_tree_nodes : Int64,
         last_generated_id : String,
-        max_deleted_entry_id : String,
+        max_deleted_entry_id : String?,
         idmp_duration : Int64?,
         idmp_maxsize : Int64?,
-        entries_added : Int64,
-        recorded_first_entry_id : String,
+        entries_added : Int64?,
+        recorded_first_entry_id : String?,
         pids_tracked : Int64?,
         iids_tracked : Int64?,
         iids_added : Int64?,
@@ -380,9 +386,9 @@ module Redis
         radix_tree_keys : Int64,
         radix_tree_nodes : Int64,
         last_generated_id : String,
-        max_deleted_entry_id : String,
-        entries_added : Int64,
-        recorded_first_entry_id : String,
+        max_deleted_entry_id : String?,
+        entries_added : Int64?,
+        recorded_first_entry_id : String?,
         idmp_duration : Int64?,
         idmp_maxsize : Int64?,
         pids_tracked : Int64?,
@@ -406,7 +412,7 @@ module Redis
           name : String,
           last_delivered_id : String?,
           entries_read : Int64?,
-          lag : Int64,
+          lag : Int64?,
           pel_count : Int64,
           nacked_count : Int64?,
           pending : Array(PendingEntry),
@@ -445,7 +451,7 @@ module Redis
         Properties.define(
           name : String,
           seen_time : Time,
-          active_time : Time,
+          active_time : Time?,
           pel_count : Int64,
           pending : Array(PendingEntry),
         )
@@ -484,7 +490,7 @@ module Redis
           pending : Int64,
           last_delivered_id : String?,
           entries_read : Int64?,
-          lag : Int64,
+          lag : Int64?,
         )
       end
     end
@@ -502,7 +508,7 @@ module Redis
           name : String,
           pending : Int64,
           idle : Int64,
-          inactive : Int64,
+          inactive : Int64?,
         )
       end
     end
