@@ -392,42 +392,6 @@ module Redis
         entries : Array(Message),
         groups : Array(Group),
       )
-      [
-        "length", 1,
-        "radix-tree-keys", 1,
-        "radix-tree-nodes", 2,
-        "last-generated-id", "1780361760536-0",
-        "max-deleted-entry-id", "0-0",
-        "entries-added", 1,
-        "recorded-first-entry-id", "1780361760536-0",
-        "idmp-duration", 100,
-        "idmp-maxsize", 100,
-        "pids-tracked", 0,
-        "iids-tracked", 0,
-        "iids-added", 0,
-        "iids-duplicates", 0,
-        "entries", [["1780361760536-0", ["id", "0"]]],
-        "groups", [
-          [
-            "name", "group",
-            "last-delivered-id", "1780361760536-0",
-            "entries-read", 1,
-            "lag", 0,
-            "pel-count", 1,
-            "nacked-count", 0,
-            "pending", [["1780361760536-0", "consumer", 1780361760536, 1]],
-            "consumers", [
-              [
-                "name", "consumer",
-                "seen-time", 1780361760536,
-                "active-time", 1780361760536,
-                "pel-count", 1,
-                "pending", [["1780361760536-0", 1780361760536, 1]],
-              ],
-            ],
-          ],
-        ],
-      ]
 
       protected def get(value : Redis::Value, type : Array(Message).class) : Array(Message)
         value.as(Array).map { |data| Message.new(data.as(Array)) }
