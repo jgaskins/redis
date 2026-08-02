@@ -24,8 +24,8 @@ describe Redis::Cluster do
 
   # Run this a bunch of times so we can be sure that a green spec isn't a false
   # positive. It's fast enough that it shouldn't make it take long.
-  500.times do
-    it "reads and writes a sub-hashed key" do
+  500.times do |i|
+    it "reads and writes a sub-hashed key (#{i})" do
       # The way to check this is to use a command that writes to multiple keys.
       # Both keys *must* exist on the same shard in order to do this atomically,
       # and if both keys are not on the same shard the server will error out.
