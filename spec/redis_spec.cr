@@ -563,6 +563,120 @@ describe Redis::Client do
         end
       end
     end
+
+    if test.server_version >= Version["7.0.0"]
+      it "can publish and subscribe to sharded channels" do
+        channel = random_key
+        subscribed = Channel(Nil).new
+        messages = Channel({String, String}).new
+        unsubscribed = Channel({String, Int64}).new
+        done = Channel(Exception?).new
+
+        spawn do
+          redis.ssubscribe channel do |subscription, connection|
+            subscription.on_subscribe do
+              subscribed.send nil
+            end
+            subscription.on_message do |received_channel, message|
+              messages.send({received_channel, message})
+              connection.sunsubscribe received_channel
+            end
+            subscription.on_unsubscribe do |unsubscribed_channel, count|
+              unsubscribed.send({unsubscribed_channel, count})
+            end
+          end
+          done.send nil
+        rescue ex
+          done.send ex
+        end
+
+        select
+        when subscribed.receive
+        when timeout(1.second)
+          raise "Timed out while waiting for sharded subscription"
+        end
+
+        redis.spublish(channel, "hello").should eq 1
+
+        select
+        when message = messages.receive
+          message.should eq({channel, "hello"})
+        when timeout(1.second)
+          raise "Timed out while waiting for sharded message"
+        end
+
+        select
+        when event = unsubscribed.receive
+          event.should eq({channel, 0_i64})
+        when timeout(1.second)
+          raise "Timed out while waiting for sharded unsubscription"
+        end
+
+        select
+        when error = done.receive
+          raise error if error
+        when timeout(1.second)
+          raise "Timed out while waiting for sharded subscription to finish"
+        end
+      end
+
+      it "closes each subscription type with the matching command" do
+        channel = random_key
+        pattern = "#{random_key}*"
+        shard_channel = random_key
+        subscribed = Channel(String).new
+        unsubscribed = Channel(String).new
+        done = Channel(Exception?).new
+
+        spawn do
+          redis.subscribe channel do |subscription, connection|
+            subscriptions = Set(String).new
+            subscription.on_subscribe do |subscribed_channel|
+              subscriptions << subscribed_channel
+              subscribed.send subscribed_channel
+              subscription.close if subscriptions.size == 3
+            end
+            subscription.on_unsubscribe do |unsubscribed_channel|
+              unsubscribed.send unsubscribed_channel
+            end
+            connection.psubscribe pattern
+            connection.ssubscribe shard_channel
+          end
+          done.send nil
+        rescue ex
+          done.send ex
+        end
+
+        subscriptions = Set(String).new
+        3.times do
+          select
+          when subscribed_channel = subscribed.receive
+            subscriptions << subscribed_channel
+          when timeout(1.second)
+            raise "Timed out while waiting for subscriptions"
+          end
+        end
+        subscriptions.should eq Set{channel, pattern, shard_channel}
+
+        unsubscriptions = Set(String).new
+        3.times do
+          select
+          when unsubscribed_channel = unsubscribed.receive
+            unsubscriptions << unsubscribed_channel
+          when timeout(1.second)
+            raise "Timed out while waiting for unsubscriptions"
+          end
+        end
+        unsubscriptions.should eq Set{channel, pattern, shard_channel}
+
+        select
+        when error = done.receive
+          raise error if error
+        when timeout(1.second)
+          raise "Timed out while waiting for subscriptions to finish"
+        end
+      end
+    end
   end
 
   it "gets info about the Redis server" do
