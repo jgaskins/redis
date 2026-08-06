@@ -54,6 +54,20 @@ describe Redis::Client do
     end
   end
 
+  test "gets a Redis string value as bytes" do
+    bytes = Random::Secure.random_bytes
+
+    redis.set key, bytes
+
+    redis.get_bytes(key).should eq bytes
+    redis.get_bytes(UUID.v7.to_s).should eq nil
+
+    redis.get_bytes!(key).should eq bytes
+    expect_raises Redis::MissingKey do
+      redis.get_bytes! UUID.v7.to_s
+    end
+  end
+
   test "it returns 0 when passed no keys to delete" do
     redis.del([] of String).should eq 0
   end
