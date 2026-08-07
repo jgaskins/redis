@@ -26,6 +26,7 @@ module Redis
 
     getter uri : URI
     @pool : DB::Pool(Connection)
+    @on_attributes = Proc(Attributes, Nil).new { }
 
     def self.from_env(env_var)
       new(URI.parse(ENV[env_var]))
@@ -138,6 +139,15 @@ module Redis
 
     def multi(&)
       checkout(&.multi { |txn| yield txn })
+    end
+
+    # Run the given block when any connection managed by this client receives a
+    # `Redis::Attributes`.
+    def on_attributes(&@on_attributes : Attributes -> Nil) : self
+      @pool.each_resource do |connection|
+        connection.on_attributes(&on_attributes)
+      end
+      self
     end
 
     # Watch the given `keys` for changes when you need to fetch them for update

@@ -1,3 +1,5 @@
+require "big/big_int"
+
 require "./value"
 require "./errors"
 
@@ -19,7 +21,7 @@ module Redis
     #
     # Parser.new(io).read # => "foo"
     # ```
-    def read : Value
+    def read
       read { raise IO::Error.new("Connection closed") }
     end
 
@@ -33,12 +35,32 @@ module Redis
       case byte_marker = @io.read_byte
       when ':'
         parse_int.tap { @io.skip 2 }
+      when '('
+        BigInt.new(@io.read_line)
       when '*'
         length = parse_int
         @io.skip 2
         if length >= 0
-          Array(Value).new(length) { read }
+          Array(Value).new(length) { read.as(Value) }
         end
+      when '%'
+        size = parse_int
+        @io.skip 2
+        hash = Hash(Value, Value).new(initial_capacity: size)
+        size.times { hash[read.as(Value)] = read.as(Value) }
+        hash
+      when '~'
+        size = parse_int
+        @io.skip 2
+        set = Set(Value).new(size)
+        size.times { set << read.as(Value) }
+        set
+      when '|'
+        size = parse_int
+        @io.skip 2
+        hash = Hash(Value, Value).new(initial_capacity: size)
+        size.times { hash[read.as(Value)] = read.as(Value) }
+        Attributes.new hash
       when '$'
         length = parse_int
         @io.skip 2
@@ -47,6 +69,13 @@ module Redis
           @io.skip 2 # Skip CRLF
           value
         end
+      when '='
+        length = parse_int
+        @io.skip 2
+        @io.skip 4
+        value = @io.read_string length - 4
+        @io.skip 2
+        value
       when '+'
         # Most of the time, RESP simple strings are just "OK", so we can
         # optimize for that case to avoid heap allocations. If it is *not* the
@@ -66,6 +95,24 @@ module Redis
             str << @io.read_line
           end.chomp
         end
+      when '_'
+        @io.skip 2
+        nil
+      when ','
+        @io.read_line.to_f
+      when '#'
+        value = @io.read_char == 't'
+        @io.skip 2
+        value
+      when '!'
+        length = parse_int
+        @io.skip 2
+        full_error_message = @io.read_string length
+        @io.skip 2
+        if separator_index = full_error_message.index(' ')
+          type = full_error_message[0...separator_index]
+        end
+        ERROR_MAP[type].new(full_error_message)
       when '-'
         type, message = @io.read_line.split(' ', 2)
         ERROR_MAP[type].new("#{type} #{message}")
