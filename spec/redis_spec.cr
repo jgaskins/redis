@@ -185,7 +185,7 @@ describe Redis::Client do
     redis.get(key).not_nil!.to_f.should be_within 0.000001, of: 0.3
   end
 
-  describe "#increx", focus: true do
+  describe "#increx" do
     test "can increment by an int" do
       redis.increx(key, byint: 3).should eq [3, 3]
       redis.increx(key, byint: 3).should eq [6, 3]
