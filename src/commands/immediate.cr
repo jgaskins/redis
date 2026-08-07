@@ -70,6 +70,7 @@ module Redis::Commands::Immediate
       incr:        Int64,
       incrby:      Int64,
       incrbyfloat: String,
+      increx:      Array,
       mget:        Array,
       mset:        String,
       msetnx:      Int64,
