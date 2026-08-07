@@ -120,8 +120,11 @@ module Redis::Commands::Immediate
       hrandfield:   String | Array(Value),
       hscan:        Array,
       hset:         Int64,
+      hsetex:       Int64,
       hsetnx:       Int64,
       hstrlen:      Int64,
+      httl:         Array,
+      hpttl:        Array,
       hvals:        Array,
 
       # Sets
