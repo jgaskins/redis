@@ -512,7 +512,7 @@ module Redis
       end
     end
 
-    private def parse_node_line(line : String) : {Node, String?}?
+    protected def parse_node_line(line : String) : {Node, String?}?
       id, host_info, flags_str, master, last_ping, last_pong, config, tail = line.split(' ', 8)
 
       # `tail` is the rest of the line: "<connected|disconnected>[ <slot>...]"

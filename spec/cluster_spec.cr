@@ -3,68 +3,85 @@ require "uuid"
 
 require "../src/cluster"
 
-describe Redis::Cluster do
-  # We don't want to run cluster specs against non-clusters
-  next unless ENV["REDIS_CLUSTER_URL"]?
+module Redis
+  describe Cluster do
+    # We don't want to run cluster specs against non-clusters
+    next unless ENV["REDIS_CLUSTER_URL"]?
 
-  # We can provide connection details for a single node in the cluster and it
-  # will discover the rest of it.
-  cluster = Redis::Cluster.new
+    # We can provide connection details for a single node in the cluster and it
+    # will discover the rest of it.
+    cluster = Redis::Cluster.new
 
-  it "reads and writes" do
-    cluster.set "foo", "bar"
-    cluster.get("foo").should eq "bar"
-  ensure
-    cluster.del "foo"
-  end
+    it "reads and writes" do
+      cluster.set "foo", "bar"
+      cluster.get("foo").should eq "bar"
+    ensure
+      cluster.del "foo"
+    end
 
-  # Run this a bunch of times so we can be sure that a green spec isn't a false
-  # positive. It's fast enough that it shouldn't make it take long.
-  500.times do
-    it "reads and writes a sub-hashed key" do
-      # The way to check this is to use a command that writes to multiple keys.
-      # Both keys *must* exist on the same shard in order to do this atomically,
-      # and if both keys are not on the same shard the server will error out.
-      # Subhashed keys wrap the part they want to hash inside curly braces. For
-      # example, to make sure "user:1234" and "user:1234:cart_items" are stored
-      # on the same shard, you must use "{user:1234}" on the second key.
-      source = UUID.random.to_s
-      target = "{#{source}}:pending"
+    # Run this a bunch of times so we can be sure that a green spec isn't a false
+    # positive. It's fast enough that it shouldn't make it take long.
+    500.times do
+      it "reads and writes a sub-hashed key" do
+        # The way to check this is to use a command that writes to multiple keys.
+        # Both keys *must* exist on the same shard in order to do this atomically,
+        # and if both keys are not on the same shard the server will error out.
+        # Subhashed keys wrap the part they want to hash inside curly braces. For
+        # example, to make sure "user:1234" and "user:1234:cart_items" are stored
+        # on the same shard, you must use "{user:1234}" on the second key.
+        source = UUID.random.to_s
+        target = "{#{source}}:pending"
 
-      begin
-        cluster.lpush source, "value"
-        cluster.lmove source, target, :left, :right
-      ensure
-        cluster.del source
-        cluster.del target
+        begin
+          cluster.lpush source, "value"
+          cluster.lmove source, target, :left, :right
+        ensure
+          cluster.del source
+          cluster.del target
+        end
       end
     end
-  end
 
-  it "gets keys across the whole cluster" do
-    cluster.set "a", "a"
-    cluster.set "b", "b"
-    cluster.set "c", "c"
+    it "gets keys across the whole cluster" do
+      cluster.set "a", "a"
+      cluster.set "b", "b"
+      cluster.set "c", "c"
 
-    keys = cluster.keys
+      keys = cluster.keys
 
-    keys.should contain "a"
-    keys.should contain "b"
-    keys.should contain "c"
-  end
+      keys.should contain "a"
+      keys.should contain "b"
+      keys.should contain "c"
+    end
 
-  it "deletes all keys in all nodes" do
-    cluster.set "a", "1"
-    cluster.set "b", "1"
-    cluster.set "c", "1"
+    it "deletes all keys in all nodes" do
+      cluster.set "a", "1"
+      cluster.set "b", "1"
+      cluster.set "c", "1"
 
-    cluster.flushdb
+      cluster.flushdb
 
-    cluster.keys.should be_empty
-  end
+      cluster.keys.should be_empty
+    end
 
-  # Example taken from https://redis.io/topics/cluster-spec#overview-of-redis-cluster-main-components
-  it "hashes to the correct value" do
-    cluster.slot_for("123456789").should eq 0x31C3
+    # Example taken from https://redis.io/topics/cluster-spec#overview-of-redis-cluster-main-components
+    it "hashes to the correct value" do
+      cluster.slot_for("123456789").should eq 0x31C3
+    end
+
+    it "parses CLUSTER NODES lines" do
+      line = "07c37dfeb235213a872192d90877d0cd55635b91 127.0.0.1:30004@31004 master - 0 1426238317239 4 connected 0-100 5000-5460 12000"
+
+      if result = cluster.parse_node_line(line)
+        node, _master_id = result
+        node.slots.should eq [
+          0..100,
+          5000..5460,
+          12000..12000,
+        ]
+      else
+        raise "Could not parse #{line.inspect}"
+      end
+    end
   end
 end
