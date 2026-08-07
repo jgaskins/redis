@@ -71,6 +71,7 @@ module Redis::Commands::Immediate
       incr:        Int64,
       incrby:      Int64,
       incrbyfloat: String,
+      increx:      Array,
       mget:        Array,
       mset:        String,
       msetnx:      Int64,
@@ -244,7 +245,17 @@ module Redis::Commands::Immediate
     if value = get(key)
       value
     else
-      raise MissingKey.new("Assertion that the key #{key.inspect} exists failed.")
+      raise MissingKey.new("Key #{key.inspect} does not exist")
+    end
+  end
+
+  def get_bytes!(key : String) : Bytes
+    get_bytes(key) || raise MissingKey.new("Key #{key.inspect} does not exist")
+  end
+
+  def get_bytes(key : String) : Bytes?
+    if value = get(key)
+      value.to_slice
     end
   end
 
