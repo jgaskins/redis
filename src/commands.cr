@@ -182,6 +182,57 @@ module Redis
       run({"incrbyfloat", key, amount.to_s})
     end
 
+    def increx(
+      key : String,
+      *,
+      byint int_increment : Int | String | Nil = nil,
+      byfloat float_increment : Float | String | Nil = nil,
+      lbound : Int | Float | String | Nil = nil,
+      ubound : Int | Float | String | Nil = nil,
+      saturate : Bool = false,
+      ex : Time::Span | String | Int | Nil = nil,
+      px : Time::Span | String | Int | Nil = nil,
+      exat : Time | String | Int | Nil = nil,
+      pxat : Time | String | Int | Nil = nil,
+      persist : Bool = false,
+      enx : Bool = false,
+    )
+      # We *could* use the type system to guarantee these at compile-time, but
+      # then there would be at least 15 overloads of this method and I'm not
+      # sure that's worth it.
+      if {ex, px, exat, pxat, persist}.count(&.itself) > 1
+        raise ArgumentError.new("ex, px, exat, pxat, and persist are mutually exclusive")
+      end
+      if int_increment && float_increment
+        raise ArgumentError.new("byint and byfloat are mutually exclusive")
+      end
+
+      if ex.is_a? Time::Span
+        ex = ex.total_seconds.round.to_i64
+      elsif px.is_a? Time::Span
+        px = px.total_milliseconds.round.to_i64
+      elsif exat.is_a? Time
+        exat = exat.to_unix
+      elsif pxat.is_a? Time
+        pxat = pxat.to_unix_ms
+      end
+
+      command = {"increx", key}
+      command += {"byint", int_increment.to_s} if int_increment
+      command += {"byfloat", float_increment.to_s} if float_increment
+      command += {"lbound", lbound.to_s} if lbound
+      command += {"ubound", ubound.to_s} if ubound
+      command += {"saturate"} if saturate
+      command += {"ex", ex.to_s} if ex
+      command += {"px", px.to_s} if px
+      command += {"exat", exat.to_s} if exat
+      command += {"pxat", pxat.to_s} if pxat
+      command += {"persist"} if persist
+      command += {"enx"} if enx
+
+      run command
+    end
+
     # Return the number of bytes in the string stored in `key`, returns `0` if
     # the key does not exist.
     #

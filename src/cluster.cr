@@ -167,6 +167,51 @@ module Redis
       each_master(&.run({"flushdb"}))
     end
 
+    # Publish a message to a sharded pubsub channel. The message is delivered
+    # only to subscribers on the shard that owns the channel's hash slot —
+    # unlike `publish`, it is not propagated across the cluster.
+    def spublish(channel : String, message : String)
+      write_pool_for(channel).checkout(&.run({"spublish", channel, message}))
+    end
+
+    # Subscribe to one or more pubsub channels. Regular (non-sharded) pub/sub
+    # messages are propagated across the cluster, so the subscriber will
+    # receive messages regardless of which node a publisher targets.
+    def subscribe(*channels : String, &)
+      write_pool_for(channels.first).checkout(&.subscribe(*channels) { |subscription, conn| yield subscription, conn })
+    end
+
+    # Subscribe to one or more pubsub channel patterns. Like `subscribe`,
+    # messages are propagated across the cluster.
+    def psubscribe(*patterns : String, &)
+      write_pool_for(patterns.first).checkout(&.psubscribe(*patterns) { |subscription, conn| yield subscription, conn })
+    end
+
+    # Subscribe to one or more sharded pubsub channels. All channels must hash
+    # to the same slot (use `{}` to force co-location). The block yields a
+    # `Subscription` and the underlying `Connection`, which holds the
+    # subscription for its duration.
+    #
+    # ```
+    # cluster.ssubscribe "orders" do |subscription, connection|
+    #   subscription.on_message do |channel, message|
+    #     # ...
+    #   end
+    # end
+    # ```
+    def ssubscribe(*channels : String, &)
+      write_pool_for(channels.first).checkout(&.ssubscribe(*channels) { |subscription, conn| yield subscription, conn })
+    end
+
+    # Unsubscribe from sharded pubsub channels on the shard that owns their
+    # hash slot. Typically called from inside an `ssubscribe` block via the
+    # yielded `Connection`; calling this on the cluster directly routes a
+    # standalone `SUNSUBSCRIBE` to the shard and has no effect on a
+    # subscription held by a different connection.
+    def sunsubscribe(*channels : String)
+      write_pool_for(channels.first).checkout(&.sunsubscribe(*channels))
+    end
+
     def run(command full_command)
       if full_command.empty?
         raise ArgumentError.new("Redis commands must have at least one component")
