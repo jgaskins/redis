@@ -32,6 +32,7 @@ module Redis
       host = uri.host.presence || "localhost"
       port = uri.port || 6379
       connect_timeout = uri.query_params.fetch("connect_timeout", "5").to_f
+      log.debug &.emit "Connecting", host: host, port: port
       socket = TCPSocket.new(host, port, connect_timeout: (connect_timeout > 0 ? connect_timeout.seconds : nil))
       socket.sync = false
 
