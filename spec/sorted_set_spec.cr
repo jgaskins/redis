@@ -26,10 +26,10 @@ describe Redis::Commands::SortedSet do
     test "can add a member only if it doesnt exist" do
       redis.zscore(key, "value").should eq nil
       redis.zadd(key, {"1", "value"}, nx: true).should eq 1
-      redis.zscore(key, "value").should eq "1"
+      redis.zscore(key, "value").should eq 1.0
       redis.zadd(key, {"2", "value"}, nx: true).should eq 0
       redis.zadd(key, "3", "value", nx: true).should eq 0 # variadic
-      redis.zscore(key, "value").should eq "1"
+      redis.zscore(key, "value").should eq 1.0
     end
 
     test "can add a member only if it DOES exist" do
@@ -38,18 +38,18 @@ describe Redis::Commands::SortedSet do
       redis.zscore(key, "value").should eq nil
       redis.zadd key, {"1", "value"}
       redis.zadd(key, {"2", "value"}, xx: true).should eq 0 # Wasn't added, just changed
-      redis.zscore(key, "value").should eq "2"
+      redis.zscore(key, "value").should eq 2.0
       redis.zadd(key, "3", "value", xx: true).should eq 0 # variadic
-      redis.zscore(key, "value").should eq "3"
+      redis.zscore(key, "value").should eq 3.0
     end
 
     if test.server_version >= Version["6.2.0"]
       test "can add a member only if it is less than the current score" do
         redis.zadd key, {"1", "value"}
         redis.zadd(key, {"2", "value"}, lt: true).should eq 0
-        redis.zscore(key, "value").should eq "1"
+        redis.zscore(key, "value").should eq 1.0
         redis.zadd(key, "2", "value", lt: true).should eq 0 # variadic
-        redis.zscore(key, "value").should eq "1"
+        redis.zscore(key, "value").should eq 1.0
         redis.zadd(key, {"0.5", "value"}, lt: true).should eq 0
         redis.zscore(key, "value").not_nil!.to_f.should be_within 0.000001, of: 0.5
         redis.zadd(key, "0.1", "value", lt: true).should eq 0 # variadic
@@ -59,13 +59,13 @@ describe Redis::Commands::SortedSet do
       test "can add a member only if it is greater than the current score" do
         redis.zadd key, {"1", "value"}
         redis.zadd(key, {"0.5", "value"}, gt: true).should eq 0
-        redis.zscore(key, "value").should eq "1"
+        redis.zscore(key, "value").should eq 1.0
         redis.zadd(key, "0.5", "value", gt: true).should eq 0 # variadic
-        redis.zscore(key, "value").should eq "1"
+        redis.zscore(key, "value").should eq 1.0
         redis.zadd(key, {"2", "value"}, gt: true).should eq 0
-        redis.zscore(key, "value").should eq "2"
+        redis.zscore(key, "value").should eq 2.0
         redis.zadd(key, "3", "value", gt: true).should eq 0 # variadic
-        redis.zscore(key, "value").should eq "3"
+        redis.zscore(key, "value").should eq 3.0
       end
 
       test "can return the number of members that changed, not just added" do
@@ -79,9 +79,9 @@ describe Redis::Commands::SortedSet do
     test "can treat scores as increments" do
       redis.zadd key, {"4321", "first"}
       redis.zadd key, {"1234", "first"}, incr: true
-      redis.zscore(key, "first").should eq "5555"
+      redis.zscore(key, "first").should eq 5555
       redis.zadd key, "2222", "first", incr: true
-      redis.zscore(key, "first").should eq "7777"
+      redis.zscore(key, "first").should eq 7777
     end
   end
 
@@ -102,12 +102,20 @@ describe Redis::Commands::SortedSet do
         "3", "three"
 
       redis.zrange(key, "+inf", "-inf", by: :score, rev: true, with_scores: true)
-        .should eq %w[three 3 two 2 one 1]
+        .should eq [
+          ["three", 3.0],
+          ["two", 2.0],
+          ["one", 1.0],
+        ]
 
       redis.zrangebyscore(key, "-inf", "+inf")
         .should eq %w[one two three]
       redis.zrangebyscore(key, "-inf", "+inf", with_scores: true)
-        .should eq %w[one 1 two 2 three 3]
+        .should eq [
+          ["one", 1.0],
+          ["two", 2.0],
+          ["three", 3.0],
+        ]
     end
   end
 
@@ -201,7 +209,7 @@ describe Redis::Commands::SortedSet do
 
   test "returns the score of a member in a sorted set at key" do
     redis.zadd(key, "1", "one")
-    redis.zscore(key, "one").should eq("1")
+    redis.zscore(key, "one").should eq 1.0
   end
 
   test "can scan a sorted set" do
