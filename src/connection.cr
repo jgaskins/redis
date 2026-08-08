@@ -62,6 +62,8 @@ module Redis
         elsif password = uri.password
           redis.run({"hello", "3"})
           redis.run({"auth", password})
+        else
+          redis.run({"hello", "3"})
         end
 
         # DB select
