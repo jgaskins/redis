@@ -67,4 +67,23 @@ module Spec::Expectations
   def be_within(delta, of expected)
     be_close(expected, delta)
   end
+
+  private def be_in(*values)
+    BeIn.new(values)
+  end
+
+  struct BeIn(T)
+    getter values : T
+
+    def initialize(@values)
+    end
+
+    def match(value)
+      @values.includes? value
+    end
+
+    def failure_message(value)
+      "Expected #{value.inspect} to be one of: #{values.map(&.inspect).join(", ")}"
+    end
+  end
 end

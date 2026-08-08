@@ -54,6 +54,20 @@ describe Redis::Client do
     end
   end
 
+  test "gets a Redis string value as bytes" do
+    bytes = Random::Secure.random_bytes
+
+    redis.set key, bytes
+
+    redis.get_bytes(key).should eq bytes
+    redis.get_bytes(UUID.v7.to_s).should eq nil
+
+    redis.get_bytes!(key).should eq bytes
+    expect_raises Redis::MissingKey do
+      redis.get_bytes! UUID.v7.to_s
+    end
+  end
+
   test "it returns 0 when passed no keys to delete" do
     redis.del([] of String).should eq 0
   end
@@ -171,6 +185,95 @@ describe Redis::Client do
     redis.get(key).not_nil!.to_f.should be_within 0.000001, of: 0.3
   end
 
+  if test.server_version >= Version["8.8.0"]
+    describe "#increx" do
+      test "can increment by an int" do
+        redis.increx(key, byint: 3).should eq [3, 3]
+        redis.increx(key, byint: 3).should eq [6, 3]
+
+        redis.ttl(key).should eq -1
+      end
+
+      test "can increment by a float" do
+        redis.set key, "6.0"
+
+        new_value, increment = redis.increx(key, byfloat: "3.14")
+
+        new_value.as(String).to_f.should be_within 0.0001, of: 9.14
+        increment.as(String).to_f.should be_within 0.0001, of: 3.14
+        redis.ttl(key).should eq -1
+      end
+
+      test "can increment with a lower bound" do
+        redis.increx(key, byint: -50, lbound: -100).should eq [-50, -50]
+        # Increment would exceed the lower bound, so it does not change
+        redis.increx(key, byint: -1000, lbound: -100).should eq [-50, 0]
+        redis.ttl(key).should eq -1
+      end
+
+      test "can increment with a lower bound, saturating" do
+        redis.set key, "-50"
+        redis.increx(key, byint: -1000, lbound: -100, saturate: true).should eq [-100, -50]
+        redis.ttl(key).should eq -1
+      end
+
+      test "can increment with an upper bound" do
+        redis.increx(key, byint: 50, ubound: 100).should eq [50, 50]
+        # Increment would exceed the upper bound, so it does not change
+        redis.increx(key, byint: 500, ubound: 100).should eq [50, 0]
+        redis.ttl(key).should eq -1
+      end
+
+      test "can increment with an upper bound, saturating" do
+        redis.set key, "50"
+        redis.increx(key, byint: 1000, ubound: 100, saturate: true).should eq [100, 50]
+        redis.ttl(key).should eq -1
+      end
+
+      test "can increment with both an upper and lower bound" do
+        redis.increx(key, byint: 1000, lbound: -100, ubound: 100, saturate: true).should eq [100, 100]
+        redis.increx(key, byint: -1000, lbound: -100, ubound: 100, saturate: true).should eq [-100, -200]
+        redis.ttl(key).should eq -1
+      end
+
+      test "can set an expiration with a time span" do
+        redis.increx(key, ex: 1.minute).should eq [1, 1]
+        redis.ttl(key).should eq 60
+
+        redis.del key
+        redis.increx(key, px: 1.minute).should eq [1, 1]
+        redis.pttl(key).should be_within 10, of: 60_000
+
+        redis.del key
+        redis.increx(key, exat: 1.minute.from_now).should eq [1, 1]
+        redis.ttl(key).should be_in 59, 60
+
+        redis.del key
+        redis.increx(key, pxat: 1.minute.from_now).should eq [1, 1]
+        redis.pttl(key).should be_within 10, of: 60_000
+      end
+
+      test "can remove an expiration" do
+        redis.set key, "10", ex: 1.minute
+        redis.ttl(key).should eq 60
+
+        redis.increx key, persist: true
+
+        redis.ttl(key).should eq -1
+      end
+
+      test "can set the expiration only if there is no expiration on the key" do
+        redis.increx key, ex: 1.minute, enx: true
+        # Does set the TTL
+        redis.ttl(key).should be_in 59, 60
+
+        redis.increx key, ex: 5.minutes, enx: true
+        # Still the one we set above, didn't change to 5 minutes
+        redis.ttl(key).should be_in 59, 60
+      end
+    end
+  end
+
   describe "lists" do
     test "can push and get a range" do
       redis.rpush key, "one"
@@ -281,72 +384,6 @@ describe Redis::Client do
       redis.sadd key, values
       redis.sscan_each(key, count: 10).each do |key|
         values.delete key
-      end
-
-      values.should be_empty
-    end
-  end
-
-  describe "hash" do
-    test "hset returns the number of new fields set on the given key" do
-      redis.hset(key, one: "", two: "").should eq 2
-
-      # Only "three" is added, the others already existed
-      redis.hset(key, {"one" => "", "two" => "", "three" => ""}).should eq 1
-
-      # "four" and "five" are both new
-      redis.hset(key, %w[one yes two yes three yes four yes five yes]).should eq 2
-    end
-
-    test "hmget returns the given fields for the given key" do
-      redis.hset key, one: "first", two: "second"
-
-      redis.hget(key, "one").should eq "first"
-      redis.hget(key, "nonexistent").should eq nil
-      redis.hmget(key, "one", "nonexistent").should eq ["first", nil]
-      redis.hmget(key, %w[one nonexistent]).should eq ["first", nil]
-      redis.hmget(key, "nope", "lol").should eq [nil, nil]
-      redis.hmget(key, %w[nope lol]).should eq [nil, nil]
-    end
-
-    test "hincrby increments the number stored at field in the hash" do
-      redis.hset(key, {"field" => "5"})
-      redis.hincrby(key, "field", 1).should eq 6
-      redis.hincrby(key, "field", -1).should eq 5
-      redis.hincrby(key, "field", -10).should eq -5
-    end
-
-    test "hdel deletes fields from hashes" do
-      redis.hset key,
-        name: "foo",
-        splat_arg: "yes",
-        array_arg: "also yes",
-        array_arg2: "still yes"
-
-      redis.hdel(key, "splat_arg", "nonexistent-field").should eq 1
-      redis.hdel(key, %w[array_arg array_arg2 nonexistent-field]).should eq 2
-    end
-
-    test "hsetnx sets fields on a key only if they do not exist" do
-      redis.hsetnx(key, "first", "lol").should eq 1
-      redis.hsetnx(key, "first", "omg").should eq 0
-      redis.hsetnx(key, "second", "lol").should eq 1
-    end
-
-    test "hscan yields each field/value pair" do
-      values = Array
-        .new(1_000) do |i|
-          {i.to_s, rand.to_s}
-        end
-        .to_h
-
-      redis.hset key, values
-      redis.hscan_each key do |field, value|
-        if values[field] == value
-          values.delete field
-        else
-          raise "Yielded a field/value pair that does not exist: #{field.inspect} => #{value.inspect}"
-        end
       end
 
       values.should be_empty

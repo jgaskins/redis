@@ -32,7 +32,8 @@ module Redis
     def initialize(@uri = URI.parse(ENV.fetch("REDIS_URL", "redis:///")), @log = Log)
       host = uri.host.presence || "localhost"
       port = uri.port || 6379
-      socket = TCPSocket.new(host, port)
+      connect_timeout = uri.query_params.fetch("connect_timeout", "5").to_f
+      socket = TCPSocket.new(host, port, connect_timeout: (connect_timeout > 0 ? connect_timeout.seconds : nil))
       socket.sync = false
 
       # TCP keepalive settings
@@ -151,7 +152,7 @@ module Redis
       raise DB::PoolResourceLost.new(self, cause: ex)
     end
 
-    {% for command in %w[subscribe psubscribe] %}
+    {% for command in %w[subscribe psubscribe ssubscribe] %}
       # Subscribe to the given pubsub channels. The block yields a subscription
       # object and the connection. You can setup `on_message`, `on_subscribe`,
       # and `on_unsubscribe` on the subscription.
@@ -222,6 +223,26 @@ module Redis
 
     def punsubscribe(*channels : String)
       @writer.encode({"punsubscribe"} + channels)
+      flush
+    end
+
+    # Subscribe to the given sharded pubsub channels without having to pass a
+    # block. This is useful to run inside of other subscription blocks to add
+    # new sharded subscriptions.
+    def ssubscribe(*channels : String)
+      @writer.encode({"ssubscribe"} + channels)
+      flush
+    end
+
+    # Unsubscribe this connection from all sharded subscriptions.
+    def sunsubscribe
+      @writer.encode({"sunsubscribe"})
+      flush
+    end
+
+    # Unsubscribe this connection from the given sharded pubsub channels.
+    def sunsubscribe(*channels : String)
+      @writer.encode({"sunsubscribe"} + channels)
       flush
     end
 
@@ -508,13 +529,13 @@ module Redis
         channel = channel.as String
 
         case action
-        when "message"
+        when "message", "smessage"
           message! channel, argument.as(String)
         when "pmessage"
           pmessage! channel, argument.as(String), pattern.as(String)
-        when "subscribe", "psubscribe"
+        when "subscribe", "psubscribe", "ssubscribe"
           subscribe! channel, argument.as(Int64)
-        when "unsubscribe", "punsubscribe"
+        when "unsubscribe", "punsubscribe", "sunsubscribe"
           unsubscribe! channel, argument.as(Int64)
           break if argument == 0
         else

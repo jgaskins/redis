@@ -7,7 +7,7 @@ redis = Redis::Client.new
 define_test redis
 test = TestRunner.new(redis)
 
-if test.server_version >= Version["8.0.0"]
+if test.has_module? "bf"
   describe Redis::TopK do
     test "reserves a topk" do
       redis.topk.reserve(key, "10").should eq "OK"

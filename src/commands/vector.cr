@@ -1,5 +1,7 @@
 require "json"
 
+require "../vector_encoder"
+
 module Redis::Commands::Vector
   # Add `element` with its associated `vector` to the vector set stored in `key`.
   #
@@ -106,6 +108,10 @@ module Redis::Commands::Vector
     run({"vgetattr", key, element})
   end
 
+  def vinfo(key : String)
+    run({"vinfo", key})
+  end
+
   # Return an array of elements between `start` and `end` in the vector set
   # stored in `key`, optionally limiting the result size to `count`.
   #
@@ -164,15 +170,5 @@ module Redis::Commands::Vector
     command += {"epsilon", epsilon.to_s} if epsilon
     command += {"count", count.to_s} if count
     run command
-  end
-
-  private struct VectorEncoder
-    def call(vector : Array(Float32)) : Bytes
-      encoded = Bytes.new(vector.size * sizeof(Float32))
-      vector.each_with_index do |f32, index|
-        IO::ByteFormat::LittleEndian.encode f32, encoded + (index * sizeof(Float32))
-      end
-      encoded
-    end
   end
 end

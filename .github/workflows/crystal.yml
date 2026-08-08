@@ -11,19 +11,22 @@ jobs:
       fail-fast: false
       matrix:
         crystal:
-        - nightly
-        - latest
-        - "1.18"
         - "1.17"
+        - "1.18"
+        - "1.19"
+        - "1.20"
+        - latest
+        - nightly
         redis:
         - "6.0"
         - "6.2"
-        - "7"
+        - "7.0"
         - "7.2"
         - "8.0"
         - "8.2"
         - "8.4"
         - "8.6"
+        - "8.8"
     container:
       image: crystallang/crystal:${{ matrix.crystal }}
 

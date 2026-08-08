@@ -98,7 +98,7 @@ class Redis::ReplicationClient
           .sort_by!(&.host.not_nil!),
         topology_ttl: topology_ttl,
       )
-    in .replica?
+    in .replica?, .slave?
       initialize(
         entrypoint.dup.tap do |uri|
           uri.host = parsed.master_host
@@ -198,7 +198,7 @@ class Redis::ReplicationClient
           when .starts_with? "connected_slaves:"
             @connected_replicas = line["connected_slaves:".bytesize..].to_i
             @replicas = Array(Info::Replica).new(initial_capacity: connected_replicas)
-          when .starts_with? "slave"
+          when .matches? /\Aslave\d+:/
             if separator_index = line.index(':')
               replicas << Replica.new(line[separator_index + 1..])
             else
@@ -228,6 +228,7 @@ class Redis::ReplicationClient
       enum Role
         Master
         Replica
+        Slave = Replica
       end
     end
 

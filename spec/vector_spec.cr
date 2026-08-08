@@ -24,7 +24,7 @@ if runner.has_module? "vectorset"
       test "adds an element with given attributes" do
         redis.vadd key, vector(3), "stuff", setattr: {lang: "en"}
 
-        JSON.parse(redis.vgetattr(key, "stuff"))["lang"].should eq "en"
+        JSON.parse(redis.vgetattr(key, "stuff").not_nil!)["lang"].should eq "en"
       end
     end
 
@@ -55,7 +55,7 @@ if runner.has_module? "vectorset"
         vector = [1.234f32, 2.345f32, 3.456f32]
         redis.vadd key, vector, "stuff"
 
-        result = redis.vemb(key, "stuff")
+        result = redis.vemb(key, "stuff").not_nil!
 
         # We can't compare directly because Redis encodes floats as strings
         result.each_with_index do |value, index|
