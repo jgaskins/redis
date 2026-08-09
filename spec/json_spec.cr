@@ -177,16 +177,16 @@ if runner.has_module? "ReJSON"
         ],
       }
 
-      redis.json.numincrby(key, ".products[0].quantity", 1).should eq "2"
-      redis.json.numincrby(key, ".products[1].quantity", 1, as: Int32).should eq 3
+      redis.json.numincrby(key, ".products[0].quantity", 1).should eq [2]
+      redis.json.numincrby(key, ".products[1].quantity", 1).should eq [3]
       # Increment *all* quantities on the order
-      redis.json.numincrby(key, "$.products..quantity", 1, as: Array(Int32)).should eq [3, 4, 5]
+      redis.json.numincrby(key, "$.products..quantity", 1).should eq [3, 4, 5]
     end
 
     test "multiplies numbers" do
       redis.json.set key, ".", {value: 23}
 
-      redis.json.nummultby(key, ".value", 3).should eq "69"
+      redis.json.nummultby(key, ".value", 3).should eq [69]
 
       redis.json.get(key, ".value", as: Int64).should eq 69
     end
