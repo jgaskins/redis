@@ -154,6 +154,15 @@ module Redis
         end
       end
 
+      def initialize(response : Hash(Redis::Value, Redis::Value))
+        @streams = Hash(String, Array(Message)).new(initial_capacity: response.size)
+        response.each do |stream_key, events|
+          @streams[stream_key.as(String)] = events.as(Array).map do |event_array|
+            Message.new(event_array.as(Array))
+          end
+        end
+      end
+
       delegate each, to: @streams
 
       def [](stream_name : String) : Array(Message)
@@ -193,11 +202,28 @@ module Redis
         results
       end
 
+      def self.hash(response : Hash(Redis::Value, Redis::Value))
+        results = Hash(String, Array(Message)).new(initial_capacity: response.size)
+        response.each do |key, data|
+          results[key.as(String)] = data.as(Array).map { |msg| Message.new(msg.as(Array)) }
+        end
+        results
+      end
+
       def initialize(response : Array(Redis::Value))
         @results = Array(Result).new(initial_capacity: response.size)
 
         response.each do |row|
           key, data = row.as(Array)
+          messages = data.as(Array).map { |msg| Message.new(msg.as(Array)) }
+          @results << Result.new(key.as(String), messages)
+        end
+      end
+
+      def initialize(response : Hash(Redis::Value, Redis::Value))
+        @results = Array(Result).new(initial_capacity: response.size)
+
+        response.each do |key, data|
           messages = data.as(Array).map { |msg| Message.new(msg.as(Array)) }
           @results << Result.new(key.as(String), messages)
         end
@@ -274,12 +300,35 @@ module Redis
     # ```
     private module Properties
       macro define(*properties)
-
         include Properties
 
         {% for prop in properties %}
           getter {{prop}}
         {% end %}
+
+        def initialize(response : ::Hash)
+          {% for prop in properties %}
+            {{prop.var}} : {{prop.type}}? = nil
+          {% end %}
+
+          response.each do |attribute, value|
+            case attribute
+            {% for prop in properties %}
+            when {{prop.var.stringify.gsub(/_/, "-")}} then {{prop.var}} = get(value, {{prop.type}})
+            {% end %}
+            end
+          end
+
+          {% for prop in properties %}
+            if {{prop.var}}
+              @{{prop.var}} = {{prop.var}}
+            {% if !prop.type.is_a?(Union) || (prop.type.is_a?(Union) && !prop.type.types.any? { |type| type.names.any? { |name| name.stringify == "Nil" } }) %}
+            else
+              raise NilAssertionError.new("{{prop.var}} must be {{prop.type}}, but was either not provided by the Redis server or was sent as nil ({{prop.type}} - {{prop.type.class_name.id}})")
+            {% end %}
+            end
+          {% end %}
+        end
 
         def initialize(response : Array)
           {% for prop in properties %}
@@ -404,7 +453,7 @@ module Redis
       end
 
       protected def get(value : Redis::Value, type : Array(Group).class) : Array(Group)
-        value.as(Array).map { |data| Group.new(data.as(Array)) }
+        value.as(Array).map { |data| Group.new(data.as(Array(Value) | ::Hash(Value, Value))) }
       end
 
       struct Group
@@ -433,7 +482,7 @@ module Redis
         end
 
         protected def get(value : Redis::Value, type : Array(Consumer).class) : Array(Consumer)
-          value.as(Array).map { |data| Consumer.new(data.as(Array)) }
+          value.as(Array).map { |data| Consumer.new(data.as(Array(Value) | ::Hash(Value, Value))) }
         end
 
         struct PendingEntry
@@ -480,7 +529,7 @@ module Redis
       getter groups : Array(Group)
 
       def initialize(response : Array)
-        @groups = response.map { |data| Group.new data.as(Array) }
+        @groups = response.map { |data| Group.new data.as(Array(Value) | ::Hash(Value, Value)) }
       end
 
       struct Group
@@ -500,7 +549,7 @@ module Redis
       getter consumers : Array(Consumer)
 
       def initialize(response : Array)
-        @consumers = response.map { |data| Consumer.new data.as(Array) }
+        @consumers = response.map { |data| Consumer.new data.as(Array(Value) | ::Hash(Value, Value)) }
       end
 
       struct Consumer

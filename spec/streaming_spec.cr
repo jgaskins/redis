@@ -100,8 +100,8 @@ module StreamingSpec
           redis.xreadgroup "group", "one", streams: {key => ">"}, count: 3
           redis.xreadgroup "group", "two", streams: {key => ">"}, count: 5
         end
-        from_one = XReadGroupResponse.new(results[-2].as(Array))
-        from_two = XReadGroupResponse.new(results[-1].as(Array))
+        from_one = XReadGroupResponse.new(results[-2].as(Hash))
+        from_two = XReadGroupResponse.new(results[-1].as(Hash))
         redis.xack key, "group", from_two.each_message.first(3).map(&.id).to_a
         redis.xdel key, from_two.each_message.first(3).map(&.id).to_a
 
@@ -255,7 +255,7 @@ module StreamingSpec
         id = redis.xadd key, "*", {id: "0"}
         get_pending = -> do
           groups = redis.xinfo_groups(key)
-          Redis.to_hash(groups.first.as(Array))["pending"]
+          groups.first.as(Hash)["pending"]
         end
 
         get_pending.call.should eq 0 # Nothing in the PEL yet

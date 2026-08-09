@@ -531,40 +531,34 @@ module Redis
     # :nodoc:
     def call
       loop do
-        case notification = @connection.read?
-        when Nil
-          break
-        when Push, Array(Value)
-          break if handle(notification)
+        notification = @connection.read?
+        break if notification.nil?
+
+        notification = notification.as(Array(Value) | Push)
+
+        action, channel, argument = notification
+        action = action.as String
+        if action == "pmessage"
+          _, pattern, channel, argument = notification
+        end
+        channel = channel.as String
+
+        case action
+        when "message", "smessage"
+          message! channel, argument.as(String)
+        when "pmessage"
+          pmessage! channel, argument.as(String), pattern.as(String)
+        when "subscribe", "psubscribe", "ssubscribe"
+          subscribe! channel, argument.as(Int64)
+        when "unsubscribe", "punsubscribe", "sunsubscribe"
+          unsubscribe! channel, argument.as(Int64)
+          break if argument == 0
         else
-          raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{notification.inspect}")
+          raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{action}")
         end
       end
 
       self
-    end
-
-    # Dispatch a single pubsub notification, returning `true` if this
-    # subscription is finished.
-    private def handle(notification : Push | Array(Value)) : Bool
-      action = notification[0].as(String)
-
-      case action
-      when "message", "smessage"
-        message! notification[1].as(String), notification[2].as(String)
-      when "pmessage"
-        pmessage! notification[2].as(String), notification[3].as(String), notification[1].as(String)
-      when "subscribe", "psubscribe", "ssubscribe"
-        subscribe! notification[1].as(String), notification[2].as(Int64)
-      when "unsubscribe", "punsubscribe", "sunsubscribe"
-        count = notification[2].as(Int64)
-        unsubscribe! notification[1].as(String), count
-        return count == 0
-      else
-        raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{action}")
-      end
-
-      false
     end
 
     def close

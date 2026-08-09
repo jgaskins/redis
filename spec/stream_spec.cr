@@ -28,20 +28,16 @@ describe Redis::Commands::Stream do
       three_id = redis.xadd "second_stream", "*", fields: {three: "3"}
       four_id = redis.xadd "second_stream", "*", fields: {four: "4"}
 
-      expected = [
-        [
-          "first_stream", [
-            [one_id, ["one", "1"]],
-            [two_id, ["two", "2"]],
-          ],
+      expected = {
+        "first_stream" => [
+          [one_id, ["one", "1"]],
+          [two_id, ["two", "2"]],
         ],
-        [
-          "second_stream", [
-            [three_id, ["three", "3"]],
-            [four_id, ["four", "4"]],
-          ],
+        "second_stream" => [
+          [three_id, ["three", "3"]],
+          [four_id, ["four", "4"]],
         ],
-      ]
+      }
       redis.xread(streams: {first_stream: "0", second_stream: "0"}).should eq expected
       redis.xread(streams: {"first_stream" => "0", "second_stream" => "0"}).should eq expected
     ensure
@@ -57,8 +53,8 @@ describe Redis::Commands::Stream do
         {"my-stream" => "0"},
         {"my-stream": "0"},
       ].each do |streams|
-        redis.xread(count: 2, streams: streams).as(Array)
-          .first.as(Array)[1].as(Array)
+        redis.xread(count: 2, streams: streams).as(Hash)
+          .first[1].as(Array)
           .size
           .should eq 2
       end
@@ -76,8 +72,8 @@ describe Redis::Commands::Stream do
           redis.xadd "my-stream", "*", {id: "1"}
         end
 
-        redis.xread(block: 100.milliseconds, streams: streams).as(Array)
-          .first.as(Array)[1].as(Array)
+        redis.xread(block: 100.milliseconds, streams: streams).as(Hash)
+          .first[1].as(Array)
           .size
           .should eq 1
       ensure
