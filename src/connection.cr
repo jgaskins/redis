@@ -397,6 +397,12 @@ module Redis
           return value
         end
       end
+    rescue ex : Parser::InvalidByteMarker
+      # If we received an invalid byte marker, we have likely gotten out of sync
+      # with the server. There is no way to recover from this, so we must close
+      # the connection.
+      close
+      raise ex
     end
 
     # :nodoc:
@@ -413,6 +419,12 @@ module Redis
           return value
         end
       end
+    rescue ex : Parser::InvalidByteMarker
+      # If we received an invalid byte marker, we have likely gotten out of sync
+      # with the server. There is no way to recover from this, so we must close
+      # the connection.
+      close
+      raise ex
     end
 
     # The URI
@@ -519,33 +531,40 @@ module Redis
     # :nodoc:
     def call
       loop do
-        notification = @connection.read?
-        break if notification.nil?
-
-        notification = notification.as(Array)
-        action, channel, argument = notification
-        action = action.as String
-        if action == "pmessage"
-          _, pattern, channel, argument = notification
-        end
-        channel = channel.as String
-
-        case action
-        when "message", "smessage"
-          message! channel, argument.as(String)
-        when "pmessage"
-          pmessage! channel, argument.as(String), pattern.as(String)
-        when "subscribe", "psubscribe", "ssubscribe"
-          subscribe! channel, argument.as(Int64)
-        when "unsubscribe", "punsubscribe", "sunsubscribe"
-          unsubscribe! channel, argument.as(Int64)
-          break if argument == 0
+        case notification = @connection.read?
+        when Nil
+          break
+        when Push, Array(Value)
+          break if handle(notification)
         else
-          raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{action}")
+          raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{notification.inspect}")
         end
       end
 
       self
+    end
+
+    # Dispatch a single pubsub notification, returning `true` if this
+    # subscription is finished.
+    private def handle(notification : Push | Array(Value)) : Bool
+      action = notification[0].as(String)
+
+      case action
+      when "message", "smessage"
+        message! notification[1].as(String), notification[2].as(String)
+      when "pmessage"
+        pmessage! notification[2].as(String), notification[3].as(String), notification[1].as(String)
+      when "subscribe", "psubscribe", "ssubscribe"
+        subscribe! notification[1].as(String), notification[2].as(Int64)
+      when "unsubscribe", "punsubscribe", "sunsubscribe"
+        count = notification[2].as(Int64)
+        unsubscribe! notification[1].as(String), count
+        return count == 0
+      else
+        raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{action}")
+      end
+
+      false
     end
 
     def close

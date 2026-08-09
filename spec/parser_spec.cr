@@ -154,6 +154,19 @@ module Redis
       parser.read.should eq Attributes.new({"one" => 1i64, "two" => 2i64} of Value => Value)
     end
 
+    it "reads pushes" do
+      io = IO::Memory.new(<<-EOF)
+        >3\r
+        +foo\r
+        +bar\r
+        :123\r
+
+        EOF
+      parser = Parser.new(io)
+
+      parser.read.should eq Push.new(["foo", "bar", 123i64] of Value)
+    end
+
     it "can read without failing if the IO is closed" do
       reader, writer = IO.pipe
       begin

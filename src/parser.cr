@@ -84,14 +84,14 @@ module Redis
         # string will be returned from the server is from a SET call.
         buffer = uninitialized UInt8[4] # "OK\r\n"
         slice = buffer.to_slice
-        read = @io.read_fully slice[0, 2] # Just trying to check whether we got "OK"
-        if read == 2 && slice[0, 2] == "OK".to_slice && (second_read = @io.read_fully(slice + 2)) && slice == "OK\r\n".to_slice
+        bytes_read = @io.read_fully slice[0, 2] # Just trying to check whether we got "OK"
+        if bytes_read == 2 && slice[0, 2] == "OK".to_slice && (second_read = @io.read_fully(slice + 2)) && slice == "OK\r\n".to_slice
           "OK"
-        elsif read == 2 && slice[0, 2] == "\r\n".to_slice
+        elsif bytes_read == 2 && slice[0, 2] == "\r\n".to_slice
           ""
         else
           String.build do |str|
-            str.write slice[0...read + (second_read || 0)]
+            str.write slice[0...bytes_read + (second_read || 0)]
             str << @io.read_line
           end.chomp
         end
@@ -116,10 +116,14 @@ module Redis
       when '-'
         type, message = @io.read_line.split(' ', 2)
         ERROR_MAP[type].new("#{type} #{message}")
+      when '>'
+        length = parse_int
+        @io.skip 2
+        Push.new(Array(Value).new(length) { read.as(Value) })
       when nil
         yield
       else
-        raise "Invalid byte marker: #{byte_marker.chr.inspect}"
+        raise InvalidByteMarker.new("Invalid byte marker: #{byte_marker.chr.inspect}")
       end
     rescue ex : IO::Error
       yield
@@ -152,6 +156,9 @@ module Redis
       else
         int
       end
+    end
+
+    class InvalidByteMarker < Error
     end
   end
 end
