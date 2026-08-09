@@ -77,7 +77,7 @@ module Redis
 
       cast(
         reserve: String,
-        info: Array,
+        info: ::Hash,
         add: Array,
         list: Array,
         query: Array,
