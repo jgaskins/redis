@@ -11,26 +11,26 @@ describe Redis::Commands::Geo do
     redis.geoadd(key, "42", "69", "foo", "12", "34", "bar").should eq 2
 
     foo, bar = redis.geopos(key, "foo", "bar")
-    x, y = foo.as(Array).map(&.as(String).to_f)
+    x, y = foo.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 42
     y.should be_within 0.00001, of: 69
-    x, y = bar.as(Array).map(&.as(String).to_f)
+    x, y = bar.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 12
     y.should be_within 0.00001, of: 34
 
     foo, bar = redis.geopos(key, {"foo", "bar"})
-    x, y = foo.as(Array).map(&.as(String).to_f)
+    x, y = foo.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 42
     y.should be_within 0.00001, of: 69
-    x, y = bar.as(Array).map(&.as(String).to_f)
+    x, y = bar.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 12
     y.should be_within 0.00001, of: 34
 
     foo, bar = redis.geopos(key, %w[foo bar])
-    x, y = foo.as(Array).map(&.as(String).to_f)
+    x, y = foo.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 42
     y.should be_within 0.00001, of: 69
-    x, y = bar.as(Array).map(&.as(String).to_f)
+    x, y = bar.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 12
     y.should be_within 0.00001, of: 34
   end
@@ -51,10 +51,10 @@ describe Redis::Commands::Geo do
 
     added.should eq 2
     foo, bar = redis.geopos(key, "foo", "bar")
-    x, y = foo.as(Array).map(&.as(String).to_f)
+    x, y = foo.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 69
     y.should be_within 0.00001, of: 42
-    x, y = bar.as(Array).map(&.as(String).to_f)
+    x, y = bar.as(Array).map(&.as(Float64))
     x.should be_within 0.00001, of: 34
     y.should be_within 0.00001, of: 12
   end
