@@ -208,7 +208,7 @@ module Redis::Commands::Immediate
       geosearch: Array,
 
       # Vector
-      vadd:     Int64,
+      vadd:     Bool,
       vdim:     Int64,
       vemb:     Array(Value)?,
       vinfo:    Array,

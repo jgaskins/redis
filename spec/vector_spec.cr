@@ -11,13 +11,13 @@ if runner.has_module? "vectorset"
     describe "#vadd" do
       test "adds a new element to the vector set" do
         redis.vadd(key, [1.234f32, 2.345f32, 3.456f32], "stuff")
-          .should eq 1 # Added
+          .should eq true # Added
         redis.vadd(key, vector(3), "stuff")
-          .should eq 0 # Same element, but not added
+          .should eq false # Same element, but not added
       end
 
       test "adds an element and reduces the vector to the specified dimensionality" do
-        redis.vadd(key, vector(3), "stuff", reduce: 2).should eq 1
+        redis.vadd(key, vector(3), "stuff", reduce: 2).should eq true
         redis.vdim(key).should eq 2
       end
 
@@ -59,7 +59,7 @@ if runner.has_module? "vectorset"
 
         # We can't compare directly because Redis encodes floats as strings
         result.each_with_index do |value, index|
-          value.as(String).to_f.should be_within 0.01, of: vector[index]
+          value.as(Float64).should be_within 0.01, of: vector[index]
         end
       end
     end
