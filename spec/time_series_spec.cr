@@ -17,7 +17,7 @@ module Redis
           duplicate_policy: :first,
           labels: {"sensor_id" => 123}
 
-        info = Redis.to_hash(redis.ts.info(key).as(Array))
+        info = redis.ts.info(key).as(::Hash)
         info["totalSamples"].should eq 0
       end
 
@@ -30,7 +30,7 @@ module Redis
 
         redis.ts.add key, ts, 1i64
 
-        redis.ts.get(key).should eq [ts.to_unix_ms, "1"]
+        redis.ts.get(key).should eq [ts.to_unix_ms, 1]
       end
 
       test "gets a range for keys" do
@@ -101,7 +101,7 @@ module Redis
           redis.ts.create included_key, labels: {"name" => name_label}
           redis.ts.create excluded_key, labels: {"name" => UUID.random.to_s}
 
-          names = redis.ts.queryindex("name=#{name_label}").as(Array)
+          names = redis.ts.queryindex("name=#{name_label}").as(Set)
 
           names.should contain included_key
           names.should_not contain excluded_key

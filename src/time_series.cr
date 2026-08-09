@@ -307,8 +307,10 @@ module Redis
     record Datapoint,
       timestamp : Time,
       value : Float64
-    record Datapoints, labels : Labels, datapoints : Array(Datapoint) do
+    record Datapoints, labels : Labels, metadata : Metadata, datapoints : Array(Datapoint) do
       include Enumerable(Datapoint)
+
+      alias Metadata = Hash(String, Value)
 
       def each(&)
         datapoints.each { |datapoint| yield datapoint }
@@ -326,9 +328,8 @@ module Redis
 
       getter data : DatapointMap
 
-      def initialize(response)
-        response = response.as Array
-        @data = DatapointMap.new(initial_capacity: response.size)
+      def self.new(response : Array)
+        data = DatapointMap.new(initial_capacity: response.size)
         response.each do |result|
           key, labels_list, raw_datapoints = result.as Array
           key = key.as String
@@ -336,12 +337,13 @@ module Redis
           raw_datapoints = raw_datapoints.as Array
 
           labels = Labels.new(initial_capacity: labels_list.size)
-          labels_list.each do |label|
-            k, v = label.as Array
+          labels_list.each do |result|
+            k, v = result.as(Array)
             labels[k.as(String)] = v.as(String)
           end
-          datapoints = @data[key] = Datapoints.new(
+          datapoints = data[key] = Datapoints.new(
             labels: labels,
+            metadata: {} of String => Value,
             datapoints: Array(Datapoint).new(initial_capacity: raw_datapoints.size),
           )
 
@@ -354,6 +356,46 @@ module Redis
             )
           end
         end
+
+        new data
+      end
+
+      def self.new(response : Hash(Value, Value))
+        data = DatapointMap.new(initial_capacity: response.size)
+        response.each do |key, result|
+          labels_list, metadata, raw_datapoints = result.as Array
+          key = key.as String
+          labels_list = labels_list.as Hash
+          raw_datapoints = raw_datapoints.as Array
+
+          labels = Labels.new(initial_capacity: labels_list.size)
+          labels_list.each do |label|
+            k, v = label.as Array
+            labels[k.as(String)] = v.as(String)
+          end
+          datapoints = data[key] = Datapoints.new(
+            labels: labels,
+            metadata: metadata.as(Hash).transform_keys(&.as(String)),
+            datapoints: Array(Datapoint).new(initial_capacity: raw_datapoints.size),
+          )
+
+          raw_datapoints.each do |datapoint|
+            datapoint = datapoint.as Array
+            ts, value = datapoint
+            datapoints << Datapoint.new(
+              timestamp: Time.unix_ms(ts.as(Int)),
+              value: value.as(Float64),
+            )
+          end
+        end
+        new data
+      end
+
+      def self.new(response : Value)
+        raise ArgumentError.new("Expected Array (RESP2) or Hash (RESP3), got: #{response.inspect}")
+      end
+
+      def initialize(@data : DatapointMap)
       end
 
       def each(&)
