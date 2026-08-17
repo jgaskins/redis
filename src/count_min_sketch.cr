@@ -59,7 +59,7 @@ module Redis
         incrby: Array,
         query: Array,
         merge: Array,
-        info: Array,
+        info: ::Hash,
       )
     end
   end
