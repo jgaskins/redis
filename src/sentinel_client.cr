@@ -291,8 +291,9 @@ module Redis
     private def discover_master_uri : URI
       last_error = nil
       registry_snapshot.each do |sentinel_uri|
-        conn = open_sentinel_connection(sentinel_uri)
+        conn = nil
         begin
+          conn = open_sentinel_connection(sentinel_uri)
           result = conn.run({"sentinel", "get-master-addr-by-name", @master_name})
           next unless result.is_a?(Array)
           host, port = result
@@ -303,7 +304,7 @@ module Redis
             error: ex.message.to_s
           last_error = ex
         ensure
-          conn.close rescue nil
+          conn.try { |c| c.close rescue nil }
         end
       end
       raise Error.new(
@@ -343,8 +344,9 @@ module Redis
     # Queries *sentinel_uri* for its known peers, registering each one and
     # recording it in *reachable*. Returns `true` if the query succeeded.
     private def query_sentinel_for_peers(sentinel_uri : URI, reachable : ::Set(String)) : Bool
-      conn = open_sentinel_connection(sentinel_uri)
+      conn = nil
       begin
+        conn = open_sentinel_connection(sentinel_uri)
         self.class.parse_sentinel_list(conn.run({"sentinel", "sentinels", @master_name})).each do |info|
           # Build a clean sentinel URI — only scheme/auth from the known sentinel,
           # no path so we don't accidentally send SELECT to a sentinel node.
@@ -364,7 +366,7 @@ module Redis
           error: ex.message.to_s
         false
       ensure
-        conn.close rescue nil
+        conn.try { |c| c.close rescue nil }
       end
     end
 
