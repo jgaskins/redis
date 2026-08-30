@@ -1,0 +1,60 @@
+name: Sentinel CI
+
+# Runs the sentinel integration tests on every push and pull request.
+# The failover test (tagged "failover") runs separately, in its own
+# sentinel-failover.yml workflow (also on push/pull_request) — kept apart so
+# its run status/logs don't mix with this faster, more stable job. Run it
+# locally with `./sentinel.sh test-failover`.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  sentinel:
+    runs-on: ubuntu-latest
+    # No container: here — we need docker compose available on the runner to
+    # spin up the sentinel topology, then run Crystal inside the Docker network.
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start sentinel cluster
+        working-directory: examples/sentinel
+        run: docker compose up -d redis-master redis-replica-1 redis-replica-2 sentinel-1 sentinel-2 sentinel-3
+
+      - name: Wait for sentinel quorum
+        working-directory: examples/sentinel
+        # Poll sentinel-1 until it reports the master status as "ok", which
+        # means at least two sentinels have agreed on the master (quorum = 2).
+        run: |
+          echo "Waiting for sentinel quorum (up to 40 s)..."
+          for i in $(seq 1 20); do
+            if docker compose exec -T sentinel-1 redis-cli -p 26379 sentinel master mymaster 2>/dev/null | grep -q "ok"; then
+              echo "Quorum established after $((i * 2)) s."
+              break
+            fi
+            if [ $i -eq 20 ]; then
+              echo "Timed out waiting for sentinel quorum."
+              docker compose logs sentinel-1 sentinel-2 sentinel-3
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Run sentinel integration tests
+        working-directory: examples/sentinel
+        # Runs spec/sentinel_client_spec.cr (unit + integration, no failover).
+        # The failover test lives in spec/sentinel_failover_spec.cr and runs
+        # in the separate sentinel-failover.yml workflow (takes up to 30 s).
+        run: docker compose --profile test run --rm test
+
+      - name: Show logs on failure
+        if: failure()
+        working-directory: examples/sentinel
+        run: docker compose logs
+
+      - name: Tear down
+        if: always()
+        working-directory: examples/sentinel
+        run: docker compose down -v

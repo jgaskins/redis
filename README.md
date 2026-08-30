@@ -180,6 +180,28 @@ redis = Redis::Client.new(URI.parse("redis://localhost:6379/0#{params}"))
 redis = Redis::Connection.new(URI.parse("redis://localhost:6379/0#{params}"))
 ```
 
+### Sentinel
+
+For deployments managed by [Redis Sentinel](https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/), `Redis::SentinelClient` is a drop-in replacement for `Redis::Client` that discovers the master automatically and follows failovers.
+
+```crystal
+require "redis/sentinel_client"
+
+redis = Redis::SentinelClient.new(
+  sentinels: [
+    URI.parse("redis://s1:26379"),
+    URI.parse("redis://s2:26380"),
+  ],
+  master_name: "mymaster",
+  master_uri: URI.parse("redis://:master-pass@ignored/2"),
+)
+
+redis.set "foo", "bar"
+redis.get "foo" # => "bar"
+```
+
+A command already in flight when the master dies isn't retried automatically — wrap idempotent calls in `redis.with_retry { ... }` to have them retried against the newly discovered master.
+
 ## Development
 
 Make sure you have a Redis or KeyDB server running locally on port 6379.

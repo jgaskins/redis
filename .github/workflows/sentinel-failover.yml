@@ -1,0 +1,63 @@
+name: Sentinel Failover CI
+
+# Runs the sentinel failover integration test (spec/sentinel_failover_spec.cr):
+# it triggers a real forced failover via `SENTINEL failover mymaster` and
+# polls for up to 30 s for the client to follow the new master. Kept in its
+# own workflow file, separate from sentinel.yml, so it gets its own run
+# status/log stream and a slow or flaky failover run doesn't obscure the
+# faster, more stable checks in sentinel.yml. Also runnable manually from the
+# Actions tab (or via `gh workflow run sentinel-failover.yml`).
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  sentinel-failover:
+    runs-on: ubuntu-latest
+    # No container: here — we need docker compose available on the runner to
+    # spin up the sentinel topology, then run Crystal inside the Docker network.
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start sentinel cluster
+        working-directory: examples/sentinel
+        run: docker compose up -d redis-master redis-replica-1 redis-replica-2 sentinel-1 sentinel-2 sentinel-3
+
+      - name: Wait for sentinel quorum
+        working-directory: examples/sentinel
+        # Poll sentinel-1 until it reports the master status as "ok", which
+        # means at least two sentinels have agreed on the master (quorum = 2).
+        run: |
+          echo "Waiting for sentinel quorum (up to 40 s)..."
+          for i in $(seq 1 20); do
+            if docker compose exec -T sentinel-1 redis-cli -p 26379 sentinel master mymaster 2>/dev/null | grep -q "ok"; then
+              echo "Quorum established after $((i * 2)) s."
+              break
+            fi
+            if [ $i -eq 20 ]; then
+              echo "Timed out waiting for sentinel quorum."
+              docker compose logs sentinel-1 sentinel-2 sentinel-3
+              exit 1
+            fi
+            sleep 2
+          done
+
+      - name: Run sentinel failover test
+        working-directory: examples/sentinel
+        # Needs a topology that's just come up and settled (quorum reached
+        # above) — do not run this immediately after another forced failover
+        # in the same run without re-establishing a stable topology first.
+        run: docker compose --profile test-failover run --rm test-failover
+
+      - name: Show logs on failure
+        if: failure()
+        working-directory: examples/sentinel
+        run: docker compose logs
+
+      - name: Tear down
+        if: always()
+        working-directory: examples/sentinel
+        run: docker compose down -v
