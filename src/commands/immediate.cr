@@ -70,6 +70,7 @@ module Redis::Commands::Immediate
       incr:        Int64,
       incrby:      Int64,
       incrbyfloat: String,
+      increx:      Array,
       mget:        Array,
       mset:        String,
       msetnx:      Int64,
@@ -119,8 +120,11 @@ module Redis::Commands::Immediate
       hrandfield:   String | Array(Value),
       hscan:        Array,
       hset:         Int64,
+      hsetex:       Int64,
       hsetnx:       Int64,
       hstrlen:      Int64,
+      httl:         Array,
+      hpttl:        Array,
       hvals:        Array,
 
       # Sets
@@ -180,20 +184,24 @@ module Redis::Commands::Immediate
       zunionstore:      Int64,
 
       # Streams
-      xack:       Int64,
-      xadd:       String?,
-      xautoclaim: Array,
-      xclaim:     Array,
-      xdel:       Int64,
-      xgroup:     String | Int64,
-      xinfo:      Array,
-      xlen:       Int64,
-      xpending:   Array,
-      xrange:     Array,
-      xread:      Array(Value)?,
-      xreadgroup: Array(Value)?,
-      xrevrange:  Array,
-      xtrim:      Int64,
+      xack:              Int64,
+      xadd:              String?,
+      xautoclaim:        Array,
+      xclaim:            Array,
+      xdel:              Int64,
+      xgroup:            String | Int64,
+      xinfo:             Array,
+      xinfo_stream:      Array,
+      xinfo_stream_full: Array,
+      xinfo_groups:      Array,
+      xinfo_consumers:   Array,
+      xlen:              Int64,
+      xpending:          Array,
+      xrange:            Array,
+      xread:             Array(Value)?,
+      xreadgroup:        Array(Value)?,
+      xrevrange:         Array,
+      xtrim:             Int64,
 
       geopos:    Array,
       geodist:   String,
@@ -202,9 +210,10 @@ module Redis::Commands::Immediate
       # Vector
       vadd:     Int64,
       vdim:     Int64,
-      vemb:     Array,
+      vemb:     Array(Value)?,
+      vinfo:    Array,
       vsim:     Array,
-      vgetattr: String,
+      vgetattr: String?,
     })
   end
 
@@ -238,7 +247,17 @@ module Redis::Commands::Immediate
     if value = get(key)
       value
     else
-      raise MissingKey.new("Assertion that the key #{key.inspect} exists failed.")
+      raise MissingKey.new("Key #{key.inspect} does not exist")
+    end
+  end
+
+  def get_bytes!(key : String) : Bytes
+    get_bytes(key) || raise MissingKey.new("Key #{key.inspect} does not exist")
+  end
+
+  def get_bytes(key : String) : Bytes?
+    if value = get(key)
+      value.to_slice
     end
   end
 

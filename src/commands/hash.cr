@@ -143,6 +143,50 @@ module Redis::Commands::Hash
     run command
   end
 
+  def hsetex(
+    key : String,
+    fields : ::Hash(String, String) | NamedTuple,
+    *,
+    fnx : Bool = false,
+    fxx : Bool = false,
+    ex : Time::Span | String | Int | Nil = nil,
+    px : Time::Span | String | Int | Nil = nil,
+    exat : Time | String | Int | Nil = nil,
+    pxat : Time | String | Int | Nil = nil,
+    keepttl : Bool = false,
+  )
+    if {ex, px, exat, pxat, keepttl}.count(&.itself) > 1
+      raise ArgumentError.new("ex, px, exat, pxat, and keepttl are mutually exclusive")
+    end
+    if fnx && fxx
+      raise ArgumentError.new("fnx and fxx are mutually exclusive")
+    end
+
+    if ex.is_a? Time::Span
+      ex = ex.total_seconds.round.to_i64
+    elsif px.is_a? Time::Span
+      px = px.total_milliseconds.round.to_i64
+    elsif exat.is_a? Time
+      exat = exat.to_unix
+    elsif pxat.is_a? Time
+      pxat = pxat.to_unix_ms
+    end
+
+    command = Array(String).new(initial_capacity: 2 + 2 * fields.size)
+    command << "hsetex" << key
+    command << "fnx" if fnx
+    command << "fxx" if fxx
+    command << "ex" << ex.to_s if ex
+    command << "px" << px.to_s if px
+    command << "exat" << exat.to_s if exat
+    command << "pxat" << pxat.to_s if pxat
+    command << "keepttl" if keepttl
+    command << "fields" << fields.size.to_s
+    fields.each { |key, value| command << key.to_s << value }
+
+    run command
+  end
+
   # Set `field` in the hash stored in `key` to `value` if and only if it does not exist. Returns `1` if the field was set, `0` if it was not.
   #
   # ```
@@ -194,6 +238,14 @@ module Redis::Commands::Hash
     command += {"count", count.to_s} if count
 
     run command
+  end
+
+  def httl(key : String, *fields : String)
+    run({"httl", key, "fields", fields.size.to_s} + fields)
+  end
+
+  def hpttl(key : String, *fields : String)
+    run({"hpttl", key, "fields", fields.size.to_s} + fields)
   end
 
   @[Deprecated("The Redis HMSET command is deprecated. Use HSET instead. This method will be removed in v1.0.0 of this shard. See https://redis.io/commands/hmset/")]
