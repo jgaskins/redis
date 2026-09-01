@@ -1,7 +1,7 @@
 module Redis
   struct FullText(Runnable)
     def aggregate!(*args, **kwargs)
-      aggregate(*args, **kwargs).as(Array)
+      aggregate(*args, **kwargs).as(::Hash)
     end
 
     def aggregate(

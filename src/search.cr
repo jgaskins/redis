@@ -41,7 +41,13 @@ module Redis
     #
     # ```
     # redis.ft.search "places-index", "pizza",
-    #   geofilter: {"location", -76.622400, 39.277751, 25, :mi}
+    #   geofilter: Redis::FullText::GeoFilter.new(
+    #     field: "location",
+    #     latitude: 39.277751,
+    #     longitude: -76.622400,
+    #     radius: 25,
+    #     unit: :mi,
+    #   )
     # ```
     enum GeoUnit
       M
@@ -279,7 +285,7 @@ module Redis
         command << "dialect" << dialect.to_s
       end
 
-      @redis.run(command).as Array
+      @redis.run(command).as ::Hash
     end
 
     private def param_string(value : String)

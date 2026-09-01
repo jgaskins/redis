@@ -142,6 +142,34 @@ module Redis
       @redis.run command
     end
 
+    def createrule(
+      source_key : String,
+      dest_key : String,
+      aggregator : AggregationType,
+      bucket_duration : Time::Span,
+      align_timestamp : Time? = nil,
+    )
+      # TS.CREATERULE sourceKey destKey
+      # AGGREGATION aggregator bucketDuration
+      #   [alignTimestamp]
+      command = {
+        "ts.createrule",
+        source_key,
+        dest_key,
+        "aggregation",
+        aggregator.to_s,
+        bucket_duration.total_milliseconds.to_i64.to_s,
+      }
+
+      command += align_timestamp.to_unix_ms.to_s if align_timestamp
+
+      @redis.run command
+    end
+
+    def incrby(key : String, addend : String | Int | Float)
+      @redis.run({"ts.incrby", key, addend.to_s})
+    end
+
     def info(key : String)
       @redis.run({"ts.info", key})
     end
