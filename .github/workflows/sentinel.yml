@@ -17,7 +17,7 @@ jobs:
     # spin up the sentinel topology, then run Crystal inside the Docker network.
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Start sentinel cluster
         working-directory: examples/sentinel
