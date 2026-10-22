@@ -75,13 +75,28 @@ describe Redis::Cluster do
   describe "pub/sub" do
     it "publishes only to a single shard" do
       messages = Channel(String).new
+      subscribed = Channel(Nil).new
+      done = Channel(Exception?).new
 
       spawn do
         cluster.ssubscribe "a" do |subscription|
+          subscription.on_subscribe do
+            subscribed.send nil
+          end
           subscription.on_message do |_channel, msg|
             messages.send msg
+            subscription.close
           end
         end
+        done.send nil
+      rescue ex
+        done.send ex
+      end
+
+      select
+      when subscribed.receive
+      when timeout(1.second)
+        raise "Timed out while waiting for sharded subscription"
       end
 
       # "a" goes to hash slot 15495
@@ -92,10 +107,8 @@ describe Redis::Cluster do
         cluster.ssubscribe "a", "b" { }
       end
 
-      sleep 10.milliseconds
-
-      cluster.spublish "a", "yep"
-      cluster.spublish "b", "nope"
+      cluster.spublish("a", "yep").should eq 1
+      cluster.spublish("b", "nope").should eq 0
 
       select
       when msg = messages.receive
@@ -105,34 +118,57 @@ describe Redis::Cluster do
       end
 
       select
-      when msg = messages.receive
-        raise "Expected not to receive a message, received: #{msg.inspect}"
-      when timeout(10.milliseconds)
+      when error = done.receive
+        raise error if error
+      when timeout(1.second)
+        raise "Timed out while waiting for sharded subscription to finish"
       end
     end
 
     it "publishes to all shards" do
       messages = Channel({String, String}).new
+      subscribed = Channel(Nil).new
+      done = Channel(Exception?).new
 
       spawn do
         cluster.subscribe "a" do |subscription|
+          subscription.on_subscribe do
+            subscribed.send nil
+          end
           subscription.on_message do |channel, msg|
             messages.send({channel, msg})
+            subscription.close
           end
         end
+        done.send nil
+      rescue ex
+        done.send ex
       end
 
       spawn do
         # This has to be in a separate fiber because it's going to a different
         # node in the cluster.
         cluster.subscribe "b" do |subscription|
+          subscription.on_subscribe do
+            subscribed.send nil
+          end
           subscription.on_message do |channel, msg|
             messages.send({channel, msg})
+            subscription.close
           end
         end
+        done.send nil
+      rescue ex
+        done.send ex
       end
 
-      sleep 10.milliseconds
+      2.times do
+        select
+        when subscribed.receive
+        when timeout(1.second)
+          raise "Timed out while waiting for subscription"
+        end
+      end
 
       cluster.publish "a", "1"
       cluster.publish "b", "2"
@@ -149,6 +185,15 @@ describe Redis::Cluster do
 
       received.should contain({"a", "1"})
       received.should contain({"b", "2"})
+
+      2.times do
+        select
+        when error = done.receive
+          raise error if error
+        when timeout(1.second)
+          raise "Timed out while waiting for subscription to finish"
+        end
+      end
     end
   end
 end

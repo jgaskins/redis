@@ -57,6 +57,7 @@ module Redis::Commands::Immediate
       script_load:   String,
       script_exists: Array,
       info:          String,
+      spublish:      Int64,
 
       # String commands
       append:      Int64,

@@ -330,6 +330,15 @@ module Redis
       run({"publish", channel, message})
     end
 
+    # Publish a message to a sharded pubsub channel. In a Redis cluster, the
+    # message is delivered only to subscribers on the shard that owns the
+    # channel's hash slot.
+    #
+    # Requires Redis 7.0 or later.
+    def spublish(channel : String, message : String)
+      run({"spublish", channel, message})
+    end
+
     # Preload a Lua script, returning the SHA of the script to pass to `evalsha`.
     # ```
     # sha = redis.script_load(<<-LUA)

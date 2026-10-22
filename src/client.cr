@@ -177,6 +177,10 @@ module Redis
       checkout(&.psubscribe(*channels) { |subscription, conn| yield subscription, conn })
     end
 
+    def ssubscribe(*channels, &)
+      checkout(&.ssubscribe(*channels) { |subscription, conn| yield subscription, conn })
+    end
+
     def close
       @pool.close
     end

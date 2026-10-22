@@ -151,9 +151,10 @@ module Redis
     end
 
     {% for command in %w[subscribe psubscribe ssubscribe] %}
-      # Subscribe to the given pubsub channels. The block yields a subscription
-      # object and the connection. You can setup `on_message`, `on_subscribe`,
-      # and `on_unsubscribe` on the subscription.
+      # Subscribe to the given pubsub channels, channel patterns, or sharded
+      # channels. The block yields a subscription object and the connection. You
+      # can setup `on_message`, `on_subscribe`, and `on_unsubscribe` on the
+      # subscription.
       #
       # ```
       # redis.subscribe "channel1", "channel2" do |subscription, connection|
@@ -180,6 +181,9 @@ module Redis
       # For more information, see the documentation for:
       # - [`SUBSCRIBE`](https://redis.io/commands/subscribe/)
       # - [`PSUBSCRIBE`](https://redis.io/commands/psubscribe/)
+      # - [`SSUBSCRIBE`](https://redis.io/commands/ssubscribe/)
+      #
+      # `SSUBSCRIBE` requires Redis 7.0 or later.
       def {{command.id}}(*channels : String, &block : Subscription, self ->)
         subscription = Subscription.new(self)
         @writer.encode({"{{command.id}}"} + channels)
@@ -226,19 +230,21 @@ module Redis
 
     # Subscribe to the given sharded pubsub channels without having to pass a
     # block. This is useful to run inside of other subscription blocks to add
-    # new sharded subscriptions.
+    # new sharded subscriptions. Requires Redis 7.0 or later.
     def ssubscribe(*channels : String)
       @writer.encode({"ssubscribe"} + channels)
       flush
     end
 
-    # Unsubscribe this connection from all sharded subscriptions.
+    # Unsubscribe this connection from all sharded subscriptions. Requires Redis
+    # 7.0 or later.
     def sunsubscribe
       @writer.encode({"sunsubscribe"})
       flush
     end
 
     # Unsubscribe this connection from the given sharded pubsub channels.
+    # Requires Redis 7.0 or later.
     def sunsubscribe(*channels : String)
       @writer.encode({"sunsubscribe"} + channels)
       flush
@@ -419,8 +425,8 @@ module Redis
 
   # The `Subscription` is what is yielded to a `Connection#subscribe` block. It
   # is used to setup callbacks when messages come in, the connection is
-  # subscribed to other channels or patterns, or unsubscribed from any channels
-  # or patterns.
+  # subscribed to other channels, patterns, or sharded channels, or unsubscribed
+  # from any of them.
   #
   # ```
   # redis.subscribe "channel1", "channel2" do |subscription, connection|
@@ -447,11 +453,14 @@ module Redis
   # For more information, see the documentation for:
   # - [`SUBSCRIBE`](https://redis.io/commands/subscribe/)
   # - [`PSUBSCRIBE`](https://redis.io/commands/psubscribe/)
+  # - [`SSUBSCRIBE`](https://redis.io/commands/ssubscribe/)
   class Subscription
     @on_message = Proc(String, String, String, Nil).new { }
     @on_subscribe = Proc(String, Int64, Nil).new { }
     @on_unsubscribe = Proc(String, Int64, Nil).new { }
     @channels = Set(String).new
+    @patterns = Set(String).new
+    @shard_channels = Set(String).new
 
     # :nodoc:
     def initialize(@connection : Connection)
@@ -491,14 +500,28 @@ module Redis
     end
 
     # :nodoc:
-    def subscribe!(channel : String, count : Int64)
-      @channels << channel
+    def subscribe!(action : String, channel : String, count : Int64)
+      case action
+      when "subscribe"
+        @channels << channel
+      when "psubscribe"
+        @patterns << channel
+      when "ssubscribe"
+        @shard_channels << channel
+      end
       @on_subscribe.call channel, count
     end
 
     # :nodoc:
-    def unsubscribe!(channel : String, count : Int64)
-      @channels.delete channel
+    def unsubscribe!(action : String, channel : String, count : Int64)
+      case action
+      when "unsubscribe"
+        @channels.delete channel
+      when "punsubscribe"
+        @patterns.delete channel
+      when "sunsubscribe"
+        @shard_channels.delete channel
+      end
       @on_unsubscribe.call channel, count
     end
 
@@ -522,10 +545,10 @@ module Redis
         when "pmessage"
           pmessage! channel, argument.as(String), pattern.as(String)
         when "subscribe", "psubscribe", "ssubscribe"
-          subscribe! channel, argument.as(Int64)
+          subscribe! action, channel, argument.as(Int64)
         when "unsubscribe", "punsubscribe", "sunsubscribe"
-          unsubscribe! channel, argument.as(Int64)
-          break if argument == 0
+          unsubscribe! action, channel, argument.as(Int64)
+          break if @channels.empty? && @patterns.empty? && @shard_channels.empty?
         else
           raise Subscription::InvalidMessage.new("Unknown message received for subscription: #{action}")
         end
@@ -534,9 +557,17 @@ module Redis
       self
     end
 
+    # Unsubscribe from all channels, patterns, and sharded channels tracked by
+    # this subscription.
     def close
       @channels.each do |channel|
         @connection.unsubscribe channel
+      end
+      @patterns.each do |pattern|
+        @connection.punsubscribe pattern
+      end
+      @shard_channels.each do |channel|
+        @connection.sunsubscribe channel
       end
     end
 
