@@ -110,7 +110,7 @@ module Redis::Commands::Immediate
       hdel:         Int64,
       hexists:      Int64,
       hget:         String?,
-      hgetall:      Array,
+      hgetall:      ::Hash,
       hincrby:      Int64,
       hincrbyfloat: String,
       hkeys:        Array,

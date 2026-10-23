@@ -17,6 +17,12 @@ describe Redis::Commands::Hash do
     redis.hset(key, %w[one yes two yes three yes four yes five yes]).should eq 2
   end
 
+  test "hgetall returns all fields and values in the hash" do
+    redis.hset key, one: "1", two: "2"
+
+    redis.hgetall(key).should eq({"one" => "1", "two" => "2"})
+  end
+
   if test.server_version >= Version["8.0.0"]
     describe "#hsetex" do
       test "sets fields with a hash" do
