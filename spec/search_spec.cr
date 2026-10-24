@@ -87,10 +87,11 @@ module Redis
           redis.hset "#{hash_prefix}:simple:match", "name", "included"
           redis.hset "#{hash_prefix}:simple:no-match", "name", "excluded"
 
-          result = redis.ft.search(hash_index, "included")
+          response = Redis::FullText::Response.new(redis.ft.search(hash_index, "included"))
 
-          result[0].should eq 1
-          result[2].should eq %w[name included]
+          response.total_results.should eq 1
+          response.results.first.id.should eq "#{hash_prefix}:simple:match"
+          response.results.first.extra_attributes["name"].should eq "included"
         end
 
         it "can do geofiltering on a search" do
@@ -99,7 +100,7 @@ module Redis
           redis.hset "#{hash_prefix}:geo:no-match:near   ", "name", "Shake Shack, Baltimore     ", "location", "76.60980,39.28692"
           redis.hset "#{hash_prefix}:geo:no-match:too-far", "name", "Brewer's Art, Baltimore    ", "location", "76.61637,39.30274"
 
-          results = redis.ft.search hash_index, "market",
+          response = Redis::FullText::Response.new(redis.ft.search hash_index, "market",
             geofilter: Redis::FullText::GeoFilter.new(
               field: "location",
               longitude: 76.60714,
@@ -107,12 +108,11 @@ module Redis
               radius: 0.5,
               unit: :mi,
             )
+          )
 
-          result_count, key, result = results
-
-          result_count.should eq 1
-          key.as(String).strip.should eq "#{hash_prefix}:geo:match:near"
-          Redis.to_hash(result.as(Array))["name"].as(String).strip.should eq "Market Place, Baltimore"
+          response.total_results.should eq 1
+          response.results.first.id.strip.should eq "#{hash_prefix}:geo:match:near"
+          response.results.first.extra_attributes["name"].as(String).strip.should eq "Market Place, Baltimore"
         end
 
         it "can return a limited subset of keys" do
@@ -121,13 +121,13 @@ module Redis
             who: "cares",
             section: "keysubset"
 
-          results = redis.ft.search hash_index,
+          response = Redis::FullText::Response.new redis.ft.search hash_index,
             %{match @section:(keysubset)},
             return: %w[name]
-          count, key, result = results
 
-          key.should eq "#{hash_prefix}:return:hello"
-          result.should eq %w[name match]
+          response.total_results.should eq 1
+          response.results.first.id.should eq "#{hash_prefix}:return:hello"
+          response.results.first.extra_attributes.should eq({"name" => "match"})
         end
 
         describe "FILTER" do
@@ -154,20 +154,18 @@ module Redis
             redis.hset "#{prefix}:match:2-low ", name: "filter-open-match", post_count: "49"
             redis.hset "#{prefix}:no-match    ", name: "nope!", post_count: "50"
 
-            results = redis.ft.search(hash_index, "filter open match", filter: [
+            response = Redis::FullText::Response.new redis.ft.search(hash_index, "filter open match", filter: [
               Redis::FullText::Filter.new("post_count", 50..),
             ])
 
-            results.size.should eq 5
-            count, key1, result1, key2, result2 = results
+            response.total_results.should eq 2
             # The results aren't ordered, so we can get them back in any order
-            keys = [key1, key2]
-            hashes = [result1, result2]
-            count.should eq 2
+            keys = response.results.map(&.id)
+            hashes = response.results.map(&.extra_attributes)
             keys.should contain "#{prefix}:match:middle"
             keys.should contain "#{prefix}:match:higher"
-            hashes.should contain %w[name filter-open-match post_count 51]
-            hashes.should contain %w[name filter-open-match post_count 50]
+            hashes.should contain({"name" => "filter-open-match", "post_count" => "51"})
+            hashes.should contain({"name" => "filter-open-match", "post_count" => "50"})
           end
         end
 
@@ -194,21 +192,19 @@ module Redis
 
           results = redis.ft.search(hash_index, %{match my text verbatim}, verbatim: true)
 
-          count, key = results
-          count.should eq 1
-          key.should eq "#{hash_prefix}:verbatim:match"
+          results["total_results"].should eq 1
+          results["results"].as(Array).first.as(Hash)["id"].should eq "#{hash_prefix}:verbatim:match"
         end
 
-        it "can search for a inorder string", focus: true do
+        it "can search for a inorder string" do
           redis.hset "#{hash_prefix}:inorder:match", body: "match my text inorder"
           redis.hset "#{hash_prefix}:inorder:no-match:1", body: "my inorder match text"
           redis.hset "#{hash_prefix}:inorder:no-match:2", body: "text my inorder match"
 
           results = redis.ft.search(hash_index, "match my text inorder", inorder: true)
 
-          count, key = results
-          count.should eq 1
-          key.should eq "#{hash_prefix}:inorder:match"
+          results["total_results"].should eq 1
+          results["results"].as(Array)[0].as(Hash)["id"].should eq "#{hash_prefix}:inorder:match"
         end
 
         it "can set highlighting and summarization for text" do
