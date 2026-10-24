@@ -41,7 +41,13 @@ module Redis
     #
     # ```
     # redis.ft.search "places-index", "pizza",
-    #   geofilter: {"location", -76.622400, 39.277751, 25, :mi}
+    #   geofilter: Redis::FullText::GeoFilter.new(
+    #     field: "location",
+    #     latitude: 39.277751,
+    #     longitude: -76.622400,
+    #     radius: 25,
+    #     unit: :mi,
+    #   )
     # ```
     enum GeoUnit
       M
@@ -279,7 +285,7 @@ module Redis
         command << "dialect" << dialect.to_s
       end
 
-      @redis.run(command).as Array
+      @redis.run(command).as ::Hash
     end
 
     private def param_string(value : String)
@@ -340,6 +346,38 @@ module Redis
       latitude : Float64,
       radius : Int64 | Float64,
       unit : GeoUnit
+
+    struct Response
+      getter attributes : Array(String)
+      getter format : Format
+      getter results : Array(Result)
+      getter total_results : Int64
+      getter warning : Array(String)
+
+      def initialize(response : ::Hash)
+        @attributes = response["attributes"].as(Array).map(&.as(String))
+        @format = Format.parse(response["format"].as(String))
+        @results = response["results"].as(Array).map { |result| Result.new(result.as(::Hash)) }
+        @total_results = response["total_results"].as(Int64)
+        @warning = response["warning"].as(Array).map(&.as(String))
+      end
+
+      struct Result
+        getter id : String
+        getter extra_attributes : Hash(String, Value)
+        getter values : Array(Value)
+
+        def initialize(hash : ::Hash)
+          @id = hash["id"].as(String)
+          @extra_attributes = hash["extra_attributes"].as(::Hash).transform_keys &.as(String)
+          @values = hash["values"].as(Array)
+        end
+      end
+
+      enum Format
+        STRING
+      end
+    end
   end
 
   module Commands

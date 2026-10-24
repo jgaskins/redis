@@ -12,7 +12,7 @@ if test.has_module? "bf"
     test "reserves a topk" do
       redis.topk.reserve(key, "10").should eq "OK"
 
-      info = Redis.to_hash(redis.topk.info(key))
+      info = redis.topk.info(key)
       # {"k" => 10, "width" => 8, "depth" => 7, "decay" => "0.9"}
       info["k"].should eq 10
     end
@@ -23,12 +23,11 @@ if test.has_module? "bf"
         depth: "69",
         decay: "0.420"
 
-      info = Redis.to_hash(redis.topk.info(key))
+      info = redis.topk.info(key)
       info["k"].should eq 10
       info["width"].should eq 42
       info["depth"].should eq 69
-      # RESP2 doesn't support floats, so we get it back as a string
-      info["decay"].should eq "0.42"
+      info["decay"].should eq 0.42
     end
 
     test "adds an item to a topk" do
@@ -46,8 +45,8 @@ if test.has_module? "bf"
       redis.topk.add key, %w[one two three two one]
 
       # one and two are in the topk, but three has been evicted
-      redis.topk.query(key, %w[one two three]).should eq [1, 1, 0]
-      redis.topk.query(key, "one", "two", "three").should eq [1, 1, 0]
+      redis.topk.query(key, %w[one two three]).should eq [true, true, false]
+      redis.topk.query(key, "one", "two", "three").should eq [true, true, false]
     end
 
     test "increments the item in the topk by the given amount" do

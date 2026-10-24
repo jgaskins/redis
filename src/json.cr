@@ -236,7 +236,7 @@ module Redis
     # ```
     # redis.json.numincrby "product:#{id}", ".purchase_count", 1
     # ```
-    def numincrby(key : String, path : String, count : String | Int)
+    def numincrby(key : String, path : String, count : String | Number)
       @redis.run({"json.numincrby", key, path, count.to_s})
     end
 
@@ -257,6 +257,7 @@ module Redis
     # NOTE: This method cannot be used on deferred command runners like
     # `Redis::Pipeline` or `Redis::Transaction`. It eagerly consumes the
     # result from the server, so the result must not be deferred.
+    @[Deprecated]
     def numincrby(key : String, path : String, count : String | Int, as type : T.class) : T forall T
       T.from_json(numincrby(key, path, count).as(String))
     end

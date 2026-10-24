@@ -61,7 +61,7 @@ if runner.has_module? "bf"
     test "returns info about the CMS" do
       redis.cms.initbyprob key, error: 0.01, probability: 0.01
 
-      Redis.to_hash(redis.cms.info(key)).should eq({
+      redis.cms.info(key).should eq({
         "width" => 200,
         "depth" => 7,
         "count" => 0,

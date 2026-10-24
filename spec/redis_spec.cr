@@ -199,8 +199,8 @@ describe Redis::Client do
 
         new_value, increment = redis.increx(key, byfloat: "3.14")
 
-        new_value.as(String).to_f.should be_within 0.0001, of: 9.14
-        increment.as(String).to_f.should be_within 0.0001, of: 3.14
+        new_value.as(Float64).should be_within 0.0001, of: 9.14
+        increment.as(Float64).should be_within 0.0001, of: 3.14
         redis.ttl(key).should eq -1
       end
 
@@ -316,7 +316,7 @@ describe Redis::Client do
     test "can add and remove members of a set" do
       redis.sadd(key, "a").should eq 1
       redis.sadd(key, "a").should eq 0
-      redis.smembers(key).should eq %w[a]
+      redis.smembers(key).should eq Set(String){"a"}
 
       redis.sadd key, "b"
       redis.smembers(key).includes?("a").should eq true
@@ -341,7 +341,7 @@ describe Redis::Client do
       redis.sadd second, "b", "c", "d"
 
       # Just the elements of first that are not in second
-      redis.sdiff(first, second).should eq %w[a]
+      redis.sdiff(first, second).should eq Set(String){"a"}
     ensure
       redis.del second if second
     end
@@ -355,7 +355,7 @@ describe Redis::Client do
       redis.sadd second, "b", "c", "d"
       redis.sadd third, "c", "d", "e"
 
-      redis.sinter(first, second, third).should eq %w[c]
+      redis.sinter(first, second, third).should eq Set(String){"c"}
     ensure
       redis.del second, third if second && third
     end

@@ -19,6 +19,7 @@ module Redis
     include Commands::Immediate
 
     @socket : TCPSocket | OpenSSL::SSL::Socket::Client
+    @on_attributes = Proc(Attributes, Nil).new { }
     protected getter parser : Parser
     getter? closed = false
     getter log
@@ -57,9 +58,12 @@ module Redis
       pipeline do |redis|
         # Authentication
         if (username = uri.user) && (password = uri.password)
-          redis.run({"auth", username, password})
+          redis.run({"hello", "3", "auth", username, password})
         elsif password = uri.password
+          redis.run({"hello", "3"})
           redis.run({"auth", password})
+        else
+          redis.run({"hello", "3"})
         end
 
         # DB select
@@ -386,25 +390,47 @@ module Redis
       @socket.flush
     end
 
+    # :nodoc:
     # Read the next value from the server
-    def read
-      case value = @parser.read
-      when Error
-        raise value
-      else
-        value
+    def read : Value
+      loop do
+        case value = @parser.read
+        when Error
+          raise value
+        when Attributes
+          @on_attributes.call value
+        else
+          return value
+        end
       end
+    rescue ex : Parser::InvalidByteMarker
+      # If we received an invalid byte marker, we have likely gotten out of sync
+      # with the server. There is no way to recover from this, so we must close
+      # the connection.
+      close
+      raise ex
     end
 
+    # :nodoc:
     # Read the next value from the server, returning `nil` if the connection is
     # closed.
     def read?
-      case value = @parser.read?
-      when Error
-        raise value
-      else
-        value
+      loop do
+        case value = @parser.read?
+        when Error
+          raise value
+        when Attributes
+          @on_attributes.call value
+        else
+          return value
+        end
       end
+    rescue ex : Parser::InvalidByteMarker
+      # If we received an invalid byte marker, we have likely gotten out of sync
+      # with the server. There is no way to recover from this, so we must close
+      # the connection.
+      close
+      raise ex
     end
 
     # The URI
@@ -531,7 +557,8 @@ module Redis
         notification = @connection.read?
         break if notification.nil?
 
-        notification = notification.as(Array)
+        notification = notification.as(Array(Value) | Push)
+
         action, channel, argument = notification
         action = action.as String
         if action == "pmessage"

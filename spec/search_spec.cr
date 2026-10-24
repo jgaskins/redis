@@ -9,7 +9,7 @@ private macro get_info(index)
 end
 
 private def wait_for_indexing_complete(redis, index)
-  while info = redis.ft.info(index).as(Array).in_slices_of(2).to_h
+  while info = redis.ft.info(index).as(Hash)
     break if info["indexing"] != "0"
 
     unless info["hash_indexing_failures"] == "0"
@@ -87,10 +87,11 @@ module Redis
           redis.hset "#{hash_prefix}:simple:match", "name", "included"
           redis.hset "#{hash_prefix}:simple:no-match", "name", "excluded"
 
-          result = redis.ft.search(hash_index, "included")
+          response = Redis::FullText::Response.new(redis.ft.search(hash_index, "included"))
 
-          result[0].should eq 1
-          result[2].should eq %w[name included]
+          response.total_results.should eq 1
+          response.results.first.id.should eq "#{hash_prefix}:simple:match"
+          response.results.first.extra_attributes["name"].should eq "included"
         end
 
         it "can do geofiltering on a search" do
@@ -99,7 +100,7 @@ module Redis
           redis.hset "#{hash_prefix}:geo:no-match:near   ", "name", "Shake Shack, Baltimore     ", "location", "76.60980,39.28692"
           redis.hset "#{hash_prefix}:geo:no-match:too-far", "name", "Brewer's Art, Baltimore    ", "location", "76.61637,39.30274"
 
-          results = redis.ft.search hash_index, "market",
+          response = Redis::FullText::Response.new(redis.ft.search hash_index, "market",
             geofilter: Redis::FullText::GeoFilter.new(
               field: "location",
               longitude: 76.60714,
@@ -107,12 +108,11 @@ module Redis
               radius: 0.5,
               unit: :mi,
             )
+          )
 
-          result_count, key, result = results
-
-          result_count.should eq 1
-          key.as(String).strip.should eq "#{hash_prefix}:geo:match:near"
-          Redis.to_hash(result.as(Array))["name"].as(String).strip.should eq "Market Place, Baltimore"
+          response.total_results.should eq 1
+          response.results.first.id.strip.should eq "#{hash_prefix}:geo:match:near"
+          response.results.first.extra_attributes["name"].as(String).strip.should eq "Market Place, Baltimore"
         end
 
         it "can return a limited subset of keys" do
@@ -121,13 +121,13 @@ module Redis
             who: "cares",
             section: "keysubset"
 
-          results = redis.ft.search hash_index,
+          response = Redis::FullText::Response.new redis.ft.search hash_index,
             %{match @section:(keysubset)},
             return: %w[name]
-          count, key, result = results
 
-          key.should eq "#{hash_prefix}:return:hello"
-          result.should eq %w[name match]
+          response.total_results.should eq 1
+          response.results.first.id.should eq "#{hash_prefix}:return:hello"
+          response.results.first.extra_attributes.should eq({"name" => "match"})
         end
 
         describe "FILTER" do
@@ -143,8 +143,8 @@ module Redis
               Redis::FullText::Filter.new("post_count", 50..100),
             ])
 
-            results[0].should eq 1
-            results[1].should eq "#{hash_prefix}:filter:match:goldilocks"
+            results["total_results"].should eq 1
+            results["results"].as(Array).first.as(Hash)["id"].should eq "#{hash_prefix}:filter:match:goldilocks"
           end
 
           it "can filter results based on open-ended numeric ranges" do
@@ -154,20 +154,18 @@ module Redis
             redis.hset "#{prefix}:match:2-low ", name: "filter-open-match", post_count: "49"
             redis.hset "#{prefix}:no-match    ", name: "nope!", post_count: "50"
 
-            results = redis.ft.search(hash_index, "filter open match", filter: [
+            response = Redis::FullText::Response.new redis.ft.search(hash_index, "filter open match", filter: [
               Redis::FullText::Filter.new("post_count", 50..),
             ])
 
-            results.size.should eq 5
-            count, key1, result1, key2, result2 = results
+            response.total_results.should eq 2
             # The results aren't ordered, so we can get them back in any order
-            keys = [key1, key2]
-            hashes = [result1, result2]
-            count.should eq 2
+            keys = response.results.map(&.id)
+            hashes = response.results.map(&.extra_attributes)
             keys.should contain "#{prefix}:match:middle"
             keys.should contain "#{prefix}:match:higher"
-            hashes.should contain %w[name filter-open-match post_count 51]
-            hashes.should contain %w[name filter-open-match post_count 50]
+            hashes.should contain({"name" => "filter-open-match", "post_count" => "51"})
+            hashes.should contain({"name" => "filter-open-match", "post_count" => "50"})
           end
         end
 
@@ -176,14 +174,15 @@ module Redis
           redis.hset "#{hash_prefix}:nocontent:match:2", name: "nocontent match"
           redis.hset "#{hash_prefix}:nocontent:no-match:3", name: "nope"
 
-          results = redis.ft.search(hash_index, "nocontent match", nocontent: true)
+          response = redis.ft.search(hash_index, "nocontent match", nocontent: true)
 
-          results.size.should eq 3
-          count, match1, match2 = results
-          count.should eq 2
+          results = response["results"].as(Array)
+          results.size.should eq 2
+          match1, match2 = results
+          response["total_results"].should eq 2
           # Keys only, no matched content
-          match1.should eq "#{hash_prefix}:nocontent:match:1"
-          match2.should eq "#{hash_prefix}:nocontent:match:2"
+          match1.as(Hash)["id"].should eq "#{hash_prefix}:nocontent:match:1"
+          match2.as(Hash)["id"].should eq "#{hash_prefix}:nocontent:match:2"
         end
 
         it "can search for a verbatim string" do
@@ -193,9 +192,8 @@ module Redis
 
           results = redis.ft.search(hash_index, %{match my text verbatim}, verbatim: true)
 
-          count, key = results
-          count.should eq 1
-          key.should eq "#{hash_prefix}:verbatim:match"
+          results["total_results"].should eq 1
+          results["results"].as(Array).first.as(Hash)["id"].should eq "#{hash_prefix}:verbatim:match"
         end
 
         it "can search for a inorder string" do
@@ -205,9 +203,8 @@ module Redis
 
           results = redis.ft.search(hash_index, "match my text inorder", inorder: true)
 
-          count, key = results
-          count.should eq 1
-          key.should eq "#{hash_prefix}:inorder:match"
+          results["total_results"].should eq 1
+          results["results"].as(Array)[0].as(Hash)["id"].should eq "#{hash_prefix}:inorder:match"
         end
 
         it "can set highlighting and summarization for text" do
@@ -257,10 +254,10 @@ module Redis
               separator: " … ",
             )
 
-          count, key, result = results
-          count.should eq 1
-          key.should eq "#{hash_prefix}:highlight:match"
-          result.should eq ["body", "<strong>tests</strong> for the RediSearch module. The purpose is to ensure that <strong>highlighting</strong> … <strong>testing</strong> more <strong>highlighting</strong>. … More <strong>highlighting</strong>. … "]
+          results["total_results"].should eq 1
+          result = results["results"].as(Array).first.as(Hash)
+          result["id"].should eq "#{hash_prefix}:highlight:match"
+          result["extra_attributes"].should eq({"body" => "<strong>tests</strong> for the RediSearch module. The purpose is to ensure that <strong>highlighting</strong> … <strong>testing</strong> more <strong>highlighting</strong>. … More <strong>highlighting</strong>. … "})
         end
 
         it "can choose a dialect to search with" do
@@ -283,14 +280,15 @@ module Redis
           redis.hset key1, name: "hash-params", post_count: "12"
           redis.hset key2, name: "hash-params", post_count: "1024"
 
-          result = redis.ft.search hash_index, "@name:($name) @post_count:[$min_posts +inf]",
+          response = redis.ft.search hash_index, "@name:($name) @post_count:[$min_posts +inf]",
             params: {name: "params", min_posts: 100}
 
-          result.size.should eq 3
-          count, matched_key, matched_hash = result
-          count.should eq 1
+          results = response["results"].as(Array)
+          results.size.should eq 1
+          matched_key, matched_hash = results.first.as(Hash).values_at("id", "extra_attributes")
+          response["total_results"].should eq 1
           matched_key.should eq key2
-          matched_hash.should eq %w[name hash-params post_count 1024]
+          matched_hash.should eq({"name" => "hash-params", "post_count" => "1024"})
         end
 
         it "can aggregate" do
@@ -318,11 +316,10 @@ module Redis
               latitude:  latitude,
             }
 
-          response.size.should eq 3 # count + 2 results
-          count, *results = response
-          count.should eq 2
+          response["total_results"].should eq 2
+          results = response["results"].as(Array)
           results.size.should eq 2
-          results = results.map { |result| Redis.to_hash(result.as(Array)) }
+          results = results.map(&.as(Hash)["extra_attributes"].as(Hash))
           # We can rely on ordering here because we're sorting by distance_in_miles
           results.map { |result| result["name"] }.should eq [
             "Gates BBQ",
@@ -374,10 +371,8 @@ module Redis
               .reduce(&.random_sample("@section", 2))
               .reduce(&.random_sample("@section", 2, as: "random_sections"))
 
-          response.size.should eq 2 # 1 for the count, one for the lone result
-          count, result = response
-          count.should eq 1
-          result = Redis.to_hash(result.as(Array))
+          response["total_results"].should eq 1
+          result = response["results"].as(Array).first.as(Hash)["extra_attributes"].as(Hash)
           result["name"].should eq "included aggregate reduce"
           result["count"].should eq "3"
           result["__generated_aliassumpost_count"].should eq "45"
@@ -422,11 +417,10 @@ module Redis
 
           results = redis.ft.search(json_index, "match json")
 
-          results.first.should eq 1
-          count, key, result = results
-          count.should eq 1
+          results["total_results"].should eq 1
+          key, result = results["results"].as(Array).first.as(Hash).values_at("id", "extra_attributes")
           key.should eq "#{json_prefix}:json:match:1"
-          result.should eq ["$", {body: "json match"}.to_json]
+          result.should eq({"$" => {body: "json match"}.to_json})
         end
       end
 
