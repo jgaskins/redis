@@ -27,15 +27,6 @@ describe Redis::Commands::Hash do
     redis.hgetall(key).should eq %w[one 1 two 2]
   end
 
-  test "hgetdel returns and deletes the given field from the given key" do
-    redis.hset key, one: "1", two: "2", three: "3", four: "4"
-
-    redis.hgetdel(key, "one", "two").should eq %w[1 2]
-    redis.hgetdel(key, %w[three four]).should eq %w[3 4]
-
-    redis.hlen(key).should eq 0
-  end
-
   test "hexists returns whether a field exists in a hash key" do
     redis.hset key, yep: "1"
 
@@ -44,6 +35,15 @@ describe Redis::Commands::Hash do
   end
 
   if test.server_version >= Version["8.0.0"]
+    test "hgetdel returns and deletes the given field from the given key" do
+      redis.hset key, one: "1", two: "2", three: "3", four: "4"
+
+      redis.hgetdel(key, "one", "two").should eq %w[1 2]
+      redis.hgetdel(key, %w[three four]).should eq %w[3 4]
+
+      redis.hlen(key).should eq 0
+    end
+
     describe "#hsetex" do
       test "sets fields with a hash" do
         redis.hsetex(key, {"one" => "1", "two" => "2"}).should eq 1
