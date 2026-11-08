@@ -71,21 +71,187 @@ describe Redis::Commands::Hash do
 
       test "raises an ArgumentError with multiple expiration arguments" do
         {% for options in [
-          "ex: 1.minute, px: 1.minute",
-          "ex: 1.minute, exat: 1.minute.from_now",
-          "ex: 1.minute, pxat: 1.minute.from_now",
-          "ex: 1.minute, keepttl: true",
-          "px: 1.minute, exat: 1.minute.from_now",
-          "px: 1.minute, pxat: 1.minute.from_now",
-          "px: 1.minute, keepttl: true",
-          "exat: 1.minute.from_now, pxat: 1.minute.from_now",
-          "exat: 1.minute.from_now, keepttl: true",
-          "pxat: 1.minute.from_now, keepttl: true",
-        ] %}
+                            "ex: 1.minute, px: 1.minute",
+                            "ex: 1.minute, exat: 1.minute.from_now",
+                            "ex: 1.minute, pxat: 1.minute.from_now",
+                            "ex: 1.minute, keepttl: true",
+                            "px: 1.minute, exat: 1.minute.from_now",
+                            "px: 1.minute, pxat: 1.minute.from_now",
+                            "px: 1.minute, keepttl: true",
+                            "exat: 1.minute.from_now, pxat: 1.minute.from_now",
+                            "exat: 1.minute.from_now, keepttl: true",
+                            "pxat: 1.minute.from_now, keepttl: true",
+                          ] %}
           expect_raises ArgumentError do
             redis.hsetex key, {one: "1"}, {{options.id}}
           end
         {% end %}
+      end
+    end
+
+    describe "#hexpire" do
+      test "removes a key after the expiration time" do
+        redis.hset key, one: "1", two: "2", three: "3"
+
+        redis.hexpire(key, 1.second, fields: %w[one]).should eq [1]
+        redis.hexpire(key, 10.seconds, fields: %w[two three]).should eq [1, 1]
+
+        redis.httl(key, "one").should eq [1]
+      end
+
+      test "sets expiration only when there is no expiration" do
+        redis.hset key, one: "1"
+        redis.hexpire(key, 1.hour, nx: true, fields: %w[one]).should eq [1]
+        redis.httl(key, "one").should eq [3600]
+        redis.hexpire(key, 1.hour, nx: true, fields: %w[one]).should eq [0]
+      end
+
+      test "sets expiration only when the field is already set to expire" do
+        redis.hset key, one: "1"
+        redis.hexpire(key, 1.hour, xx: true, fields: %w[one]).should eq [0]
+        redis.hexpire key, 1.hour, fields: %w[one]
+        redis.hexpire(key, 1.hour, xx: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being extended" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hexpire(key, 1.second, gt: true, fields: %w[one]).should eq [0]
+        redis.hexpire(key, 1.minute, gt: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being reduced" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hexpire(key, 1.minute, lt: true, fields: %w[one]).should eq [0]
+        redis.hexpire(key, 1.second, lt: true, fields: %w[one]).should eq [1]
+      end
+    end
+
+    describe "#hpexpire" do
+      test "removes a key after the expiration time" do
+        redis.hset key, one: "1", two: "2", three: "3"
+
+        redis.hpexpire(key, 1.second, fields: %w[one]).should eq [1]
+        redis.hpexpire(key, 10.seconds, fields: %w[two three]).should eq [1, 1]
+
+        redis.httl(key, "one").should eq [1]
+      end
+
+      test "sets expiration only when there is no expiration" do
+        redis.hset key, one: "1"
+        redis.hpexpire(key, 1.hour, nx: true, fields: %w[one]).should eq [1]
+        redis.httl(key, "one").should eq [3600]
+        redis.hpexpire(key, 1.hour, nx: true, fields: %w[one]).should eq [0]
+      end
+
+      test "sets expiration only when the field is already set to expire" do
+        redis.hset key, one: "1"
+        redis.hpexpire(key, 1.hour, xx: true, fields: %w[one]).should eq [0]
+        redis.hpexpire key, 1.hour, fields: %w[one]
+        redis.hpexpire(key, 1.hour, xx: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being extended" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hpexpire(key, 1.second, gt: true, fields: %w[one]).should eq [0]
+        redis.hpexpire(key, 1.minute, gt: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being reduced" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hpexpire(key, 1.minute, lt: true, fields: %w[one]).should eq [0]
+        redis.hpexpire(key, 1.second, lt: true, fields: %w[one]).should eq [1]
+      end
+    end
+
+    describe "#hexpireat" do
+      test "removes a key after the expiration time" do
+        redis.hset key, one: "1", two: "2", three: "3"
+
+        redis.hexpireat(key, 1.second.from_now, fields: %w[one]).should eq [1]
+        redis.hexpireat(key, 10.seconds.from_now, fields: %w[two three]).should eq [1, 1]
+
+        redis.httl(key, "one").should eq [1]
+      end
+
+      test "sets expiration only when there is no expiration" do
+        redis.hset key, one: "1"
+        redis.hpexpireat(key, 1.hour.from_now, nx: true, fields: %w[one]).should eq [1]
+        redis.httl(key, "one").should eq [3600]
+        redis.hpexpireat(key, 1.hour.from_now, nx: true, fields: %w[one]).should eq [0]
+      end
+
+      test "sets expiration only when the field is already set to expireat" do
+        redis.hset key, one: "1"
+        redis.hexpireat(key, 1.hour.from_now, xx: true, fields: %w[one]).should eq [0]
+        redis.hexpireat key, 1.hour.from_now, fields: %w[one]
+        redis.hexpireat(key, 1.hour.from_now, xx: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being extended" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hexpireat(key, 1.second.from_now, gt: true, fields: %w[one]).should eq [0]
+        redis.hexpireat(key, 1.minute.from_now, gt: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being reduced" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hexpireat(key, 1.minute.from_now, lt: true, fields: %w[one]).should eq [0]
+        redis.hexpireat(key, 1.second.from_now, lt: true, fields: %w[one]).should eq [1]
+      end
+    end
+
+    describe "#hpexpireat" do
+      test "removes a key after the expiration time" do
+        redis.hset key, one: "1", two: "2", three: "3"
+
+        redis.hpexpireat(key, 1.second.from_now, fields: %w[one]).should eq [1]
+        redis.hpexpireat(key, 10.seconds.from_now, fields: %w[two three]).should eq [1, 1]
+
+        redis.httl(key, "one").should eq [1]
+      end
+
+      test "sets expiration only when there is no expiration" do
+        redis.hset key, one: "1"
+        redis.hpexpireat(key, 1.hour.from_now, nx: true, fields: %w[one]).should eq [1]
+        redis.hpttl(key, "one").first.as(Int).should be_within 1_000, of: 3600_000
+        redis.hpexpireat(key, 1.hour.from_now, nx: true, fields: %w[one]).should eq [0]
+      end
+
+      test "sets expiration only when the field is already set to expireat" do
+        redis.hset key, one: "1"
+        redis.hpexpireat(key, 1.hour.from_now, xx: true, fields: %w[one]).should eq [0]
+        redis.hpexpireat key, 1.hour.from_now, fields: %w[one]
+        redis.hpexpireat(key, 1.hour.from_now, xx: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being extended" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hpexpireat(key, 1.second.from_now, gt: true, fields: %w[one]).should eq [0]
+        redis.hpexpireat(key, 1.minute.from_now, gt: true, fields: %w[one]).should eq [1]
+      end
+
+      test "sets expiration only when the field's ttl is being reduced" do
+        redis.hsetex key, ex: 30.seconds, fields: {one: "1"}
+
+        redis.hpexpireat(key, 1.minute.from_now, lt: true, fields: %w[one]).should eq [0]
+        redis.hpexpireat(key, 1.second.from_now, lt: true, fields: %w[one]).should eq [1]
+      end
+    end
+
+    describe "#hpersist" do
+      test "removes the ttl from a field" do
+        redis.hsetex key, ex: 1.day, fields: {one: "1", two: "2", three: "3"}
+
+        redis.hpersist(key, "one").should eq [1]
+        redis.hpersist(key, %w[two three four]).should eq [1, 1, -2]
+        redis.httl(key, "one", "two", "three").should eq [-1, -1, -1]
       end
     end
   end
@@ -142,5 +308,13 @@ describe Redis::Commands::Hash do
     end
 
     values.should be_empty
+  end
+
+  test "hstrlen returns the size of the value in the given field" do
+    redis.hset key, short: "." * 3, medium: "." * 100, long: "." * 8192
+
+    redis.hstrlen(key, "short").should eq 3
+    redis.hstrlen(key, "medium").should eq 100
+    redis.hstrlen(key, "long").should eq 8192
   end
 end

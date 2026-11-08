@@ -240,6 +240,126 @@ module Redis::Commands::Hash
     run command
   end
 
+  def hstrlen(key : String, field : String)
+    run({"hstrlen", key, field})
+  end
+
+  def hexpire(
+    key : String,
+    ttl : Time::Span | String | Int,
+    *,
+    nx : Bool = false,
+    xx : Bool = false,
+    gt : Bool = false,
+    lt : Bool = false,
+    fields : Enumerable(String),
+  )
+    if ttl.is_a? Time::Span
+      ttl = ttl.total_seconds.to_i64
+    end
+    command = Array(String).new(6 + fields.size)
+
+    command << "hexpire" << key << ttl.to_s
+    command << "nx" if nx
+    command << "xx" if xx
+    command << "gt" if gt
+    command << "lt" if lt
+    command << "fields" << fields.size.to_s
+    command.concat fields
+
+    run command
+  end
+
+  def hpexpire(
+    key : String,
+    ttl : Time::Span | String | Int,
+    *,
+    nx : Bool = false,
+    xx : Bool = false,
+    gt : Bool = false,
+    lt : Bool = false,
+    fields : Enumerable(String),
+  )
+    if ttl.is_a? Time::Span
+      ttl = ttl.total_milliseconds.to_i64
+    end
+    command = Array(String).new(6 + fields.size)
+
+    command << "hpexpire" << key << ttl.to_s
+    command << "nx" if nx
+    command << "xx" if xx
+    command << "gt" if gt
+    command << "lt" if lt
+    command << "fields" << fields.size.to_s
+    command.concat fields
+
+    run command
+  end
+
+  def hexpireat(
+    key : String,
+    expiration : Time | String | Int,
+    *,
+    nx : Bool = false,
+    xx : Bool = false,
+    gt : Bool = false,
+    lt : Bool = false,
+    fields : Enumerable(String),
+  )
+    if expiration.is_a? Time
+      expiration = expiration.to_unix.to_i64
+    end
+    command = Array(String).new(6 + fields.size)
+
+    command << "hexpireat" << key << expiration.to_s
+    command << "nx" if nx
+    command << "xx" if xx
+    command << "gt" if gt
+    command << "lt" if lt
+    command << "fields" << fields.size.to_s
+    command.concat fields
+
+    run command
+  end
+
+  def hpexpireat(
+    key : String,
+    expiration : Time | String | Int,
+    *,
+    nx : Bool = false,
+    xx : Bool = false,
+    gt : Bool = false,
+    lt : Bool = false,
+    fields : Enumerable(String),
+  )
+    if expiration.is_a? Time
+      expiration = expiration.to_unix_ms.to_i64
+    end
+    command = Array(String).new(6 + fields.size)
+
+    command << "hpexpireat" << key << expiration.to_s
+    command << "nx" if nx
+    command << "xx" if xx
+    command << "gt" if gt
+    command << "lt" if lt
+    command << "fields" << fields.size.to_s
+    command.concat fields
+
+    run command
+  end
+
+  def hpersist(key : String, *fields : String)
+    run({"hpersist", key, "fields", fields.size.to_s} + fields)
+  end
+
+  def hpersist(key : String, fields : Enumerable(String))
+    command = Array(String).new(4 + fields.size)
+    command << "hpersist" << key << "fields" << fields.size.to_s
+    command.concat fields
+
+    run command
+  end
+
   def httl(key : String, *fields : String)
     run({"httl", key, "fields", fields.size.to_s} + fields)
   end

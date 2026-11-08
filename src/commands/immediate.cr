@@ -110,6 +110,8 @@ module Redis::Commands::Immediate
       # Hash commands
       hdel:         Int64,
       hexists:      Int64,
+      hexpire:      Array,
+      hexpireat:    Array,
       hget:         String?,
       hgetall:      Array,
       hincrby:      Int64,
@@ -118,6 +120,9 @@ module Redis::Commands::Immediate
       hlen:         Int64,
       hmget:        Array,
       hmset:        String,
+      hpexpire:     Array,
+      hpexpireat:   Array,
+      hpttl:        Array,
       hrandfield:   String | Array(Value),
       hscan:        Array,
       hset:         Int64,
@@ -125,7 +130,6 @@ module Redis::Commands::Immediate
       hsetnx:       Int64,
       hstrlen:      Int64,
       httl:         Array,
-      hpttl:        Array,
       hvals:        Array,
 
       # Sets
