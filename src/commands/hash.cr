@@ -263,6 +263,17 @@ module Redis::Commands::Hash
     run({"hsetnx", key, field, value})
   end
 
+  # Returns `1` if `field` exists in `key`, otherwise returns `0`.
+  #
+  # ```
+  # redis.hset "foo", yep: "1"
+  # redis.hexists("foo", "yep") # => 1
+  # redis.hexists("foo", "nop") # => 0
+  # ```
+  def hexists(key : String, field : String)
+    run({"hexists", key, field})
+  end
+
   # Increment the numeric value for `field` in the hash stored in `key` by
   # `increment`, returning the new value.
   #

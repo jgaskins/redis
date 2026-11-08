@@ -36,6 +36,13 @@ describe Redis::Commands::Hash do
     redis.hlen(key).should eq 0
   end
 
+  test "hexists returns whether a field exists in a hash key" do
+    redis.hset key, yep: "1"
+
+    redis.hexists(key, "yep").should eq 1
+    redis.hexists(key, "nope").should eq 0
+  end
+
   if test.server_version >= Version["8.0.0"]
     describe "#hsetex" do
       test "sets fields with a hash" do
