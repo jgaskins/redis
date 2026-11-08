@@ -50,6 +50,46 @@ module Redis::Commands::Hash
     run({"hgetall", key})
   end
 
+  # Return and delete `fields` in the hash stored in `key`. This overload is an
+  # optimization that minimizes heap allocations in the client and is also
+  # useful when you're only passing a single field.
+  #
+  # ```
+  # token = "abc123"
+  # user_id = "1234"
+  #
+  # redis.hset "one_time_use_tokens", {token => user_id}
+  #
+  # user_id_for_token = redis.getdel "one_time_use_tokens", token
+  # # => ["1234"]
+  # ```
+  def hgetdel(key : String, *fields : String)
+    run({"hgetdel", key, "fields", fields.size.to_s} + fields)
+  end
+
+  # Return and delete `fields` in the hash stored in `key`.
+  #
+  # ```
+  # user_ids_for_tokens = redis.getdel("one_time_use_tokens", tokens)
+  # ```
+  def hgetdel(key : String, fields : Enumerable(String))
+    command = Array(String).new(4 + fields.size)
+    command << "hgetdel" << key << "fields" << fields.size.to_s
+    command.concat fields
+
+    run command
+  end
+
+  # Return the number of fields in the hash stored in `key`.
+  #
+  # ```
+  # redis.hset "auth_tokens", {"abc123" => "1234", "def456" => "5678"}
+  # redis.hlen("auth_tokens") # => 2
+  # ```
+  def hlen(key : String)
+    run({"hlen", key})
+  end
+
   # Return the values for `fields` in `key` as an `Array`
   #
   # ```
