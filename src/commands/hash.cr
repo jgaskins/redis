@@ -143,6 +143,27 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Set the values for `fields` in the hash stored in `key`, optionally setting
+  # or preserving their expiration. Returns `1` if the fields were set or `0` if
+  # they were not. The fields are set all-or-nothing, so if `fnx` or `fxx`
+  # excludes any one of them, none of them are set.
+  #
+  # - `fnx`: only set the fields if none of them exist
+  # - `fxx`: only set the fields if all of them exist
+  # - `ex`: expire the fields after this duration, with 1-second precision
+  # - `px`: expire the fields after this duration, with 1ms precision
+  # - `exat`: expire the fields at this time, with 1-second precision
+  # - `pxat`: expire the fields at this time, with 1ms precision
+  # - `keepttl`: keep the expiration the fields already have
+  #
+  # NOTE: Raises `ArgumentError` if you pass more than one of `ex`, `px`, `exat`,
+  # `pxat`, and `keepttl`, or if you pass both `fnx` and `fxx`.
+  #
+  # ```
+  # redis.hsetex "session:1234", {token: "abc123"}, ex: 1.hour                        # => 1
+  # redis.hsetex "session:1234", {"token" => "def456", "csrf" => "ghi789"}, fnx: true # => 0
+  # redis.hsetex "session:1234", {token: "def456"}, keepttl: true                     # => 1
+  # ```
   def hsetex(
     key : String,
     fields : ::Hash(String, String) | NamedTuple,
@@ -240,10 +261,45 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Return the length of the value of `field` in the hash stored in `key`, or `0`
+  # if either the field or the key does not exist.
+  #
+  # ```
+  # redis.hset "person:jamie", name: "Jamie"
+  # redis.hstrlen "person:jamie", "name"        # => 5
+  # redis.hstrlen "person:jamie", "nonexistent" # => 0
+  # ```
   def hstrlen(key : String, field : String)
     run({"hstrlen", key, field})
   end
 
+  # Expire `fields` in the hash stored in `key` after `ttl`, with 1-second
+  # precision. Returns an `Array` containing one result for each of the `fields`,
+  # in the same order:
+  #
+  # - `1`: the expiration was set
+  # - `0`: the expiration was not set because the `nx`, `xx`, `gt`, or `lt`
+  #   condition was not met
+  # - `2`: the field was deleted because `ttl` was `0`
+  # - `-2`: the field or the key does not exist
+  #
+  # You can restrict which fields receive the new expiration:
+  #
+  # - `nx`: only fields that have no expiration
+  # - `xx`: only fields that already have an expiration
+  # - `gt`: only fields whose new expiration is later than their current one
+  # - `lt`: only fields whose new expiration is earlier than their current one
+  #
+  # NOTE: A `Time::Span` is truncated to whole seconds, so a `ttl` shorter than 1
+  # second deletes the fields immediately. Use `#hpexpire` for subsecond TTLs.
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123", csrf: "def456"
+  # redis.hexpire "session:1234", 1.hour, fields: %w[token nonexistent]
+  # # => [1, -2]
+  # redis.hexpire "session:1234", 1.hour, nx: true, fields: %w[token csrf]
+  # # => [0, 1]
+  # ```
   def hexpire(
     key : String,
     ttl : Time::Span | String | Int,
@@ -270,6 +326,14 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Expire `fields` in the hash stored in `key` after `ttl`, with 1ms precision.
+  # See `#hexpire` for the options and the values in the returned `Array`.
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123"
+  # redis.hpexpire "session:1234", 1500.milliseconds, fields: %w[token]
+  # # => [1]
+  # ```
   def hpexpire(
     key : String,
     ttl : Time::Span | String | Int,
@@ -296,6 +360,17 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Expire `fields` in the hash stored in `key` at the given `expiration` time,
+  # with 1-second precision. An `Int` or `String` `expiration` is a Unix timestamp
+  # in seconds. If `expiration` is in the past, the fields are deleted and their
+  # result is `2`. See `#hexpire` for the options and the values in the returned
+  # `Array`.
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123"
+  # redis.hexpireat "session:1234", 1.hour.from_now, fields: %w[token]
+  # # => [1]
+  # ```
   def hexpireat(
     key : String,
     expiration : Time | String | Int,
@@ -322,6 +397,17 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Expire `fields` in the hash stored in `key` at the given `expiration` time,
+  # with 1ms precision. An `Int` or `String` `expiration` is a Unix timestamp in
+  # milliseconds. If `expiration` is in the past, the fields are deleted and their
+  # result is `2`. See `#hexpire` for the options and the values in the returned
+  # `Array`.
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123"
+  # redis.hpexpireat "session:1234", 1.hour.from_now, fields: %w[token]
+  # # => [1]
+  # ```
   def hpexpireat(
     key : String,
     expiration : Time | String | Int,
@@ -348,10 +434,36 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Remove the expiration from `fields` in the hash stored in `key`. Returns an
+  # `Array` containing one result for each of the `fields`, in the same order:
+  #
+  # - `1`: the expiration was removed
+  # - `-1`: the field exists but has no expiration
+  # - `-2`: the field or the key does not exist
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123", csrf: "def456"
+  # redis.hexpire "session:1234", 1.hour, fields: %w[token]
+  # redis.hpersist "session:1234", "token", "csrf", "nonexistent"
+  # # => [1, -1, -2]
+  # ```
   def hpersist(key : String, *fields : String)
     run({"hpersist", key, "fields", fields.size.to_s} + fields)
   end
 
+  # Remove the expiration from `fields` in the hash stored in `key`. Returns an
+  # `Array` containing one result for each of the `fields`, in the same order:
+  #
+  # - `1`: the expiration was removed
+  # - `-1`: the field exists but has no expiration
+  # - `-2`: the field or the key does not exist
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123", csrf: "def456"
+  # redis.hexpire "session:1234", 1.hour, fields: %w[token]
+  # redis.hpersist "session:1234", %w[token csrf nonexistent]
+  # # => [1, -1, -2]
+  # ```
   def hpersist(key : String, fields : Enumerable(String))
     command = Array(String).new(4 + fields.size)
     command << "hpersist" << key << "fields" << fields.size.to_s
@@ -360,14 +472,43 @@ module Redis::Commands::Hash
     run command
   end
 
+  # Return an `Array` containing the time to live in seconds of each of the
+  # `fields` in the hash stored in `key`, in the same order. A value of `-1` means
+  # the field exists but has no expiration, and `-2` means the field or the key
+  # does not exist.
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123", csrf: "def456"
+  # redis.hexpire "session:1234", 1.hour, fields: %w[token]
+  # redis.httl "session:1234", "token", "csrf", "nonexistent"
+  # # => [3600, -1, -2]
+  # ```
   def httl(key : String, *fields : String)
     run({"httl", key, "fields", fields.size.to_s} + fields)
   end
 
+  # Return an `Array` containing the time to live in milliseconds of each of the
+  # `fields` in the hash stored in `key`, in the same order. A value of `-1` means
+  # the field exists but has no expiration, and `-2` means the field or the key
+  # does not exist.
+  #
+  # ```
+  # redis.hset "session:1234", token: "abc123", csrf: "def456"
+  # redis.hexpire "session:1234", 1.hour, fields: %w[token]
+  # redis.hpttl "session:1234", "token", "csrf", "nonexistent"
+  # # => [3600000, -1, -2]
+  # ```
   def hpttl(key : String, *fields : String)
     run({"hpttl", key, "fields", fields.size.to_s} + fields)
   end
 
+  # Set the values for the fields in `data` in the hash stored in `key`,
+  # returning `"OK"`.
+  #
+  # ```
+  # redis.hmset "person:jamie", {"email" => "jamie@example.com", "name" => "Jamie"}
+  # # => "OK"
+  # ```
   @[Deprecated("The Redis HMSET command is deprecated. Use HSET instead. This method will be removed in v1.0.0 of this shard. See https://redis.io/commands/hmset/")]
   def hmset(key : String, data : ::Hash(String, String))
     command = Array(String).new(initial_capacity: 2 + data.size)
