@@ -3,6 +3,13 @@ module Redis::Commands::SortedSet
     run({"zcard", key})
   end
 
+  def zrank(key : String, member : String, *, withscore : Bool = false)
+    command = {"zrank", key, member}
+    command += {"withscore"} if withscore
+
+    run command
+  end
+
   def zrevrange(key : String, starting : String | Int64, ending : String | Int64, with_scores : Bool = false)
     command = {"zrevrange", key, starting.to_s, ending.to_s}
     if with_scores

@@ -174,7 +174,7 @@ module Redis::Commands::Immediate
       zrangebylex:      Array,
       zrangebyscore:    Array,
       zrangestore:      Int64,
-      zrank:            Int64?,
+      zrank:            Array(Value) | Int64 | Nil,
       zrem:             Int64,
       zremrangebylex:   Int64,
       zremrangebyscore: Int64,

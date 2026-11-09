@@ -312,6 +312,20 @@ describe Redis::Commands::SortedSet do
     redis.zincrby(key, "1", "member").should eq "2"
   end
 
+  describe "zrank" do
+    test "returns the rank of the given member" do
+      redis.zadd key, %w[
+        1 one
+        2 two
+        3 three
+        4 four
+      ]
+
+      redis.zrank(key, "one").should eq 0
+      redis.zrank(key, "one", withscore: true).should eq [0, "1"]
+    end
+  end
+
   describe "zremrangebyrank" do
     test "removes with a range" do
       redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
