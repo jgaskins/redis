@@ -159,7 +159,7 @@ module Redis::Commands::Immediate
       zcard:            Int64,
       zcount:           Int64,
       zdiff:            Array,
-      zdiffstore:       In64,
+      zdiffstore:       Int64,
       zincrby:          String,
       zinter:           Array,
       zintercard:       Int64,

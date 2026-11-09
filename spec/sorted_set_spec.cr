@@ -134,6 +134,24 @@ describe Redis::Commands::SortedSet do
       end
     end
 
+    describe "#zdiffstore" do
+      test "stores the difference between two sorted sets in a new zset" do
+        first = key
+        second = random_key
+        destination = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three 4 lol]
+          redis.zadd second, %w[3 lol 4 four]
+
+          redis.zdiffstore(destination, [first, second]).should eq 3
+          redis.zdiffstore(destination, first, second).should eq 3
+        ensure
+          redis.del first, second, destination
+        end
+      end
+    end
+
     test "can run ZRANGE BYLEX" do
       redis.zadd key,
         "0", "c",
