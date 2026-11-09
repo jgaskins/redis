@@ -263,6 +263,50 @@ describe Redis::Commands::SortedSet do
     end
   end
 
+  describe "#zinterstore" do
+    test "stores the intersection of multiple sets in a destination key" do
+      first = key
+      second = random_key
+      destination = random_key
+
+      begin
+        redis.zadd first, %w[1 one 2 two 3 three]
+        redis.zadd second, %w[2 two 3 three 4 four]
+
+        redis.zinterstore(destination, first, second).should eq 2
+        redis.zinterstore(destination, [first, second]).should eq 2
+      ensure
+        redis.del first, second, destination
+      end
+    end
+
+    test "stores the intersection of multiple sets in a destination key with weights and aggregates" do
+      first = key
+      second = random_key
+      destination = random_key
+
+      begin
+        redis.zadd first, %w[1 one 2 two 3 three]
+        redis.zadd second, %w[2 two 3 three 4 four]
+
+        redis
+          .zinterstore(
+            destination: destination,
+            keys: [first, second],
+            weights: %w[2 4],
+            aggregate: :max
+          )
+          .should eq 2
+        redis.zrange(destination, "0", "-1", with_scores: true).should eq %w[
+          two 4
+          three 6
+        ]
+      ensure
+        redis.del first, second, destination
+      end
+    end
+  end
+
   test "zincrby increments the score of the given member by the given amount" do
     redis.zadd key, %w[1 member]
     redis.zincrby(key, "1", "member").should eq "2"

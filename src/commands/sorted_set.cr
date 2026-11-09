@@ -286,6 +286,25 @@ module Redis::Commands::SortedSet
     run command
   end
 
+  def zinterstore(destination : String, *keys : String)
+    run({"zinterstore", destination, keys.size.to_s} + keys)
+  end
+
+  def zinterstore(
+    destination : String,
+    keys : Enumerable(String),
+    *,
+    weights : Enumerable(String)? = nil,
+    aggregate : ZINTERAggregate? = nil,
+    withscores : Bool = false,
+  )
+    command = Array(String).new(6 + keys.size + (weights.try(&.size) || 0))
+    command << "zinterstore" << destination << keys.size.to_s
+    command.concat keys
+
+    run command
+  end
+
   enum ZINTERAggregate
     SUM
     MIN
