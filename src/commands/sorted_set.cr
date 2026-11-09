@@ -225,6 +225,10 @@ module Redis::Commands::SortedSet
     run({"zcount", key, min, max})
   end
 
+  def zincrby(key : String, increment : String | Int, member : String)
+    run({"zincrby", key, increment.to_s, member})
+  end
+
   def zscore(key : String, value : String)
     run({"zscore", key, value})
   end

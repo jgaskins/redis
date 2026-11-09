@@ -177,6 +177,11 @@ describe Redis::Commands::SortedSet do
     end
   end
 
+  test "zincrby increments the score of the given member by the given amount" do
+    redis.zadd key, %w[1 member]
+    redis.zincrby(key, "1", "member").should eq "2"
+  end
+
   describe "zremrangebyrank" do
     test "removes with a range" do
       redis.zadd key, Array.new(100) { |i| [i.to_s, "entry-#{i}"] }.flatten
