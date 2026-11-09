@@ -273,7 +273,7 @@ module Redis::Commands::SortedSet
     aggregate : ZINTERAggregate? = nil,
     withscores : Bool = false,
   )
-    command = Array(String).new(2 + keys.size)
+    command = Array(String).new(6 + keys.size + (weights.try(&.size) || 0))
     command << "zinter" << keys.size.to_s
     command.concat keys
     if weights
