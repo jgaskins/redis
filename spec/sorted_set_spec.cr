@@ -267,8 +267,8 @@ describe Redis::Commands::SortedSet do
   test "can scan a sorted set" do
     values = Array.new(1_000, &.to_s).to_set
     scores = values.flat_map { |value| [value, rand.to_s] }
-
     redis.zadd key, scores
+
     redis.zscan_each key do |score, member|
       if values.includes? member
         values.delete member
