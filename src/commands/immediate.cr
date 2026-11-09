@@ -152,7 +152,7 @@ module Redis::Commands::Immediate
       sunionstore: Int64,
 
       # Sorted Sets
-      bzmpop:           Array?,
+      bzmpop:           Array(Value)?,
       bzpopmax:         Array,
       bzpopmin:         Array,
       zadd:             Int64 | String | Nil,

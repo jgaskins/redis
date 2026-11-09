@@ -204,6 +204,66 @@ describe Redis::Commands::SortedSet do
     redis.zscore(key, "one").should eq("1")
   end
 
+  describe "#bzmpop" do
+    test "removes and returns from the bottom of the sorted set" do
+      spawn do
+        # We time out after 1 second below, so we delay a little bit here to test the blocking
+        sleep 10.milliseconds
+        redis.zadd key, %w[
+          1 one
+          2 two
+          3 three
+          4 four
+          5 five
+          6 six
+        ]
+      end
+
+      redis.bzmpop(1.second, [key], :min).should eq [key, [%w[one 1]]]
+      redis.bzmpop(1.second, [key], :min, count: 2).should eq [key, [%w[two 2], %w[three 3]]]
+      redis.bzmpop(1.second, [key], :max).should eq [key, [%w[six 6]]]
+      redis.bzmpop(1.second, [key], :max, count: 2).should eq [key, [%w[five 5], %w[four 4]]]
+    end
+  end
+
+  describe "#bzpopmax" do
+    test "removes and returns from the top of the sorted set" do
+      spawn do
+        # We time out after 1 second below, so we delay a little bit here to test the blocking
+        sleep 10.milliseconds
+        redis.zadd key, %w[
+          1 one
+          2 two
+          3 three
+          4 four
+          5 five
+          6 six
+        ]
+      end
+
+      redis.bzpopmax([key], 1.second).should eq [key, "six", "6"]
+    end
+  end
+
+  describe "#bzpopmin" do
+    test "removes and returns from the bottom of the sorted set" do
+      spawn do
+        # We time out after 1 second below, so we delay a little bit here to test the blocking
+        sleep 10.milliseconds
+        redis.zadd key, %w[
+          1 one
+          2 two
+          3 three
+          4 four
+          5 five
+          6 six
+        ]
+      end
+
+      redis.bzpopmin([key], 1.second).should eq [key, "one", "1"]
+    end
+  end
+
   test "can scan a sorted set" do
     values = Array.new(1_000, &.to_s).to_set
     scores = values.flat_map { |value| [value, rand.to_s] }

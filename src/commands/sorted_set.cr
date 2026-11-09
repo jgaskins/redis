@@ -229,6 +229,48 @@ module Redis::Commands::SortedSet
     run({"zscore", key, value})
   end
 
+  def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : BZMPOPSide, count : String | Int | Nil = nil)
+    if timeout.is_a? Time::Span
+      timeout = timeout.total_seconds.to_i64
+    end
+    command = Array(String).new(5 + keys.size)
+    command << "bzmpop" << timeout.to_s << keys.size.to_s
+    command.concat keys
+    command << side.to_s
+    command << "count" << count.to_s if count
+
+    run command
+  end
+
+  enum BZMPOPSide
+    MIN
+    MAX
+  end
+
+  def bzpopmax(keys : Enumerable(String), timeout : Time::Span | String | Int)
+    if timeout.is_a? Time::Span
+      timeout = timeout.total_seconds.to_i64
+    end
+    command = Array(String).new(2 + keys.size)
+    command << "bzpopmax"
+    command.concat keys
+    command << timeout.to_s
+
+    run command
+  end
+
+  def bzpopmin(keys : Enumerable(String), timeout : Time::Span | String | Int)
+    if timeout.is_a? Time::Span
+      timeout = timeout.total_seconds.to_i64
+    end
+    command = Array(String).new(2 + keys.size)
+    command << "bzpopmin"
+    command.concat keys
+    command << timeout.to_s
+
+    run command
+  end
+
   def zscan(key : String, cursor : String, match pattern : String? = nil, count : String? = nil)
     command = {"zscan", key, cursor}
     command += {"match", pattern} if pattern
