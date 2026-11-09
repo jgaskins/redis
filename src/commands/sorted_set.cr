@@ -229,6 +229,22 @@ module Redis::Commands::SortedSet
     run({"zscore", key, value})
   end
 
+  def zdiff(*keys : String, withscores : Bool = false)
+    command = {"zdiff", keys.size.to_s} + keys
+    command += {"withscores"} if withscores
+
+    run command
+  end
+
+  def zdiff(keys : Enumerable(String), withscores : Bool = false)
+    command = Array(String).new(3 + keys.size)
+    command << "zdiff" << keys.size.to_s
+    command.concat keys
+    command << "withscores" if withscores
+
+    run command
+  end
+
   def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : BZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
       timeout = timeout.total_seconds.to_i64

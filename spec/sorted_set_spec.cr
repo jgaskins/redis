@@ -102,6 +102,38 @@ describe Redis::Commands::SortedSet do
   end
 
   if test.server_version >= Version["6.2.0"]
+    describe "#zdiff" do
+      test "gets the difference between two sorted sets" do
+        first = key
+        second = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three 4 lol]
+          redis.zadd second, %w[3 lol 4 four]
+
+          redis.zdiff([first, second]).should eq %w[one two three]
+          redis.zdiff(first, second).should eq %w[one two three]
+        ensure
+          redis.del first, second
+        end
+      end
+
+      test "gets the difference between two sorted sets with their scores" do
+        first = key
+        second = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three 4 lol]
+          redis.zadd second, %w[3 lol 4 four]
+
+          redis.zdiff([first, second], withscores: true).should eq %w[one 1 two 2 three 3]
+          redis.zdiff(first, second, withscores: true).should eq %w[one 1 two 2 three 3]
+        ensure
+          redis.del first, second
+        end
+      end
+    end
+
     test "can run ZRANGE BYLEX" do
       redis.zadd key,
         "0", "c",
