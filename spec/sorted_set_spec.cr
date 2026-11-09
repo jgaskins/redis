@@ -322,7 +322,9 @@ describe Redis::Commands::SortedSet do
       ]
 
       redis.zrank(key, "one").should eq 0
-      redis.zrank(key, "one", withscore: true).should eq [0, "1"]
+      if test.server_version >= Version["7.2.0"]
+        redis.zrank(key, "one", withscore: true).should eq [0, "1"]
+      end
     end
   end
 
