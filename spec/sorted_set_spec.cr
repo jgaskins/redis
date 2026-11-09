@@ -85,6 +85,22 @@ describe Redis::Commands::SortedSet do
     end
   end
 
+  test "zcard gets the size of a sorted set" do
+    redis.zadd key, %w[
+      1 one
+      2 two
+      3 three
+      4 four
+      5 five
+    ]
+
+    redis.zcard(key).should eq 5
+
+    redis.zadd key, %w[6 six]
+
+    redis.zcard(key).should eq 6
+  end
+
   if test.server_version >= Version["6.2.0"]
     test "can run ZRANGE BYLEX" do
       redis.zadd key,
