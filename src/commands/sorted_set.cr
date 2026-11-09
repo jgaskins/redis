@@ -261,6 +261,38 @@ module Redis::Commands::SortedSet
     run command
   end
 
+  def zinter(*keys : String)
+    command = {"zinter", keys.size.to_s} + keys
+    run command
+  end
+
+  def zinter(
+    keys : Enumerable(String),
+    *,
+    weights : Enumerable(String)? = nil,
+    aggregate : ZINTERAggregate? = nil,
+    withscores : Bool = false,
+  )
+    command = Array(String).new(2 + keys.size)
+    command << "zinter" << keys.size.to_s
+    command.concat keys
+    if weights
+      command << "weights"
+      command.concat weights
+    end
+    command << "aggregate" << aggregate.to_s if aggregate
+    command << "withscores" if withscores
+
+    run command
+  end
+
+  enum ZINTERAggregate
+    SUM
+    MIN
+    MAX
+    COUNT
+  end
+
   def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : BZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
       timeout = timeout.total_seconds.to_i64

@@ -152,6 +152,92 @@ describe Redis::Commands::SortedSet do
       end
     end
 
+    describe "#zinter" do
+      test "gets the intersection between multiple sorted sets" do
+        first = key
+        second = random_key
+        third = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three]
+          redis.zadd second, %w[2 two 3 three 4 four]
+          redis.zadd third, %w[3 three 4 four 5 five]
+
+          redis.zinter(first, second, third).should eq %w[three]
+          redis.zinter([first, second, third]).should eq %w[three]
+        ensure
+          redis.del first, second, third
+        end
+      end
+
+      # Honestly, this test doesn't do anything more than illustrate that
+      # `weights` can be passed. It doesn't change the return value. I don't
+      # know what the point of this test is, tbh, but this is a valid way to
+      # run `ZINTER`, so I guess we'll support it.
+      test "uses weights for each sorted set" do
+        first = key
+        second = random_key
+        third = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three]
+          redis.zadd second, %w[2 two 3 three 4 four]
+          redis.zadd third, %w[3 three 4 four 5 five]
+
+          redis.zinter(
+            keys: [first, second, third],
+            weights: %w[1 2 3],
+          ).should eq %w[three]
+        ensure
+          redis.del first, second, third
+        end
+      end
+
+      test "uses weights with aggregates" do
+        first = key
+        second = random_key
+        third = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three]
+          redis.zadd second, %w[2 two 3 three 4 four]
+          redis.zadd third, %w[3 three 4 four 5 five]
+
+          redis.zinter(
+            keys: [first, second, third],
+            weights: %w[1 2 3],
+            aggregate: :sum,
+          ).should eq %w[three]
+        ensure
+          redis.del first, second, third
+        end
+      end
+
+      test "uses weights with aggregates and fetches scores" do
+        first = key
+        second = random_key
+        third = random_key
+
+        begin
+          redis.zadd first, %w[1 one 2 two 3 three]
+          redis.zadd second, %w[2 two 3 three 4 four]
+          redis.zadd third, %w[3 three 4 four 5 five]
+
+          redis
+            .zinter(
+              keys: [first, second, third],
+              weights: %w[2 4 6],
+              aggregate: :max,
+              withscores: true
+            )
+            # The max is 3, and with a 6x weight it becomes 18
+            .should eq %w[three 18]
+        ensure
+          redis.del first, second, third
+        end
+      end
+    end
+
     test "can run ZRANGE BYLEX" do
       redis.zadd key,
         "0", "c",
