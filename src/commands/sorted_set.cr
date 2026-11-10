@@ -336,7 +336,7 @@ module Redis::Commands::SortedSet
     run({"zlexcount", key, min, max})
   end
 
-  def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : BZMPOPSide, count : String | Int | Nil = nil)
+  def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : ZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
       timeout = timeout.total_seconds.to_i64
     end
@@ -349,7 +349,17 @@ module Redis::Commands::SortedSet
     run command
   end
 
-  enum BZMPOPSide
+  def zmpop(keys : Enumerable(String), side : ZMPOPSide, count : String | Int | Nil = nil)
+    command = Array(String).new(5 + keys.size)
+    command << "zmpop" << keys.size.to_s
+    command.concat keys
+    command << side.to_s
+    command << "count" << count.to_s if count
+
+    run command
+  end
+
+  enum ZMPOPSide
     MIN
     MAX
   end

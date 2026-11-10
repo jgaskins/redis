@@ -165,7 +165,7 @@ module Redis::Commands::Immediate
       zintercard:       Int64,
       zinterstore:      Int64,
       zlexcount:        Int64,
-      zmpop:            Array?,
+      zmpop:            Array(Value)?,
       zmscore:          Array,
       zpopmax:          Array,
       zpopmin:          Array,
