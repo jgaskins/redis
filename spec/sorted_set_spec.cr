@@ -433,6 +433,54 @@ describe Redis::Commands::SortedSet do
       redis.zmscore(key, "one", "two", "three", "four").should eq %w[1 2 3 4]
       redis.zmscore(key, %w[one two three four]).should eq %w[1 2 3 4]
     end
+
+    describe "#zrandmember" do
+      test "gets a random member of a sorted set" do
+        redis.zadd key, %w[
+          1 one
+          2 two
+          3 three
+          4 four
+        ]
+
+        %w[one two three four].should contain redis.zrandmember(key)
+      end
+
+      test "gets many random members" do
+        redis.zadd key, %w[
+          1 one
+          2 two
+          3 three
+          4 four
+        ]
+
+        # Getting everything
+        results = redis.zrandmember(key, count: 4).as(Array)
+        results.should contain "one"
+        results.should contain "two"
+        results.should contain "three"
+        results.should contain "four"
+      end
+
+      test "gets the scores, as well" do
+        redis.zadd key, %w[
+          1 one
+          2 two
+          3 three
+          4 four
+        ]
+
+        pp results = redis.zrandmember(key, count: 4, withscores: true).as(Array)
+        results.should contain "one"
+        results.should contain "1"
+        results.should contain "two"
+        results.should contain "2"
+        results.should contain "three"
+        results.should contain "3"
+        results.should contain "four"
+        results.should contain "4"
+      end
+    end
   end
 
   if test.server_version >= Version["7.0.0"]

@@ -169,7 +169,7 @@ module Redis::Commands::Immediate
       zmscore:          Array,
       zpopmax:          Array,
       zpopmin:          Array,
-      zrandmember:      Array | String | Nil,
+      zrandmember:      Array(Value) | String | Nil,
       zrange:           Array,
       zrangebylex:      Array,
       zrangebyscore:    Array,

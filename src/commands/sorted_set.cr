@@ -232,6 +232,19 @@ module Redis::Commands::SortedSet
     run({"zcount", key, min, max})
   end
 
+  def zrandmember(
+    key : String,
+    *,
+    count : String | Int | Nil = nil,
+    withscores : Bool = false,
+  )
+    command = {"zrandmember", key}
+    command += {count.to_s} if count
+    command += {"withscores"} if withscores
+
+    run command
+  end
+
   def zincrby(key : String, increment : String | Int, member : String)
     run({"zincrby", key, increment.to_s, member})
   end
