@@ -261,6 +261,49 @@ describe Redis::Commands::SortedSet do
       redis.zrangebyscore(key, "-inf", "+inf", with_scores: true)
         .should eq %w[one 1 two 2 three 3]
     end
+
+    it "can run ZRANGESTORE BYLEX" do
+      source = random_key
+      destination = random_key
+
+      begin
+        redis.zadd source, %w[
+          1 one
+          2 two
+          3 three
+        ]
+
+        result = redis.zrangestore destination, source,
+          min: "[t",
+          max: "(u",
+          by: :lex
+
+        result.should eq 2
+        redis.zrange(destination, "0", "-1").should eq %w[two three]
+      ensure
+        redis.del source, destination
+      end
+    end
+
+    it "can run ZRANGESTORE BYSCORE" do
+      source = random_key
+      destination = random_key
+
+      begin
+        redis.zadd source, %w[
+          1 one
+          2 two
+          3 three
+        ]
+
+        redis.zrangestore(destination, source, "1", "2", by: :score, limit: {"0", "1"})
+          .should eq 1
+
+        redis.zrange(destination, "0", "-1").should eq %w[one]
+      ensure
+        redis.del source, destination
+      end
+    end
   end
 
   describe "#zinterstore" do

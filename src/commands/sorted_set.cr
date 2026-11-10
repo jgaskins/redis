@@ -45,6 +45,29 @@ module Redis::Commands::SortedSet
     run command
   end
 
+  def zrangestore(
+    destination : String,
+    source : String,
+    min : String,
+    max : String,
+    by order : ZRangeOrder? = nil,
+    rev : Bool? = nil,
+    limit : {String | Int, String | Int}? = nil,
+  )
+    command = {"zrangestore", destination, source, min, max}
+    case order
+    in nil
+    in .lex?
+      command += {"bylex"}
+    in .score?
+      command += {"byscore"}
+    end
+    command += {"rev"} if rev
+    command += {"limit"} + limit.map(&.to_s) if limit
+
+    run command
+  end
+
   enum ZRangeOrder
     LEX
     SCORE
