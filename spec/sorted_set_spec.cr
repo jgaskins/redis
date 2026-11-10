@@ -543,6 +543,38 @@ describe Redis::Commands::SortedSet do
     end
   end
 
+  describe "#zpopmax" do
+    test "removes and returns from the top of the sorted set" do
+      redis.zadd key, %w[
+        1 one
+        2 two
+        3 three
+        4 four
+        5 five
+        6 six
+      ]
+
+      redis.zpopmax(key).should eq ["six", "6"]
+      redis.zpopmax(key, count: 3).should eq %w[five 5 four 4 three 3]
+    end
+  end
+
+  describe "#zpopmin" do
+    test "removes and returns from the bottom of the sorted set" do
+      redis.zadd key, %w[
+        1 one
+        2 two
+        3 three
+        4 four
+        5 five
+        6 six
+      ]
+
+      redis.zpopmin(key).should eq %w[one 1]
+      redis.zpopmin(key, count: 3).should eq %w[two 2 three 3 four 4]
+    end
+  end
+
   describe "#zlexcount" do
     test "returns the number of elements between two ranks when sorted lexicographically" do
       redis.zadd key, %w[

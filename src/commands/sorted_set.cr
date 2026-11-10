@@ -348,6 +348,20 @@ module Redis::Commands::SortedSet
     run command
   end
 
+  def zpopmax(key : String, *, count : String | Int | Nil = nil)
+    command = {"zpopmax", key}
+    command += {count.to_s} if count
+
+    run command
+  end
+
+  def zpopmin(key : String, *, count : String | Int | Nil = nil)
+    command = {"zpopmin", key}
+    command += {count.to_s} if count
+
+    run command
+  end
+
   def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : ZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
       timeout = timeout.total_seconds.to_i64
