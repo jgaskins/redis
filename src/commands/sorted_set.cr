@@ -180,7 +180,7 @@ module Redis::Commands::SortedSet
     min : String | Float64,
     max : String | Float64,
     with_scores = false,
-    limit : Enumerable(String)? = nil,
+    limit : {String | Int, String | Int}? = nil,
   )
     command = {"zrangebyscore", key, min.to_s, max.to_s}
 
@@ -188,7 +188,7 @@ module Redis::Commands::SortedSet
       command += {"withscores"}
     end
     if limit
-      command += {"limit", limit[0], limit[1]}
+      command += {"limit", limit[0].to_s, limit[1].to_s}
     end
 
     run command
