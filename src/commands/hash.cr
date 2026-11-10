@@ -553,6 +553,42 @@ module Redis::Commands::Hash
     run({"hpttl", key, "fields", fields.size.to_s} + fields)
   end
 
+  # Return the field names of the hash stored in `key`.
+  #
+  # WARNING: The `HKEYS` command doesn't accept any options for pagination, so
+  # this will return all fields in a hash even if there are millions of them.
+  # Use the `Redis::Client#hscan_each` method if you need to paginate a hash.
+  #
+  # ```
+  # redis.hset "user:1234",
+  #   id: "1234",
+  #   email: "user@example.com",
+  #   created_at: "1794283537"
+  #
+  # redis.hkeys("user:1234") # => ["id", "email", "created_at"]
+  # ```
+  def hkeys(key : String)
+    run({"hkeys", key})
+  end
+
+  # Return the field values of the hash stored in `key`.
+  #
+  # WARNING: The `HVALS` command doesn't accept any options for pagination, so
+  # this will return all fields in a hash even if there are millions of them.
+  # Use the `Redis::Client#hscan_each` method if you need to paginate a hash.
+  #
+  # ```
+  # redis.hset "user:1234",
+  #   id: "1234",
+  #   email: "user@example.com",
+  #   created_at: "1794283537"
+  #
+  # redis.hvals("user:1234") # => ["1234", "user@example.com", "1794283537"]
+  # ```
+  def hvals(key : String)
+    run({"hvals", key})
+  end
+
   # Set the values for the fields in `data` in the hash stored in `key`,
   # returning `"OK"`.
   #

@@ -343,4 +343,16 @@ describe Redis::Commands::Hash do
     redis.hstrlen(key, "medium").should eq 100
     redis.hstrlen(key, "long").should eq 8192
   end
+
+  test "hkeys returns the fields/keys of the hash" do
+    redis.hset key, one: "1", two: "2", three: "3"
+
+    redis.hkeys(key).should eq %w[one two three]
+  end
+
+  test "hvals returns the values of a hash" do
+    redis.hset key, one: "1", two: "2", three: "3"
+
+    redis.hvals(key).should eq %w[1 2 3]
+  end
 end
