@@ -377,8 +377,9 @@ describe Redis::Commands::SortedSet do
 
       # Removing all but the first and last
       redis.zremrangebyrank(key, 1...99).should eq 98
-
       redis.zrange(key, 0, -1).should eq %w[entry-0 entry-99]
+
+      redis.zremrangebyrank(key, 0...).should eq 2
     end
 
     test "removes with start and stop as ints" do

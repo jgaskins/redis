@@ -306,10 +306,10 @@ module Redis::Commands::SortedSet
     stop = range.end
 
     start = "0" if start.nil?
-    stop = "-1" if stop.nil?
-    if range.excludes_end?
+    if stop && range.excludes_end?
       stop = stop.to_i64 - 1
     end
+    stop = "-1" if stop.nil?
 
     start = start.to_i64 if start.is_a? Int
     stop = stop.to_i64 if stop.is_a? Int
