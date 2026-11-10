@@ -470,7 +470,7 @@ describe Redis::Commands::SortedSet do
           4 four
         ]
 
-        pp results = redis.zrandmember(key, count: 4, withscores: true).as(Array)
+        results = redis.zrandmember(key, count: 4, withscores: true).as(Array)
         results.should contain "one"
         results.should contain "1"
         results.should contain "two"
