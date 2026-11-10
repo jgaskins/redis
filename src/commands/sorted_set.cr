@@ -312,6 +312,19 @@ module Redis::Commands::SortedSet
     run command
   end
 
+  def zintercard(*keys : String)
+    run({"zintercard", keys.size.to_s} + keys)
+  end
+
+  def zintercard(keys : Enumerable(String), limit : String | Int | Nil = nil)
+    command = Array(String).new(4 + keys.size)
+    command << "zintercard" << keys.size.to_s
+    command.concat keys
+    command << "limit" << limit.to_s if limit
+
+    run command
+  end
+
   enum ZINTERAggregate
     SUM
     MIN

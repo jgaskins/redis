@@ -443,6 +443,36 @@ describe Redis::Commands::SortedSet do
         redis.bzmpop(1.second, [key], :max, count: 2).should eq [key, [%w[five 5], %w[four 4]]]
       end
     end
+
+    describe "#zintercard" do
+      it "returns the number of members that exists in all given sorted sets" do
+        first = random_key
+        second = random_key
+        third = random_key
+
+        redis.zadd first, %w[1 one 2 two 3 three 4 four]
+        redis.zadd second, %w[1 one 2 two 3 three 4 four 5 five]
+        redis.zadd third, %w[1 one 2 two 3 three 6 six]
+
+        redis.zintercard(first, second).should eq 4
+        redis.zintercard(first, second, third).should eq 3
+        redis.zintercard([first, second]).should eq 4
+        redis.zintercard([first, second, third]).should eq 3
+      end
+
+      it "limits the cardinality of the intersection" do
+        first = random_key
+        second = random_key
+        third = random_key
+
+        redis.zadd first, %w[1 one 2 two 3 three 4 four]
+        redis.zadd second, %w[1 one 2 two 3 three 4 four 5 five]
+        redis.zadd third, %w[1 one 2 two 3 three 6 six]
+
+        redis.zintercard([first, second], limit: 3).should eq 3
+        redis.zintercard([first, second, third], limit: 2).should eq 2
+      end
+    end
   end
 
   describe "#bzpopmax" do
