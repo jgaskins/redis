@@ -332,6 +332,10 @@ module Redis::Commands::SortedSet
     COUNT
   end
 
+  def zlexcount(key : String, min : String, max : String)
+    run({"zlexcount", key, min, max})
+  end
+
   def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : BZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
       timeout = timeout.total_seconds.to_i64

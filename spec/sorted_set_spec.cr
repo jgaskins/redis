@@ -513,6 +513,22 @@ describe Redis::Commands::SortedSet do
     end
   end
 
+  describe "#zlexcount" do
+    test "returns the number of elements between two ranks when sorted lexicographically" do
+      redis.zadd key, %w[
+        0 a
+        0 b
+        0 c
+        0 d
+        0 e
+        0 f
+      ]
+
+      redis.zlexcount(key, "[b", "[d").should eq 3
+      redis.zlexcount(key, "(b", "(d").should eq 1
+    end
+  end
+
   test "can scan a sorted set" do
     values = Array.new(1_000, &.to_s).to_set
     scores = values.flat_map { |value| [value, rand.to_s] }
