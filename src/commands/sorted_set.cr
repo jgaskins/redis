@@ -246,7 +246,7 @@ module Redis::Commands::SortedSet
   def zrem(key : String, values : Enumerable(String))
     command = Array(String).new(initial_capacity: 2 + values.size)
     command << "zrem" << key
-    values.each { |value| command << value.as(String) }
+    command.concat values
 
     run command
   end
