@@ -341,8 +341,8 @@ describe Redis::Commands::SortedSet do
           )
           .should eq 2
         redis.zrange(destination, "0", "-1", with_scores: true).should eq %w[
-          two 4
-          three 6
+          two 8
+          three 12
         ]
       ensure
         redis.del first, second, destination

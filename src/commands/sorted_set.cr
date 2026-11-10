@@ -339,11 +339,15 @@ module Redis::Commands::SortedSet
     *,
     weights : Enumerable(String)? = nil,
     aggregate : ZINTERAggregate? = nil,
-    withscores : Bool = false,
   )
     command = Array(String).new(6 + keys.size + (weights.try(&.size) || 0))
     command << "zinterstore" << destination << keys.size.to_s
     command.concat keys
+    if weights
+      command << "weights"
+      command.concat weights
+    end
+    command << "aggregate" << aggregate.to_s if aggregate
 
     run command
   end
