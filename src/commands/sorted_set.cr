@@ -381,7 +381,7 @@ module Redis::Commands::SortedSet
   end
 
   def zmscore(key : String, members : Enumerable(String))
-    command = Array(String).new(2 + keys.size)
+    command = Array(String).new(2 + members.size)
     command << "zmscore" << key
     command.concat members
 
