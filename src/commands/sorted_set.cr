@@ -864,7 +864,7 @@ module Redis::Commands::SortedSet
   # ```
   def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : ZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
-      timeout = timeout.total_seconds.to_i64
+      timeout = timeout.total_seconds.to_s
     end
     command = Array(String).new(5 + keys.size)
     command << "bzmpop" << timeout.to_s << keys.size.to_s
@@ -922,7 +922,7 @@ module Redis::Commands::SortedSet
   # ```
   def bzpopmax(keys : Enumerable(String), timeout : Time::Span | String | Int)
     if timeout.is_a? Time::Span
-      timeout = timeout.total_seconds.to_i64
+      timeout = timeout.total_seconds.to_s
     end
     command = Array(String).new(2 + keys.size)
     command << "bzpopmax"
@@ -947,7 +947,7 @@ module Redis::Commands::SortedSet
   # ```
   def bzpopmin(keys : Enumerable(String), timeout : Time::Span | String | Int)
     if timeout.is_a? Time::Span
-      timeout = timeout.total_seconds.to_i64
+      timeout = timeout.total_seconds.to_s
     end
     command = Array(String).new(2 + keys.size)
     command << "bzpopmin"
