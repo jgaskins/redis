@@ -548,6 +548,10 @@ describe Redis::Commands::SortedSet do
         redis.bzmpop(1.second, [key], :max).should eq [key, [%w[six 6]]]
         redis.bzmpop(1.second, [key], :max, count: 2).should eq [key, [%w[five 5], %w[four 4]]]
       end
+
+      test "returns nil on timeout" do
+        redis.bzmpop(1.millisecond, [key], :max, count: 2).should be_nil
+      end
     end
 
     describe "#zmpop" do
@@ -616,6 +620,10 @@ describe Redis::Commands::SortedSet do
 
       redis.bzpopmax([key], 1.second).should eq [key, "six", "6"]
     end
+
+    test "returns nil on timeout" do
+      redis.bzpopmax([key], 1.millisecond).should be_nil
+    end
   end
 
   describe "#bzpopmin" do
@@ -634,6 +642,10 @@ describe Redis::Commands::SortedSet do
       end
 
       redis.bzpopmin([key], 1.second).should eq [key, "one", "1"]
+    end
+
+    test "returns nil on timeout" do
+      redis.bzpopmin([key], 1.millisecond).should be_nil
     end
   end
 

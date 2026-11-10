@@ -153,8 +153,8 @@ module Redis::Commands::Immediate
 
       # Sorted Sets
       bzmpop:           Array(Value)?,
-      bzpopmax:         Array,
-      bzpopmin:         Array,
+      bzpopmax:         Array(Value)?,
+      bzpopmin:         Array(Value)?,
       zadd:             Int64 | String | Nil,
       zcard:            Int64,
       zcount:           Int64,
