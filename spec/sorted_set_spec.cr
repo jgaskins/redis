@@ -83,6 +83,18 @@ describe Redis::Commands::SortedSet do
       redis.zadd key, "2222", "first", incr: true
       redis.zscore(key, "first").should eq "7777"
     end
+
+    test "gets the scores for each member" do
+      redis.zadd key, %w[
+        1 one
+        2 two
+        3 three
+        4 four
+      ]
+
+      redis.zmscore(key, "one", "two", "three", "four").should eq %w[1 2 3 4]
+      redis.zmscore(key, %w[one two three four]).should eq %w[1 2 3 4]
+    end
   end
 
   test "zcard gets the size of a sorted set" do

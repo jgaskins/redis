@@ -336,6 +336,18 @@ module Redis::Commands::SortedSet
     run({"zlexcount", key, min, max})
   end
 
+  def zmscore(key : String, *members : String)
+    run({"zmscore", key} + members)
+  end
+
+  def zmscore(key : String, members : Enumerable(String))
+    command = Array(String).new(2 + keys.size)
+    command << "zmscore" << key
+    command.concat members
+
+    run command
+  end
+
   def bzmpop(timeout : Time::Span | String | Int, keys : Enumerable(String), side : ZMPOPSide, count : String | Int | Nil = nil)
     if timeout.is_a? Time::Span
       timeout = timeout.total_seconds.to_i64
