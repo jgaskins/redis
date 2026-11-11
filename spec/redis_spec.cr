@@ -104,38 +104,32 @@ describe Redis::Client do
   end
 
   test "can set expiration timestamps on keys" do
-    redis.set key, "foo", ex: 10.milliseconds.from_now
-    redis.get(key).should eq "foo"
-    sleep 10.milliseconds
-    redis.get(key).should eq nil
+    redis.set key, "foo", ex: 1.hour.from_now
+    redis.ttl(key).should be_within 1, of: 3600
   end
 
   test "can expire key after a specified number of seconds" do
     redis.set key, "foo"
-    redis.expire key, 1
-    sleep 1.5.seconds
-    redis.get(key).should eq nil
+    redis.expire key, 100
+    redis.ttl(key).should be_within 1, of: 100
   end
 
   test "can expire key at a given timestamp" do
     redis.set key, "foo"
-    redis.expireat key, 1.second.from_now
-    sleep 1.second
-    redis.get(key).should eq nil
+    redis.expireat key, 1.hour.from_now
+    redis.ttl(key).should be_within 1, of: 3600
   end
 
   test "can expire key after a specified number of milliseconds" do
     redis.set key, "foo"
-    redis.pexpire key, 10
-    sleep 100.milliseconds
-    redis.get(key).should eq nil
+    redis.pexpire key, 1.hour
+    redis.pttl(key).should be_within 1000, of: 3600_000
   end
 
   test "can expire key at a given milliseconds-timestamp" do
     redis.set key, "foo"
-    redis.pexpireat key, 10.milliseconds.from_now
-    sleep 100.milliseconds
-    redis.get(key).should eq nil
+    redis.pexpireat key, 1.hour.from_now
+    redis.pttl(key).should be_within 1000, of: 3600_000
   end
 
   test "can returns the remaining time to live of a key that has a timeout in seconds" do
@@ -382,8 +376,14 @@ describe Redis::Client do
 
   test "works with lists" do
     spawn do
-      sleep 10.milliseconds
-      redis.lpush key, "omg", "lol", "wtf", "bbq"
+      sleep 5.milliseconds
+      redis.lpush key, "omg"
+      sleep 5.milliseconds
+      redis.lpush key, "lol"
+      sleep 5.milliseconds
+      redis.lpush key, "wtf"
+      sleep 5.milliseconds
+      redis.lpush key, "bbq"
     end
     redis.brpop(key, timeout: 1).should eq [key, "omg"]
     redis.brpop(key, timeout: "1").should eq [key, "lol"]
