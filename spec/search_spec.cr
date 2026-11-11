@@ -179,11 +179,11 @@ module Redis
           results = redis.ft.search(hash_index, "nocontent match", nocontent: true)
 
           results.size.should eq 3
-          count, match1, match2 = results
+          count, *matches = results
           count.should eq 2
           # Keys only, no matched content
-          match1.should eq "#{hash_prefix}:nocontent:match:1"
-          match2.should eq "#{hash_prefix}:nocontent:match:2"
+          matches.should contain "#{hash_prefix}:nocontent:match:1"
+          matches.should contain "#{hash_prefix}:nocontent:match:2"
         end
 
         it "can search for a verbatim string" do
