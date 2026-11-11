@@ -46,18 +46,21 @@ module Redis::Commands::Immediate
     # When new commands are added to the Commands mixin, add an entry here to
     # make sure the return type is set when run directly on the connection.
     override_return_types({
-      keys:          Array,
-      dbsize:        Int64,
-      del:           Int64,
-      exists:        Int64,
-      unlink:        Int64,
-      ttl:           Int64,
-      pttl:          Int64,
-      dump:          String?,
-      script_load:   String,
-      script_exists: Array,
-      info:          String,
-      spublish:      Int64,
+      keys:            Array,
+      dbsize:          Int64,
+      del:             Int64,
+      exists:          Int64,
+      unlink:          Int64,
+      ttl:             Int64,
+      pttl:            Int64,
+      dump:            String?,
+      script_load:     String,
+      script_exists:   Array,
+      function_load:   String,
+      function_delete: String,
+      function_list:   Array,
+      info:            String,
+      spublish:        Int64,
 
       # String commands
       append:      Int64,

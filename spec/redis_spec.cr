@@ -467,6 +467,98 @@ describe Redis::Client do
     end
   end
 
+  if test.server_version >= Version["7.0.0"]
+    describe "functions" do
+      code = <<-FUNCTION
+        #!lua name=mylib
+
+        -- Called from our registered function
+        local function transform(string)
+          return string.upper(string)
+        end
+
+        local function myfunc(keys, args)
+          return transform(args[1])
+        end
+
+        -- The only function we're making available outside of the script
+        redis.register_function{
+          function_name='myfunc',
+          callback=myfunc,
+          flags={'no-writes'}
+        }
+      FUNCTION
+
+      it "loads and executes functions" do
+        redis.function_load(code, replace: true).should eq "mylib"
+      end
+
+      it "calls a function" do
+        redis.function_load code, replace: true
+
+        redis.fcall("myfunc", %w[], %w[one two three])
+          # The function returns the first arg
+          .should eq "ONE"
+      end
+
+      it "calls a readonly function" do
+        redis.function_load code, replace: true
+
+        redis.fcall_ro("myfunc", %w[], %w[one two three])
+          .should eq "ONE"
+      end
+
+      it "deletes a library and all its functions" do
+        redis.function_load code, replace: true
+
+        redis.function_delete "mylib"
+
+        expect_raises Redis::Error do
+          redis.fcall_ro("myfunc", %w[], %w[one two three])
+        end
+      end
+
+      it "lists functions" do
+        my_code = <<-LIB
+          #!lua name=mylib
+
+          redis.register_function('myfunc', function(keys, args)
+            return args[0]
+          end)
+          LIB
+        redis.function_load my_code, replace: true
+
+        redis.function_list("mylib").should eq [
+          [
+            "library_name", "mylib",
+            "engine", "LUA",
+            "functions", [
+              [
+                "name", "myfunc",
+                "description", nil,
+                "flags", [] of Redis::Value,
+              ],
+            ],
+          ],
+        ]
+        redis.function_list("mylib", withcode: true).should eq [
+          [
+            "library_name", "mylib",
+            "engine", "LUA",
+            "functions", [
+              [
+                "name", "myfunc",
+                "description", nil,
+                "flags", [] of Redis::Value,
+              ],
+            ],
+            "library_code", my_code,
+          ],
+        ]
+      end
+    end
+  end
+
   # FIXME: These specs don't assert, which is confusing. The reason they still
   # validate that pubsub works is that they publish messages on a channel, which
   # unsubscribes. `redis.subscribe` and `redis.unsubscribe` both block the fiber

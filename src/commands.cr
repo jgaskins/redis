@@ -445,6 +445,54 @@ module Redis
       end
     end
 
+    def function_load(code : String, replace : Bool = true)
+      command = {"function", "load"}
+      command += {"replace"} if replace
+      command += {code.lstrip}
+
+      run command
+    end
+
+    def function_delete(library : String)
+      run({"function", "delete", library})
+    end
+
+    def function_list(library_pattern : String? = nil, *, withcode : Bool = false)
+      command = {"function", "list"}
+      command += {"libraryname", library_pattern} if library_pattern
+      command += {"withcode"} if withcode
+
+      run command
+    end
+
+    def fcall(
+      function : String,
+      keys : Enumerable(String),
+      args : Enumerable(String),
+    )
+      command = Array(String).new(3 + args.size + keys.size)
+      command << "fcall" << function
+      command << keys.size.to_s
+      command.concat keys
+      command.concat args
+
+      run command
+    end
+
+    def fcall_ro(
+      function : String,
+      keys : Enumerable(String),
+      args : Enumerable(String),
+    )
+      command = Array(String).new(3 + args.size + keys.size)
+      command << "fcall_ro" << function
+      command << keys.size.to_s
+      command.concat keys
+      command.concat args
+
+      run command
+    end
+
     def expire(key : String, ttl : Time::Span)
       expire key, ttl.total_seconds.to_i64
     end
