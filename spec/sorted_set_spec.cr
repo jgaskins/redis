@@ -622,7 +622,7 @@ describe Redis::Commands::SortedSet do
     end
 
     test "returns nil on timeout" do
-      redis.bzpopmax([key], 1.millisecond).should be_nil
+      redis.bzpopmax([key], 5.milliseconds).should be_nil
     end
   end
 
@@ -645,7 +645,7 @@ describe Redis::Commands::SortedSet do
     end
 
     test "returns nil on timeout" do
-      redis.bzpopmin([key], 1.millisecond).should be_nil
+      redis.bzpopmin([key], 2.milliseconds).should be_nil
     end
   end
 
