@@ -155,6 +155,92 @@ describe Redis::Client do
     redis.set(key, "foo", xx: true).should eq "OK"
   end
 
+  describe "mset" do
+    it "sets multiple keys via a hash" do
+      one = random_key
+      two = random_key
+      three = random_key
+
+      begin
+        redis.mset({
+          one   => "1",
+          two   => "2",
+          three => "3",
+        })
+
+        redis.mget(one, two, three).should eq %w[1 2 3]
+      ensure
+        redis.del one, two, three
+      end
+    end
+
+    it "sets multiple keys with an array" do
+      one = random_key
+      two = random_key
+      three = random_key
+
+      begin
+        redis.mset([
+          one, "1",
+          two, "2",
+          three, "3",
+        ])
+
+        redis.mget(one, two, three).should eq %w[1 2 3]
+      ensure
+        redis.del one, two, three
+      end
+    end
+
+    it "sets multiple keys with variadic args" do
+      one = random_key
+      two = random_key
+      three = random_key
+
+      begin
+        redis.mset(
+          one, "1",
+          two, "2",
+          three, "3",
+        )
+
+        redis.mget(one, two, three).should eq %w[1 2 3]
+      ensure
+        redis.del one, two, three
+      end
+    end
+
+    {% begin %}
+      {% one = run "./random_key" %}
+      {% two = run "./random_key" %}
+      {% three = run "./random_key" %}
+
+      it "sets multiple keys with a NamedTuple" do
+        redis.mset({
+          {{one}}: "1",
+          {{two}}: "2",
+          {{three}}: "3",
+        })
+
+        redis.mget({{one}}, {{two}}, {{three}}).should eq %w[1 2 3]
+      ensure
+        redis.del {{one}}, {{two}}, {{three}}
+      end
+
+      it "sets multiple keys with keyword args" do
+        redis.mset(
+          {{one}}: "1",
+          {{two}}: "2",
+          {{three}}: "3",
+        )
+
+        redis.mget({{one}}, {{two}}, {{three}}).should eq %w[1 2 3]
+      ensure
+        redis.del {{one}}, {{two}}, {{three}}
+      end
+    {% end %}
+  end
+
   test "can get the list of keys" do
     redis.set key, "yep"
     redis.keys.includes?(key).should eq true

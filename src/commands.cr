@@ -543,14 +543,38 @@ module Redis
       run command
     end
 
-    def mset(data : ::Hash(String, String))
-      command = Array(String).new(initial_capacity: 1 + data.size)
+    def mset(**data : String)
+      mset data
+    end
+
+    def mset(data : ::Hash(String, String) | NamedTuple)
+      command = Array(String).new(initial_capacity: 1 + data.size * 2)
       command << "mset"
       data.each do |key, value|
-        command << key << value
+        command << key.to_s << value
       end
 
       run command
+    end
+
+    def mset(data : Enumerable(String))
+      unless data.size.even?
+        raise ArgumentError.new("The MSET command requires an even number of arguments")
+      end
+
+      command = Array(String).new(initial_capacity: 1 + data.size)
+      command << "mset"
+      command.concat data
+
+      run command
+    end
+
+    def mset(*data : String)
+      unless data.size.even?
+        raise ArgumentError.new("The MSET command requires an even number of arguments")
+      end
+
+      run({"mset"} + data)
     end
 
     # Send a `PING` command to the server, returning `message` if it is provided
