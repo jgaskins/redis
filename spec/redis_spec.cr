@@ -217,8 +217,8 @@ describe Redis::Client do
 
       it "sets multiple keys with a NamedTuple" do
         redis.mset({
-          {{one}}: "1",
-          {{two}}: "2",
+          {{one}}:   "1",
+          {{two}}:   "2",
           {{three}}: "3",
         })
 
@@ -229,8 +229,8 @@ describe Redis::Client do
 
       it "sets multiple keys with keyword args" do
         redis.mset(
-          {{one}}: "1",
-          {{two}}: "2",
+          {{one}}:   "1",
+          {{two}}:   "2",
           {{three}}: "3",
         )
 
@@ -239,6 +239,114 @@ describe Redis::Client do
         redis.del {{one}}, {{two}}, {{three}}
       end
     {% end %}
+  end
+
+  if test.server_version >= Version["8.4.0"]
+    describe "#msetex" do
+      {% begin %}
+        {% one = run "./random_key" %}
+        {% two = run "./random_key" %}
+        {% three = run "./random_key" %}
+
+        named_tuple = {
+          {{one}}:   "1",
+          {{two}}:   "2",
+          {{three}}: "3",
+        }
+
+        [
+          named_tuple,
+          {
+            {{one}} => "1",
+            {{two}} => "2",
+            {{three}} => "3",
+          },
+        ].each do |data|
+          it "sets multiple keys with a #{data.class}" do
+            redis.msetex(data)
+
+            redis.mget({{one}}, {{two}}, {{three}}).should eq %w[1 2 3]
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} only if none of them exist" do
+            redis.msetex(data, nx: true).should eq 1
+            redis.del {{one}}
+            redis.msetex(data, nx: true).should eq 0
+            redis.del {{two}}
+            redis.msetex(data, nx: true).should eq 0
+            redis.del {{three}}
+            redis.msetex(data, nx: true).should eq 1
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} only if all of them exist" do
+            redis.msetex(data, xx: true).should eq 0
+            redis.set {{one}}, ""
+            redis.msetex(data, xx: true).should eq 0
+            redis.set {{two}}, ""
+            redis.msetex(data, xx: true).should eq 0
+            redis.set {{three}}, ""
+            redis.msetex(data, xx: true).should eq 1
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with a Time::Span TTL with EX" do
+            redis.msetex(data, ex: 1.hour).should eq 1
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with a Time::Span TTL with PX" do
+            redis.msetex(data, px: 1.hour).should eq 1
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with a String TTL with EX" do
+            redis.msetex(data, ex: "3600").should eq 1
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with a String TTL with PX" do
+            redis.msetex(data, px: "3600000").should eq 1
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with an Int TTL with EX" do
+            redis.msetex(data, ex: 3600).should eq 1
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with an Int TTL with PX" do
+            redis.msetex(data, px: 3600_000).should eq 1
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+
+          it "can set keys via #{data.class} with KEEPTTL" do
+            redis.msetex data, ex: 1.hour
+            redis.msetex(data, keepttl: true).should eq 1
+
+            redis.ttl({{one}}).should be_within 1, of: 3600
+          ensure
+            redis.del {{one}}, {{two}}, {{three}}
+          end
+        end
+      {% end %}
+    end
   end
 
   test "can get the list of keys" do

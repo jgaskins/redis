@@ -577,6 +577,41 @@ module Redis
       run({"mset"} + data)
     end
 
+    def msetex(
+      data : NamedTuple | ::Hash(String, String),
+      *,
+      nx : Bool = false,
+      xx : Bool = false,
+      ex : Time::Span | String | Int | Nil = nil,
+      px : Time::Span | String | Int | Nil = nil,
+      keepttl : Bool = false,
+    )
+      command = Array(String).new(initial_capacity: 5 + data.size * 2)
+      command << "msetex" << data.size.to_s
+      data.each do |key, value|
+        command << key.to_s << value
+      end
+      command << "nx" if nx
+      command << "xx" if xx
+      case ex
+      in Nil
+      in Time::Span
+        command << "px" << ex.total_milliseconds.to_i.to_s
+      in String, Int
+        command << "ex" << ex.to_s
+      end
+      case px
+      in Nil
+      in Time::Span
+        command << "px" << px.total_milliseconds.to_i.to_s
+      in String, Int
+        command << "px" << px.to_s
+      end
+      command << "keepttl" if keepttl
+
+      run command
+    end
+
     # Send a `PING` command to the server, returning `message` if it is provided
     # or `"PONG"` otherwise.
     def ping(message : String? = nil)
